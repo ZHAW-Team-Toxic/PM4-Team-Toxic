@@ -1,0 +1,37 @@
+apply plugin: 'application'
+
+
+java.sourceCompatibility = 21
+java.targetCompatibility = 21
+if (JavaVersion.current().isJava9Compatible()) {
+        compileJava.options.release.set(21)
+}
+
+mainClassName = "com.zhaw.frontier.headless.HeadlessLauncher"
+application.setMainClass(mainClassName)
+eclipse.project.name = appName + '-headless'
+
+dependencies {
+  implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+  implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+  implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+  implementation project(':core')
+}
+
+jar {
+  archiveBaseName.set(appName)
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+  dependsOn configurations.runtimeClasspath
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+  manifest {
+    attributes 'Main-Class': project.mainClassName
+  }
+  doLast {
+    file(archiveFile).setExecutable(true, false)
+  }
+}
+
+// Equivalent to the jar task; here for compatibility with gdx-setup.
+tasks.register('dist') {
+  dependsOn 'jar'
+}
