@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 
@@ -20,11 +19,11 @@ public class BoundsSystem extends IteratingSystem {
         var vel = ComponentMapper.getFor(VelocityComponent.class).get(entity);
         var pos = ComponentMapper.getFor(PositionComponent.class).get(entity);
 
-        if (pos.position.x > Gdx.graphics.getWidth() || pos.position.x < 0) {
+        if (pos.position.x > 16 || pos.position.x < 0) {
             vel.velocity.x *= -1;
         }
 
-        if (pos.position.y > Gdx.graphics.getHeight() || pos.position.y < 0) {
+        if (pos.position.y > 8 || pos.position.y < 0) {
             vel.velocity.y *= -1;
         }
     }
