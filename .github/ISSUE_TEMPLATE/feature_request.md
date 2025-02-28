@@ -6,15 +6,10 @@ labels: ''
 assignees: ''
 
 ---
+**Short Description**
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**Acceptance**
+- points that have to be true for the issue to be considered done
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
-
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+**Implementation**
+- steps to get the issue done.
