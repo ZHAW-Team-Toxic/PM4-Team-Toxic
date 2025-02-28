@@ -1,6 +1,5 @@
 package com.zhaw.tests;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -41,11 +40,6 @@ public class ExampleTest {
     @Test
     public void testMockedGLWorks() {
         assertDoesNotThrow(() -> new Image(new Texture("donkey.png")));
-    }
-
-    @Test
-    public void testFail() {
-        fail();
     }
 
 }
