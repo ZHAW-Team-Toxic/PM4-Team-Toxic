@@ -7,8 +7,8 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 
-public class MovementSystem extends IteratingSystem{
-     public MovementSystem() {
+public class MovementSystem extends IteratingSystem {
+    public MovementSystem() {
         super(Family.all(PositionComponent.class, VelocityComponent.class).get());
     }
 
@@ -16,7 +16,7 @@ public class MovementSystem extends IteratingSystem{
     protected void processEntity(Entity entity, float deltaTime) {
         PositionComponent position = ComponentMapper.getFor(PositionComponent.class).get(entity);
         VelocityComponent velocity = ComponentMapper.getFor(VelocityComponent.class).get(entity);
-        
+
         position.position.x += velocity.velocity.x * deltaTime;
         position.position.y += velocity.velocity.y * deltaTime;
     }

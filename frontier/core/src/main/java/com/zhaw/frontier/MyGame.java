@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.VelocityComponent;
+import com.zhaw.frontier.systems.BoundsSystem;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 
@@ -20,7 +21,7 @@ public class MyGame extends ApplicationAdapter {
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private float time = 0;
-    
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -30,6 +31,7 @@ public class MyGame extends ApplicationAdapter {
 
         // Add systems
         engine.addSystem(new MovementSystem());
+        engine.addSystem(new BoundsSystem());
         engine.addSystem(new RenderSystem(batch, camera, engine));
 
         // Add characters
@@ -42,40 +44,27 @@ public class MyGame extends ApplicationAdapter {
 
         PositionComponent pos = new PositionComponent();
         pos.position.set(x, y);
-        
+
         VelocityComponent vel = new VelocityComponent();
-        
+
         if (circularMovement) {
             vel.velocity.set(50, 0);
         } else {
             vel.velocity.set(100, 0);
         }
 
-        RenderComponent render = new RenderComponent();
+        var render = new RenderComponent();
         render.texture = new Texture(Gdx.files.internal(texturePath));
-        
+
         entity.add(pos).add(vel).add(render);
         return entity;
     }
-    
+
     @Override
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         time += Gdx.graphics.getDeltaTime();
 
-        for (Entity entity : engine.getEntities()) {
-            VelocityComponent vel = ComponentMapper.getFor(VelocityComponent.class).get(entity);
-            PositionComponent pos = ComponentMapper.getFor(PositionComponent.class).get(entity);
-
-            if (pos.position.x > Gdx.graphics.getWidth() || pos.position.x < 0) {
-                vel.velocity.x *= -1;
-            }
-            
-            if (pos.position.y > Gdx.graphics.getHeight() || pos.position.y < 0) {
-                vel.velocity.y *= -1;
-            }
-        }
-        
         engine.update(Gdx.graphics.getDeltaTime());
     }
 
