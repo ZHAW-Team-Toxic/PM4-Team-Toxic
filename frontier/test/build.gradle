@@ -50,4 +50,12 @@ project(":test") {
     systemProperty("junit.jupiter.extensions.autodetection.enabled", true)
     systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
   }
+
+  sourceSets {
+    test {
+        resources {
+            srcDir '../assets'  // Point to the external assets directory
+        }
+    }
+}
 }
