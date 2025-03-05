@@ -1,4 +1,4 @@
-name: Test
+name: Build
 
 on:
   push:
@@ -40,15 +40,11 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
 
-    - name: Build and analyze
+    - name: test, build and analyze
       working-directory: ./frontier
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: ./gradlew build sonar --info
-
-    - name: Run Tests
-      working-directory: ./frontier
-      run: ./gradlew :test:test
+      run: ./gradlew :test:test build sonar --info
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
