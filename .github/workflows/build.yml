@@ -33,6 +33,13 @@ jobs:
         path: ~/.sonar/cache
         key: ${{ runner.os }}-sonar
 
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+        restore-keys: ${{ runner.os }}-gradle
+
     - name: Build and analyze
       working-directory: ./frontier
       env:

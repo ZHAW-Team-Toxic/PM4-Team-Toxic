@@ -36,6 +36,7 @@ sonar {
     property "sonar.projectKey", "ZHAW-Team-Toxic_PM4-Team-Toxic"
     property "sonar.organization", "zhaw-team-toxic"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.sources", "src"
   }
 }
 
