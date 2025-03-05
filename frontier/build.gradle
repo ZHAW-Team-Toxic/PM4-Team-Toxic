@@ -14,9 +14,14 @@ buildscript {
   }
 }
 
+plugins {
+  id "org.sonarqube" version "6.0.1.5171"
+}
+
 allprojects {
   apply plugin: 'eclipse'
   apply plugin: 'idea'
+  apply plugin: 'org.sonarqube'
 
   // This allows you to "Build and run using IntelliJ IDEA", an option in IDEA's Settings.
   idea {
@@ -24,6 +29,14 @@ allprojects {
       outputDir file('build/classes/java/main')
       testOutputDir file('build/classes/java/test')
     }
+  }
+}
+
+sonar {
+  properties {
+    property "sonar.projectKey", "ZHAW-Team-Toxic_PM4-Team-Toxic"
+    property "sonar.organization", "zhaw-team-toxic"
+    property "sonar.host.url", "https://sonarcloud.io"
   }
 }
 
