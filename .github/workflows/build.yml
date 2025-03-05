@@ -34,6 +34,7 @@ jobs:
         key: ${{ runner.os }}-sonar
 
     - name: Build and analyze
+      working-directory: ./frontier
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: ./gradlew build sonar --info
