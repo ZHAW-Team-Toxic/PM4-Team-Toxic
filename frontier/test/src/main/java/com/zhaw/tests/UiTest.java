@@ -1,5 +1,6 @@
 package com.zhaw.tests;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,10 +18,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.HomeScreen;
 import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.tests.utils.StageUtils;
 
 @ExtendWith(GdxExtension.class)
 public class UiTest {
@@ -74,5 +81,33 @@ public class UiTest {
 
         assertNotNull(newScreen);
         assertTrue(newScreen instanceof HomeScreen);
+    }
+
+    @Test 
+    public void menuButtonPressed(){
+        gameScreen.show();
+        TextButton button = StageUtils.findButtonByText(gameScreen.getStage(),"Menu");
+        assertNotNull(button);
+        assertFalse(button.isPressed());
+
+        InputEvent touchDowEvent = new InputEvent();
+        touchDowEvent.setType(InputEvent.Type.touchDown);
+        touchDowEvent.setStage(gameScreen.getStage());
+        touchDowEvent.setPointer(0);
+
+        button.fire(touchDowEvent);
+        assertTrue(button.isPressed());
+
+        InputEvent touchUp = new InputEvent();
+        touchUp.setType(InputEvent.Type.touchUp);
+        touchUp.setStage(gameScreen.getStage());
+        touchUp.setPointer(0);
+        button.fire(touchUp);
+        try {
+            Thread.sleep(1000); // Sleep for 1000 milliseconds (1 second)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }        
+        assertFalse(button.isPressed());
     }
 }

@@ -137,5 +137,8 @@ public class GameScreen implements Screen {
         entity.add(pos).add(vel).add(render);
         return entity;
     }
-    
+
+    public Stage getStage() {
+        return stage;
+    }
 }
