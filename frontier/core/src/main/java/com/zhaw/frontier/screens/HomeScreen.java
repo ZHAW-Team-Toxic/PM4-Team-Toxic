@@ -17,14 +17,14 @@ public class HomeScreen implements Screen {
 
     public HomeScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
-        this.spriteBatchWrapper = new SpriteBatchWrapper();
+        this.spriteBatchWrapper = frontierGame.getSpriteBatchWrapper();
         this.texture = new Texture(Gdx.files.internal("sampl.png"));
     }
 
     @Override
     public void show() {
         var textureRegion = new TextureRegion(texture);
-        frontierGame.getEngine().addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), frontierGame.getExtendedViewport(), frontierGame.getEngine(), textureRegion));
+        frontierGame.getEngine().addSystem(new RenderSystem(spriteBatchWrapper, frontierGame.getExtendedViewport(), frontierGame.getEngine(), textureRegion));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class HomeScreen implements Screen {
         frontierGame.getExtendedViewport().apply();
         frontierGame.getEngine().update(delta);
 
-        // Check if Enter key is pressed to switch to the GameScreen
+        //Check if Enter key is pressed to switch to the GameScreen
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
             frontierGame.switchScreen(new GameScreen(frontierGame));
         }
@@ -63,5 +63,4 @@ public class HomeScreen implements Screen {
         texture.dispose();
         frontierGame.getEngine().removeAllSystems();
     }
-
 }

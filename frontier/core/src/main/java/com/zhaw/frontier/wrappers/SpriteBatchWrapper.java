@@ -2,6 +2,8 @@ package com.zhaw.frontier.wrappers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
@@ -77,5 +79,13 @@ public class SpriteBatchWrapper implements Disposable {
      */
     public SpriteBatch getBatch() {
         return batch;
+    }
+
+    public void draw(TextureRegion background, int x, int y, int width, int height) {
+        batch.draw(background, x, y, width, height);
+    }
+
+    public void setProjectionMatrix(Matrix4 combined) {
+        batch.setProjectionMatrix(combined);
     }
 }

@@ -21,10 +21,11 @@ import com.zhaw.frontier.systems.BoundsSystem;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.ui.GameUi;
+import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
 
 public class MyGame extends ApplicationAdapter {
     private Engine engine;
-    private SpriteBatch batch;
+    private SpriteBatchWrapper batch;
     private ExtendViewport extendedViewport;
     private RTSInputAdapter worldInputProcessor;
     // ui
@@ -34,7 +35,7 @@ public class MyGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
+        batch = new SpriteBatchWrapper();
         var texture = new Texture(Gdx.files.internal("texture-long.png"));
         var textureRegion = new TextureRegion(texture);
 
@@ -57,7 +58,7 @@ public class MyGame extends ApplicationAdapter {
 
         // create ui
         screenViewport = new ScreenViewport();
-        stage = new Stage(screenViewport, batch);
+        stage = new Stage(screenViewport, batch.getBatch());
         gameUi = new GameUi(stage);
 
         // add ui and rts movement to get input events

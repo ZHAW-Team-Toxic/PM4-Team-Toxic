@@ -22,10 +22,11 @@ import com.zhaw.frontier.systems.BoundsSystem;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.ui.GameUi;
+import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
 
 public class GameScreen implements Screen {
     private FrontierGame frontierGame;
-    private SpriteBatch batch;
+    private SpriteBatchWrapper batch;
     private RTSInputAdapter worldInputProcessor;
     // ui
     private Stage stage;
@@ -40,12 +41,12 @@ public class GameScreen implements Screen {
         this.engine = frontierGame.getEngine();
         this.extendedViewport = frontierGame.getExtendedViewport();
         this.screenViewport = frontierGame.getScreenViewport();
+        this.batch = frontierGame.getSpriteBatchWrapper();
     }
 
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
         var texture = new Texture(Gdx.files.internal("texture-long.png"));
         var textureRegion = new TextureRegion(texture);
 
@@ -62,7 +63,7 @@ public class GameScreen implements Screen {
         engine.addEntity(createCharacter("donkey.png", 3, 3, false));
 
   
-        stage = new Stage(screenViewport, batch);
+        stage = new Stage(screenViewport, batch.getBatch());
         gameUi = new GameUi(stage);
 
         // add ui and rts movement to get input events
@@ -80,10 +81,12 @@ public class GameScreen implements Screen {
         worldInputProcessor.update();
         engine.update(delta);
 
-        stage.act();
-        stage.draw();
+        if (stage.getBatch().getProjectionMatrix() != null) {
+            stage.act();
+            stage.draw();
+        }
 
-         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
             frontierGame.switchScreen(new HomeScreen(frontierGame));
         }
     }
@@ -91,7 +94,7 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         extendedViewport.update(width, height);
-        stage.getViewport().update(width, height, true);
+        screenViewport.update(width, height, true);
     }
 
     @Override
