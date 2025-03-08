@@ -59,7 +59,6 @@ public class HomeScreen implements Screen {
 
     @Override
     public void dispose() {
-        spriteBatchWrapper.dispose();
         texture.dispose();
         frontierGame.getEngine().removeAllSystems();
     }

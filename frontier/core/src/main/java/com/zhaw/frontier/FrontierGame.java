@@ -59,7 +59,7 @@ public class FrontierGame extends Game {
     }
 
     public SpriteBatchWrapper getSpriteBatchWrapper() {
-        return spriteBatchWrapper;
+        return this.spriteBatchWrapper;
     }
 
     public void setSpriteBatchWrapper(SpriteBatchWrapper spriteBatchWrapper) {
