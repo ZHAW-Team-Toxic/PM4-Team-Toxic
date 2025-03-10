@@ -1,4 +1,4 @@
-All images will be packed  in to on texture per subfolder.
+All images will be packed  in to one texture per subfolder.
 
 
 > [!CAUTION]
@@ -10,7 +10,7 @@ All images will be packed  in to on texture per subfolder.
 
 If the gradle texturepacker fails add `--stacktrace` to get more information. 
 
-If the size is to small change the settings in `pack.json`
+If the set size is to small change the settings in `pack.json`
 
 
 For more information consult: https://libgdx.com/wiki/tools/texture-packer
