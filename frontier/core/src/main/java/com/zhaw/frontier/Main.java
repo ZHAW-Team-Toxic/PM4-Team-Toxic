@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.Objects;
 
 public class Main extends ApplicationAdapter {
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
@@ -35,7 +36,7 @@ public class Main extends ApplicationAdapter {
 
         // Set up the camera (adjust viewport dimensions as needed)
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
+        camera.setToOrtho(false, 320, 320);
         camera.update();
 
         // Create a 1x1 white texture for the highlight overlay
