@@ -1,5 +1,7 @@
 All images will be packed  in to one texture per subfolder.
 
+They should be grouped by level, so that they can be loaded in one turn and not during gameplay.
+
 
 > [!CAUTION]
 >

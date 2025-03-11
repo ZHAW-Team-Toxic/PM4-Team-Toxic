@@ -24,6 +24,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.input.RTSInputAdapter;
+import com.zhaw.frontier.systems.AnimationSystem;
 import com.zhaw.frontier.systems.BoundsSystem;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.RenderSystem;
@@ -59,9 +60,10 @@ public class MyGame extends ApplicationAdapter {
         engine.addSystem(new MovementSystem());
         engine.addSystem(new BoundsSystem());
         engine.addSystem(new RenderSystem(batch, extendedViewport, engine, textureRegion));
+        engine.addSystem(new AnimationSystem(batch, extendedViewport, engine));
 
         // Add characters
-        engine.addEntity(createAnimatedCharacter(atlas.findRegions("game/sprite-animation1"), 1, 1, true));
+        engine.addEntity(createAnimatedCharacter(atlas.findRegions("game/running"), 1, 1, true));
         engine.addEntity(createCharacter(atlas.createSprite("game/donkey"), 3, 3, false));
 
         // create ui
@@ -85,9 +87,9 @@ public class MyGame extends ApplicationAdapter {
         VelocityComponent vel = new VelocityComponent();
 
         if (circularMovement) {
-            vel.velocity.set(0.5f, 0);
+            vel.velocity.set(5f, 0);
         } else {
-            vel.velocity.set(1, 0);
+            vel.velocity.set(5, 0);
         }
 
         var render = new AnimationComponent();

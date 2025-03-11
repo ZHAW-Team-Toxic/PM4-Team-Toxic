@@ -1,40 +1,236 @@
 
 textures.png
-size: 2048, 2048
+size: 2048, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 game/donkey
   rotate: false
-  xy: 516, 539
+  xy: 382, 130
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 game/libgdx
   rotate: false
-  xy: 2, 2
+  xy: 2, 107
   size: 378, 63
   orig: 378, 63
   offset: 0, 0
   index: -1
-game/sprite-animation1
+game/running
   rotate: false
-  xy: 1604, 1125
-  size: 256, 256
-  orig: 256, 256
+  xy: 1604, 869
+  size: 86, 103
+  orig: 86, 103
   offset: 0, 0
-  index: -1
-game/sprite-animation4
+  index: 7
+game/running
   rotate: false
-  xy: 2, 67
-  size: 512, 512
-  orig: 512, 512
+  xy: 2, 2
+  size: 86, 103
+  orig: 86, 103
   offset: 0, 0
-  index: -1
+  index: 10
+game/running
+  rotate: false
+  xy: 1604, 764
+  size: 86, 103
+  orig: 86, 103
+  offset: 0, 0
+  index: 19
+game/running
+  rotate: false
+  xy: 1692, 869
+  size: 86, 103
+  orig: 86, 103
+  offset: 0, 0
+  index: 22
+game/running
+  rotate: false
+  xy: 90, 3
+  size: 86, 102
+  orig: 86, 102
+  offset: 0, 0
+  index: 1
+game/running
+  rotate: false
+  xy: 1604, 660
+  size: 86, 102
+  orig: 86, 102
+  offset: 0, 0
+  index: 4
+game/running
+  rotate: false
+  xy: 1692, 764
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 6
+game/running
+  rotate: false
+  xy: 1780, 869
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 8
+game/running
+  rotate: false
+  xy: 1604, 555
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 9
+game/running
+  rotate: false
+  xy: 1779, 764
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 11
+game/running
+  rotate: false
+  xy: 178, 3
+  size: 86, 102
+  orig: 86, 102
+  offset: 0, 0
+  index: 13
+game/running
+  rotate: false
+  xy: 1692, 660
+  size: 86, 102
+  orig: 86, 102
+  offset: 0, 0
+  index: 16
+game/running
+  rotate: false
+  xy: 1867, 869
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 18
+game/running
+  rotate: false
+  xy: 1604, 450
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 20
+game/running
+  rotate: false
+  xy: 1691, 555
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 21
+game/running
+  rotate: false
+  xy: 1866, 764
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: 23
+game/running
+  rotate: false
+  xy: 266, 3
+  size: 86, 102
+  orig: 86, 102
+  offset: 0, 0
+  index: 25
+game/running
+  rotate: false
+  xy: 1780, 660
+  size: 86, 102
+  orig: 86, 102
+  offset: 0, 0
+  index: 28
+game/running
+  rotate: false
+  xy: 1954, 870
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 0
+game/running
+  rotate: false
+  xy: 1604, 346
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 2
+game/running
+  rotate: false
+  xy: 1691, 451
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 3
+game/running
+  rotate: false
+  xy: 1778, 556
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 5
+game/running
+  rotate: false
+  xy: 1604, 242
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 12
+game/running
+  rotate: false
+  xy: 1691, 347
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 14
+game/running
+  rotate: false
+  xy: 1778, 452
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 15
+game/running
+  rotate: false
+  xy: 1691, 243
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 17
+game/running
+  rotate: false
+  xy: 1778, 348
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 24
+game/running
+  rotate: false
+  xy: 1778, 244
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 26
+game/running
+  rotate: false
+  xy: 1868, 660
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 27
+game/running
+  rotate: false
+  xy: 1865, 556
+  size: 85, 102
+  orig: 85, 102
+  offset: 0, 0
+  index: 29
 game/texture-long
   rotate: false
-  xy: 2, 581
+  xy: 2, 172
   size: 1600, 800
   orig: 1600, 800
   offset: 0, 0
