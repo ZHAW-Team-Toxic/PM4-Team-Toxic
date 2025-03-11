@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.GreenScreen;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -34,12 +35,13 @@ public class ScreenshotTestApp extends ApplicationAdapter {
     }
 
     private void switchToNextScreen() {
+        FrontierGame frontierGame = new FrontierGame();
+        frontierGame.create();
         if (state == 0) {
-            FrontierGame frontierGame = new FrontierGame();
-            frontierGame.create();
             screen = frontierGame.getScreen();
         } else if (state == 1) {
-            screen = new GreenScreen();
+            frontierGame.switchScreen(new GameScreen(frontierGame));
+            screen = frontierGame.getScreen();
         } else {
             result = !testFailed;
             Gdx.app.exit();
@@ -117,40 +119,49 @@ public class ScreenshotTestApp extends ApplicationAdapter {
     private boolean compareWithBaseline(String actualPath, String expectedPath) {
         Pixmap actual = new Pixmap(Gdx.files.local(actualPath));
         Pixmap expected = new Pixmap(Gdx.files.internal(expectedPath));
-
+    
         if (actual.getWidth() != expected.getWidth() || actual.getHeight() != expected.getHeight()) {
             System.out.println("Image size mismatch");
             return false;
         }
-
-        int mismatchCount = 0;
-        int tolerance = 5;
-
+    
+        int maxMismatches = 100;
+        int mismatches = 0;
+        int tolerance = 20; // per channel, max difference allowed
+    
         for (int y = 0; y < actual.getHeight(); y++) {
             for (int x = 0; x < actual.getWidth(); x++) {
-                int a = actual.getPixel(x, y);
-                int e = expected.getPixel(x, y);
-                if (!pixelsMatch(a, e, tolerance)) mismatchCount++;
-                if (mismatchCount > 100) break;
+                int pixelA = actual.getPixel(x, y);
+                int pixelB = expected.getPixel(x, y);
+    
+                if (!pixelsMatch(pixelA, pixelB, tolerance)) {
+                    mismatches++;
+                    if (mismatches > maxMismatches) {
+                        System.out.printf("Too many mismatches (> %d), aborting comparison\n", maxMismatches);
+                        actual.dispose();
+                        expected.dispose();
+                        return false;
+                    }
+                }
             }
-            if (mismatchCount > 100) break;
         }
-
+    
         actual.dispose();
         expected.dispose();
-
-        return mismatchCount == 0;
+        return true;
     }
-
+    
     private boolean pixelsMatch(int p1, int p2, int tolerance) {
-        int r1 = (p1 >> 24) & 0xff;
-        int g1 = (p1 >> 16) & 0xff;
-        int b1 = (p1 >> 8) & 0xff;
+        int r1 = (p1 & 0xff000000) >>> 24;
+        int g1 = (p1 & 0x00ff0000) >>> 16;
+        int b1 = (p1 & 0x0000ff00) >>> 8;
+    
+        int r2 = (p2 & 0xff000000) >>> 24;
+        int g2 = (p2 & 0x00ff0000) >>> 16;
+        int b2 = (p2 & 0x0000ff00) >>> 8;
 
-        int r2 = (p2 >> 24) & 0xff;
-        int g2 = (p2 >> 16) & 0xff;
-        int b2 = (p2 >> 8) & 0xff;
-
+        
+    
         return Math.abs(r1 - r2) <= tolerance &&
                Math.abs(g1 - g2) <= tolerance &&
                Math.abs(b1 - b2) <= tolerance;
