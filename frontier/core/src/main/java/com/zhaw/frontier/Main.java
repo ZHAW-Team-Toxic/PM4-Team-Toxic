@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -38,6 +39,8 @@ public class Main extends ApplicationAdapter {
     private Texture spriteSheet;
     private TextureRegion towerRegion;
 
+    private ShapeRenderer shapeRenderer;
+
     @Override
     public void create() {
         // Load the Tiled map
@@ -46,13 +49,16 @@ public class Main extends ApplicationAdapter {
 
         // Set up the camera (adjust viewport dimensions as needed)
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 320, 320);
+        camera.setToOrtho(false, 480, 480);
         camera.update();
 
         // Load your sprite sheet once here.
         spriteSheet = new Texture(Gdx.files.internal("Tower_defense.png"));
         // Set the region to the proper sprite (adjust coordinates/sizes as needed)
         towerRegion = new TextureRegion(spriteSheet, 96, 82, 16, 16);
+
+        shapeRenderer = new ShapeRenderer();
+
 
         // Create a 1x1 white texture for the highlight overlay
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -200,17 +206,30 @@ public class Main extends ApplicationAdapter {
             if (!foundBuilding) {
                 // Fallback to first layer if no buildingLayer is found
                 buildingLayer = (TiledMapTileLayer) map.getLayers().get(0);
+                TiledMapTileLayer buildingLayerR = null;
+                buildingLayerR = (TiledMapTileLayer) map.getLayers().get(2);
+                TiledMapTileLayer buildingLayerB = null;
+                buildingLayerB = (TiledMapTileLayer) map.getLayers().get(3);
                 Gdx.app.log("Layer Info", "Using fallback layer: " + buildingLayer.getName());
                 TiledMapTileLayer.Cell cell = buildingLayer.getCell(tileX, tileY);
-                if (cell != null && cell.getTile() != null && cell.getTile().getProperties().get("buildable") != null) {
-                    Gdx.app.log("Building: ", "Tile is buildable - adding tower.");
-                    // Add a new Tower to the collection
-                    towers.add(new Tower(worldCoords.x - 7, worldCoords.y - 7, towerRegion));
-                } else {
-                    Gdx.app.log("Building: ", "Tile not buildable.");
+                TiledMapTileLayer.Cell cellR = buildingLayerR.getCell(tileX, tileY);
+                TiledMapTileLayer.Cell cellB = buildingLayerB.getCell(tileX, tileY);
+                if (cellB != null) {
+                    Gdx.app.log("Building: ", "There already exists a building - not buildable.");
                 }
-            } else {
-                Gdx.app.log("Building: ", "Tile already occupied or not buildable.");
+                if (cellR == null) {
+                    Gdx.app.log("Building: ", "This is a ressource-tile - not buildable.");
+
+                    if (cell != null && cell.getTile() != null && cell.getTile().getProperties().get("buildable") != null) {
+                        Gdx.app.log("Building: ", "Tile is buildable - adding tower.");
+                        // Add a new Tower to the collection
+                        towers.add(new Tower(worldCoords.x - 7, worldCoords.y - 7, towerRegion));
+                    } else {
+                        Gdx.app.log("Building: ", "Tile not buildable.");
+                    }
+                } else {
+                    Gdx.app.log("Building: ", "Tile already occupied or not buildable.");
+                }
             }
         }
 
@@ -226,6 +245,32 @@ public class Main extends ApplicationAdapter {
         }
         mapRenderer.getBatch().end();
 
+        // Draw the grid overlay (raster)
+        // Set the ShapeRenderer's projection matrix to match the camera
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 1, 1, 0.5f); // semi-transparent white
+
+        // For example, if you have a 100x100 tile map:
+        int mapWidthInTiles = 64;
+        int mapHeightInTiles = 64;
+        // Use the tile dimensions from your sample layer
+        float tileWidth = 16; // or sampleLayer.getTileWidth();
+        float tileHeight = 16; // or sampleLayer.getTileHeight();
+
+        // Draw vertical lines
+        for (int x = 0; x <= mapWidthInTiles; x++) {
+            float worldX = x * tileWidth;
+            shapeRenderer.line(worldX, 0, worldX, mapHeightInTiles * tileHeight);
+        }
+
+        // Draw horizontal lines
+        for (int y = 0; y <= mapHeightInTiles; y++) {
+            float worldY = y * tileHeight;
+            shapeRenderer.line(0, worldY, mapWidthInTiles * tileWidth, worldY);
+        }
+        shapeRenderer.end();
+
         // Draw a white, semi-transparent overlay on the selected building tile (if applicable)
         if (selectedTileX >= 0 && selectedTileY >= 0) {
             TiledMapTileLayer overlayLayer = null;
@@ -236,8 +281,8 @@ public class Main extends ApplicationAdapter {
                 }
             }
             if (overlayLayer != null) {
-                float tileWidth = overlayLayer.getTileWidth();
-                float tileHeight = overlayLayer.getTileHeight();
+                tileWidth = overlayLayer.getTileWidth();
+                tileHeight = overlayLayer.getTileHeight();
                 float worldX = selectedTileX * tileWidth;
                 float worldY = selectedTileY * tileHeight;
 
@@ -251,10 +296,10 @@ public class Main extends ApplicationAdapter {
     }
 
 
-        @Override
-        public void dispose () {
-            map.dispose();
-            mapRenderer.dispose();
-            whitePixel.dispose();
-        }
+    @Override
+    public void dispose() {
+        map.dispose();
+        mapRenderer.dispose();
+        whitePixel.dispose();
     }
+}
