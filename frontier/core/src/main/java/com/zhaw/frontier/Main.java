@@ -31,8 +31,6 @@ public class Main extends ApplicationAdapter {
 
     // For highlighting the building tile under the mouse
     private int selectedTileX = -1, selectedTileY = -1;
-    // A simple white pixel texture for drawing the overlay
-    private Texture whitePixel;
 
     // Declare the list of towers as a field
     private List<Tower> towers = new ArrayList<>();
@@ -58,15 +56,6 @@ public class Main extends ApplicationAdapter {
         towerRegion = new TextureRegion(spriteSheet, 96, 82, 16, 16);
 
         shapeRenderer = new ShapeRenderer();
-
-
-        // Create a 1x1 white texture for the highlight overlay
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(1, 1, 1, 1);
-        pixmap.fill();
-        whitePixel = new Texture(pixmap);
-        pixmap.dispose();
-
 
         // Set up an input processor that handles both mouse movement and left-clicks
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -208,29 +197,43 @@ public class Main extends ApplicationAdapter {
                 buildingLayer = (TiledMapTileLayer) map.getLayers().get(0);
                 TiledMapTileLayer buildingLayerR = null;
                 buildingLayerR = (TiledMapTileLayer) map.getLayers().get(2);
-                TiledMapTileLayer buildingLayerB = null;
-                buildingLayerB = (TiledMapTileLayer) map.getLayers().get(3);
                 Gdx.app.log("Layer Info", "Using fallback layer: " + buildingLayer.getName());
                 TiledMapTileLayer.Cell cell = buildingLayer.getCell(tileX, tileY);
                 TiledMapTileLayer.Cell cellR = buildingLayerR.getCell(tileX, tileY);
-                TiledMapTileLayer.Cell cellB = buildingLayerB.getCell(tileX, tileY);
-                if (cellB != null) {
-                    Gdx.app.log("Building: ", "There already exists a building - not buildable.");
-                }
-                if (cellR == null) {
-                    Gdx.app.log("Building: ", "This is a ressource-tile - not buildable.");
 
-                    if (cell != null && cell.getTile() != null && cell.getTile().getProperties().get("buildable") != null) {
-                        Gdx.app.log("Building: ", "Tile is buildable - adding tower.");
-                        // Add a new Tower to the collection
-                        towers.add(new Tower(worldCoords.x - 7, worldCoords.y - 7, towerRegion));
-                    } else {
-                        Gdx.app.log("Building: ", "Tile not buildable.");
+
+                // Check the persistent list of towers for an existing tower in this tile.
+                boolean towerExists = false;
+                for (Tower tower : towers) {
+                    int towerTileX = (int) (tower.getX() / sampleLayer.getTileWidth());
+                    int towerTileY = (int) (tower.getY() / sampleLayer.getTileHeight());
+                    if (towerTileX == tileX && towerTileY == tileY) {
+                        towerExists = true;
+                        break;
                     }
+                }
+
+                if (towerExists) {
+                    Gdx.app.log("Building: ", "There already exists a building on this tile - not buildable.");
                 } else {
-                    Gdx.app.log("Building: ", "Tile already occupied or not buildable.");
+
+                    int test1 = tileX * 16;
+                    int test2 = tileY * 16;
+
+                    if (cellR == null) {
+                        if (cell != null && cell.getTile() != null && cell.getTile().getProperties().get("buildable") != null) {
+                            Gdx.app.log("Building: ", "Tile is buildable - adding tower.");
+                            // Add a new Tower to the collection
+                            towers.add(new Tower(test1, test2, towerRegion));
+                        } else {
+                            Gdx.app.log("Building: ", "Tile not buildable.");
+                        }
+                    } else {
+                        Gdx.app.log("Building: ", "Tile already occupied or not buildable.");
+                    }
                 }
             }
+
         }
 
         // Update camera and render the map
@@ -239,11 +242,16 @@ public class Main extends ApplicationAdapter {
         mapRenderer.render();
 
         // Draw all placed towers (persistently)
-        mapRenderer.getBatch().begin();
-        for (Tower tower : towers) {
+        mapRenderer.getBatch().
+
+            begin();
+        for (
+            Tower tower : towers) {
             mapRenderer.getBatch().draw(tower.getRegion(), tower.getX(), tower.getY());
         }
-        mapRenderer.getBatch().end();
+        mapRenderer.getBatch().
+
+            end();
 
         // Draw the grid overlay (raster)
         // Set the ShapeRenderer's projection matrix to match the camera
@@ -259,40 +267,21 @@ public class Main extends ApplicationAdapter {
         float tileHeight = 16; // or sampleLayer.getTileHeight();
 
         // Draw vertical lines
-        for (int x = 0; x <= mapWidthInTiles; x++) {
+        for (
+            int x = 0;
+            x <= mapWidthInTiles; x++) {
             float worldX = x * tileWidth;
             shapeRenderer.line(worldX, 0, worldX, mapHeightInTiles * tileHeight);
         }
 
         // Draw horizontal lines
-        for (int y = 0; y <= mapHeightInTiles; y++) {
+        for (
+            int y = 0;
+            y <= mapHeightInTiles; y++) {
             float worldY = y * tileHeight;
             shapeRenderer.line(0, worldY, mapWidthInTiles * tileWidth, worldY);
         }
         shapeRenderer.end();
-
-        // Draw a white, semi-transparent overlay on the selected building tile (if applicable)
-        if (selectedTileX >= 0 && selectedTileY >= 0) {
-            TiledMapTileLayer overlayLayer = null;
-            for (int i = 0; i < map.getLayers().getCount(); i++) {
-                if (map.getLayers().get(i) instanceof TiledMapTileLayer) {
-                    overlayLayer = (TiledMapTileLayer) map.getLayers().get(i);
-                    break;
-                }
-            }
-            if (overlayLayer != null) {
-                tileWidth = overlayLayer.getTileWidth();
-                tileHeight = overlayLayer.getTileHeight();
-                float worldX = selectedTileX * tileWidth;
-                float worldY = selectedTileY * tileHeight;
-
-                mapRenderer.getBatch().begin();
-                mapRenderer.getBatch().setColor(1, 1, 1, 0.5f);
-                mapRenderer.getBatch().draw(whitePixel, worldX, worldY, tileWidth, tileHeight);
-                mapRenderer.getBatch().setColor(1, 1, 1, 1);
-                mapRenderer.getBatch().end();
-            }
-        }
     }
 
 
@@ -300,6 +289,5 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         map.dispose();
         mapRenderer.dispose();
-        whitePixel.dispose();
     }
 }
