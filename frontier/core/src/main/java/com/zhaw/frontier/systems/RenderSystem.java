@@ -37,7 +37,7 @@ public class RenderSystem extends EntitySystem {
             RenderComponent render = rm.get(entity);
 
             if (pos != null && render != null) {
-                batch.draw(render.texture, pos.position.x, pos.position.y, 1, 1);
+                batch.draw(render.sprite, pos.position.x, pos.position.y, 1, 1);
             }
         }
 

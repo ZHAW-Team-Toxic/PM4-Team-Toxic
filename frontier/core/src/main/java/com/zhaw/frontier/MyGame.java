@@ -8,11 +8,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.zhaw.frontier.components.AnimationComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.VelocityComponent;
@@ -34,9 +41,11 @@ public class MyGame extends ApplicationAdapter {
 
     @Override
     public void create() {
+        TextureAtlas atlas;
+        atlas = new TextureAtlas(Gdx.files.internal("packed/textures.atlas"));
+
         batch = new SpriteBatch();
-        var texture = new Texture(Gdx.files.internal("texture-long.png"));
-        var textureRegion = new TextureRegion(texture);
+        var textureRegion = new TextureRegion(atlas.findRegion("game/texture-long"));
 
         // create view with world coordinates
         extendedViewport = new ExtendViewport(8, 8);
@@ -52,8 +61,8 @@ public class MyGame extends ApplicationAdapter {
         engine.addSystem(new RenderSystem(batch, extendedViewport, engine, textureRegion));
 
         // Add characters
-        engine.addEntity(createCharacter("donkey.png", 1, 1, true));
-        engine.addEntity(createCharacter("donkey.png", 3, 3, false));
+        engine.addEntity(createAnimatedCharacter(atlas.findRegions("game/sprite-animation1"), 1, 1, true));
+        engine.addEntity(createCharacter(atlas.createSprite("game/donkey"), 3, 3, false));
 
         // create ui
         screenViewport = new ScreenViewport();
@@ -67,7 +76,28 @@ public class MyGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(mx);
     }
 
-    private Entity createCharacter(String texturePath, float x, float y, boolean circularMovement) {
+    private Entity createAnimatedCharacter(Array<AtlasRegion> animation, float x, float y, boolean circularMovement) {
+        Entity entity = new Entity();
+
+        PositionComponent pos = new PositionComponent();
+        pos.position.set(x, y);
+
+        VelocityComponent vel = new VelocityComponent();
+
+        if (circularMovement) {
+            vel.velocity.set(0.5f, 0);
+        } else {
+            vel.velocity.set(1, 0);
+        }
+
+        var render = new AnimationComponent();
+        render.animation = new Animation<TextureRegion>(0.033f, animation, PlayMode.LOOP);
+
+        entity.add(pos).add(vel).add(render);
+        return entity;
+    }
+
+    private Entity createCharacter(Sprite sprite, float x, float y, boolean circularMovement) {
         Entity entity = new Entity();
 
         PositionComponent pos = new PositionComponent();
@@ -82,7 +112,7 @@ public class MyGame extends ApplicationAdapter {
         }
 
         var render = new RenderComponent();
-        render.texture = new Texture(Gdx.files.internal(texturePath));
+        render.sprite = sprite;
 
         entity.add(pos).add(vel).add(render);
         return entity;
@@ -112,11 +142,5 @@ public class MyGame extends ApplicationAdapter {
         batch.dispose();
         stage.dispose();
         gameUi.dispose();
-        for (Entity entity : engine.getEntities()) {
-            RenderComponent render = ComponentMapper.getFor(RenderComponent.class).get(entity);
-            if (render != null && render.texture != null) {
-                render.texture.dispose();
-            }
-        }
     }
 }
