@@ -1,0 +1,177 @@
+{
+"com.badlogic.gdx.graphics.g2d.BitmapFont": {
+	"ArchivoBlack": {
+		"file": "ArchivoBlack.fnt",
+		"scaledSize": -1,
+		"markupEnabled": false,
+		"flip": false
+	},
+	"KingthingsCalligraphica": {
+		"file": "KingthingsCalligraphica.fnt",
+		"scaledSize": -1,
+		"markupEnabled": false,
+		"flip": false
+	},
+	"MedievalSharp": {
+		"file": "MedievalSharp.fnt",
+		"scaledSize": -1,
+		"markupEnabled": false,
+		"flip": false
+	}
+},
+"com.badlogic.gdx.graphics.Color": {
+	"AgedBronze": {
+		"r": 0.4,
+		"g": 0.3647059,
+		"b": 0.11764706,
+		"a": 1
+	},
+	"AntiqueGold": {
+		"r": 0.76862746,
+		"g": 0.6431373,
+		"b": 0.5176471,
+		"a": 1
+	},
+	"Black": {
+		"r": 0,
+		"g": 0,
+		"b": 0,
+		"a": 1
+	},
+	"BloodRed": {
+		"r": 0.60784316,
+		"g": 0.06666667,
+		"b": 0.11764706,
+		"a": 1
+	},
+	"BurnishedGold": {
+		"r": 0.83137256,
+		"g": 0.6862745,
+		"b": 0.21568628,
+		"a": 1
+	},
+	"CharcoalGray": {
+		"r": 0.2901961,
+		"g": 0.2901961,
+		"b": 0.28235295,
+		"a": 1
+	},
+	"Chestnut": {
+		"r": 0.54509807,
+		"g": 0.3529412,
+		"b": 0.16862746,
+		"a": 1
+	},
+	"CrimsonFlame": {
+		"r": 0.69803923,
+		"g": 0.13333334,
+		"b": 0.13333334,
+		"a": 1
+	},
+	"DeepFern": {
+		"r": 0.1764706,
+		"g": 0.2784314,
+		"b": 0.22352941,
+		"a": 1
+	},
+	"EmberOrange": {
+		"r": 0.8862745,
+		"g": 0.34509805,
+		"b": 0.13333334,
+		"a": 1
+	},
+	"Goldenrod": {
+		"r": 1,
+		"g": 0.8509804,
+		"b": 0.4,
+		"a": 1
+	},
+	"Gray": {
+		"r": 0.5019608,
+		"g": 0.5019608,
+		"b": 0.5019608,
+		"a": 1
+	},
+	"ImperialBlue": {
+		"r": 0.16470589,
+		"g": 0.23137255,
+		"b": 0.56078434,
+		"a": 1
+	},
+	"MoltenLava": {
+		"r": 1,
+		"g": 0.27058825,
+		"b": 0,
+		"a": 1
+	},
+	"MossGreen": {
+		"r": 0.42745098,
+		"g": 0.54509807,
+		"b": 0.45490196,
+		"a": 1
+	},
+	"OxidizedCopper": {
+		"r": 0.6509804,
+		"g": 0.3647059,
+		"b": 0.23137255,
+		"a": 1
+	},
+	"ParchmentBeige": {
+		"r": 0.89411765,
+		"g": 0.8392157,
+		"b": 0.654902,
+		"a": 1
+	},
+	"RoyalAmethyst": {
+		"r": 0.40392157,
+		"g": 0.19215687,
+		"b": 0.2784314,
+		"a": 1
+	},
+	"SteelBlue": {
+		"r": 0.4627451,
+		"g": 0.53333336,
+		"b": 0.6156863,
+		"a": 1
+	},
+	"UmberBrown": {
+		"r": 0.36078432,
+		"g": 0.2509804,
+		"b": 0.2,
+		"a": 1
+	},
+	"White": {
+		"r": 1,
+		"g": 1,
+		"b": 1,
+		"a": 1
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+	"default": {
+		"font": "MedievalSharp",
+		"fontColor": "Black"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+	"default": {
+		"font": "MedievalSharp"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
+	"default": {
+		"font": "MedievalSharp",
+		"fontColor": "Black"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
+	"default": {
+		"label": "default"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
+	"default": {
+		"titleFont": "MedievalSharp"
+	}
+}
+}
