@@ -24,6 +24,7 @@ project(":test") {
     implementation 'org.mockito:mockito-junit-jupiter:5.5.0'
     implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
     testImplementation 'org.mockito:mockito-core:5.5.0'
@@ -32,6 +33,7 @@ project(":test") {
     testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
     testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 
     /*
     * The following dependencies are not mandatory,

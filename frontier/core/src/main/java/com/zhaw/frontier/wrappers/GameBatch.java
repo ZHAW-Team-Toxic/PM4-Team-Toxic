@@ -6,7 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 
 public class GameBatch implements BatchInterface {
-    private BatchInterface batch;
+    private SpriteBatch batch;
+
+    public GameBatch() {
+        this.batch = new SpriteBatch();
+    }
     /**
      * Begins the rendering process for the batch. 
      * This method must be called before drawing any textures.
@@ -62,7 +66,7 @@ public class GameBatch implements BatchInterface {
      * @return The internal {@code SpriteBatch}.
      */
     public SpriteBatch getBatch() {
-        return batch.getBatch();
+        return batch;
     }
 
     public void draw(TextureRegion background, int x, int y, int width, int height) {
