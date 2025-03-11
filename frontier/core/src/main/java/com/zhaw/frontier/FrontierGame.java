@@ -6,13 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.screens.HomeScreen;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.GameBatch;
 
 public class FrontierGame extends Game {
     private Engine engine;
     private ExtendViewport extendedViewport;
     private ScreenViewport screenViewport;
-    private SpriteBatchWrapper spriteBatchWrapper;
+    private BatchInterface spriteBatchWrapper;
 
     @Override
     public void create() {
@@ -22,7 +23,7 @@ public class FrontierGame extends Game {
         extendedViewport.getCamera().position.set(8, 4, 0);
 
         screenViewport = new ScreenViewport();
-        spriteBatchWrapper = spriteBatchWrapper == null ? new SpriteBatchWrapper() : spriteBatchWrapper;
+        spriteBatchWrapper = spriteBatchWrapper == null ? new GameBatch() : spriteBatchWrapper;
         this.setScreen(new HomeScreen(this));
     }
     
@@ -58,11 +59,11 @@ public class FrontierGame extends Game {
         this.screenViewport = screenViewport;
     }
 
-    public SpriteBatchWrapper getSpriteBatchWrapper() {
+    public BatchInterface getSpriteBatchWrapper() {
         return this.spriteBatchWrapper;
     }
 
-    public void setSpriteBatchWrapper(SpriteBatchWrapper spriteBatchWrapper) {
+    public void setSpriteBatchWrapper(BatchInterface spriteBatchWrapper) {
         this.spriteBatchWrapper = spriteBatchWrapper;
     }
 }

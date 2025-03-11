@@ -21,11 +21,12 @@ import com.zhaw.frontier.systems.BoundsSystem;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.ui.GameUi;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.GameBatch;
 
 public class MyGame extends ApplicationAdapter {
     private Engine engine;
-    private SpriteBatchWrapper batch;
+    private BatchInterface batch;
     private ExtendViewport extendedViewport;
     private RTSInputAdapter worldInputProcessor;
     // ui
@@ -35,7 +36,7 @@ public class MyGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        batch = new SpriteBatchWrapper();
+        batch = new GameBatch();
         var texture = new Texture(Gdx.files.internal("texture-long.png"));
         var textureRegion = new TextureRegion(texture);
 

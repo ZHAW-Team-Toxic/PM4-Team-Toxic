@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.systems.RenderSystem;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.BatchInterface;
 
 public class HomeScreen implements Screen {
     private FrontierGame frontierGame;
-    private SpriteBatchWrapper spriteBatchWrapper;
+    private BatchInterface spriteBatchWrapper;
     private Texture texture;
 
     public HomeScreen(FrontierGame frontierGame) {

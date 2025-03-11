@@ -1,34 +1,28 @@
-package com.zhaw.frontier.wrappers;
+package com.zhaw.tests.utils;
+
+import static org.mockito.Mockito.mock;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.Disposable;
+import com.zhaw.frontier.wrappers.BatchInterface;
 
-/**
- * A wrapper class for {@link SpriteBatch} that simplifies batch rendering operations
- * in a LibGDX-based game.
- *
- * <p>This class provides methods to begin and end a batch, as well as drawing textures
- * at specific coordinates. It implements {@link Disposable} to ensure proper resource cleanup.</p>
- */
-public class SpriteBatchWrapper implements Disposable {
-    private SpriteBatch batch;
+public class MockSpriteBatch implements BatchInterface {
+    private List<String> logs = new ArrayList<>();
 
-    /**
-     * Constructs a new {@code SpriteBatchWrapper} and initializes an internal {@link SpriteBatch}.
-     */
-    public SpriteBatchWrapper() {
-        this.batch = new SpriteBatch();
+    public MockSpriteBatch() {
     }
-
-    /**
+    
+     /**
      * Begins the rendering process for the batch. 
      * This method must be called before drawing any textures.
      */
     public void begin() {
-        batch.begin();
+        logs.add("begin()");
     }
 
     /**
@@ -36,7 +30,7 @@ public class SpriteBatchWrapper implements Disposable {
      * This method should be called after all drawing operations are complete.
      */
     public void end() {
-        batch.end();
+        logs.add("end()");
     }
 
     /**
@@ -47,7 +41,7 @@ public class SpriteBatchWrapper implements Disposable {
      * @param y The y-coordinate of the texture.
      */
     public void draw(Texture texture, float x, float y) {
-        batch.draw(texture, x, y);
+        logs.add(String.format("draw(%s, %s, %s)", texture.toString(), x, y));
     }
 
     /**
@@ -60,7 +54,11 @@ public class SpriteBatchWrapper implements Disposable {
      * @param height The height of the texture.
      */
     public void draw(Texture texture, float x, float y, float width, float height) {
-        batch.draw(texture, x, y, width, height);
+        logs.add(String.format("draw(%s, %s, %s, %s, %s)", texture.toString(), x, y, width, height));
+    }
+
+    public void draw(TextureRegion background, int x, int y, int width, int height) {
+        logs.add(String.format("draw(%s, %s, %s, %s, %s)", background.toString(), x, y, width, height));
     }
 
     /**
@@ -69,23 +67,16 @@ public class SpriteBatchWrapper implements Disposable {
      */
     @Override
     public void dispose() {
-        batch.dispose();
+        logs.add("dispose()");
     }
-    
-    /**
-     * Gets the underlying {@link SpriteBatch} instance.
-     *
-     * @return The internal {@code SpriteBatch}.
-     */
+
+    @Override
+    public void setProjectionMatrix(Matrix4 matrix) {
+        logs.add(String.format("setProjectionMatrix(%s)", matrix.toString()));
+    }
+
+    @Override
     public SpriteBatch getBatch() {
-        return batch;
-    }
-
-    public void draw(TextureRegion background, int x, int y, int width, int height) {
-        batch.draw(background, x, y, width, height);
-    }
-
-    public void setProjectionMatrix(Matrix4 combined) {
-        batch.setProjectionMatrix(combined);
+        return mock(SpriteBatch.class);
     }
 }

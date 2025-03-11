@@ -3,12 +3,9 @@ package com.zhaw.tests;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,16 +14,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.HomeScreen;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.tests.utils.MockSpriteBatch;
 import com.zhaw.tests.utils.StageUtils;
 
 @ExtendWith(GdxExtension.class)
@@ -34,12 +28,11 @@ public class UiTest {
     private FrontierGame mockGame;
     private HomeScreen homeScreen;
     private GameScreen gameScreen;
-    private SpriteBatchWrapper spriteBatchWrapper;
+    private BatchInterface spriteBatchWrapper;
 
     @BeforeEach
     public void setup() {
-        spriteBatchWrapper = mock(SpriteBatchWrapper.class);
-        when(spriteBatchWrapper.getBatch()).thenReturn(mock(SpriteBatch.class));
+        spriteBatchWrapper = new MockSpriteBatch();
         mockGame = new FrontierGame();
         mockGame.setSpriteBatchWrapper(spriteBatchWrapper);
         mockGame.create();

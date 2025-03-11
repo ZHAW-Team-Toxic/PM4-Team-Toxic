@@ -7,20 +7,20 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.verification.VerificationMode;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.zhaw.frontier.Main;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.GameBatch;
 
 @ExtendWith(GdxExtension.class)
 public class MainTest {
-    private SpriteBatchWrapper spriteBatchWrapperMock;
+    private BatchInterface spriteBatchWrapperMock;
     private Main main;
 
     @BeforeEach
     void setUp() {
-        spriteBatchWrapperMock = mock(SpriteBatchWrapper.class);
+        spriteBatchWrapperMock = mock(GameBatch.class);
         main = new Main();
         main.setSpriteBatchWrapper(spriteBatchWrapperMock);
         main.create();

@@ -3,16 +3,17 @@ package com.zhaw.frontier;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.GameBatch;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-    private SpriteBatchWrapper batch;
+    private BatchInterface batch;
     private Texture image;
 
     @Override
     public void create() {
-        batch = batch == null ? new SpriteBatchWrapper() : batch;
+        batch = batch == null ? new GameBatch() : batch;
         image = new Texture("libgdx.png");
     }
 
@@ -30,7 +31,7 @@ public class Main extends ApplicationAdapter {
         image.dispose();
     }
 
-    public void setSpriteBatchWrapper(SpriteBatchWrapper spriteBatchWrapper) {
+    public void setSpriteBatchWrapper(BatchInterface spriteBatchWrapper) {
         this.batch = spriteBatchWrapper;
     }
 
