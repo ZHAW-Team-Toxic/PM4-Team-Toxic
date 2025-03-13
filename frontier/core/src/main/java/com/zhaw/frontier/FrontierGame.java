@@ -7,14 +7,11 @@ import com.zhaw.frontier.screens.StartScreen;
 import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
 
 public class FrontierGame extends Game {
-    private Engine engine;
     private SpriteBatchWrapper batch;
-    //TODO: Assetsmanager
+    // TODO: add AssetManager
 
     @Override
     public void create() {
-        engine = new Engine();
-
         batch = new SpriteBatchWrapper();
         this.setScreen(new StartScreen(this));
     }
@@ -25,10 +22,6 @@ public class FrontierGame extends Game {
             getScreen().dispose();
         }
         setScreen(newScreen);
-    } 
-
-    public Engine getEngine() {
-        return engine;
     }
 
     public SpriteBatchWrapper getBatch() {
