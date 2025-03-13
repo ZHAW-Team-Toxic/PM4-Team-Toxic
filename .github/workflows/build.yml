@@ -1,4 +1,4 @@
-name: Test
+name: Build
 
 on:
   push:
@@ -17,6 +17,8 @@ jobs:
         id-token: write
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
@@ -25,9 +27,24 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-    - name: Run Tests
+    - name: Cache SonarQube packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+        restore-keys: ${{ runner.os }}-gradle
+
+    - name: test, build and analyze
       working-directory: ./frontier
-      run: ./gradlew :test:test
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./gradlew :test:test build sonar --info
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
