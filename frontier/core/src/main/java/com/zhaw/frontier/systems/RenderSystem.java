@@ -13,6 +13,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 
 public class RenderSystem extends EntitySystem {
+
     private SpriteBatch batch;
     private Viewport viewport;
     private Engine engine;
