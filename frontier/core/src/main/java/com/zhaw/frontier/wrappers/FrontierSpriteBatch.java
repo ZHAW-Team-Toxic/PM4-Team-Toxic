@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * enabling easier unit and integration testing by mocking or substituting this implementation.
  */
 public class FrontierSpriteBatch implements SpriteBatchInterface {
+
     private SpriteBatch batch;
 
     /**
