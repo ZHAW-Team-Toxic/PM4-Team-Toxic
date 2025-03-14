@@ -1,23 +1,22 @@
 package com.zhaw.tests.mocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MockSpriteBatch implements SpriteBatchInterface {
+
     private final List<String> methodCalls = new ArrayList<>();
     private SpriteBatch batch;
 
-    public MockSpriteBatch() {
-    }
+    public MockSpriteBatch() {}
 
     public MockSpriteBatch(SpriteBatch batch) {
         this.batch = batch;
     }
-    
+
     @Override
     public void begin() {
         methodCalls.add("begin()");
@@ -35,7 +34,9 @@ public class MockSpriteBatch implements SpriteBatchInterface {
 
     @Override
     public void draw(Texture texture, float x, float y, float width, float height) {
-        methodCalls.add(String.format("draw(%s, %s, %s, %s, %s)", texture.toString(), x, y, height, width));
+        methodCalls.add(
+            String.format("draw(%s, %s, %s, %s, %s)", texture.toString(), x, y, height, width)
+        );
     }
 
     @Override

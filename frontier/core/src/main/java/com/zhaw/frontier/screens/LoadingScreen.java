@@ -14,6 +14,7 @@ import com.zhaw.frontier.wrappers.SpriteBatchInterface;
  * Switches to the GameScreen once all assets are loaded.
  */
 public class LoadingScreen extends ScreenAdapter {
+
     private FrontierGame game;
     private AssetManager assetManager;
     private SpriteBatchInterface batch;
@@ -43,8 +44,12 @@ public class LoadingScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        font.draw(batch.getBatch(), "Loading: " + (int) (progress * 100) + "%",
-            (float) Gdx.graphics.getWidth() / 2 - 30, (float) Gdx.graphics.getHeight() / 2);
+        font.draw(
+            batch.getBatch(),
+            "Loading: " + (int) (progress * 100) + "%",
+            (float) Gdx.graphics.getWidth() / 2 - 30,
+            (float) Gdx.graphics.getHeight() / 2
+        );
         batch.end();
     }
 }

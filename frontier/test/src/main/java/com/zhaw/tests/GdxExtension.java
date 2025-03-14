@@ -16,15 +16,15 @@ import org.junit.jupiter.api.extension.Extension;
  */
 public class GdxExtension extends ApplicationAdapter implements Extension {
 
-  /**
-   * Constructs a new instance of GdxExtension. This initializes the LibGDX headless backend,
-   * allowing LibGDX functionality to be utilized during unit tests. A mocked GL20 object is
-   * assigned to Gdx.gl, enabling rendering-related operations without requiring a display
-   * environment.
-   */
-  public GdxExtension() {
-    HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
-    new HeadlessApplication(this, config);
-    Gdx.gl = mock(GL20.class);
-  }
+    /**
+     * Constructs a new instance of GdxExtension. This initializes the LibGDX headless backend,
+     * allowing LibGDX functionality to be utilized during unit tests. A mocked GL20 object is
+     * assigned to Gdx.gl, enabling rendering-related operations without requiring a display
+     * environment.
+     */
+    public GdxExtension() {
+        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+        new HeadlessApplication(this, config);
+        Gdx.gl = mock(GL20.class);
+    }
 }

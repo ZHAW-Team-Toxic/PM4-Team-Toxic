@@ -7,9 +7,9 @@ import com.zhaw.frontier.FrontierGame;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
+
     public static void main(String[] args) {
-        if (StartupHelper.startNewJvmIfRequired())
-            return; // This handles macOS support and helps on Windows.
+        if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
         createApplication();
     }
 
@@ -31,7 +31,9 @@ public class Lwjgl3Launcher {
         //// try to match fractional
         //// refresh rates. The Vsync setting above should limit the actual FPS to match
         //// the monitor.
-        configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
+        configuration.setForegroundFPS(
+            Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1
+        );
         //// If you remove the above line and set Vsync to false, you can get unlimited
         //// FPS, which can be
         //// useful for testing performance, but can also be very stressful to some
@@ -40,7 +42,12 @@ public class Lwjgl3Launcher {
         //// cause screen tearing.
         configuration.setFullscreenMode(primaryMode);
         //// You can change these files; they are in lwjgl3/src/main/resources/ .
-        configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+        configuration.setWindowIcon(
+            "libgdx128.png",
+            "libgdx64.png",
+            "libgdx32.png",
+            "libgdx16.png"
+        );
         return configuration;
     }
 }
