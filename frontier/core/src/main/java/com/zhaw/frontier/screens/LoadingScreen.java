@@ -9,6 +9,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
+/**
+ * Displays a loading screen while assets are loaded by the AssetLoader.
+ * Switches to the GameScreen once all assets are loaded.
+ */
 public class LoadingScreen extends ScreenAdapter {
     private FrontierGame game;
     private AssetManager assetManager;
