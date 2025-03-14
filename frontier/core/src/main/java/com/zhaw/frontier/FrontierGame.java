@@ -15,8 +15,6 @@ public class FrontierGame extends Game {
     public void create() {
         batch = new SpriteBatchWrapper();
         assetManager = new AssetManager();
-        assetManager.load("libgdx.png", Texture.class);
-
         this.setScreen(new StartScreen(this));
     }
 
