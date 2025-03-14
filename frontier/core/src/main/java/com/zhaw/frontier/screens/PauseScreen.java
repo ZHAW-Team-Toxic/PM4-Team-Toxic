@@ -72,18 +72,6 @@ public class PauseScreen implements Screen {
         Gdx.input.setInputProcessor(new InputMultiplexer(stage));
     }
 
-    private void resumeGame() {
-        frontierGame.switchScreen(new GameScreen(frontierGame));
-    }
-
-    private void saveGame() {
-        Gdx.app.log("Save", "Saving...");
-    }
-
-    private void exitGame() {
-        Gdx.app.exit();
-    }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 0.5f);
@@ -121,5 +109,17 @@ public class PauseScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
+    }
+
+    private void resumeGame() {
+        frontierGame.switchScreen(new GameScreen(frontierGame));
+    }
+
+    private void saveGame() {
+        Gdx.app.log("Save", "Saving...");
+    }
+
+    private void exitGame() {
+        Gdx.app.exit();
     }
 }
