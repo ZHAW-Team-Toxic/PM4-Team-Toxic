@@ -36,8 +36,6 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        frontierGame.getAssetManager().update();
-
         Gdx.gl.glClearColor(1, 0, 0, 1); // Red, Green, Blue, Alpha (1,0,0,1) = Red
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
