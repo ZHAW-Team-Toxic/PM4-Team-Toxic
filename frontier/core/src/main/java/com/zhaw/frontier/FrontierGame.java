@@ -8,6 +8,7 @@ import com.zhaw.frontier.wrappers.FrontierSpriteBatch;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class FrontierGame extends Game {
+
     private SpriteBatchInterface batch;
     private AssetManager assetManager;
 

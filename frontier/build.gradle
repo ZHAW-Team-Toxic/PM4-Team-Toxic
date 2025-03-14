@@ -9,14 +9,13 @@ buildscript {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
   }
   dependencies {
-
-
   }
 }
 
 plugins {
   id 'java'
   id "org.sonarqube" version "6.0.1.5171"
+  id "com.diffplug.spotless" version "7.0.2"
 }
 
 allprojects {
@@ -31,6 +30,7 @@ allprojects {
     }
   }
 }
+
 
 sonar {
   properties {
@@ -94,6 +94,29 @@ subprojects {
   sonar {
     properties {
       property "sonar.sources", "src"
+    }
+  }
+
+  apply plugin: 'com.diffplug.spotless'
+
+  spotless {
+    ratchetFrom 'origin/main'
+    format 'misc', {
+      target '*.gradle', '.gitattributes', '.gitignore'
+
+      trimTrailingWhitespace()
+      leadingTabsToSpaces()
+      endWithNewline()
+    }
+    java {
+      removeUnusedImports()
+      prettier(['prettier': '3.0.3', 'prettier-plugin-java': '2.3.0'])
+        .config(['parser': 'java',
+                'tabWidth': 4,
+                'printWidth': 100,
+                'plugins': ['prettier-plugin-java']
+                ])
+      formatAnnotations()
     }
   }
 }

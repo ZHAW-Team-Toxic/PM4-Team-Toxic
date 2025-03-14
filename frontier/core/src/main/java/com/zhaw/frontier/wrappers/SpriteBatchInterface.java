@@ -3,22 +3,20 @@ package com.zhaw.frontier.wrappers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-
 /**
  * Interface for abstracting the rendering behavior of a batch.
  * This is primarily intended to decouple rendering logic from the concrete {@link SpriteBatch}
  * implementation in libGDX, facilitating easier unit and integration testing.
  */
 public interface SpriteBatchInterface {
-
     /**
-     * Begins the rendering process.  
+     * Begins the rendering process.
      * Must be called before any draw operations. Typically, this sets up the rendering context.
      */
     void begin();
 
     /**
-     * Ends the rendering process.  
+     * Ends the rendering process.
      * Must be called after all draw operations. This flushes the draw calls to the GPU.
      */
     void end();
