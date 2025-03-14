@@ -72,6 +72,9 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
             frontierGame.switchScreen(new StartScreen(frontierGame));
         }
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            frontierGame.switchScreen(new PauseScreen(frontierGame));
+        }
     }
 
     @Override
