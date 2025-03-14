@@ -6,8 +6,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -19,6 +19,7 @@ import com.zhaw.frontier.wrappers.SpriteBatchInterface;
  * render.
  */
 public class GameScreen implements Screen {
+
     private FrontierGame frontierGame;
     private SpriteBatchInterface spriteBatchWrapper;
     private ExtendViewport gameWorldView;
@@ -36,7 +37,13 @@ public class GameScreen implements Screen {
 
         // setup up ecs(entity component system)
         engine = new Engine();
-        engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine));
+        engine.addSystem(
+            new RenderSystem(
+                spriteBatchWrapper.getBatch(),
+                gameWorldView,
+                engine
+            )
+        );
 
         // create gameui
         gameUi = new ScreenViewport();
@@ -50,9 +57,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() {}
 
     @Override
     public void render(float delta) {
@@ -81,23 +86,16 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
         stage.dispose();
     }
-
 }

@@ -1,61 +1,61 @@
 project(":test") {
-  apply plugin: "java"
+    apply plugin: "java"
 
-  sourceSets.test.java.srcDirs = ["src/"]
+    sourceSets.test.java.srcDirs = ["src/"]
 
-  dependencies {
-    /**
-     * If you do have some classes to test in os specific code you may want to add
-     * some of these lines:
-     * implementation project(":android")
-     * implementation project(":html")
-     * implementation project(":desktop")
-     *
-     * if(System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
-     *   implementation project(":ios")
-     * }
-     */
-    implementation 'org.mockito:mockito-core:5.5.0'
-    implementation 'org.mockito:mockito-inline:5.2.0'
-    implementation project(":core")
-    implementation("org.junit.jupiter:junit-jupiter:5.11.3")
+    dependencies {
+        /**
+         * If you do have some classes to test in os specific code you may want to add
+         * some of these lines:
+         * implementation project(":android")
+         * implementation project(":html")
+         * implementation project(":desktop")
+         *
+         * if(System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
+         *   implementation project(":ios")
+         * }
+         */
+        implementation 'org.mockito:mockito-core:5.5.0'
+        implementation 'org.mockito:mockito-inline:5.2.0'
+        implementation project(":core")
+        implementation("org.junit.jupiter:junit-jupiter:5.11.3")
 
 
-    implementation 'org.mockito:mockito-junit-jupiter:5.5.0'
-    implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+        implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
-    testImplementation 'org.mockito:mockito-core:5.5.0'
-    testImplementation 'org.mockito:mockito-inline:5.2.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
-    testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-    testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-    testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
+        testImplementation 'org.mockito:mockito-core:5.5.0'
+        testImplementation 'org.mockito:mockito-inline:5.2.0'
+        testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+        testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 
-    /*
-    * The following dependencies are not mandatory,
-    * but may be necessary depending on the project configuration and test cases.
-    * If you need the dependencies, you can insert them by commenting them in.
-    */
-    //testImplementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    //testImplementation "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
-    //testImplementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-    //testImplementation "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:$dialogsVersion"
-    //testImplementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
-  }
-  test {
-    useJUnitPlatform()
-    systemProperty("junit.jupiter.conditions.deactivate", "*")
-    systemProperty("junit.jupiter.extensions.autodetection.enabled", true)
-    systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
-  }
-
-  sourceSets {
+        /*
+         * The following dependencies are not mandatory,
+         * but may be necessary depending on the project configuration and test cases.
+         * If you need the dependencies, you can insert them by commenting them in.
+         */
+        //testImplementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        //testImplementation "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
+        //testImplementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        //testImplementation "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:$dialogsVersion"
+        //testImplementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
+    }
     test {
-        resources {
-            srcDir '../assets'  // Point to the external assets directory
+        useJUnitPlatform()
+        systemProperty("junit.jupiter.conditions.deactivate", "*")
+        systemProperty("junit.jupiter.extensions.autodetection.enabled", true)
+        systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
+    }
+
+    sourceSets {
+        test {
+            resources {
+                srcDir '../assets'  // Point to the external assets directory
+            }
         }
     }
-}
 }
