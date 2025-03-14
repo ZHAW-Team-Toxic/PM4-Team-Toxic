@@ -4,15 +4,16 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.zhaw.frontier.screens.LoadingScreen;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.FrontierSpriteBatch;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class FrontierGame extends Game {
-    private SpriteBatchWrapper batch;
+    private SpriteBatchInterface batch;
     private AssetManager assetManager;
 
     @Override
     public void create() {
-        batch = new SpriteBatchWrapper();
+        batch = new FrontierSpriteBatch();
         assetManager = new AssetManager();
 
         this.setScreen(new LoadingScreen(this));

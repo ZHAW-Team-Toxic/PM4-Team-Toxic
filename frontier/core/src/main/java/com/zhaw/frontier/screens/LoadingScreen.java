@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class LoadingScreen extends ScreenAdapter {
     private FrontierGame game;
     private AssetManager assetManager;
-    private SpriteBatchWrapper batch;
+    private SpriteBatchInterface batch;
     private BitmapFont font;
 
     public LoadingScreen(FrontierGame game) {
