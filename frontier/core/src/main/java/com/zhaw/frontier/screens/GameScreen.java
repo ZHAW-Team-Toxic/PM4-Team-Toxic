@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
 
         // create view with world coordinates
         gameWorldView = new ExtendViewport(16, 9);
+        gameWorldView.getCamera().position.set(8, 4.5f, 0);
 
         // setup up ecs(entity component system)
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing the engine.");
@@ -151,8 +152,25 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        handleInput();
         engine.update(delta);
         updateUI();
+    }
+
+    private void updateUI() {
+        gameUi.apply();
+        stage.act();
+        stage.draw();
+    }
+
+    private void handleInput() {
+        // TODO handle other input
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+            frontierGame.switchScreen(new StartScreen(frontierGame));
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            frontierGame.switchScreen(new PauseScreen(frontierGame));
+        }
     }
 
     @Override
