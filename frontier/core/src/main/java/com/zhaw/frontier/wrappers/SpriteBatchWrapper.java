@@ -58,13 +58,7 @@ public class SpriteBatchWrapper implements Disposable {
      * @param width The width of the texture.
      * @param height The height of the texture.
      */
-    public void draw(
-        Texture texture,
-        float x,
-        float y,
-        float width,
-        float height
-    ) {
+    public void draw(Texture texture, float x, float y, float width, float height) {
         batch.draw(texture, x, y, width, height);
     }
 

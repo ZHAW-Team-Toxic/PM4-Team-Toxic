@@ -23,8 +23,7 @@ public class GdxExtension extends ApplicationAdapter implements Extension {
      * environment.
      */
     public GdxExtension() {
-        HeadlessApplicationConfiguration config =
-            new HeadlessApplicationConfiguration();
+        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
         new HeadlessApplication(this, config);
         Gdx.gl = mock(GL20.class);
     }

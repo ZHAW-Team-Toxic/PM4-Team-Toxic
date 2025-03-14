@@ -37,13 +37,7 @@ public class GameScreen implements Screen {
 
         // setup up ecs(entity component system)
         engine = new Engine();
-        engine.addSystem(
-            new RenderSystem(
-                spriteBatchWrapper.getBatch(),
-                gameWorldView,
-                engine
-            )
-        );
+        engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine));
 
         // create gameui
         gameUi = new ScreenViewport();

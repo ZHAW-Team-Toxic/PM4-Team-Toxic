@@ -14,18 +14,13 @@ public class Lwjgl3Launcher {
     }
 
     private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(
-            new FrontierGame(),
-            getDefaultConfiguration()
-        );
+        return new Lwjgl3Application(new FrontierGame(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
-        DisplayMode primaryMode =
-            Lwjgl3ApplicationConfiguration.getDisplayMode();
+        DisplayMode primaryMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
 
-        Lwjgl3ApplicationConfiguration configuration =
-            new Lwjgl3ApplicationConfiguration();
+        Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("Frontier");
         //// Vsync limits the frames per second to what your hardware can display, and
         //// helps eliminate

@@ -18,15 +18,9 @@ public class RenderSystem extends EntitySystem {
     private Viewport viewport;
     private Engine engine;
 
-    private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(
-        PositionComponent.class
-    );
-    private ComponentMapper<RenderComponent> rm = ComponentMapper.getFor(
-        RenderComponent.class
-    );
-    private Family family = Family
-        .all(PositionComponent.class, RenderComponent.class)
-        .get();
+    private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<RenderComponent> rm = ComponentMapper.getFor(RenderComponent.class);
+    private Family family = Family.all(PositionComponent.class, RenderComponent.class).get();
 
     public RenderSystem(SpriteBatch batch, Viewport viewport, Engine engine) {
         this.batch = batch;

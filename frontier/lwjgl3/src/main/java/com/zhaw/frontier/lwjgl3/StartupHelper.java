@@ -78,20 +78,13 @@ public class StartupHelper {
                 // By extracting to the relevant "ProgramData" folder, which is usually
                 // "C:\ProgramData", we
                 // avoid this.
-                System.setProperty(
-                    "java.io.tmpdir",
-                    System.getenv("ProgramData") + "/libGDX-temp"
-                );
+                System.setProperty("java.io.tmpdir", System.getenv("ProgramData") + "/libGDX-temp");
             }
             return false;
         }
 
         // There is no need for -XstartOnFirstThread on Graal native image
-        if (
-            !System
-                .getProperty("org.graalvm.nativeimage.imagecode", "")
-                .isEmpty()
-        ) {
+        if (!System.getProperty("org.graalvm.nativeimage.imagecode", "").isEmpty()) {
             return false;
         }
 
@@ -116,11 +109,7 @@ public class StartupHelper {
         String separator = System.getProperty("file.separator");
         // The following line is used assuming you target Java 8, the minimum for LWJGL3.
         String javaExecPath =
-            System.getProperty("java.home") +
-            separator +
-            "bin" +
-            separator +
-            "java";
+            System.getProperty("java.home") + separator + "bin" + separator + "java";
         // If targeting Java 9 or higher, you could use the following instead of the above line:
         // String javaExecPath = ProcessHandle.current().info().command().orElseThrow();
 
@@ -134,9 +123,7 @@ public class StartupHelper {
         jvmArgs.add(javaExecPath);
         jvmArgs.add("-XstartOnFirstThread");
         jvmArgs.add("-D" + JVM_RESTARTED_ARG + "=true");
-        jvmArgs.addAll(
-            ManagementFactory.getRuntimeMXBean().getInputArguments()
-        );
+        jvmArgs.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
         jvmArgs.add("-cp");
         jvmArgs.add(System.getProperty("java.class.path"));
         String mainClass = System.getenv("JAVA_MAIN_CLASS_" + pid);
@@ -156,9 +143,7 @@ public class StartupHelper {
                 ProcessBuilder processBuilder = new ProcessBuilder(jvmArgs);
                 processBuilder.start();
             } else {
-                Process process =
-                    (new ProcessBuilder(jvmArgs)).redirectErrorStream(true)
-                        .start();
+                Process process = (new ProcessBuilder(jvmArgs)).redirectErrorStream(true).start();
                 BufferedReader processOutput = new BufferedReader(
                     new InputStreamReader(process.getInputStream())
                 );
