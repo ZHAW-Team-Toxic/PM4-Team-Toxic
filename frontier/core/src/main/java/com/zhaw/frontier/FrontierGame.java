@@ -3,8 +3,7 @@ package com.zhaw.frontier;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import com.zhaw.frontier.screens.StartScreen;
+import com.zhaw.frontier.screens.LoadingScreen;
 import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
 
 public class FrontierGame extends Game {
@@ -15,9 +14,8 @@ public class FrontierGame extends Game {
     public void create() {
         batch = new SpriteBatchWrapper();
         assetManager = new AssetManager();
-        assetManager.load("libgdx.png", Texture.class);
 
-        this.setScreen(new StartScreen(this));
+        this.setScreen(new LoadingScreen(this));
     }
 
     @Override
