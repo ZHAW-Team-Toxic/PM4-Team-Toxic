@@ -38,12 +38,10 @@ public class GameScreen implements Screen {
         // setup up ecs(entity component system)
         engine = new Engine();
         engine.addSystem(
-            new RenderSystem(
-                spriteBatchWrapper.getBatch(),
-                gameWorldView,
-                engine
-            )
-        );
+                new RenderSystem(
+                        spriteBatchWrapper.getBatch(),
+                        gameWorldView,
+                        engine));
 
         // create gameui
         gameUi = new ScreenViewport();
@@ -57,7 +55,8 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void show() {}
+    public void show() {
+    }
 
     @Override
     public void render(float delta) {
@@ -86,13 +85,16 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
