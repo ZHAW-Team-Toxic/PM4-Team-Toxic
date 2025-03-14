@@ -8,11 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class StartScreen implements Screen {
     private FrontierGame frontierGame;
-    private BatchInterface spriteBatchWrapper;
+    private SpriteBatchInterface spriteBatchWrapper;
     private ExtendViewport background;
     private ScreenViewport menu;
     private Stage stage;

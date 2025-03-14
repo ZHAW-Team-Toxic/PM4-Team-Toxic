@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.systems.RenderSystem;
-import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -20,7 +20,7 @@ import com.zhaw.frontier.wrappers.BatchInterface;
  */
 public class GameScreen implements Screen {
     private FrontierGame frontierGame;
-    private BatchInterface spriteBatchWrapper;
+    private SpriteBatchInterface spriteBatchWrapper;
     private ExtendViewport gameWorldView;
     private ScreenViewport gameUi;
     private Stage stage;

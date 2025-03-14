@@ -3,11 +3,11 @@ package com.zhaw.frontier;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.zhaw.frontier.screens.StartScreen;
-import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import com.zhaw.frontier.wrappers.FrontierSpriteBatch;
 
 public class FrontierGame extends Game {
-    private BatchInterface batch;
+    private SpriteBatchInterface batch;
     // TODO: add AssetManager
 
     @Override
@@ -24,7 +24,7 @@ public class FrontierGame extends Game {
         setScreen(newScreen);
     }
 
-    public BatchInterface getBatch() {
+    public SpriteBatchInterface getBatch() {
         return batch;
     }
 }

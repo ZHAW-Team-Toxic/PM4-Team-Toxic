@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * This is primarily intended to decouple rendering logic from the concrete {@link SpriteBatch}
  * implementation in libGDX, facilitating easier unit and integration testing.
  */
-public interface BatchInterface {
+public interface SpriteBatchInterface {
 
     /**
      * Begins the rendering process.  
@@ -62,5 +62,5 @@ public interface BatchInterface {
      *
      * @param batch The batch to be used for rendering.
      */
-    void setBatch(BatchInterface batch);
+    void setBatch(SpriteBatchInterface batch);
 }

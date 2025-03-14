@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.zhaw.frontier.wrappers.BatchInterface;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
-public class MockSpriteBatch implements BatchInterface {
+public class MockSpriteBatch implements SpriteBatchInterface {
     private final List<String> methodCalls = new ArrayList<>();
     private SpriteBatch batch;
 
@@ -49,7 +49,7 @@ public class MockSpriteBatch implements BatchInterface {
     }
 
     @Override
-    public void setBatch(BatchInterface batch) {
+    public void setBatch(SpriteBatchInterface batch) {
         this.batch = batch.getBatch();
     }
 

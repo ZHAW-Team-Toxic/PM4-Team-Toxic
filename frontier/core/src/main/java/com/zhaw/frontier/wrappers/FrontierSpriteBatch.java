@@ -4,12 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * Concrete implementation of {@link BatchInterface} that wraps around LibGDX's {@link SpriteBatch}.
+ * Concrete implementation of {@link SpriteBatchInterface} that wraps around LibGDX's {@link SpriteBatch}.
  * <p>
  * This wrapper allows the rendering logic to be decoupled from the {@code SpriteBatch} implementation,
  * enabling easier unit and integration testing by mocking or substituting this implementation.
  */
-public class FrontierSpriteBatch implements BatchInterface {
+public class FrontierSpriteBatch implements SpriteBatchInterface {
     private SpriteBatch batch;
 
     /**
@@ -95,7 +95,7 @@ public class FrontierSpriteBatch implements BatchInterface {
     }
 
     @Override
-    public void setBatch(BatchInterface batch) {
+    public void setBatch(SpriteBatchInterface batch) {
         this.batch = ((FrontierSpriteBatch) batch).getBatch();
     }
 }
