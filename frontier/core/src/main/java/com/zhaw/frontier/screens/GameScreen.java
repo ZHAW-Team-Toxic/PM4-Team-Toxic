@@ -16,7 +16,7 @@ import com.zhaw.frontier.subsystems.MapLoaderSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
 import com.zhaw.frontier.systems.MapGridSystem;
 import com.zhaw.frontier.systems.RenderSystem;
-import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 
 /**
@@ -27,7 +27,7 @@ import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
  */
 public class GameScreen implements Screen {
     private FrontierGame frontierGame;
-    private SpriteBatchWrapper spriteBatchWrapper;
+    private SpriteBatchInterface spriteBatchWrapper;
     private ExtendViewport gameWorldView;
     private ScreenViewport gameUi;
     private Stage stage;
