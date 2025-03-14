@@ -2,18 +2,26 @@ package com.zhaw.frontier;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.zhaw.frontier.screens.StartScreen;
-import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import com.badlogic.gdx.assets.AssetManager;
+import com.zhaw.frontier.screens.LoadingScreen;
 import com.zhaw.frontier.wrappers.FrontierSpriteBatch;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class FrontierGame extends Game {
     private SpriteBatchInterface batch;
-    // TODO: add AssetManager
+    private AssetManager assetManager;
 
     @Override
     public void create() {
         batch = new FrontierSpriteBatch();
-        this.setScreen(new StartScreen(this));
+        assetManager = new AssetManager();
+
+        this.setScreen(new LoadingScreen(this));
+    }
+
+    @Override
+    public void dispose() {
+        assetManager.dispose();
     }
 
     public void switchScreen(Screen newScreen) {
@@ -26,5 +34,9 @@ public class FrontierGame extends Game {
 
     public SpriteBatchInterface getBatch() {
         return batch;
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
 }
