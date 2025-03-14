@@ -31,7 +31,7 @@ public class FrontierGame extends Game {
         setScreen(newScreen);
     }
 
-    public SpriteBatchWrapper getBatch() {
+    public SpriteBatchInterface getBatch() {
         return batch;
     }
 
