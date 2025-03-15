@@ -1,0 +1,40 @@
+
+textures.png
+size: 512, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+demo/donkey
+  rotate: false
+  xy: 2, 2
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+demo/libgdx
+  rotate: false
+  xy: 2, 44
+  size: 378, 63
+  orig: 378, 63
+  offset: 0, 0
+  index: -1
+
+textures2.png
+size: 2048, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+demo2/donkey
+  rotate: false
+  xy: 2, 2
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+demo2/image
+  rotate: false
+  xy: 2, 44
+  size: 1600, 800
+  orig: 1600, 800
+  offset: 0, 0
+  index: -1
