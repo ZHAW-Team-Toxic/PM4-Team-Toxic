@@ -33,12 +33,13 @@ To format the code run the following task:
 | **Ease of CI Integration**        | ✅ Easy (fast, low-dependency)              | ✅ Medium (may need mock setups)                   | ❌ Hard (requires rendering setup, image diffs)    |
 | **Test Speed**                    | ⚡ Very fast                                 | ⚡ Medium                                           | 🐢 Slow (render, capture, compare images)          |
 | **Maintenance Effort**           | ✅ Low                                      | ✅ Medium                                           | ❌ High (small UI changes cause false negatives)   |
-| **Debugging Failures**            | ✅ Easy (clear logic errors)                | ⚠ Can be tricky (need context)                     | ❌ Hard (is it layout? rendering? timing?)         |
-| **Tools/Framework Support**      | ✅ Wide support (JUnit, NUnit, etc.)        | ✅ Good support (TestFX, Espresso, etc.)           | ⚠ Limited and brittle (e.g., Percy, Playwright)   |
+| **Debugging Failures**            | ✅ Easy (clear logic errors)                | ✅ Depending on the case its Easy or Medium difficult | ✅ Medium (is it layout? rendering? timing?)         |
+| **Tools/Framework Support**      | ✅ Junit, Mockito                           | ✅ Junit and Mockito                                | ⚠ Running a screenshot compare with lwjgl3 locally * (see comment below) |
 | **Catch UI/UX bugs**             | ❌ No                                       | ⚠ Some (interaction-level bugs)                    | ✅ Yes (layout/overlap issues)                     |
 | **Best Use Case**                | Core logic, algorithms, model classes       | Systems like UI controller + input + sound         | Visual regression (only if critical UI stability) |
 | **CI Resource Consumption**      | ✅ Low                                       | ⚠ Medium                                           | ❌ High (screenshots, image comparison tools)      |
 
+*: Here is the challenge of the precision of the compare. For static images the compare tests would work well. But screenshots which contained rendered in content the compare needed a higher tolerance, while comparing the pixels. After increasing the tolerance the compare was not reliable anymore.
 
 ### 🔍 Category of What You're Testing
 
