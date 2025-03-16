@@ -72,6 +72,7 @@ public class CameraControlSystem extends IteratingSystem {
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false);
         this.camera.zoom = 40.0f;
+        //TODO needs to be done through components in the future
         this.camera.update();
         viewport.setCamera(camera);
 

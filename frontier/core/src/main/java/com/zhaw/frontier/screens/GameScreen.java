@@ -17,6 +17,7 @@ import com.zhaw.frontier.systems.CameraControlSystem;
 import com.zhaw.frontier.systems.MapGridSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import java.nio.file.Path;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -53,7 +54,7 @@ public class GameScreen implements Screen {
         //setup map loader system
         MapLoaderSystem mapLoaderSystem;
         try {
-            mapLoaderSystem = new MapLoaderSystem("frontier_tiled_demo_test.tmx", engine);
+            mapLoaderSystem = new MapLoaderSystem(Path.of("frontier_tiled_demo_test.tmx"), engine);
 
             //setup building manager system
             buildingManagerSystem =

@@ -79,12 +79,10 @@ public class RenderSystem extends EntitySystem {
         // Apply viewport and update camera
         viewport.apply();
 
-        // Render map layers
+        // Render map from the first layer to the last layer
         for (Entity entity : engine.getEntitiesFor(mapLayerMapper.mapLayerFamily)) {
             BottomLayerComponent bottomLayer = mapLayerMapper.bottomLayerMapper.get(entity);
-            DecorationLayerComponent decorationLayer = mapLayerMapper.decorationLayerMapper.get(
-                entity
-            );
+            DecorationLayerComponent decorationLayer = mapLayerMapper.decorationLayerMapper.get(entity);
             ResourceLayerComponent resourceLayer = mapLayerMapper.resourceLayerMapper.get(entity);
             renderer.getBatch().begin();
             renderer.renderTileLayer(bottomLayer.bottomLayer);
@@ -101,21 +99,19 @@ public class RenderSystem extends EntitySystem {
         for (Entity buildingEntity : buildingManagerSystem.getBuildingEntities()) {
             PositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
             RenderComponent buildingRender = towerMapper.rm.get(buildingEntity);
-            Vector2 pixelCoordinate = calculatePixelCoordinate(
-                (int) buildingPosition.position.x,
-                (int) buildingPosition.position.y
-            );
+            Vector2 pixelCoordinate = calculatePixelCoordinate((int) buildingPosition.position.x, (int) buildingPosition.position.y);
             renderer.getBatch().draw(buildingRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
         }
         renderer.getBatch().end();
 
         //Here necessary to apply the viewport again, because the renderer changes the camera
         viewport.apply();
+
         // Render other entities
         //TODO: Implement rendering for enemies and other entities
 
     }
-
+    //used to fix the sprite on the bottom left corner of the tile
     private Vector2 calculatePixelCoordinate(int x, int y) {
         Map map = buildingManagerSystem.getMap();
         int tilex = x * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileWidth();

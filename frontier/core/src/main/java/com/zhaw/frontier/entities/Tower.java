@@ -13,8 +13,6 @@ import com.zhaw.frontier.components.RenderComponent;
  * Current components:
  * - PositionComponent
  * - RenderComponent
- *
- *
  */
 public class Tower extends Entity {
 
@@ -27,7 +25,7 @@ public class Tower extends Entity {
 
         RenderComponent renderComponent = new RenderComponent();
 
-        //todo change placeholder to the actual tower texture
+        //TODO change placeholder for the actual tower texture
         Texture texture = createPlaceHolder();
         renderComponent.sprite = new Sprite(texture);
 

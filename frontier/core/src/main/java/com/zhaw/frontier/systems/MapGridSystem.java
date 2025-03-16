@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 /**
  * System for drawing the grid of the map. This class is used to draw the grid of the map.
  * The grid is drawn as a set of lines.
+ * TODO When moving fast with the rts-controls, the grid moves around a bit.
  */
 public class MapGridSystem extends EntitySystem {
 

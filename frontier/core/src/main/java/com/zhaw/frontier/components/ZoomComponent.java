@@ -9,10 +9,10 @@ public class ZoomComponent implements Component {
     /**
      * The zoom level of the camera.
      */
-    public float zoom = 60.0f;
+    public float zoom = 40.0f;
     /**
      * The speed at which the camera zooms in and out.
      */
-    public float zoomSpeed = 0.1f;
+    public float zoomSpeed = 2.0f;
 
 }

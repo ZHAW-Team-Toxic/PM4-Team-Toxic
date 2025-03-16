@@ -26,8 +26,15 @@ public class MapLoaderSystem {
     @Getter
     private com.zhaw.frontier.entities.Map mapEntity;
 
-    public MapLoaderSystem(String mapPath, Engine engine) throws MapLoadingException {
-        this.mapPath = Path.of(mapPath);
+    /**
+     * Constructor. Initializes the map loader system.
+     * Loads the map from the given path and creates entities for each layer.
+     * @param mapPath The path to the map file.
+     * @param engine The engine to be used.
+     * @throws MapLoadingException If an error occurs while loading the map.
+     */
+    public MapLoaderSystem(Path mapPath, Engine engine) throws MapLoadingException {
+        this.mapPath = mapPath;
         this.engine = engine;
         loadMap();
         initMapLayerEntities();

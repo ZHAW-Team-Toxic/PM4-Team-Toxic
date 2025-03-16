@@ -89,9 +89,11 @@ public class BuildingManagerSystem {
                     return false;
                 }
             } else {
+                Gdx.app.log("BuildingManagerSystem", "Tile is not buildable on resource layer");
                 return false;
             }
         } else {
+            Gdx.app.log("BuildingManagerSystem", "Tile is not buildable on bottom layer");
             return false;
         }
     }
@@ -130,13 +132,7 @@ public class BuildingManagerSystem {
 
     private Vector2 calculateWorldCoordinate(float screenX, float screenY) {
         TiledMapTileLayer sampleLayer = mapLayerMapper.bottomLayerMapper.get(map).bottomLayer;
-        Gdx.app.log(
-            "BuildingManagerSystem",
-            "tileWidth: " +
-            sampleLayer.getTileWidth() +
-            " tileHeight: " +
-            sampleLayer.getTileHeight()
-        );
+        Gdx.app.log("BuildingManagerSystem", "tileWidth: " + sampleLayer.getTileWidth() + " tileHeight: " + sampleLayer.getTileHeight());
 
         Vector3 worldCoords = new Vector3(screenX, screenY, 0);
         viewport.getCamera().unproject(worldCoords);
