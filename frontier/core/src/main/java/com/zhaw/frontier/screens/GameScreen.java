@@ -7,8 +7,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.entities.Tower;
 import com.zhaw.frontier.subsystems.BuildingManagerSystem;
@@ -18,7 +18,6 @@ import com.zhaw.frontier.systems.MapGridSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
-
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
  * render the game.
@@ -26,6 +25,7 @@ import com.zhaw.frontier.wrappers.SpriteBatchInterface;
  * render.
  */
 public class GameScreen implements Screen {
+
     private FrontierGame frontierGame;
     private SpriteBatchInterface spriteBatchWrapper;
     private ExtendViewport gameWorldView;
@@ -56,19 +56,31 @@ public class GameScreen implements Screen {
             mapLoaderSystem = new MapLoaderSystem("frontier_tiled_demo_test.tmx", engine);
 
             //setup building manager system
-            buildingManagerSystem = new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
+            buildingManagerSystem =
+            new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
 
             //setup render system
-            engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine, renderer,
-                mapLoaderSystem, buildingManagerSystem));
-
-        }catch (Exception e){
+            engine.addSystem(
+                new RenderSystem(
+                    spriteBatchWrapper.getBatch(),
+                    gameWorldView,
+                    engine,
+                    renderer,
+                    mapLoaderSystem,
+                    buildingManagerSystem
+                )
+            );
+        } catch (Exception e) {
             //TODO handle exception
             e.printStackTrace();
         }
 
         // setup camera
-        CameraControlSystem cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
+        CameraControlSystem cameraControlSystem = new CameraControlSystem(
+            gameWorldView,
+            engine,
+            renderer
+        );
         engine.addSystem(cameraControlSystem);
 
         //setup grid
@@ -79,24 +91,18 @@ public class GameScreen implements Screen {
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
 
-
         var mx = new InputMultiplexer();
         mx.addProcessor(cameraControlSystem.getInputAdapter());
         mx.addProcessor(stage);
         //TODO add mouse input handler mx.addProcessor();
         Gdx.input.setInputProcessor(mx);
-
-
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() {}
 
     @Override
     public void render(float delta) {
-
         handleInput();
         engine.update(delta);
         updateUI();
@@ -136,24 +142,16 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
         stage.dispose();
     }
-
-
 }

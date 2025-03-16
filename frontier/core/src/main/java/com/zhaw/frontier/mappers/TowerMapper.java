@@ -12,9 +12,9 @@ import com.zhaw.frontier.components.RenderComponent;
  * - RenderComponent
  */
 public class TowerMapper {
+
     public ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
     public ComponentMapper<RenderComponent> rm = ComponentMapper.getFor(RenderComponent.class);
     //todo: add tower component mapper
     public Family towerFamily = Family.all(PositionComponent.class, RenderComponent.class).get();
-
 }

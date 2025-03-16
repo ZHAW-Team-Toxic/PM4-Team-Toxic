@@ -15,10 +15,9 @@ import com.zhaw.frontier.entities.Tower;
 import com.zhaw.frontier.exceptions.EntityNotFoundException;
 import com.zhaw.frontier.mappers.MapLayerMapper;
 import com.zhaw.frontier.mappers.TowerMapper;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
 /**
  * This class manages the building of towers on the map. It checks if a building can be placed on a certain position.
@@ -30,10 +29,13 @@ public class BuildingManagerSystem {
 
     @Getter
     private final Map map;
+
     private final Viewport viewport;
+
     @Getter
     private final List<Entity> buildingEntities;
-    private final static String BUILDABLE_PROPERTY = "buildable";
+
+    private static final String BUILDABLE_PROPERTY = "buildable";
 
     private final TowerMapper towerMapper = new TowerMapper();
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
@@ -64,7 +66,8 @@ public class BuildingManagerSystem {
      * @return True if the building was placed, false if not
      * @throws EntityNotFoundException If the entity is not found
      */
-    public boolean placeBuilding(float screenX, float screenY, Entity entityType) throws EntityNotFoundException {
+    public boolean placeBuilding(float screenX, float screenY, Entity entityType)
+        throws EntityNotFoundException {
         Vector2 worldCoordinate = calculateWorldCoordinate(screenX, screenY);
         Gdx.app.log("BuildingManagerSystem", "World Coordinate: " + worldCoordinate);
         Entity buildingEntity = entityMapper(entityType);
@@ -76,7 +79,10 @@ public class BuildingManagerSystem {
                 Gdx.app.log("BuildingManagerSystem", "Tile is buildable on resource layer");
                 if (!checkIfPlaceIsOccupiedByBuilding(buildingPosition)) {
                     buildingEntities.add(buildingEntity);
-                    Gdx.app.log("BuildingManagerSystem", "Building placed at: " + buildingPosition.position);
+                    Gdx.app.log(
+                        "BuildingManagerSystem",
+                        "Building placed at: " + buildingPosition.position
+                    );
                     return true;
                 } else {
                     Gdx.app.log("BuildingManagerSystem", "Place is occupied by building");
@@ -113,7 +119,10 @@ public class BuildingManagerSystem {
 
     private Entity entityMapper(Entity entity) throws EntityNotFoundException {
         if (entity instanceof Tower tower) {
-            EntitiesUtils.buildEntity(tower, List.of(towerMapper.pm.get(entity), towerMapper.rm.get(entity)));
+            EntitiesUtils.buildEntity(
+                tower,
+                List.of(towerMapper.pm.get(entity), towerMapper.rm.get(entity))
+            );
             return tower;
         }
         throw new EntityNotFoundException("Entity not found");
@@ -121,7 +130,13 @@ public class BuildingManagerSystem {
 
     private Vector2 calculateWorldCoordinate(float screenX, float screenY) {
         TiledMapTileLayer sampleLayer = mapLayerMapper.bottomLayerMapper.get(map).bottomLayer;
-        Gdx.app.log("BuildingManagerSystem", "tileWidth: " + sampleLayer.getTileWidth() + " tileHeight: " + sampleLayer.getTileHeight());
+        Gdx.app.log(
+            "BuildingManagerSystem",
+            "tileWidth: " +
+            sampleLayer.getTileWidth() +
+            " tileHeight: " +
+            sampleLayer.getTileHeight()
+        );
 
         Vector3 worldCoords = new Vector3(screenX, screenY, 0);
         viewport.getCamera().unproject(worldCoords);
@@ -133,14 +148,16 @@ public class BuildingManagerSystem {
         Gdx.app.log("BuildingManagerSystem", "TileX: " + tileX + " TileY: " + tileY);
 
         return new Vector2(tileX, tileY);
-
     }
 
     private boolean checkIfPlaceIsOccupiedByBuilding(PositionComponent buildingToCheck) {
         for (Entity buildingEntity : buildingEntities) {
             PositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
 
-            if (buildingPosition.position.x == buildingToCheck.position.x && buildingPosition.position.y == buildingToCheck.position.y) {
+            if (
+                buildingPosition.position.x == buildingToCheck.position.x &&
+                buildingPosition.position.y == buildingToCheck.position.y
+            ) {
                 return true;
             }
         }
@@ -151,9 +168,16 @@ public class BuildingManagerSystem {
         BottomLayerComponent bottomLayerComponent = mapLayerMapper.bottomLayerMapper.get(map);
         TiledMapTileLayer bottomLayer = bottomLayerComponent.bottomLayer;
         Gdx.app.log("BuildingManagerSystem", "bottomlayer: " + bottomLayer);
-        TiledMapTileLayer.Cell cell = bottomLayer.getCell((int) buildingToCheck.position.x, (int) buildingToCheck.position.y);
+        TiledMapTileLayer.Cell cell = bottomLayer.getCell(
+            (int) buildingToCheck.position.x,
+            (int) buildingToCheck.position.y
+        );
         Gdx.app.log("BuildingManagerSystem", "Cell: " + cell);
-        if (cell != null && cell.getTile() != null && cell.getTile().getProperties().get(BUILDABLE_PROPERTY) != null) {
+        if (
+            cell != null &&
+            cell.getTile() != null &&
+            cell.getTile().getProperties().get(BUILDABLE_PROPERTY) != null
+        ) {
             return (boolean) cell.getTile().getProperties().get(BUILDABLE_PROPERTY);
         }
 
@@ -163,10 +187,11 @@ public class BuildingManagerSystem {
     private boolean checkIfTileIsBuildableOnResourceLayer(PositionComponent buildingToCheck) {
         ResourceLayerComponent resourceLayerComponent = mapLayerMapper.resourceLayerMapper.get(map);
         TiledMapTileLayer resourceLayer = resourceLayerComponent.resourceLayer;
-        TiledMapTileLayer.Cell cell = resourceLayer.getCell((int) buildingToCheck.position.x, (int) buildingToCheck.position.y);
+        TiledMapTileLayer.Cell cell = resourceLayer.getCell(
+            (int) buildingToCheck.position.x,
+            (int) buildingToCheck.position.y
+        );
         Gdx.app.log("BuildingManagerSystem", "Cell: " + cell);
         return cell == null;
     }
-
-
 }

@@ -26,7 +26,13 @@ public class MapGridSystem extends EntitySystem {
      * @param tileHeight The height of a tile in pixels.
      * @param camera The camera to use for rendering.
      */
-    public MapGridSystem(int mapWidthInTiles, int mapHeightInTiles, float tileWidth, float tileHeight, Camera camera) {
+    public MapGridSystem(
+        int mapWidthInTiles,
+        int mapHeightInTiles,
+        float tileWidth,
+        float tileHeight,
+        Camera camera
+    ) {
         this.mapWidthInTiles = mapWidthInTiles;
         this.mapHeightInTiles = mapHeightInTiles;
         this.tileWidth = tileWidth;
@@ -60,6 +66,5 @@ public class MapGridSystem extends EntitySystem {
             shapeRenderer.line(0, worldY, mapWidthInTiles * tileWidth, worldY);
         }
         shapeRenderer.end();
-
     }
 }

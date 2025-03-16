@@ -26,6 +26,7 @@ import com.zhaw.frontier.subsystems.MapLoaderSystem;
  * It uses the @OrthogonalTiledMapRenderer to render the map.
  */
 public class RenderSystem extends EntitySystem {
+
     private final SpriteBatch batch;
     private final Viewport viewport;
     private final Engine engine;
@@ -45,8 +46,14 @@ public class RenderSystem extends EntitySystem {
      * @param mapLoaderSystem The map loader system to be used.
      * @param buildingManagerSystem The building manager system to be used.
      */
-    public RenderSystem(SpriteBatch batch, Viewport viewport, Engine engine, OrthogonalTiledMapRenderer renderer,
-                        MapLoaderSystem mapLoaderSystem, BuildingManagerSystem buildingManagerSystem) {
+    public RenderSystem(
+        SpriteBatch batch,
+        Viewport viewport,
+        Engine engine,
+        OrthogonalTiledMapRenderer renderer,
+        MapLoaderSystem mapLoaderSystem,
+        BuildingManagerSystem buildingManagerSystem
+    ) {
         this.batch = batch;
         this.viewport = viewport;
         this.engine = engine;
@@ -75,7 +82,9 @@ public class RenderSystem extends EntitySystem {
         // Render map layers
         for (Entity entity : engine.getEntitiesFor(mapLayerMapper.mapLayerFamily)) {
             BottomLayerComponent bottomLayer = mapLayerMapper.bottomLayerMapper.get(entity);
-            DecorationLayerComponent decorationLayer = mapLayerMapper.decorationLayerMapper.get(entity);
+            DecorationLayerComponent decorationLayer = mapLayerMapper.decorationLayerMapper.get(
+                entity
+            );
             ResourceLayerComponent resourceLayer = mapLayerMapper.resourceLayerMapper.get(entity);
             renderer.getBatch().begin();
             renderer.renderTileLayer(bottomLayer.bottomLayer);
@@ -92,7 +101,10 @@ public class RenderSystem extends EntitySystem {
         for (Entity buildingEntity : buildingManagerSystem.getBuildingEntities()) {
             PositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
             RenderComponent buildingRender = towerMapper.rm.get(buildingEntity);
-            Vector2 pixelCoordinate = calculatePixelCoordinate((int) buildingPosition.position.x, (int) buildingPosition.position.y);
+            Vector2 pixelCoordinate = calculatePixelCoordinate(
+                (int) buildingPosition.position.x,
+                (int) buildingPosition.position.y
+            );
             renderer.getBatch().draw(buildingRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
         }
         renderer.getBatch().end();
@@ -110,6 +122,4 @@ public class RenderSystem extends EntitySystem {
         int tiley = y * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileHeight();
         return new Vector2(tilex, tiley);
     }
-
-
 }

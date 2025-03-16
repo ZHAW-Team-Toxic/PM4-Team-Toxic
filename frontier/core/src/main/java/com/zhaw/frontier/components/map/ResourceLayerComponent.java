@@ -7,10 +7,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  * Component for the resource layer of the map.
  */
 public class ResourceLayerComponent implements Component {
+
     /**
      * The resource layer of the map.
      */
     public TiledMapTileLayer resourceLayer;
+
     /**
      * Constructor for the resource layer component.
      * @param resourceLayer The resource layer of the map.

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class RTSInputAdapter extends InputAdapter {
+
     private final ExtendViewport viewport;
     private final Camera camera;
     // Used to store the world coordinates of the touch points

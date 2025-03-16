@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 
 public class CameraComponent implements Component {
+
     public OrthographicCamera camera;
     public float positionX = 0.0f;
     public float positionY = 0.0f;

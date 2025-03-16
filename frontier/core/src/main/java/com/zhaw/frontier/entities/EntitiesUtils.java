@@ -8,6 +8,7 @@ import java.util.List;
  * This class provides utility methods for entities.
  */
 public class EntitiesUtils {
+
     /**
      * Builds an entity with the given components.
      * @param entity The entity to build.

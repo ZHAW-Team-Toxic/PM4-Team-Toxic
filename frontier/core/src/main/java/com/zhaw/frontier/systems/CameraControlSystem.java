@@ -21,8 +21,10 @@ public class CameraControlSystem extends IteratingSystem {
     private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
+
     @Getter
     private RTSInputAdapter inputAdapter;
+
     @Getter
     private ComponentMapper<CameraComponent> cm = ComponentMapper.getFor(CameraComponent.class);
 
@@ -32,7 +34,11 @@ public class CameraControlSystem extends IteratingSystem {
      * @param engine The engine to be used.
      * @param renderer The renderer to be used.
      */
-    public CameraControlSystem(ExtendViewport viewport, Engine engine, OrthogonalTiledMapRenderer renderer) {
+    public CameraControlSystem(
+        ExtendViewport viewport,
+        Engine engine,
+        OrthogonalTiledMapRenderer renderer
+    ) {
         super(Family.all(CameraComponent.class).get());
         this.viewport = viewport;
         this.engine = engine;
@@ -70,6 +76,4 @@ public class CameraControlSystem extends IteratingSystem {
         cameraEntity.add(new CameraComponent(camera));
         engine.addEntity(cameraEntity);
     }
-
 }
-

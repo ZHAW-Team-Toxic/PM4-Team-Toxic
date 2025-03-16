@@ -17,12 +17,12 @@ import com.zhaw.frontier.components.RenderComponent;
  *
  */
 public class Tower extends Entity {
+
     /**
      * Constructor for the Tower entity.
      * This constructor creates a tower entity with a position component and a render component.
      */
     public Tower() {
-
         add(new PositionComponent());
 
         RenderComponent renderComponent = new RenderComponent();
@@ -42,7 +42,7 @@ public class Tower extends Entity {
         return new Tower();
     }
 
-    private Texture createPlaceHolder(){
+    private Texture createPlaceHolder() {
         // Create a Pixmap with dimensions 12x12 using RGBA8888 format.
         Pixmap pixmap = new Pixmap(12, 12, Format.RGBA8888);
         // Set the drawing color to black.
