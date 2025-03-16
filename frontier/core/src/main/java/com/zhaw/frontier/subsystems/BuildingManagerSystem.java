@@ -36,8 +36,6 @@ public class BuildingManagerSystem {
     @Getter
     private final List<Entity> buildingEntities;
 
-    private static final String BUILDABLE_PROPERTY = "buildable";
-
     private final TowerMapper towerMapper = new TowerMapper();
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
 
@@ -70,30 +68,30 @@ public class BuildingManagerSystem {
     public boolean placeBuilding(float screenX, float screenY, Entity entityType)
         throws EntityNotFoundException {
         Vector2 worldCoordinate = calculateWorldCoordinate(screenX, screenY);
-        Gdx.app.log("BuildingManagerSystem", "World Coordinate: " + worldCoordinate);
+        Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "World Coordinate: " + worldCoordinate);
         Entity buildingEntity = entityMapper(entityType);
         PositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
         buildingPosition.position = worldCoordinate;
         if (checkIfTileIsBuildableOnBottomLayer(buildingPosition)) {
-            Gdx.app.log("BuildingManagerSystem", "Tile is buildable on bottom layer");
+            Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is buildable on bottom layer");
             if (checkIfTileIsBuildableOnResourceLayer(buildingPosition)) {
-                Gdx.app.log("BuildingManagerSystem", "Tile is buildable on resource layer");
+                Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is buildable on resource layer");
                 if (!checkIfPlaceIsOccupiedByBuilding(buildingPosition)) {
                     destroyDecorationOnTile(worldCoordinate);
-                    Gdx.app.log("BuildingManagerSystem", "Decoration destroyed at:  " + buildingPosition.position);
+                    Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Destroy decoration on tile: " + worldCoordinate);
                     buildingEntities.add(buildingEntity);
-                    Gdx.app.log("BuildingManagerSystem", "Building placed at: " + buildingPosition.position);
+                    Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Building placed on tile: " + worldCoordinate);
                     return true;
                 } else {
-                    Gdx.app.log("BuildingManagerSystem", "Place is occupied by building");
+                    Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is occupied by another building");
                     return false;
                 }
             } else {
-                Gdx.app.log("BuildingManagerSystem", "Tile is not buildable on resource layer");
+                Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is not buildable on resource layer");
                 return false;
             }
         } else {
-            Gdx.app.log("BuildingManagerSystem", "Tile is not buildable on bottom layer");
+            Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is not buildable on bottom layer");
             return false;
         }
     }
@@ -140,9 +138,10 @@ public class BuildingManagerSystem {
     }
 
     private Vector2 calculateWorldCoordinate(float screenX, float screenY) {
+        int ONLY_2D = 0;
         TiledMapTileLayer sampleLayer = mapLayerMapper.bottomLayerMapper.get(map).bottomLayer;
 
-        Vector3 worldCoords = new Vector3(screenX, screenY, 0);
+        Vector3 worldCoords = new Vector3(screenX, screenY, ONLY_2D);
         viewport.getCamera().unproject(worldCoords);
 
         int tileX = (int) (worldCoords.x / sampleLayer.getTileWidth());
@@ -173,6 +172,7 @@ public class BuildingManagerSystem {
 
     private boolean checkIfTileIsBuildableOnBottomLayer(PositionComponent buildingToCheck) {
         BottomLayerComponent bottomLayerComponent = mapLayerMapper.bottomLayerMapper.get(map);
+        String bottomLayerProperty = bottomLayerComponent.properties.getFirst();
         TiledMapTileLayer bottomLayer = bottomLayerComponent.bottomLayer;
         TiledMapTileLayer.Cell cell = bottomLayer.getCell(
             (int) buildingToCheck.position.x,
@@ -181,9 +181,9 @@ public class BuildingManagerSystem {
         if (
             cell != null &&
             cell.getTile() != null &&
-            cell.getTile().getProperties().get(BUILDABLE_PROPERTY) != null
+            cell.getTile().getProperties().get(bottomLayerProperty) != null
         ) {
-            return (boolean) cell.getTile().getProperties().get(BUILDABLE_PROPERTY);
+            return (boolean) cell.getTile().getProperties().get(bottomLayerProperty);
         }
 
         return false;

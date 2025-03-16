@@ -63,8 +63,8 @@ public class GameScreen implements Screen {
             engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine, renderer, mapLoaderSystem, buildingManagerSystem));
 
         } catch (Exception e) {
-            //TODO handle exception
-            e.printStackTrace();
+            Gdx.app.error("[ERROR] - GameScreen", "Error loading map");
+            //TODO try something else?
         }
 
         // setup camera
@@ -129,28 +129,36 @@ public class GameScreen implements Screen {
         }
         if (Gdx.input.isKeyJustPressed(Keys.B)) {
             //TODO only temporary - will be handled by UI later
-            Gdx.app.log("GameScreen", "B pressed");
+            Gdx.app.debug("[DEBUG] - GameScreen", "B pressed");
             float mouseX = Gdx.input.getX();
             float mouseY = Gdx.input.getY();
-            Gdx.app.log("GameScreen", "MouseX: " + mouseX + " MouseY: " + mouseY);
+            Gdx.app.debug("[DEBUG] - GameScreen", "MouseX: " + mouseX + " MouseY: " + mouseY);
 
             try {
                 Tower tower = Tower.createDefaultTower();
-                buildingManagerSystem.placeBuilding(mouseX, mouseY, tower);
+                if(buildingManagerSystem.placeBuilding(mouseX, mouseY, tower)){
+                    Gdx.app.debug("[DEBUG] - GameScreen", "Building placed");
+                } else {
+                    Gdx.app.debug("[DEBUG] - GameScreen", "Building not placed");
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+               Gdx.app.error("[ERROR] - GameScreen", "Error placing building");
             }
         }
         if(Gdx.input.isKeyJustPressed(Keys.R)) {
-            Gdx.app.log("GameScreen", "R pressed");
+            Gdx.app.debug("[DEBUG] - GameScreen", "R pressed");
             float mouseX = Gdx.input.getX();
             float mouseY = Gdx.input.getY();
-            Gdx.app.log("GameScreen", "MouseX: " + mouseX + " MouseY: " + mouseY);
+            Gdx.app.debug("[DEBUG] - GameScreen", "MouseX: " + mouseX + " MouseY: " + mouseY);
 
             try {
-                buildingManagerSystem.removeBuilding(mouseX, mouseY);
+                if(buildingManagerSystem.removeBuilding(mouseX, mouseY)){
+                    Gdx.app.debug("[DEBUG] - GameScreen", "Building removed");
+                } else {
+                    Gdx.app.debug("[DEBUG] - GameScreen", "Building not removed");
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                Gdx.app.error("[ERROR] - GameScreen", "Error removing building");
             }
         }
     }

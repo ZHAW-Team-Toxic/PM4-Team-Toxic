@@ -20,7 +20,7 @@ public class TowerMapper {
      * Component mappers which map the render of the tower entity.
      */
     public ComponentMapper<RenderComponent> rm = ComponentMapper.getFor(RenderComponent.class);
-    //todo: add tower component mapper
+    //todo: add more tower component mapper
     /**
      * Family which contains all components of the tower entity.
      */
