@@ -2,7 +2,6 @@ package com.zhaw.frontier.components.map;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,10 +18,6 @@ public class BottomLayerComponent implements Component {
      * The name of the bottom layer.
      */
     public String bottomLayerName;
-    /**
-     * The properties of the bottom layer.
-     */
-    public List<String> properties;
 
     /**
      * Constructor for the bottom layer component. Initializes the bottom layer.
@@ -32,9 +27,5 @@ public class BottomLayerComponent implements Component {
     public BottomLayerComponent(TiledMapTileLayer bottomLayer) {
         this.bottomLayer = bottomLayer;
         this.bottomLayerName = bottomLayer.getName();
-        Iterator<String> propertyKeys = bottomLayer.getProperties().getKeys();
-        while (propertyKeys.hasNext()) {
-            properties.add(propertyKeys.next());
-        }
     }
 }

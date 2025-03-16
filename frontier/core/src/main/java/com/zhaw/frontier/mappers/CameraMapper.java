@@ -12,18 +12,25 @@ import com.zhaw.frontier.components.ZoomComponent;
  *
  */
 public class CameraMapper {
+
     /**
      * Component mappers which mao the position of the camera entity.
      */
-    public ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
+    public ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(
+        PositionComponent.class
+    );
     /**
      * Component mappers which mao the border of the camera entity.
      */
-    public ComponentMapper<BorderComponent> borderMapper = ComponentMapper.getFor(BorderComponent.class);
+    public ComponentMapper<BorderComponent> borderMapper = ComponentMapper.getFor(
+        BorderComponent.class
+    );
     /**
      * Component mappers which mao the velocity of the camera entity.
      */
-    public ComponentMapper<VelocityComponent> velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
+    public ComponentMapper<VelocityComponent> velocityMapper = ComponentMapper.getFor(
+        VelocityComponent.class
+    );
     /**
      * Component mappers which mao the zoom of the camera entity.
      */
@@ -31,6 +38,12 @@ public class CameraMapper {
     /**
      * Family which contains all components of the camera entity.
      */
-    public Family cameraFamily = Family.all(PositionComponent.class, BorderComponent.class, VelocityComponent.class, ZoomComponent.class).get();
-
+    public Family cameraFamily = Family
+        .all(
+            PositionComponent.class,
+            BorderComponent.class,
+            VelocityComponent.class,
+            ZoomComponent.class
+        )
+        .get();
 }

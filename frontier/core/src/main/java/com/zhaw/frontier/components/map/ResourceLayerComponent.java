@@ -2,7 +2,6 @@ package com.zhaw.frontier.components.map;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,10 +18,6 @@ public class ResourceLayerComponent implements Component {
      * The name of the resource layer.
      */
     public String resourceLayerName;
-    /**
-     * The properties of the resource layer.
-     */
-    public List<String> properties;
 
     /**
      * Constructor for the resource layer component. Initializes the resource layer.
@@ -32,9 +27,5 @@ public class ResourceLayerComponent implements Component {
     public ResourceLayerComponent(TiledMapTileLayer resourceLayer) {
         this.resourceLayer = resourceLayer;
         this.resourceLayerName = resourceLayer.getName();
-        Iterator<String> propertyKeys = resourceLayer.getProperties().getKeys();
-        while (propertyKeys.hasNext()) {
-            properties.add(propertyKeys.next());
-        }
     }
 }

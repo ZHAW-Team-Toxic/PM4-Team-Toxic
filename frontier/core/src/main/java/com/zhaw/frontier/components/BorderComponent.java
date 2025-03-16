@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Component;
  * Contains a border for entities.
  */
 public class BorderComponent implements Component {
+
     /**
      * The border of the entity in the x direction.
      */

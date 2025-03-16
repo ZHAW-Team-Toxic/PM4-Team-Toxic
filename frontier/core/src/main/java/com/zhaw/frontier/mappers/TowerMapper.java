@@ -12,6 +12,7 @@ import com.zhaw.frontier.components.RenderComponent;
  * - RenderComponent
  */
 public class TowerMapper {
+
     /**
      * Component mappers which map the position of the tower entity.
      */

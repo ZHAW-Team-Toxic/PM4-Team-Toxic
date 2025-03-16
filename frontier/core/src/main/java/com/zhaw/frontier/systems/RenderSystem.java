@@ -39,11 +39,12 @@ public class RenderSystem extends EntitySystem {
     /**
      * Constructor for the RenderSystem.
      * Initializes the system with the necessary components and systems.
-     * @param batch The sprite batch to be used for rendering.
-     * @param viewport The viewport to be used.
-     * @param engine The engine to be used.
-     * @param renderer The renderer to be used.
-     * @param mapLoaderSystem The map loader system to be used.
+     *
+     * @param batch                 The sprite batch to be used for rendering.
+     * @param viewport              The viewport to be used.
+     * @param engine                The engine to be used.
+     * @param renderer              The renderer to be used.
+     * @param mapLoaderSystem       The map loader system to be used.
      * @param buildingManagerSystem The building manager system to be used.
      */
     public RenderSystem(
@@ -69,6 +70,7 @@ public class RenderSystem extends EntitySystem {
      * - Map layers
      * - Building entities
      * - Other entities (not implemented yet)
+     *
      * @param deltaTime The time passed since last frame in seconds.
      */
     @Override
@@ -111,6 +113,7 @@ public class RenderSystem extends EntitySystem {
         //TODO: Implement rendering for enemies and other entities
 
     }
+
     //used to fix the sprite on the bottom left corner of the tile
     private Vector2 calculatePixelCoordinate(int x, int y) {
         Map map = buildingManagerSystem.getMap();

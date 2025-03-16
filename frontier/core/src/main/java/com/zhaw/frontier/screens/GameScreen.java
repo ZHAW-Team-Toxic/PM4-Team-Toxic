@@ -1,6 +1,7 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
@@ -51,28 +52,43 @@ public class GameScreen implements Screen {
         // setup up ecs(entity component system)
         engine = new Engine();
 
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
         //setup map loader system
         MapLoaderSystem mapLoaderSystem;
         try {
-            mapLoaderSystem = new MapLoaderSystem(Path.of("frontier_tiled_demo_test.tmx"), engine);
+            mapLoaderSystem = new MapLoaderSystem(Path.of("TMX/frontier_testmap.tmx"), engine);
 
             //setup building manager system
-            buildingManagerSystem = new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
+            buildingManagerSystem =
+            new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
 
             //setup render system
-            engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine, renderer, mapLoaderSystem, buildingManagerSystem));
-
+            engine.addSystem(
+                new RenderSystem(
+                    spriteBatchWrapper.getBatch(),
+                    gameWorldView,
+                    engine,
+                    renderer,
+                    mapLoaderSystem,
+                    buildingManagerSystem
+                )
+            );
         } catch (Exception e) {
             Gdx.app.error("[ERROR] - GameScreen", "Error loading map");
             //TODO try something else?
         }
 
         // setup camera
-        CameraControlSystem cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
+        CameraControlSystem cameraControlSystem = new CameraControlSystem(
+            gameWorldView,
+            engine,
+            renderer
+        );
         engine.addSystem(cameraControlSystem);
 
         //setup grid
-        MapGridSystem mapGridSystem = new MapGridSystem(64, 64, 16, 16, gameWorldView.getCamera());
+        MapGridSystem mapGridSystem = new MapGridSystem(64, 64, 16, 16, gameWorldView);
         engine.addSystem(mapGridSystem);
 
         // create game ui
@@ -136,23 +152,23 @@ public class GameScreen implements Screen {
 
             try {
                 Tower tower = Tower.createDefaultTower();
-                if(buildingManagerSystem.placeBuilding(mouseX, mouseY, tower)){
+                if (buildingManagerSystem.placeBuilding(mouseX, mouseY, tower)) {
                     Gdx.app.debug("[DEBUG] - GameScreen", "Building placed");
                 } else {
                     Gdx.app.debug("[DEBUG] - GameScreen", "Building not placed");
                 }
             } catch (Exception e) {
-               Gdx.app.error("[ERROR] - GameScreen", "Error placing building");
+                Gdx.app.error("[ERROR] - GameScreen", "Error placing building");
             }
         }
-        if(Gdx.input.isKeyJustPressed(Keys.R)) {
+        if (Gdx.input.isKeyJustPressed(Keys.R)) {
             Gdx.app.debug("[DEBUG] - GameScreen", "R pressed");
             float mouseX = Gdx.input.getX();
             float mouseY = Gdx.input.getY();
             Gdx.app.debug("[DEBUG] - GameScreen", "MouseX: " + mouseX + " MouseY: " + mouseY);
 
             try {
-                if(buildingManagerSystem.removeBuilding(mouseX, mouseY)){
+                if (buildingManagerSystem.removeBuilding(mouseX, mouseY)) {
                     Gdx.app.debug("[DEBUG] - GameScreen", "Building removed");
                 } else {
                     Gdx.app.debug("[DEBUG] - GameScreen", "Building not removed");

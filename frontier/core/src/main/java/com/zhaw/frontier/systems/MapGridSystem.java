@@ -3,6 +3,7 @@ package com.zhaw.frontier.systems;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * System for drawing the grid of the map. This class is used to draw the grid of the map.
@@ -15,7 +16,7 @@ public class MapGridSystem extends EntitySystem {
     private final int mapHeightInTiles;
     private final float tileWidth;
     private final float tileHeight;
-    private final Camera camera;
+    private final Viewport viewport;
 
     private final ShapeRenderer shapeRenderer;
 
@@ -25,20 +26,20 @@ public class MapGridSystem extends EntitySystem {
      * @param mapHeightInTiles The height of the map in tiles. This is the number of tiles in the y direction.
      * @param tileWidth The width of a tile in pixels.
      * @param tileHeight The height of a tile in pixels.
-     * @param camera The camera to use for rendering.
+     * @param viewport The viewport to be used.
      */
     public MapGridSystem(
         int mapWidthInTiles,
         int mapHeightInTiles,
         float tileWidth,
         float tileHeight,
-        Camera camera
+        Viewport viewport
     ) {
         this.mapWidthInTiles = mapWidthInTiles;
         this.mapHeightInTiles = mapHeightInTiles;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        this.camera = camera;
+        this.viewport = viewport;
 
         this.shapeRenderer = new ShapeRenderer();
     }
@@ -50,22 +51,31 @@ public class MapGridSystem extends EntitySystem {
      */
     @Override
     public void update(float deltaTime) {
+        // Ensure the camera is updated
+
+        viewport.apply();
+        Camera camera = viewport.getCamera();
+        camera.update();
+
         shapeRenderer.setProjectionMatrix(camera.combined);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         shapeRenderer.setColor(1, 1, 1, 0.5f); // semi-transparent white
 
-        // Draw vertical lines
+        // Draw vertical lines with rounding to avoid sub-pixel artifacts
         for (int x = 0; x <= mapWidthInTiles; x++) {
-            float worldX = x * tileWidth;
-            shapeRenderer.line(worldX, 0, worldX, mapHeightInTiles * tileHeight);
+            float worldX = Math.round(x * tileWidth);
+            shapeRenderer.line(worldX, 0, worldX, Math.round(mapHeightInTiles * tileHeight));
         }
 
-        // Draw horizontal lines
+        // Draw horizontal lines with rounding
         for (int y = 0; y <= mapHeightInTiles; y++) {
-            float worldY = y * tileHeight;
-            shapeRenderer.line(0, worldY, mapWidthInTiles * tileWidth, worldY);
+            float worldY = Math.round(y * tileHeight);
+            shapeRenderer.line(0, worldY, Math.round(mapWidthInTiles * tileWidth), worldY);
         }
+
         shapeRenderer.end();
     }
+
 }

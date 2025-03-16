@@ -77,8 +77,11 @@ public class CameraControlSystem extends IteratingSystem {
         viewport.setCamera(camera);
 
         Camera cameraEntity = new Camera();
-        cameraEntity.add(new ZoomComponent()).add(new VelocityComponent()).add(new PositionComponent()).add(
-            new BorderComponent());
+        cameraEntity
+            .add(new ZoomComponent())
+            .add(new VelocityComponent())
+            .add(new PositionComponent())
+            .add(new BorderComponent());
         engine.addEntity(cameraEntity);
     }
 }
