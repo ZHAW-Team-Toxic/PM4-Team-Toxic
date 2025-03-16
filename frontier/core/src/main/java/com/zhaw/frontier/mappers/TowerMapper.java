@@ -12,9 +12,17 @@ import com.zhaw.frontier.components.RenderComponent;
  * - RenderComponent
  */
 public class TowerMapper {
-
+    /**
+     * Component mappers which map the position of the tower entity.
+     */
     public ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
+    /**
+     * Component mappers which map the render of the tower entity.
+     */
     public ComponentMapper<RenderComponent> rm = ComponentMapper.getFor(RenderComponent.class);
     //todo: add tower component mapper
+    /**
+     * Family which contains all components of the tower entity.
+     */
     public Family towerFamily = Family.all(PositionComponent.class, RenderComponent.class).get();
 }

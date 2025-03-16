@@ -11,21 +11,20 @@ import com.zhaw.frontier.components.map.ResourceLayerComponent;
  * The layers are the bottom layer, the decoration layer and the resource layer.
  */
 public class MapLayerMapper {
-
-    public ComponentMapper<BottomLayerComponent> bottomLayerMapper = ComponentMapper.getFor(
-        BottomLayerComponent.class
-    );
-    public ComponentMapper<DecorationLayerComponent> decorationLayerMapper = ComponentMapper.getFor(
-        DecorationLayerComponent.class
-    );
-    public ComponentMapper<ResourceLayerComponent> resourceLayerMapper = ComponentMapper.getFor(
-        ResourceLayerComponent.class
-    );
-    public Family mapLayerFamily = Family
-        .all(
-            BottomLayerComponent.class,
-            DecorationLayerComponent.class,
-            ResourceLayerComponent.class
-        )
-        .get();
+    /**
+     * Component mappers which map the bottom layer of the map.
+     */
+    public ComponentMapper<BottomLayerComponent> bottomLayerMapper = ComponentMapper.getFor(BottomLayerComponent.class);
+    /**
+     * Component mappers which map the decoration layer of the map.
+     */
+    public ComponentMapper<DecorationLayerComponent> decorationLayerMapper = ComponentMapper.getFor(DecorationLayerComponent.class);
+    /**
+     * Component mappers which map the resource layer of the map.
+     */
+    public ComponentMapper<ResourceLayerComponent> resourceLayerMapper = ComponentMapper.getFor(ResourceLayerComponent.class);
+    /**
+     * Family which contains all components of the map layers.
+     */
+    public Family mapLayerFamily = Family.all(BottomLayerComponent.class, DecorationLayerComponent.class, ResourceLayerComponent.class).get();
 }

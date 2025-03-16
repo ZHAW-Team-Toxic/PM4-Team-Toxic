@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zhaw.frontier.components.CameraComponent;
+import com.zhaw.frontier.components.BorderComponent;
+import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.VelocityComponent;
+import com.zhaw.frontier.components.ZoomComponent;
 import com.zhaw.frontier.entities.Camera;
+import com.zhaw.frontier.mappers.CameraMapper;
 import com.zhaw.frontier.subsystems.RTSInputAdapter;
 import lombok.Getter;
 
@@ -25,8 +29,7 @@ public class CameraControlSystem extends IteratingSystem {
     @Getter
     private RTSInputAdapter inputAdapter;
 
-    @Getter
-    private ComponentMapper<CameraComponent> cm = ComponentMapper.getFor(CameraComponent.class);
+    private CameraMapper cameraMapper = new CameraMapper();
 
     /**
      * Constructor. Initializes the camera control system.
@@ -39,7 +42,7 @@ public class CameraControlSystem extends IteratingSystem {
         Engine engine,
         OrthogonalTiledMapRenderer renderer
     ) {
-        super(Family.all(CameraComponent.class).get());
+        super(Family.all(ZoomComponent.class).get());
         this.viewport = viewport;
         this.engine = engine;
         this.renderer = renderer;
@@ -73,7 +76,8 @@ public class CameraControlSystem extends IteratingSystem {
         viewport.setCamera(camera);
 
         Camera cameraEntity = new Camera();
-        cameraEntity.add(new CameraComponent(camera));
+        cameraEntity.add(new ZoomComponent()).add(new VelocityComponent()).add(new PositionComponent()).add(
+            new BorderComponent());
         engine.addEntity(cameraEntity);
     }
 }
