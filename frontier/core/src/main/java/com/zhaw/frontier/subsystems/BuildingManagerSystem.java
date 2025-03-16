@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
+import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.entities.EntitiesUtils;
 import com.zhaw.frontier.entities.Map;
@@ -78,11 +79,10 @@ public class BuildingManagerSystem {
             if (checkIfTileIsBuildableOnResourceLayer(buildingPosition)) {
                 Gdx.app.log("BuildingManagerSystem", "Tile is buildable on resource layer");
                 if (!checkIfPlaceIsOccupiedByBuilding(buildingPosition)) {
+                    destroyDecorationOnTile(worldCoordinate);
+                    Gdx.app.log("BuildingManagerSystem", "Decoration destroyed at:  " + buildingPosition.position);
                     buildingEntities.add(buildingEntity);
-                    Gdx.app.log(
-                        "BuildingManagerSystem",
-                        "Building placed at: " + buildingPosition.position
-                    );
+                    Gdx.app.log("BuildingManagerSystem", "Building placed at: " + buildingPosition.position);
                     return true;
                 } else {
                     Gdx.app.log("BuildingManagerSystem", "Place is occupied by building");
@@ -101,10 +101,19 @@ public class BuildingManagerSystem {
     /**
      * Removes a building from the buildingEntities list.
      *
-     * @param buildingEntity The building to remove.
+     * @param x The x coordinate of the building to remove.
      * @return True if the building was removed, false if not.
      */
-    public boolean removeBuilding(Entity buildingEntity) {
+    public boolean removeBuilding(float x, float y) {
+        Vector2 worldCoordinate = calculateWorldCoordinate(x, y);
+        Entity buildingEntity = null;
+        for (Entity entity : buildingEntities) {
+            PositionComponent positionComponent = towerMapper.pm.get(entity);
+            if (positionComponent.position.x == worldCoordinate.x && positionComponent.position.y == worldCoordinate.y) {
+                buildingEntity = entity;
+                break;
+            }
+        }
         buildingEntities.remove(buildingEntity);
         return true;
     }
@@ -144,6 +153,12 @@ public class BuildingManagerSystem {
         Gdx.app.log("BuildingManagerSystem", "TileX: " + tileX + " TileY: " + tileY);
 
         return new Vector2(tileX, tileY);
+    }
+
+    private void destroyDecorationOnTile(Vector2 tile) {
+        DecorationLayerComponent decorationLayerComponent = mapLayerMapper.decorationLayerMapper.get(map);
+        TiledMapTileLayer decorationLayer = decorationLayerComponent.decorationLayer;
+        decorationLayer.setCell((int) tile.x, (int) tile.y, null);
     }
 
     private boolean checkIfPlaceIsOccupiedByBuilding(PositionComponent buildingToCheck) {

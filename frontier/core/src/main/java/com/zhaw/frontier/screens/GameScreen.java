@@ -57,31 +57,18 @@ public class GameScreen implements Screen {
             mapLoaderSystem = new MapLoaderSystem(Path.of("frontier_tiled_demo_test.tmx"), engine);
 
             //setup building manager system
-            buildingManagerSystem =
-            new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
+            buildingManagerSystem = new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
 
             //setup render system
-            engine.addSystem(
-                new RenderSystem(
-                    spriteBatchWrapper.getBatch(),
-                    gameWorldView,
-                    engine,
-                    renderer,
-                    mapLoaderSystem,
-                    buildingManagerSystem
-                )
-            );
+            engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine, renderer, mapLoaderSystem, buildingManagerSystem));
+
         } catch (Exception e) {
             //TODO handle exception
             e.printStackTrace();
         }
 
         // setup camera
-        CameraControlSystem cameraControlSystem = new CameraControlSystem(
-            gameWorldView,
-            engine,
-            renderer
-        );
+        CameraControlSystem cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
         engine.addSystem(cameraControlSystem);
 
         //setup grid
@@ -130,6 +117,18 @@ public class GameScreen implements Screen {
             try {
                 Tower tower = Tower.createDefaultTower();
                 buildingManagerSystem.placeBuilding(mouseX, mouseY, tower);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Keys.R)) {
+            Gdx.app.log("GameScreen", "R pressed");
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.input.getY();
+            Gdx.app.log("GameScreen", "MouseX: " + mouseX + " MouseY: " + mouseY);
+
+            try {
+                buildingManagerSystem.removeBuilding(mouseX, mouseY);
             } catch (Exception e) {
                 e.printStackTrace();
             }
