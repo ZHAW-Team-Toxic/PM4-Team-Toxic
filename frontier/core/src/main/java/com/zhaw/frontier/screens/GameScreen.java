@@ -22,7 +22,7 @@ import java.nio.file.Path;
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
  * render the game.
- * Controls the handling of user input, rendering and gamelogic during each
+ * Controls the handling of user input, rendering and game logic during each
  * render.
  */
 public class GameScreen implements Screen {
@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
         MapGridSystem mapGridSystem = new MapGridSystem(64, 64, 16, 16, gameWorldView.getCamera());
         engine.addSystem(mapGridSystem);
 
-        // create gameui
+        // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
 
@@ -94,6 +94,26 @@ public class GameScreen implements Screen {
         handleInput();
         engine.update(delta);
         updateUI();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        gameUi.update(width, height);
+        gameWorldView.update(width, height);
+    }
+
+    @Override
+    public void pause() {}
+
+    @Override
+    public void resume() {}
+
+    @Override
+    public void hide() {}
+
+    @Override
+    public void dispose() {
+        stage.dispose();
     }
 
     private void updateUI() {
@@ -133,25 +153,5 @@ public class GameScreen implements Screen {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        gameUi.update(width, height);
-        gameWorldView.update(width, height);
-    }
-
-    @Override
-    public void pause() {}
-
-    @Override
-    public void resume() {}
-
-    @Override
-    public void hide() {}
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

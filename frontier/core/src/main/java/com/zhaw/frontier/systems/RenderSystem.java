@@ -114,8 +114,8 @@ public class RenderSystem extends EntitySystem {
     //used to fix the sprite on the bottom left corner of the tile
     private Vector2 calculatePixelCoordinate(int x, int y) {
         Map map = buildingManagerSystem.getMap();
-        int tilex = x * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileWidth();
-        int tiley = y * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileHeight();
-        return new Vector2(tilex, tiley);
+        int tileX = x * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileWidth();
+        int tileY = y * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileHeight();
+        return new Vector2(tileX, tileY);
     }
 }

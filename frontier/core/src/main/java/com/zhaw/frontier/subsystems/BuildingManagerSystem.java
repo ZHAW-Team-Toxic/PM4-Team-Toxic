@@ -59,7 +59,7 @@ public class BuildingManagerSystem {
      * - The tile is buildable on the resource layer
      * - The place is not occupied by another building
      * It first translates the screen coordinates to world coordinates and then checks the conditions.
-     * Before plccing the building it calculates the position based on the pixel-coordinates (tile-coordinate * tile-width in pixels).
+     * Before placing the building it calculates the position based on the pixel-coordinates (tile-coordinate * tile-width in pixels).
      *
      * @param screenX    Raw x coordinate of the screen
      * @param screenY    Raw y coordinate of the screen
@@ -141,16 +141,12 @@ public class BuildingManagerSystem {
 
     private Vector2 calculateWorldCoordinate(float screenX, float screenY) {
         TiledMapTileLayer sampleLayer = mapLayerMapper.bottomLayerMapper.get(map).bottomLayer;
-        Gdx.app.log("BuildingManagerSystem", "tileWidth: " + sampleLayer.getTileWidth() + " tileHeight: " + sampleLayer.getTileHeight());
 
         Vector3 worldCoords = new Vector3(screenX, screenY, 0);
         viewport.getCamera().unproject(worldCoords);
-        Gdx.app.log("BuildingManagerSystem", "WorldCoords: " + worldCoords);
 
         int tileX = (int) (worldCoords.x / sampleLayer.getTileWidth());
         int tileY = (int) (worldCoords.y / sampleLayer.getTileHeight());
-
-        Gdx.app.log("BuildingManagerSystem", "TileX: " + tileX + " TileY: " + tileY);
 
         return new Vector2(tileX, tileY);
     }
@@ -178,12 +174,10 @@ public class BuildingManagerSystem {
     private boolean checkIfTileIsBuildableOnBottomLayer(PositionComponent buildingToCheck) {
         BottomLayerComponent bottomLayerComponent = mapLayerMapper.bottomLayerMapper.get(map);
         TiledMapTileLayer bottomLayer = bottomLayerComponent.bottomLayer;
-        Gdx.app.log("BuildingManagerSystem", "bottomlayer: " + bottomLayer);
         TiledMapTileLayer.Cell cell = bottomLayer.getCell(
             (int) buildingToCheck.position.x,
             (int) buildingToCheck.position.y
         );
-        Gdx.app.log("BuildingManagerSystem", "Cell: " + cell);
         if (
             cell != null &&
             cell.getTile() != null &&
@@ -202,7 +196,6 @@ public class BuildingManagerSystem {
             (int) buildingToCheck.position.x,
             (int) buildingToCheck.position.y
         );
-        Gdx.app.log("BuildingManagerSystem", "Cell: " + cell);
         return cell == null;
     }
 }

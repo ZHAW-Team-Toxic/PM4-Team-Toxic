@@ -27,9 +27,9 @@ public class CameraControlSystem extends IteratingSystem {
     private OrthographicCamera camera;
 
     @Getter
-    private RTSInputAdapter inputAdapter;
+    private final RTSInputAdapter inputAdapter;
 
-    private CameraMapper cameraMapper = new CameraMapper();
+    private final CameraMapper cameraMapper = new CameraMapper();
 
     /**
      * Constructor. Initializes the camera control system.
