@@ -15,6 +15,7 @@ buildscript {
 }
 
 plugins {
+  id 'java'
   id "org.sonarqube" version "6.0.1.5171"
 }
 
@@ -47,6 +48,11 @@ project(":test") {
 configure(subprojects) {
   apply plugin: 'java-library'
   sourceCompatibility = 21
+
+  dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+  }
 
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
   // The article can be helpful when using assets.txt in your project.

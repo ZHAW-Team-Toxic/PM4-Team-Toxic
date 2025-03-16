@@ -1,14 +1,14 @@
 package com.zhaw.frontier.entities;
 
 import com.badlogic.ashley.core.Entity;
-import com.zhaw.frontier.components.map.MapLayerComponent;
 
+/**
+ * Entity for the map.
+ */
 public class Map extends Entity {
-
+    /**
+     * Constructor.
+     * Creates a new map entity.
+     */
     public Map() {}
-
-    public Map addComponent(MapLayerComponent component) {
-        add(component);
-        return this;
-    }
 }

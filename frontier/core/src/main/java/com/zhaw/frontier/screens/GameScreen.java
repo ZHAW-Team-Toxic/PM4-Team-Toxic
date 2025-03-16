@@ -1,23 +1,23 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.components.CameraComponent;
+import com.zhaw.frontier.entities.Tower;
+import com.zhaw.frontier.subsystems.BuildingManagerSystem;
+import com.zhaw.frontier.subsystems.MapLoaderSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
-import com.zhaw.frontier.systems.MapRenderSystem;
+import com.zhaw.frontier.systems.MapGridSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchWrapper;
 
-import java.nio.file.Path;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -33,40 +33,59 @@ public class GameScreen implements Screen {
     private Stage stage;
     private Engine engine;
 
-    private OrthographicCamera camera;
+    private BuildingManagerSystem buildingManagerSystem;
+
+    private OrthogonalTiledMapRenderer renderer;
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
+        this.renderer = new OrthogonalTiledMapRenderer(null);
 
         // create view with world coordinates
         gameWorldView = new ExtendViewport(16, 9);
-        gameWorldView.getCamera().position.set(8, 4.5f, 0);
+        gameWorldView.getCamera().position.set(2, 8, 0);
+        gameWorldView.getCamera().update();
 
         // setup up ecs(entity component system)
         engine = new Engine();
-        engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine));
+
+        //setup map loader system
+        MapLoaderSystem mapLoaderSystem;
+        try {
+            mapLoaderSystem = new MapLoaderSystem("frontier_tiled_demo_test.tmx", engine);
+
+            //setup building manager system
+            buildingManagerSystem = new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
+
+            //setup render system
+            engine.addSystem(new RenderSystem(spriteBatchWrapper.getBatch(), gameWorldView, engine, renderer,
+                mapLoaderSystem, buildingManagerSystem));
+
+        }catch (Exception e){
+            //TODO handle exception
+            e.printStackTrace();
+        }
+
+        // setup camera
+        CameraControlSystem cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
+        engine.addSystem(cameraControlSystem);
+
+        //setup grid
+        MapGridSystem mapGridSystem = new MapGridSystem(64, 64, 16, 16, gameWorldView.getCamera());
+        engine.addSystem(mapGridSystem);
 
         // create gameui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
 
-        setUpGameCamera();
 
-        CameraControlSystem cameraControlSystem = new CameraControlSystem();
-        engine.addSystem(cameraControlSystem);
-        Gdx.input.setInputProcessor(cameraControlSystem);
-
-        MapRenderSystem mapRenderSystem = new MapRenderSystem(Path.of("test"), camera, engine);
-        engine.addSystem(mapRenderSystem);
-
-        /*
         var mx = new InputMultiplexer();
+        mx.addProcessor(cameraControlSystem.getInputAdapter());
         mx.addProcessor(stage);
-        //todo KEVIN vll lieber so als mit eigenem system?
-        // TODO add mouse input handler mx.addProcessor();
+        //TODO add mouse input handler mx.addProcessor();
         Gdx.input.setInputProcessor(mx);
-        */
+
 
     }
 
@@ -77,6 +96,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         handleInput();
         engine.update(delta);
         updateUI();
@@ -92,6 +112,20 @@ public class GameScreen implements Screen {
         // TODO handle other input
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
             frontierGame.switchScreen(new StartScreen(frontierGame));
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.B)) {
+            //TODO only temporary - will be handled by UI later
+            Gdx.app.log("GameScreen", "B pressed");
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.input.getY();
+            Gdx.app.log("GameScreen", "MouseX: " + mouseX + " MouseY: " + mouseY);
+
+            try {
+                Tower tower = Tower.createDefaultTower();
+                buildingManagerSystem.placeBuilding(mouseX, mouseY, tower);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -121,11 +155,5 @@ public class GameScreen implements Screen {
         stage.dispose();
     }
 
-    private void setUpGameCamera() {
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Entity cameraEntity = new Entity();
-        cameraEntity.add(new CameraComponent(camera));
-        engine.addEntity(cameraEntity);
-    }
 
 }

@@ -9,5 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * {@link com.badlogic.ashley.core.Entity}
  */
 public class AnimationComponent implements Component {
+    /**
+     * the animation to render
+     */
     public Animation<TextureRegion> animation;
 }

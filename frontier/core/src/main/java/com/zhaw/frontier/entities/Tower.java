@@ -1,22 +1,58 @@
 package com.zhaw.frontier.entities;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
-import com.zhaw.frontier.components.DamageComponent;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.ShootingRangeComponent;
+import com.zhaw.frontier.components.RenderComponent;
 
+/**
+ * Tower entity class. This class is used to create a tower entity.
+ * Current components:
+ * - PositionComponent
+ * - RenderComponent
+ *
+ *
+ */
 public class Tower extends Entity {
+    /**
+     * Constructor for the Tower entity.
+     * This constructor creates a tower entity with a position component and a render component.
+     */
+    public Tower() {
 
-    public Tower() {}
+        add(new PositionComponent());
 
-    public Tower(PositionComponent position, DamageComponent damage, ShootingRangeComponent shootingRange) {
-        add(position).add(damage).add(shootingRange);
+        RenderComponent renderComponent = new RenderComponent();
+
+        //todo change placeholder to the actual tower texture
+        Texture texture = createPlaceHolder();
+        renderComponent.sprite = new Sprite(texture);
+
+        add(renderComponent);
     }
 
-    public Tower addComponent(Component component) {
-        add(component);
-        return this;
+    /**
+     * Create a default tower.
+     * @return The default tower.
+     */
+    public static Tower createDefaultTower() {
+        return new Tower();
     }
 
+    private Texture createPlaceHolder(){
+        // Create a Pixmap with dimensions 12x12 using RGBA8888 format.
+        Pixmap pixmap = new Pixmap(12, 12, Format.RGBA8888);
+        // Set the drawing color to black.
+        pixmap.setColor(0, 0, 0, 1);
+        // Fill the entire pixmap with the black color.
+        pixmap.fill();
+        // Create a texture from the pixmap.
+        Texture texture = new Texture(pixmap);
+        // Dispose of the pixmap since it's no longer needed.
+        pixmap.dispose();
+        return texture;
+    }
 }
