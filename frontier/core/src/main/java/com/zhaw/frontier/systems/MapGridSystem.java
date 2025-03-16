@@ -77,5 +77,4 @@ public class MapGridSystem extends EntitySystem {
 
         shapeRenderer.end();
     }
-
 }

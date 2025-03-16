@@ -123,19 +123,17 @@ public class BuildingManagerSystem {
      */
     public boolean removeBuilding(float x, float y) {
         Vector2 worldCoordinate = calculateWorldCoordinate(x, y);
-        Entity buildingEntity = null;
         for (Entity entity : buildingEntities) {
             PositionComponent positionComponent = towerMapper.pm.get(entity);
             if (
                 positionComponent.position.x == worldCoordinate.x &&
                 positionComponent.position.y == worldCoordinate.y
             ) {
-                buildingEntity = entity;
-                break;
+                buildingEntities.remove(entity);
+                return true;
             }
         }
-        buildingEntities.remove(buildingEntity);
-        return true;
+        return false;
     }
 
     /**
@@ -200,7 +198,10 @@ public class BuildingManagerSystem {
             (int) buildingToCheck.position.x,
             (int) buildingToCheck.position.y
         );
-        return (boolean) cell.getTile().getProperties().get(TiledProperties.TiledTilePropertiesEnum.IS_BUILDABLE.toString());
+        return (boolean) cell
+            .getTile()
+            .getProperties()
+            .get(TiledProperties.TiledTilePropertiesEnum.IS_BUILDABLE.toString());
     }
 
     private boolean checkIfTileIsBuildableOnResourceLayer(PositionComponent buildingToCheck) {
@@ -210,9 +211,12 @@ public class BuildingManagerSystem {
             (int) buildingToCheck.position.x,
             (int) buildingToCheck.position.y
         );
-        if(cell == null) {
+        if (cell == null) {
             return true;
         }
-        return (boolean) cell.getTile().getProperties().get(TiledProperties.TiledTilePropertiesEnum.IS_BUILDABLE.toString());
+        return (boolean) cell
+            .getTile()
+            .getProperties()
+            .get(TiledProperties.TiledTilePropertiesEnum.IS_BUILDABLE.toString());
     }
 }

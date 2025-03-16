@@ -6,8 +6,7 @@ package com.zhaw.frontier.components.map;
  */
 public class TiledProperties {
 
-    public enum TiledTilePropertiesEnum{
-
+    public enum TiledTilePropertiesEnum {
         IS_BUILDABLE("isBuildable"),
         IS_TRAVERSABLE("isTraversable"),
         IS_SPAWN_POINT("isSpawnPoint");
@@ -23,5 +22,4 @@ public class TiledProperties {
             return property;
         }
     }
-
 }

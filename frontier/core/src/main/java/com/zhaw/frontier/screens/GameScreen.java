@@ -171,7 +171,7 @@ public class GameScreen implements Screen {
                 if (buildingManagerSystem.removeBuilding(mouseX, mouseY)) {
                     Gdx.app.debug("[DEBUG] - GameScreen", "Building removed");
                 } else {
-                    Gdx.app.debug("[DEBUG] - GameScreen", "Building not removed");
+                    Gdx.app.debug("[DEBUG] - GameScreen", "There was no building to remove");
                 }
             } catch (Exception e) {
                 Gdx.app.error("[ERROR] - GameScreen", "Error removing building");
