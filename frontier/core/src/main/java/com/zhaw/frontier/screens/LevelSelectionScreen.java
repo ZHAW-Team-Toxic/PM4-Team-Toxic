@@ -13,6 +13,7 @@ import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class LevelSelectionScreen extends ScreenAdapter {
+
     private FrontierGame frontierGame;
     private SpriteBatchInterface spriteBatchWrapper;
     private ExtendViewport background;
