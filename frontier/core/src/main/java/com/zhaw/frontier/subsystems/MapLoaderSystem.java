@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
+import com.zhaw.frontier.entities.Map;
 import com.zhaw.frontier.exceptions.MapLoadingException;
 import java.nio.file.Path;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class MapLoaderSystem {
     private TiledMap map;
 
     @Getter
-    private com.zhaw.frontier.entities.Map mapEntity;
+    private Map mapEntity;
 
     /**
      * Constructor. Initializes the map loader system.

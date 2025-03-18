@@ -19,6 +19,7 @@ public class MapGridSystem extends EntitySystem {
     private final Viewport viewport;
 
     private final ShapeRenderer shapeRenderer;
+    private Camera camera;
 
     /**
      * Constructor for the MapGridSystem.
@@ -54,7 +55,7 @@ public class MapGridSystem extends EntitySystem {
         // Ensure the camera is updated
 
         viewport.apply();
-        Camera camera = viewport.getCamera();
+        camera = viewport.getCamera();
         camera.update();
 
         shapeRenderer.setProjectionMatrix(camera.combined);

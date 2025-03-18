@@ -3,7 +3,6 @@ package com.zhaw.frontier.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -18,6 +17,7 @@ import com.zhaw.frontier.mappers.MapLayerMapper;
 import com.zhaw.frontier.mappers.TowerMapper;
 import com.zhaw.frontier.subsystems.BuildingManagerSystem;
 import com.zhaw.frontier.subsystems.MapLoaderSystem;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
  * This class is responsible for rendering the map and all entities on it.
@@ -27,7 +27,7 @@ import com.zhaw.frontier.subsystems.MapLoaderSystem;
  */
 public class RenderSystem extends EntitySystem {
 
-    private final SpriteBatch batch;
+    private final SpriteBatchInterface batch;
     private final Viewport viewport;
     private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
@@ -48,7 +48,7 @@ public class RenderSystem extends EntitySystem {
      * @param buildingManagerSystem The building manager system to be used.
      */
     public RenderSystem(
-        SpriteBatch batch,
+        SpriteBatchInterface batch,
         Viewport viewport,
         Engine engine,
         OrthogonalTiledMapRenderer renderer,

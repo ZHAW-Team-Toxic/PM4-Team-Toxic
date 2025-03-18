@@ -10,7 +10,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
-import com.zhaw.frontier.components.map.TiledProperties;
+import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.entities.EntitiesUtils;
 import com.zhaw.frontier.entities.Map;
 import com.zhaw.frontier.entities.Tower;
@@ -73,46 +73,48 @@ public class BuildingManagerSystem {
         Entity buildingEntity = entityMapper(entityType);
         PositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
         buildingPosition.position = worldCoordinate;
-        if (checkIfTileIsBuildableOnBottomLayer(buildingPosition)) {
-            Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is buildable on bottom layer");
-            if (checkIfTileIsBuildableOnResourceLayer(buildingPosition)) {
-                Gdx.app.debug(
-                    "[DEBUG] - BuildingManagerSystem",
-                    "Tile is buildable on resource layer"
-                );
-                if (!checkIfPlaceIsOccupiedByBuilding(buildingPosition)) {
-                    destroyDecorationOnTile(worldCoordinate);
-                    Gdx.app.debug(
-                        "[DEBUG] - BuildingManagerSystem",
-                        "Destroy decoration on tile: " + worldCoordinate
-                    );
-                    buildingEntities.add(buildingEntity);
-                    Gdx.app.debug(
-                        "[DEBUG] - BuildingManagerSystem",
-                        "Building placed on tile: " + worldCoordinate
-                    );
-                    return true;
-                } else {
-                    Gdx.app.debug(
-                        "[DEBUG] - BuildingManagerSystem",
-                        "Tile is occupied by another building"
-                    );
-                    return false;
-                }
-            } else {
-                Gdx.app.debug(
-                    "[DEBUG] - BuildingManagerSystem",
-                    "Tile is not buildable on resource layer"
-                );
-                return false;
-            }
-        } else {
+
+        // Check if the tile is buildable on the bottom layer.
+        if (!checkIfTileIsBuildableOnBottomLayer(buildingPosition)) {
             Gdx.app.debug(
                 "[DEBUG] - BuildingManagerSystem",
                 "Tile is not buildable on bottom layer"
             );
             return false;
         }
+        Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is buildable on bottom layer");
+
+        // Check if the tile is buildable on the resource layer.
+        if (!checkIfTileIsBuildableOnResourceLayer(buildingPosition)) {
+            Gdx.app.debug(
+                "[DEBUG] - BuildingManagerSystem",
+                "Tile is not buildable on resource layer"
+            );
+            return false;
+        }
+        Gdx.app.debug("[DEBUG] - BuildingManagerSystem", "Tile is buildable on resource layer");
+
+        // Check if the place is occupied by another building.
+        if (checkIfPlaceIsOccupiedByBuilding(buildingPosition)) {
+            Gdx.app.debug(
+                "[DEBUG] - BuildingManagerSystem",
+                "Tile is occupied by another building"
+            );
+            return false;
+        }
+
+        // Proceed with placing the building.
+        destroyDecorationOnTile(worldCoordinate);
+        Gdx.app.debug(
+            "[DEBUG] - BuildingManagerSystem",
+            "Destroy decoration on tile: " + worldCoordinate
+        );
+        buildingEntities.add(buildingEntity);
+        Gdx.app.debug(
+            "[DEBUG] - BuildingManagerSystem",
+            "Building placed on tile: " + worldCoordinate
+        );
+        return true;
     }
 
     /**
@@ -158,10 +160,10 @@ public class BuildingManagerSystem {
     }
 
     private Vector2 calculateWorldCoordinate(float screenX, float screenY) {
-        int ONLY_2D = 0;
+        int HAS_TO_BE_ZERO_FOR_2D_GAMES = 0;
         TiledMapTileLayer sampleLayer = mapLayerMapper.bottomLayerMapper.get(map).bottomLayer;
 
-        Vector3 worldCoords = new Vector3(screenX, screenY, ONLY_2D);
+        Vector3 worldCoords = new Vector3(screenX, screenY, HAS_TO_BE_ZERO_FOR_2D_GAMES);
         viewport.getCamera().unproject(worldCoords);
 
         int tileX = (int) (worldCoords.x / sampleLayer.getTileWidth());
@@ -201,7 +203,7 @@ public class BuildingManagerSystem {
         return (boolean) cell
             .getTile()
             .getProperties()
-            .get(TiledProperties.TiledTilePropertiesEnum.IS_BUILDABLE.toString());
+            .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
     }
 
     private boolean checkIfTileIsBuildableOnResourceLayer(PositionComponent buildingToCheck) {
@@ -217,6 +219,6 @@ public class BuildingManagerSystem {
         return (boolean) cell
             .getTile()
             .getProperties()
-            .get(TiledProperties.TiledTilePropertiesEnum.IS_BUILDABLE.toString());
+            .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
     }
 }

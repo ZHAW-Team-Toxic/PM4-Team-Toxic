@@ -66,7 +66,7 @@ public class GameScreen implements Screen {
             //setup render system
             engine.addSystem(
                 new RenderSystem(
-                    spriteBatchWrapper.getBatch(),
+                    spriteBatchWrapper,
                     gameWorldView,
                     engine,
                     renderer,
