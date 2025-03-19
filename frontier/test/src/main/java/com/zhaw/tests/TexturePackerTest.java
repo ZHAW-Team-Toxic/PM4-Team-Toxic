@@ -10,15 +10,24 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+/**
+ * Test class for the texture packer.
+ */
 @ExtendWith(GdxExtension.class)
 public class TexturePackerTest {
 
+    /**
+     * Test if the texture atlas file exists.
+     */
     @Test
     void testLoadTextureAtlas() {
         FileHandle fileHandle = Gdx.files.internal("packed/textures.atlas");
         assertTrue(fileHandle.exists());
     }
 
+    /**
+     * Test if the texture atlas file contains the donkey texture.
+     */
     @Test
     void testLoadDonkey() {
         AssetManager assetManager = new AssetManager();
