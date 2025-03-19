@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.subsystems.MapLoaderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import java.nio.file.Path;
 
 /**
  * Displays a loading screen while assets are loaded by the AssetLoader.
@@ -19,18 +21,25 @@ public class LoadingScreen extends ScreenAdapter {
     private AssetManager assetManager;
     private SpriteBatchInterface batch;
     private BitmapFont font;
+    private final MapLoaderSystem mapLoaderSystem;
 
     public LoadingScreen(FrontierGame game) {
         this.game = game;
         this.assetManager = game.getAssetManager();
         this.batch = game.getBatch();
         this.font = new BitmapFont();
+        this.mapLoaderSystem = new MapLoaderSystem();
     }
 
     @Override
     public void show() {
         // Add new assets here
         assetManager.load("libgdx.png", Texture.class);
+        try {
+            mapLoaderSystem.loadMap(assetManager, Path.of("TMX/frontier_testmap.tmx"));
+        } catch (Exception e) {
+            Gdx.app.error("[ERROR] - LoadingScreen", "Error loading map");
+        }
     }
 
     @Override

@@ -18,7 +18,6 @@ import com.zhaw.frontier.systems.CameraControlSystem;
 import com.zhaw.frontier.systems.MapGridSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
-import java.nio.file.Path;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -54,30 +53,24 @@ public class GameScreen implements Screen {
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-        //setup map loader system
-        MapLoaderSystem mapLoaderSystem;
-        try {
-            mapLoaderSystem = new MapLoaderSystem(Path.of("TMX/frontier_testmap.tmx"), engine);
+        //set-up Map
+        MapLoaderSystem.getInstance().initMapLayerEntities(engine);
 
-            //setup building manager system
-            buildingManagerSystem =
-            new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
+        //setup building manager system
+        buildingManagerSystem =
+        new BuildingManagerSystem(MapLoaderSystem.getInstance().getMapEntity(), gameWorldView);
 
-            //setup render system
-            engine.addSystem(
-                new RenderSystem(
-                    spriteBatchWrapper,
-                    gameWorldView,
-                    engine,
-                    renderer,
-                    mapLoaderSystem,
-                    buildingManagerSystem
-                )
-            );
-        } catch (Exception e) {
-            Gdx.app.error("[ERROR] - GameScreen", "Error loading map");
-            //TODO try something else?
-        }
+        //setup render system
+        engine.addSystem(
+            new RenderSystem(
+                spriteBatchWrapper,
+                gameWorldView,
+                engine,
+                renderer,
+                MapLoaderSystem.getInstance(),
+                buildingManagerSystem
+            )
+        );
 
         // setup camera
         CameraControlSystem cameraControlSystem = new CameraControlSystem(
