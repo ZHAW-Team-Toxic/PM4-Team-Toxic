@@ -1,7 +1,6 @@
 project(":test") {
     apply plugin: "java"
 
-    sourceSets.test.java.srcDirs = ["src/"]
 
     dependencies {
         /**
@@ -53,9 +52,7 @@ project(":test") {
 
     sourceSets {
         test {
-            resources {
-                srcDir '../assets'  // Point to the external assets directory
-            }
+          java.srcDirs = ["src/main/java"]
         }
     }
 }
