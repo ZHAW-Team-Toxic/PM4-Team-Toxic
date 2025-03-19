@@ -1,0 +1,162 @@
+package com.zhaw.tests;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.entities.Tower;
+import com.zhaw.frontier.subsystems.BuildingManagerSystem;
+import com.zhaw.frontier.subsystems.MapLoaderSystem;
+import java.nio.file.Paths;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+/**
+ * Test class for the BuildingManagerSystem.
+ * Tests the placement of buildings on the map.
+ * TODO make tests work
+ */
+@ExtendWith(GdxExtension.class)
+public class BuildingManagerTest {
+
+    private OrthogonalTiledMapRenderer renderer;
+    private Engine engine;
+    private ExtendViewport gameWorldView;
+
+    private MapLoaderSystem mapLoaderSystem;
+    private BuildingManagerSystem buildingManagerSystem;
+
+    /**
+     * Set up the test environment.
+     * Initialize the engine, map loader system, building manager system, and renderer.
+     * Load a test map for the building manager system.
+     */
+    @BeforeEach
+    public void setUp() {
+        this.engine = new Engine();
+
+        gameWorldView = new ExtendViewport(16, 9);
+        gameWorldView.getCamera().position.set(2, 8, 0);
+        gameWorldView.getCamera().update();
+
+        try {
+            // Ensure the path is correct. Adjust if needed. TODO make a map to test with
+
+            String mapPath = "frontier_map_for_tests.tmx";
+            FileHandle fileHandle = Gdx.files.internal(mapPath);
+            assertTrue(fileHandle.exists(), "Map file should exist");
+
+            mapLoaderSystem = new MapLoaderSystem(Paths.get(mapPath), engine);
+            // For testing purposes, you may want to use a map where you can control tile types.
+            buildingManagerSystem =
+            new BuildingManagerSystem(mapLoaderSystem.getMapEntity(), gameWorldView);
+            renderer = new OrthogonalTiledMapRenderer(mapLoaderSystem.getMap());
+        } catch (Exception e) {
+            fail("Failed to load map or initialize systems: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Test if a building can be placed on a buildable tile.
+     * Assumes that tile at (4,4) is configured as buildable (e.g., Grass tile).
+     */
+    @Test
+    public void testBuildingPlacementOnBuildableTile() {
+        Vector2 position = new Vector2(8, 55);
+        boolean buildingPlaced = tryPlaceTower(position.x, position.y);
+
+        assertTrue(buildingPlaced, "Expected building to be placed on buildable tile.");
+        assertEquals(
+            1,
+            buildingManagerSystem.getBuildingEntities().size(),
+            "Building entity count should be 1."
+        );
+
+        // Assuming the tower we placed is the first entity added.
+        Tower placedTower = (Tower) buildingManagerSystem.getBuildingEntities().get(0);
+        assertEquals(
+            position,
+            placedTower.getComponent(PositionComponent.class).position,
+            "Tower position should match the placement coordinates."
+        );
+    }
+
+    /**
+     * Test if a building cannot be placed on a non-buildable tile.
+     * Assumes that tile at (5,5) is configured as non-buildable (e.g., Water or Desert tile).
+     */
+    @Test
+    public void testBuildingNotPlacedOnNonBuildableTile() {
+        Vector2 position = new Vector2(21, 47);
+        boolean buildingPlaced = tryPlaceTower(position.x, position.y);
+
+        assertFalse(buildingPlaced, "Expected building NOT to be placed on non-buildable tile.");
+    }
+
+    /**
+     * Test if a building cannot be placed on a resource tile.
+     * Assumes that tile at (6,6) is configured as a resource tile (e.g., Wood, Stone, or Iron).
+     */
+    @Test
+    public void testBuildingNotPlacedOnResourceTile() {
+        Vector2 position = new Vector2(33, 39);
+        boolean buildingPlaced = tryPlaceTower(position.x, position.y);
+
+        assertFalse(buildingPlaced, "Expected building NOT to be placed on a resource tile.");
+    }
+
+    /**
+     * Test if a building cannot be placed on an occupied tile.
+     * First place a building on (7,7) and then try placing another at the same location.
+     */
+    @Test
+    public void testBuildingNotPlacedOnOccupiedTile() {
+        Vector2 position = new Vector2(10, 10);
+        // Place the first tower; expect success.
+        boolean firstPlacement = tryPlaceTower(position.x, position.y);
+        assertTrue(firstPlacement, "First building placement should succeed on an empty tile.");
+
+        // Attempt to place another tower on the same tile.
+        boolean secondPlacement = tryPlaceTower(position.x, position.y);
+        assertFalse(secondPlacement, "Second building placement should fail on an occupied tile.");
+
+        // Verify only one building exists at that position.
+        assertEquals(
+            1,
+            buildingManagerSystem.getBuildingEntities().size(),
+            "Only one building should be present on the tile."
+        );
+    }
+
+    /**
+     * Helper method to try placing a default tower at the given coordinates.
+     */
+    private boolean tryPlaceTower(float x, float y) {
+        Tower tower = Tower.createDefaultTower();
+        try {
+            return buildingManagerSystem.placeBuilding(x, y, tower);
+        } catch (Exception e) {
+            Gdx.app.error(
+                "[ERROR] - BuildingManagerTest",
+                "Error placing building: " + e.getMessage()
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Tear down the test environment.
+     */
+    @AfterEach
+    public void tearDown() {
+        this.renderer.dispose();
+        this.engine.removeAllEntities();
+    }
+}
