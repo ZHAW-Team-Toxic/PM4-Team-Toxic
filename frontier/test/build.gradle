@@ -42,6 +42,11 @@ project(":test") {
         //testImplementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         //testImplementation "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:$dialogsVersion"
         //testImplementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
+
+        //TODO: Added by Fezzsack for TexturePacker
+        implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+        //TODO: Added by Fezzsack for TexturePacker
     }
     test {
         useJUnitPlatform()
