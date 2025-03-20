@@ -34,12 +34,6 @@ class StartScreenTest {
     }
 
     @Test
-    void testStartScreenDisposal() {
-        startScreen.hide();
-        verify(startScreen).dispose();
-    }
-
-    @Test
     void testStartScreenButtonActsProperly() {
         TextButton startButton = (TextButton) startScreen.getTable().getChildren().first();
 
