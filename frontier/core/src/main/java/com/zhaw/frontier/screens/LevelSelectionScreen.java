@@ -56,11 +56,6 @@ public class LevelSelectionScreen extends ScreenAdapter {
     }
 
     @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
     public void dispose() {
         stage.dispose();
     }
