@@ -1,22 +1,27 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
-public class StartScreen implements Screen {
+public class StartScreen extends ScreenAdapter {
 
     private FrontierGame frontierGame;
     private SpriteBatchInterface spriteBatchWrapper;
     private ExtendViewport background;
     private ScreenViewport menu;
     private Stage stage;
+    private Skin skin;
 
     public StartScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -28,35 +33,68 @@ public class StartScreen implements Screen {
         menu = new ScreenViewport();
         stage = new Stage(menu, spriteBatchWrapper.getBatch());
         Gdx.input.setInputProcessor(stage);
-    }
 
-    @Override
-    public void show() {}
+        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        TextButton startButton = new TextButton("Start", skin);
+        TextButton loadButton = new TextButton("Load", skin);
+        TextButton exitButton = new TextButton("Exit", skin);
+
+        startButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    frontierGame.switchScreen(new LevelSelectionScreen(frontierGame));
+                }
+            }
+        );
+
+        loadButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("Loading...");
+                }
+            }
+        );
+
+        exitButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.exit();
+                }
+            }
+        );
+
+        table.add(startButton).pad(10).row();
+        table.add(loadButton).pad(10).row();
+        table.add(exitButton).pad(10).row();
+    }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1); // Red, Green, Blue, Alpha (1,0,0,1) = Red
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-            frontierGame.switchScreen(new GameScreen(frontierGame));
-        }
+        stage.act(delta);
+        stage.draw();
     }
-
-    @Override
-    public void resize(int width, int height) {}
-
-    @Override
-    public void pause() {}
-
-    @Override
-    public void resume() {}
-
-    @Override
-    public void hide() {}
 
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Table getTable() {
+        return (Table) stage.getActors().first();
     }
 }
