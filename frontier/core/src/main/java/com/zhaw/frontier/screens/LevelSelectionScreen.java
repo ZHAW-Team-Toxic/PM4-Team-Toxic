@@ -32,7 +32,7 @@ public class LevelSelectionScreen extends ScreenAdapter {
         stage = new Stage(menu, spriteBatchWrapper.getBatch());
         Gdx.input.setInputProcessor(stage);
 
-        skin = new Skin(Gdx.files.internal("skins/skin.json"));
+        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
 
         Table table = new Table();
         table.setFillParent(true);
