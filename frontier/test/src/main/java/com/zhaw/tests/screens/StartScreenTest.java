@@ -1,5 +1,6 @@
 package com.zhaw.tests.screens;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -31,15 +32,13 @@ class StartScreenTest {
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
         mockSkin = mock(Skin.class);
-        mockAssetManager = mock(AssetManager.class);
+        mockAssetManager = new AssetManager();
+        mockAssetManager.load("skins/skin.json", Skin.class);
+        mockAssetManager.finishLoading();
 
         when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
         when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
         when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
-        when(mockAssetManager.get("skins/skin.json", Skin.class)).thenReturn(mockSkin);
-
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        when(mockSkin.get(TextButton.TextButtonStyle.class)).thenReturn(textButtonStyle);
 
         startScreen = spy(new StartScreen(mockGame));
     }
