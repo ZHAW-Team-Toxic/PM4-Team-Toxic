@@ -38,6 +38,9 @@ class StartScreenTest {
         when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
         when(mockAssetManager.get("skins/skin.json", Skin.class)).thenReturn(mockSkin);
 
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        when(mockSkin.get(TextButton.TextButtonStyle.class)).thenReturn(textButtonStyle);
+
         startScreen = spy(new StartScreen(mockGame));
     }
 
