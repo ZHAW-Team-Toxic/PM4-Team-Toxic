@@ -24,14 +24,12 @@ class StartScreenTest {
     private StartScreen startScreen;
     private SpriteBatchInterface mockSpriteBatchWrapper;
     private AssetManager mockAssetManager;
-    private Skin mockSkin;
 
     @BeforeEach
     void setUp() {
         mockGame = mock(FrontierGame.class);
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
-        mockSkin = mock(Skin.class);
         mockAssetManager = new AssetManager();
         mockAssetManager.load("skins/skin.json", Skin.class);
         mockAssetManager.finishLoading();
