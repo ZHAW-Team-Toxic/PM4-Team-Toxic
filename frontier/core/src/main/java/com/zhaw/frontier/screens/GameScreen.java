@@ -20,6 +20,7 @@ import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
@@ -138,11 +139,15 @@ public class GameScreen implements Screen {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
+        BuildingMenuUi buildingMenuUi = new BuildingMenuUi(stage, frontierGame.getAssetManager());
 
         var mx = new InputMultiplexer();
         mx.addProcessor(cameraControlSystem.getInputAdapter());
         mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
+        mx.addProcessor(buildingMenuUi.getInputProcessor());
+
+        // TODO add mouse input handler mx.addProcessor();
         Gdx.input.setInputProcessor(mx);
     }
 
