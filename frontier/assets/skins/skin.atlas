@@ -165,6 +165,20 @@ Iron
   orig: 32, 32
   offset: 0, 0
   index: -1
+KingthingsCalligraphica
+  rotate: false
+  xy: 1027, 1222
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+MedievalSharp
+  rotate: false
+  xy: 515, 196
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
 Pickaxe
   rotate: false
   xy: 1029, 1131
@@ -263,7 +277,7 @@ ailment_time
   orig: 31, 29
   offset: 0, 0
   index: -1
-ArchivoBlack
+build_menu
   rotate: false
   xy: 1, 710
   size: 512, 512

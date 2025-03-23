@@ -15,10 +15,15 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.input.GameInputProcessor;
-import com.zhaw.frontier.systems.*;
-import com.zhaw.frontier.ui.BaseUI;
-import com.zhaw.frontier.util.ButtonClickObserver;
-import com.zhaw.frontier.util.GameMode;
+import com.zhaw.frontier.systems.BuildingManagerSystem;
+import com.zhaw.frontier.systems.CameraControlSystem;
+import com.zhaw.frontier.systems.EnemyManagementSystem;
+import com.zhaw.frontier.systems.IdleBehaviourSystem;
+import com.zhaw.frontier.systems.MapLoader;
+import com.zhaw.frontier.systems.MovementSystem;
+import com.zhaw.frontier.systems.PatrolBehaviourSystem;
+import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
@@ -154,6 +159,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
+        BuildingMenuUi buildingMenuUi = new BuildingMenuUi(stage, frontierGame.getAssetManager());
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
@@ -167,6 +173,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
         mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
         mx.addProcessor(baseUI.createInputAdapter(engine));
+        mx.addProcessor(buildingMenuUi.getInputProcessor());
+
+        // TODO add mouse input handler mx.addProcessor();
         Gdx.input.setInputProcessor(mx);
     }
 
