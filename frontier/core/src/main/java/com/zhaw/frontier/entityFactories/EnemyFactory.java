@@ -2,15 +2,15 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
-import java.util.*;
+import java.util.EnumMap;
 
 /**
  * Factory class for creating enemy entities in the game.
@@ -38,8 +38,8 @@ public class EnemyFactory {
      * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
-    public static Entity createPatrolEnemy(float x, float y, AssetManager assetManager) {
-        Entity enemy = createBaseEnemy(x, y, assetManager);
+    public static Entity createPatrolEnemy(float x, float y) {
+        Entity enemy = createBaseEnemy(x, y);
         enemy.add(new PatrolBehaviourComponent(10f));
         return enemy;
     }
@@ -51,18 +51,17 @@ public class EnemyFactory {
      * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
-    public static Entity createIdleEnemy(float x, float y, AssetManager assetManager) {
-        Entity enemy = createBaseEnemy(x, y, assetManager);
+    public static Entity createIdleEnemy(float x, float y) {
+        Entity enemy = createBaseEnemy(x, y);
         enemy.add(new IdleBehaviourComponent());
         return enemy;
     }
 
-    private static void initializeOrcAnimations(AssetManager assetManager) {
+    private static void initializeOrcAnimations() {
         if (sharedAnimations.isEmpty()) {
-            TextureAtlas atlas = assetManager.get(
-                "packed/enemies/enemyAtlas.atlas",
-                TextureAtlas.class
-            );
+            TextureAtlas atlas = AssetManagerInstance
+                .getManager()
+                .get("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
 
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN,
@@ -163,25 +162,19 @@ public class EnemyFactory {
         }
     }
 
-    private static Entity createBaseEnemy(float x, float y, AssetManager assetManager) {
+    private static Entity createBaseEnemy(float x, float y) {
         Entity enemy = new Entity();
 
         // Position & Bewegung
-        PositionComponent position = new PositionComponent();
-        position.basePosition.set(x, y);
-        position.widthInTiles = 1;
-        position.heightInTiles = 1;
+        PositionComponent position = new PositionComponent(x, y, 1, 1);
 
         VelocityComponent velocity = new VelocityComponent();
 
         // Render-Komponente mit LayeredSprites
-        RenderComponent render = new RenderComponent();
-        render.renderType = RenderComponent.RenderType.ENEMY;
-        render.widthInTiles = 1;
-        render.heightInTiles = 1;
+        RenderComponent render = new RenderComponent(RenderComponent.RenderType.ENEMY, 10, 1, 1);
 
         // Animationen
-        initializeOrcAnimations(assetManager);
+        initializeOrcAnimations();
         EnemyAnimationComponent enemyAnimation = new EnemyAnimationComponent();
         enemyAnimation.animations = sharedAnimations;
 
@@ -196,9 +189,8 @@ public class EnemyFactory {
             TileOffset offset = new TileOffset(0, 0); // Basis-Layer
             render.sprites.put(offset, new TextureRegion(firstFrame));
         } else {
-            Gdx.app.error("EnemyFactory", "Kein erstes Frame gefunden für WALK_DOWN");
+            Gdx.app.error("EnemyFactory", "No first frame found for WALK_DOWN");
         }
-        render.zIndex = 10;
 
         AnimationQueueComponent queue = new AnimationQueueComponent();
         enemy.add(queue);

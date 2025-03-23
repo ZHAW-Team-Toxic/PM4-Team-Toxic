@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +21,9 @@ public class EnemyFactoryTest {
 
     @BeforeEach
     void setUp() {
-        assetManager = new AssetManager();
+        assetManager = AssetManagerInstance.getManager();
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
+        assetManager.load("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
         assetManager.finishLoading();
     }
 
@@ -57,7 +59,7 @@ public class EnemyFactoryTest {
         float x = 10f;
         float y = 20f;
 
-        Entity enemy = createMockEnemy(x, y);
+        Entity enemy = EnemyFactory.createIdleEnemy(x, y);
 
         // Verify PositionComponent
         PositionComponent position = enemy.getComponent(PositionComponent.class);

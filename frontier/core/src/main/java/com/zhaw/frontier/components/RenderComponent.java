@@ -32,4 +32,13 @@ public class RenderComponent implements Component {
      */
     public int widthInTiles = 1;
     public int heightInTiles = 1;
+
+    public RenderComponent() {}
+
+    public RenderComponent(RenderType renderType, int zIndex, int widthInTiles, int heightInTiles) {
+        this.renderType = renderType;
+        this.zIndex = zIndex;
+        this.widthInTiles = widthInTiles;
+        this.heightInTiles = heightInTiles;
+    }
 }
