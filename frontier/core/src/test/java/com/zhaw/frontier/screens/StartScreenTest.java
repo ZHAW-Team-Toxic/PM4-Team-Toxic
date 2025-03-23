@@ -1,14 +1,15 @@
 package com.zhaw.frontier.screens;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,20 +22,17 @@ class StartScreenTest {
     private SpriteBatch mockBatch;
     private StartScreen startScreen;
     private SpriteBatchInterface mockSpriteBatchWrapper;
-    private AssetManager mockAssetManager;
 
     @BeforeEach
     void setUp() {
         mockGame = mock(FrontierGame.class);
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
-        mockAssetManager = new AssetManager();
-        mockAssetManager.load("skins/skin.json", Skin.class);
-        mockAssetManager.finishLoading();
+        AssetManagerInstance.getManager().load("skins/skin.json", Skin.class);
+        AssetManagerInstance.getManager().finishLoading();
 
         when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
         when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
-        when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
 
         startScreen = spy(new StartScreen(mockGame));
     }

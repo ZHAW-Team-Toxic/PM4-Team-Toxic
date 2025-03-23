@@ -91,7 +91,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingWood() {
-        Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
+        Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine, 0, 0);
         building.getComponent(PositionComponent.class).position.x = tileToScreenX(4);
         building.getComponent(PositionComponent.class).position.y = tileToScreenY(2);
         building
@@ -122,7 +122,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingStone() {
-        Entity building = ResourceBuildingFactory.stoneResourceBuilding(testEngine);
+        Entity building = ResourceBuildingFactory.stoneResourceBuilding(testEngine, 0, 0);
         building.getComponent(PositionComponent.class).position.x = tileToScreenX(2);
         building.getComponent(PositionComponent.class).position.y = tileToScreenY(4);
         building
@@ -153,7 +153,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingIron() {
-        Entity building = ResourceBuildingFactory.ironResourceBuilding(testEngine);
+        Entity building = ResourceBuildingFactory.ironResourceBuilding(testEngine, 0, 0);
         building.getComponent(PositionComponent.class).position.x = tileToScreenX(6);
         building.getComponent(PositionComponent.class).position.y = tileToScreenY(4);
         building
@@ -184,7 +184,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingWoodShouldNotBeCollected() {
-        Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
+        Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine, 0, 0);
         building.getComponent(PositionComponent.class).position.x = tileToScreenX(4);
         building.getComponent(PositionComponent.class).position.y = tileToScreenY(4);
         building

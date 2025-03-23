@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.ui.PauseScreenUI;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 
 /**
  * Shows a pause screen with options to resume, save, or save and exit the game.
@@ -27,7 +28,7 @@ public class PauseScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.stage = new Stage(new ExtendViewport(1920, 1080, new OrthographicCamera()));
-        this.skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        this.skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         stage.clear();
 
         new PauseScreenUI(stage, skin, this::resumeGame, this::saveGame, this::exitGame);

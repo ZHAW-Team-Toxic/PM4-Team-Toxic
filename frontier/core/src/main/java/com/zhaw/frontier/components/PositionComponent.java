@@ -10,4 +10,11 @@ public class PositionComponent implements Component {
      * The position of the entity.
      */
     public Vector2 position = new Vector2();
+
+    public PositionComponent() {}
+
+    public PositionComponent(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
+    }
 }

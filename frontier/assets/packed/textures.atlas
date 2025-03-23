@@ -1,5 +1,18 @@
 
 textures.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+building-menu/def_icon
+  rotate: false
+  xy: 2, 2
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+textures2.png
 size: 512, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -19,7 +32,7 @@ demo/libgdx
   offset: 0, 0
   index: -1
 
-textures2.png
+textures3.png
 size: 2048, 1024
 format: RGBA8888
 filter: Nearest, Nearest
