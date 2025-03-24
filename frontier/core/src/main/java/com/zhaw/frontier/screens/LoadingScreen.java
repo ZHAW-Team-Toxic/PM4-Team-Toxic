@@ -30,8 +30,6 @@ public class LoadingScreen extends ScreenAdapter {
         this.batch = game.getBatch();
         this.font = new BitmapFont();
         this.mapLoaderSystem = new MapLoader();
-
-        assetManager.load("skins/skin.json", Skin.class);
     }
 
     @Override
@@ -48,7 +46,7 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if (assetManager.update()) {
-            game.switchScreen(new StartScreen(game));
+            game.switchScreen(new GameScreen(game));
         }
 
         float progress = assetManager.getProgress();

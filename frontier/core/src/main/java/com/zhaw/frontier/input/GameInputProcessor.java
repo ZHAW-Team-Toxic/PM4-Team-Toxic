@@ -42,7 +42,6 @@ public class GameInputProcessor extends InputAdapter {
      * <p>
      * Supported key actions:
      * <ul>
-     *   <li>{@code ENTER}: Switches to the start screen.</li>
      *   <li>{@code B}: Places a tower at the current mouse coordinates.</li>
      *   <li>{@code N}: Places a wall at the current mouse coordinates.</li>
      *   <li>{@code M}: Places a resource building at the current mouse coordinates.</li>
@@ -55,11 +54,6 @@ public class GameInputProcessor extends InputAdapter {
      */
     @Override
     public boolean keyDown(int keycode) {
-        // Switch screen when ENTER is pressed.
-        if (keycode == Input.Keys.ENTER) {
-            frontierGame.switchScreen(new StartScreen(frontierGame));
-            return true;
-        }
 
         // Retrieve the BuildingManagerSystem from the engine.
         BuildingManagerSystem buildingManagerSystem = engine.getSystem(BuildingManagerSystem.class);
