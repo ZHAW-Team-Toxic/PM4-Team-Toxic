@@ -34,13 +34,27 @@ public class BuildingPlacer {
      *
      */
     boolean placeBuilding(Entity entityType, TiledMapTileLayer sampleLayer) {
-        BuildingPositionComponent buildingPositionComponent = entityType.getComponent(BuildingPositionComponent.class);
-        Vector2 worldCoordinate = BuildingUtils.calculateWorldCoordinate(viewport, sampleLayer, buildingPositionComponent.position.x, buildingPositionComponent.position.y);
+        BuildingPositionComponent buildingPositionComponent = entityType.getComponent(
+            BuildingPositionComponent.class
+        );
+        Vector2 worldCoordinate = BuildingUtils.calculateWorldCoordinate(
+            viewport,
+            sampleLayer,
+            buildingPositionComponent.position.x,
+            buildingPositionComponent.position.y
+        );
         int worldCoordinateX = (int) worldCoordinate.x;
         int worldCoordinateY = (int) worldCoordinate.y;
         buildingPositionComponent.position.x = worldCoordinateX;
         buildingPositionComponent.position.y = worldCoordinateY;
-        Gdx.app.debug("[DEBUG] - BuildingPlacer", "Checking if tile is buildable on coordinates: " + worldCoordinateX + " x " + worldCoordinateY + " y");
+        Gdx.app.debug(
+            "[DEBUG] - BuildingPlacer",
+            "Checking if tile is buildable on coordinates: " +
+            worldCoordinateX +
+            " x " +
+            worldCoordinateY +
+            " y"
+        );
 
         if (!checkIfTileIsBuildableOnBottomLayer(engine, worldCoordinateX, worldCoordinateY)) {
             Gdx.app.debug("[DEBUG] - BuildingPlacer", "Tile is not buildable on bottom layer.");
@@ -57,38 +71,60 @@ public class BuildingPlacer {
             return false;
         }
 
-        Gdx.app.debug("[DEBUG] - BuildingPlacer", "Placing building on coordinates: " + worldCoordinateX + " x " + worldCoordinateY + " y");
+        Gdx.app.debug(
+            "[DEBUG] - BuildingPlacer",
+            "Placing building on coordinates: " + worldCoordinateX + " x " + worldCoordinateY + " y"
+        );
         engine.addEntity(entityType);
         return true;
-
     }
 
     private boolean checkIfPlaceIsOccupiedByBuilding(Engine engine, float tileX, float tileY) {
-        ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(Family.all(BuildingPositionComponent.class).get());
+        ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(
+            Family.all(BuildingPositionComponent.class).get()
+        );
 
         for (Entity entity : entitiesWithPosition) {
-            BuildingPositionComponent buildingPositionComponent = entity.getComponent(BuildingPositionComponent.class);
-            if (buildingPositionComponent.position.x == tileX && buildingPositionComponent.position.y == tileY) {
+            BuildingPositionComponent buildingPositionComponent = entity.getComponent(
+                BuildingPositionComponent.class
+            );
+            if (
+                buildingPositionComponent.position.x == tileX &&
+                buildingPositionComponent.position.y == tileY
+            ) {
                 return true;
             }
-
         }
         return false;
     }
 
     private boolean checkIfTileIsBuildableOnBottomLayer(Engine engine, float tileX, float tileY) {
-        TiledMapTileLayer bottomLayer = mapLayerMapper.bottomLayerMapper.get(engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()).bottomLayer;
-        if(bottomLayer.getCell((int) tileX, (int) tileY) == null){
+        TiledMapTileLayer bottomLayer = mapLayerMapper.bottomLayerMapper.get(
+            engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()
+        )
+            .bottomLayer;
+        if (bottomLayer.getCell((int) tileX, (int) tileY) == null) {
             return false;
         }
-        return (boolean) bottomLayer.getCell((int) tileX, (int) tileY).getTile().getProperties().get(TiledPropertiesEnum.IS_BUILDABLE.toString());
+        return (boolean) bottomLayer
+            .getCell((int) tileX, (int) tileY)
+            .getTile()
+            .getProperties()
+            .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
     }
 
     private boolean checkIfTileIsBuildableOnResourceLayer(Engine engine, float tileX, float tileY) {
-        TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()).resourceLayer;
-        if(resourceLayer.getCell((int) tileX, (int) tileY) == null){
+        TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(
+            engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()
+        )
+            .resourceLayer;
+        if (resourceLayer.getCell((int) tileX, (int) tileY) == null) {
             return true;
         }
-        return (boolean) resourceLayer.getCell((int) tileX, (int) tileY).getTile().getProperties().get(TiledPropertiesEnum.IS_BUILDABLE.toString());
+        return (boolean) resourceLayer
+            .getCell((int) tileX, (int) tileY)
+            .getTile()
+            .getProperties()
+            .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
     }
 }

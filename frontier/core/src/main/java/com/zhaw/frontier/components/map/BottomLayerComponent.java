@@ -12,5 +12,4 @@ public class BottomLayerComponent implements Component {
      * The bottom layer of the map.
      */
     public TiledMapTileLayer bottomLayer;
-
 }

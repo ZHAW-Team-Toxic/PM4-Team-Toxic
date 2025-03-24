@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.zhaw.frontier.components.CameraComponent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import java.util.List;
  *
  */
 public class Camera {
+
     /**
      *
      * @param engine

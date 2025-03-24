@@ -18,7 +18,9 @@ public class TowerMapper {
     /**
      * Component mappers which map the position of the tower entity.
      */
-    public ComponentMapper<BuildingPositionComponent> pm = ComponentMapper.getFor(BuildingPositionComponent.class);
+    public ComponentMapper<BuildingPositionComponent> pm = ComponentMapper.getFor(
+        BuildingPositionComponent.class
+    );
 
     /**
      * Component mappers which map the render of the tower entity.
@@ -37,5 +39,12 @@ public class TowerMapper {
     /**
      * Family which contains all components of the tower entity.
      */
-    public Family towerFamily = Family.all(BuildingPositionComponent.class, RenderComponent.class, AttackComponent.class, HealthComponent.class).get();
+    public Family towerFamily = Family
+        .all(
+            BuildingPositionComponent.class,
+            RenderComponent.class,
+            AttackComponent.class,
+            HealthComponent.class
+        )
+        .get();
 }

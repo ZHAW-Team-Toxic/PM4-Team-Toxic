@@ -39,7 +39,7 @@ public class LoadingScreen extends ScreenAdapter {
             mapLoaderSystem.loadMap(assetManager, Path.of("TMX/frontier_testmap.tmx"));
         } catch (Exception e) {
             Gdx.app.error("[ERROR] - LoadingScreen", "Error loading map");
-        };
+        }
     }
 
     @Override

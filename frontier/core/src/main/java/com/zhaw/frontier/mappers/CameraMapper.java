@@ -13,7 +13,9 @@ public class CameraMapper {
     /**
      * .
      */
-    public ComponentMapper<CameraComponent> cameraComponentMapper = ComponentMapper.getFor(CameraComponent.class);
+    public ComponentMapper<CameraComponent> cameraComponentMapper = ComponentMapper.getFor(
+        CameraComponent.class
+    );
 
     /**
      * Family which contains all components of the camera entity.

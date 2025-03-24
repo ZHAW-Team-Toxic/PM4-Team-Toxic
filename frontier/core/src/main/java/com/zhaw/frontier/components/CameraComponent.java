@@ -9,6 +9,4 @@ public class CameraComponent implements Component {
     public Vector3 border = new Vector3();
     public float zoom = 1.0f;
     public Vector3 target = new Vector3();
-
-
 }

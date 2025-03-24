@@ -36,18 +36,16 @@ public class RenderSystem extends EntitySystem {
     /**
      *
      */
-    public RenderSystem(
-        Viewport viewport,
-        Engine engine,
-        OrthogonalTiledMapRenderer renderer
-    ) {
+    public RenderSystem(Viewport viewport, Engine engine, OrthogonalTiledMapRenderer renderer) {
         this.viewport = viewport;
         this.engine = engine;
         this.renderer = renderer;
 
-        TiledMapTileLayer sampleLayer = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first().getComponent(
-            BottomLayerComponent.class
-        ).bottomLayer;
+        TiledMapTileLayer sampleLayer = engine
+            .getEntitiesFor(mapLayerMapper.mapLayerFamily)
+            .first()
+            .getComponent(BottomLayerComponent.class)
+            .bottomLayer;
         this.mapGridSystem = new MapGridRenderer(sampleLayer, viewport);
     }
 
@@ -70,15 +68,17 @@ public class RenderSystem extends EntitySystem {
         // Render map from the first layer to the last layer
         Entity mapEntity = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
         TiledMapTileLayer bottomLayer = mapLayerMapper.bottomLayerMapper.get(mapEntity).bottomLayer;
-        TiledMapTileLayer decorationLayer = mapLayerMapper.decorationLayerMapper.get(mapEntity).decorationLayer;
-        TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(mapEntity).resourceLayer;
+        TiledMapTileLayer decorationLayer = mapLayerMapper.decorationLayerMapper.get(mapEntity)
+            .decorationLayer;
+        TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(mapEntity)
+            .resourceLayer;
 
         renderer.renderTileLayer(bottomLayer);
         renderer.renderTileLayer(decorationLayer);
         renderer.renderTileLayer(resourceLayer);
 
         //Render Map grid todo doesnt work yet
-        //mapGridSystem.update((SpriteBatch) renderer.getBatch());
+        // mapGridSystem.update((SpriteBatch) renderer.getBatch());
 
         //Render all buildings
         HQRenderer();
@@ -86,15 +86,13 @@ public class RenderSystem extends EntitySystem {
         renderTower();
         renderResourceBuilding();
 
-
         // Render other entities
         //TODO: Implement rendering for enemies and other entities
 
         renderer.getBatch().end();
-
     }
 
-    private void HQRenderer(){
+    private void HQRenderer() {
         for (Entity hqEntity : engine.getEntitiesFor(hqMapper.HQFamily)) {
             BuildingPositionComponent hqPosition = hqMapper.pm.get(hqEntity);
             RenderComponent hqRender = hqMapper.rm.get(hqEntity);
@@ -106,7 +104,7 @@ public class RenderSystem extends EntitySystem {
         }
     }
 
-    private void renderTower(){
+    private void renderTower() {
         for (Entity buildingEntity : engine.getEntitiesFor(towerMapper.towerFamily)) {
             BuildingPositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
             RenderComponent buildingRender = towerMapper.rm.get(buildingEntity);
@@ -118,7 +116,7 @@ public class RenderSystem extends EntitySystem {
         }
     }
 
-    private void renderWalls(){
+    private void renderWalls() {
         for (Entity wallEntity : engine.getEntitiesFor(wallMapper.wallFamily)) {
             BuildingPositionComponent wallPosition = wallMapper.pm.get(wallEntity);
             RenderComponent wallRender = wallMapper.rm.get(wallEntity);
@@ -130,15 +128,23 @@ public class RenderSystem extends EntitySystem {
         }
     }
 
-    private void renderResourceBuilding(){
-        for (Entity resourceBuildingEntity : engine.getEntitiesFor(resourceBuildingMapper.resouceBuildingFamily)) {
-            BuildingPositionComponent resourceBuildingPosition = resourceBuildingMapper.pm.get(resourceBuildingEntity);
-            RenderComponent resourceBuildingRender = resourceBuildingMapper.rm.get(resourceBuildingEntity);
+    private void renderResourceBuilding() {
+        for (Entity resourceBuildingEntity : engine.getEntitiesFor(
+            resourceBuildingMapper.resouceBuildingFamily
+        )) {
+            BuildingPositionComponent resourceBuildingPosition = resourceBuildingMapper.pm.get(
+                resourceBuildingEntity
+            );
+            RenderComponent resourceBuildingRender = resourceBuildingMapper.rm.get(
+                resourceBuildingEntity
+            );
             Vector2 pixelCoordinate = calculatePixelCoordinate(
                 (int) resourceBuildingPosition.position.x,
                 (int) resourceBuildingPosition.position.y
             );
-            renderer.getBatch().draw(resourceBuildingRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
+            renderer
+                .getBatch()
+                .draw(resourceBuildingRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
         }
     }
 

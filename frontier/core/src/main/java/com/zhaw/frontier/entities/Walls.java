@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.BuildingPositionComponent;
 import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.RenderComponent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class Walls {
         components.add(renderComponent);
         return EntityFactory.buildEntity(engine, components);
     }
-
 
     private static Texture createPlaceHolder() {
         // Create a Pixmap with dimensions 12x12 using RGBA8888 format.

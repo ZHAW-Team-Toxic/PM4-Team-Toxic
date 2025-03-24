@@ -7,6 +7,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -19,9 +21,9 @@ import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.entities.ResourceBuildings;
 import com.zhaw.frontier.entities.Towers;
 import com.zhaw.frontier.entities.Walls;
-import com.zhaw.frontier.systems.BuildingManager;
-import com.zhaw.frontier.systems.MapLoader;
+import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
+import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
@@ -40,9 +42,9 @@ public class GameScreen implements Screen {
     private Stage stage;
     private Engine engine;
 
-    private BuildingManager buildingManagerSystem;
-
     private OrthogonalTiledMapRenderer renderer;
+
+    private TiledMapTileLayer sampleLayer;
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -61,21 +63,64 @@ public class GameScreen implements Screen {
         //set-up Map
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Map Layer Entities.");
         MapLoader.getInstance().initMapLayerEntities(engine);
-        Gdx.app.debug("[DEBUG] - GameScreen", "Layer " +MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer.getName() + " loaded.");
-        Gdx.app.debug("[DEBUG] - GameScreen", "Layer " +MapLoader.getInstance().getMapEntity().getComponent(DecorationLayerComponent.class).decorationLayer.getName() + " loaded.");
-        Gdx.app.debug("[DEBUG] - GameScreen", "Layer " +MapLoader.getInstance().getMapEntity().getComponent(ResourceLayerComponent.class).resourceLayer.getName() + " loaded.");
-
-        //set-up BuildingManager
-        buildingManagerSystem = new BuildingManager(MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer, gameWorldView, engine);
-
-        //setup render system
-        engine.addSystem(
-            new RenderSystem(
-                gameWorldView,
-                engine,
-                renderer)
+        Gdx.app.debug(
+            "[DEBUG] - GameScreen",
+            "Layer " +
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(BottomLayerComponent.class)
+                .bottomLayer.getName() +
+            " loaded."
+        );
+        Gdx.app.debug(
+            "[DEBUG] - GameScreen",
+            "Layer " +
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(DecorationLayerComponent.class)
+                .decorationLayer.getName() +
+            " loaded."
+        );
+        Gdx.app.debug(
+            "[DEBUG] - GameScreen",
+            "Layer " +
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(ResourceLayerComponent.class)
+                .resourceLayer.getName() +
+            " loaded."
         );
 
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing sample layer.");
+        //init sample layer  as base for the map width / map height
+        sampleLayer =
+        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+        Gdx.app.debug(
+            "[DEBUG] - GameScreen",
+            "Sample Layer loaded. Map width: " +
+            sampleLayer.getWidth() +
+            " Map height: " +
+            sampleLayer.getHeight() +
+            " Tile width: " +
+            sampleLayer.getTileWidth() +
+            " Tile height: " +
+            sampleLayer.getTileHeight()
+        );
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
+        //set-up BuildingManager
+        engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
+        //setup render system
+        engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
         // setup camera
         CameraControlSystem cameraControlSystem = new CameraControlSystem(
             gameWorldView,
@@ -83,6 +128,17 @@ public class GameScreen implements Screen {
             renderer
         );
         engine.addSystem(cameraControlSystem);
+        Gdx.app.debug(
+            "[DEBUG] - GameScreen",
+            "Camera Control System initialized." +
+            " Camera position: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
+            " x " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
+            " y" +
+            " Camera zoom: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
+        );
 
         // create game ui
         gameUi = new ScreenViewport();
@@ -135,6 +191,9 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
             frontierGame.switchScreen(new StartScreen(frontierGame));
         }
+
+        BuildingManagerSystem buildingManagerSystem = engine.getSystem(BuildingManagerSystem.class);
+
         if (Gdx.input.isKeyJustPressed(Keys.B)) {
             //TODO only temporary - will be handled by UI later
             Gdx.app.debug("[DEBUG] - GameScreen", "B pressed");
@@ -146,6 +205,7 @@ public class GameScreen implements Screen {
                 Entity tower = Towers.createDefaultTower(engine);
                 tower.getComponent(BuildingPositionComponent.class).position.x = mouseX;
                 tower.getComponent(BuildingPositionComponent.class).position.y = mouseY;
+
                 if (buildingManagerSystem.placeBuilding(tower)) {
                     Gdx.app.debug("[DEBUG] - GameScreen", "Building placed");
                 } else {
@@ -155,7 +215,7 @@ public class GameScreen implements Screen {
                 Gdx.app.error("[ERROR] - GameScreen", "Error placing building");
             }
         }
-        if(Gdx.input.isKeyJustPressed(Keys.N)){
+        if (Gdx.input.isKeyJustPressed(Keys.N)) {
             //TODO only temporary - will be handled by UI later
             Gdx.app.debug("[DEBUG] - GameScreen", "N pressed");
             float mouseX = Gdx.input.getX();
@@ -175,7 +235,7 @@ public class GameScreen implements Screen {
                 Gdx.app.error("[ERROR] - GameScreen", "Error placing building");
             }
         }
-        if(Gdx.input.isKeyJustPressed(Keys.M)){
+        if (Gdx.input.isKeyJustPressed(Keys.M)) {
             //TODO only temporary - will be handled by UI later
             Gdx.app.debug("[DEBUG] - GameScreen", "M pressed");
             float mouseX = Gdx.input.getX();
@@ -190,7 +250,7 @@ public class GameScreen implements Screen {
                 } else {
                     Gdx.app.debug("[DEBUG] - GameScreen", "Building not placed");
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Gdx.app.error("[ERROR] - GameScreen", "Error placing building");
             }
         }

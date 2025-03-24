@@ -21,7 +21,7 @@ public class MapGridRenderer {
     private final Texture pixelTexture;
 
     // You can adjust the line thickness as needed
-    private final float lineThickness = 50f;
+    private final float lineThickness = 5f;
 
     public MapGridRenderer(TiledMapTileLayer sampleLayer, Viewport viewport) {
         this.mapWidthInTiles = sampleLayer.getWidth();
@@ -46,30 +46,32 @@ public class MapGridRenderer {
         // Enable blending for transparency
         Gdx.gl.glEnable(GL20.GL_BLEND);
 
-        spriteBatch.begin();
         // Set the color to semi-transparent white
         spriteBatch.setColor(1, 1, 1, 0.5f);
 
         // Draw vertical grid lines
         for (int x = 0; x <= mapWidthInTiles; x++) {
             float worldX = Math.round(x * tileWidth);
-            spriteBatch.draw(pixelTexture,
+            spriteBatch.draw(
+                pixelTexture,
                 worldX, // x position
-                0,      // y position
+                0, // y position
                 lineThickness, // width (line thickness)
-                Math.round(mapHeightInTiles * tileHeight)); // height of the grid area
+                Math.round(mapHeightInTiles * tileHeight)
+            ); // height of the grid area
         }
 
         // Draw horizontal grid lines
         for (int y = 0; y <= mapHeightInTiles; y++) {
             float worldY = Math.round(y * tileHeight);
-            spriteBatch.draw(pixelTexture,
+            spriteBatch.draw(
+                pixelTexture,
                 0, // x position
                 worldY, // y position
                 Math.round(mapWidthInTiles * tileWidth), // width of the grid area
-                lineThickness); // height (line thickness)
+                lineThickness
+            ); // height (line thickness)
         }
-        spriteBatch.end();
 
         // Optionally disable blending after drawing
         Gdx.gl.glDisable(GL20.GL_BLEND);

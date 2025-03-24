@@ -11,9 +11,8 @@ import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.entities.Map;
 import com.zhaw.frontier.exceptions.MapLoadingException;
-import lombok.Getter;
-
 import java.nio.file.Path;
+import lombok.Getter;
 
 /**
  *
@@ -26,6 +25,7 @@ public class MapLoader {
 
     @Getter
     private TiledMap map;
+
     @Getter
     private Entity mapEntity;
 
@@ -64,9 +64,12 @@ public class MapLoader {
     public void initMapLayerEntities(Engine engine) {
         map = assetManager.get(mapPath.toString(), TiledMap.class);
         mapEntity = Map.createDefaultMap(engine);
-        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer = (TiledMapTileLayer) map.getLayers().get(1);
-        mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer = (TiledMapTileLayer) map.getLayers().get(2);
+        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer =
+        (TiledMapTileLayer) map.getLayers().get(0);
+        mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer =
+        (TiledMapTileLayer) map.getLayers().get(1);
+        mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer =
+        (TiledMapTileLayer) map.getLayers().get(2);
         engine.addEntity(mapEntity);
     }
 }

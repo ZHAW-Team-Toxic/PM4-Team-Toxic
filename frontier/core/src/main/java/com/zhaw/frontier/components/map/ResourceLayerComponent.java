@@ -12,5 +12,4 @@ public class ResourceLayerComponent implements Component {
      * The resource layer of the map.
      */
     public TiledMapTileLayer resourceLayer;
-
 }

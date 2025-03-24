@@ -31,13 +31,25 @@ public class BuildingRemover {
      * TODO
      */
     public boolean removeBuilding(TiledMapTileLayer sampleLayer, float x, float y) {
-        Vector2 worldCoordinate = BuildingUtils.calculateWorldCoordinate(viewport, sampleLayer, x, y);
+        Vector2 worldCoordinate = BuildingUtils.calculateWorldCoordinate(
+            viewport,
+            sampleLayer,
+            x,
+            y
+        );
         int worldCoordinateX = (int) worldCoordinate.x;
         int worldCoordinateY = (int) worldCoordinate.y;
-        ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(Family.all(BuildingPositionComponent.class).get());
+        ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(
+            Family.all(BuildingPositionComponent.class).get()
+        );
         for (Entity entity : entitiesWithPosition) {
-            BuildingPositionComponent buildingPositionComponent = entity.getComponent(BuildingPositionComponent.class);
-            if (buildingPositionComponent.position.x == worldCoordinateX && buildingPositionComponent.position.y == worldCoordinateY) {
+            BuildingPositionComponent buildingPositionComponent = entity.getComponent(
+                BuildingPositionComponent.class
+            );
+            if (
+                buildingPositionComponent.position.x == worldCoordinateX &&
+                buildingPositionComponent.position.y == worldCoordinateY
+            ) {
                 engine.removeEntity(entity);
                 return true;
             }

@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.Entity;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import java.util.List;
  *
  */
 public class Map {
+
     /**
      *
      * @param engine
@@ -26,6 +26,5 @@ public class Map {
         components.add(new DecorationLayerComponent());
 
         return EntityFactory.buildEntity(engine, components);
-
     }
 }

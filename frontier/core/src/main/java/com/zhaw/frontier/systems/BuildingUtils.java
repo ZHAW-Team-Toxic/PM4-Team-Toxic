@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  *
  */
 public class BuildingUtils {
+
     /**
      *
      * @param viewport
@@ -17,7 +18,12 @@ public class BuildingUtils {
      * @param screenY
      * @return
      */
-    static Vector2 calculateWorldCoordinate(Viewport viewport, TiledMapTileLayer sampleLayer, float screenX, float screenY) {
+    static Vector2 calculateWorldCoordinate(
+        Viewport viewport,
+        TiledMapTileLayer sampleLayer,
+        float screenX,
+        float screenY
+    ) {
         int HAS_TO_BE_ZERO_FOR_2D_GAMES = 0;
         Vector3 screenCoordinates = new Vector3(screenX, screenY, HAS_TO_BE_ZERO_FOR_2D_GAMES);
         Vector3 worldCoordinates = viewport.unproject(screenCoordinates);

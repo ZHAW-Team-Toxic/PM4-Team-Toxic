@@ -10,7 +10,9 @@ public class HQMapper {
     /**
      * Component mappers which map the position of the tower entity.
      */
-    public ComponentMapper<BuildingPositionComponent> pm = ComponentMapper.getFor(BuildingPositionComponent.class);
+    public ComponentMapper<BuildingPositionComponent> pm = ComponentMapper.getFor(
+        BuildingPositionComponent.class
+    );
     /**
      * Component mappers which map the render of the tower entity.
      */
@@ -19,5 +21,7 @@ public class HQMapper {
     /**
      * Family which contains all components of the tower entity.
      */
-    public Family HQFamily = Family.all(BuildingPositionComponent.class, RenderComponent.class).get();
+    public Family HQFamily = Family
+        .all(BuildingPositionComponent.class, RenderComponent.class)
+        .get();
 }

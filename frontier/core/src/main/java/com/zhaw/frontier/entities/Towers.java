@@ -8,10 +8,9 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.AttackComponent;
-import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.BuildingPositionComponent;
+import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.RenderComponent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,5 +50,4 @@ public class Towers {
         pixmap.dispose();
         return texture;
     }
-
 }

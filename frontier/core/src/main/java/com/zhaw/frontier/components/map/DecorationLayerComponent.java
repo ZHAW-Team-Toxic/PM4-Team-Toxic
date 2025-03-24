@@ -12,5 +12,4 @@ public class DecorationLayerComponent implements Component {
      * The decoration layer of the map.
      */
     public TiledMapTileLayer decorationLayer;
-
 }
