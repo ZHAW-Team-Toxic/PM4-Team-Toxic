@@ -63,7 +63,7 @@ public class LevelSelectionScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    private void handleSwitch(){
+    private void handleSwitch() {
         // Temporary to switch screen when ENTER is pressed.
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             frontierGame.switchScreen(new LoadingScreen(frontierGame));

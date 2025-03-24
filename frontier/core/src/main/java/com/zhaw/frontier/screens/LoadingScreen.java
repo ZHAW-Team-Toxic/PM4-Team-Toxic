@@ -6,7 +6,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;

@@ -10,7 +10,6 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.WallFactory;
-import com.zhaw.frontier.screens.StartScreen;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 
 /**
@@ -54,7 +53,6 @@ public class GameInputProcessor extends InputAdapter {
      */
     @Override
     public boolean keyDown(int keycode) {
-
         // Retrieve the BuildingManagerSystem from the engine.
         BuildingManagerSystem buildingManagerSystem = engine.getSystem(BuildingManagerSystem.class);
         if (buildingManagerSystem == null) {
