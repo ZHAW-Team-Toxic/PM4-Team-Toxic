@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 
@@ -27,12 +28,14 @@ public class PauseScreen implements Screen {
     public PauseScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
 
-        this.stage = new Stage(new ScreenViewport(new OrthographicCamera()));
-        this.skin = new Skin(Gdx.files.internal("uiskin.json"));
+        this.stage = new Stage(new ExtendViewport(1920, 1080,  new OrthographicCamera()));
+        this.skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);;
     }
 
     @Override
     public void show() {
+        stage.clear();
+
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -108,7 +111,6 @@ public class PauseScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
     }
 
     private void resumeGame() {
