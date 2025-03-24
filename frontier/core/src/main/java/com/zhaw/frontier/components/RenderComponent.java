@@ -7,7 +7,20 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class RenderComponent implements Component {
 
     /**
+     * What type of render this is
+     */
+    public enum RenderType {
+        BUILDING,
+        ENEMY,
+    }
+
+    /**
      * the sprite to render
      */
     public Sprite sprite;
+
+    /**
+     * the type of render
+     */
+    public RenderType renderType;
 }

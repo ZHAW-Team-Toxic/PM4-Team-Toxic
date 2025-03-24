@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="BaseSetWithSandclockHQ" tilewidth="16" tileheight="16" tilecount="1600" columns="40">
  <image source="../Sprites/BaseSetWithSandclockHQ.png" width="640" height="640"/>
  <tile id="0">
@@ -2164,24 +2165,178 @@
    <property name="isTraversable" type="bool" value="false"/>
   </properties>
  </tile>
+ <tile id="741">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="742">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="743">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="744">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="745">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="746">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="747">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="748">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="749">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="750">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
  <tile id="752">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
   </properties>
  </tile>
  <tile id="753">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
   </properties>
  </tile>
  <tile id="754">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
   </properties>
  </tile>
  <tile id="755">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
+  </properties>
+ </tile>
+ <tile id="781">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="782">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="783">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="784">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="785">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="786">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="787">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="788">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="789">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="790">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="821">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="822">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="823">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="824">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="825">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="826">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="827">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="828">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="829">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="830">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="844">
@@ -2194,24 +2349,228 @@
    <property name="resourceType" value="stone"/>
   </properties>
  </tile>
+ <tile id="861">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="862">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="863">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="864">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="865">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="866">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="867">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="868">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="869">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="870">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="901">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="902">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="903">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="904">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="905">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="906">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="907">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="908">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="909">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="910">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="936">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="937">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="938">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="939">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="940">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="941">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="942">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="943">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="944">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="945">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="946">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="947">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="948">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="949">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="950">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
  <tile id="996">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
   </properties>
  </tile>
  <tile id="997">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
   </properties>
  </tile>
  <tile id="998">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
   </properties>
  </tile>
  <tile id="999">
   <properties>
+   <property name="isBuildable" type="bool" value="false"/>
    <property name="resourceType" value="wood"/>
+  </properties>
+ </tile>
+ <tile id="1056">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="1057">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="1058">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="1059">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
+  </properties>
+ </tile>
+ <tile id="1060">
+  <properties>
+   <property name="isBuildable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="1127" type="HQ0"/>

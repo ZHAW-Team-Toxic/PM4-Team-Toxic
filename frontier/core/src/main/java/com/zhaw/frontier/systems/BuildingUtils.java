@@ -6,17 +6,27 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- *
+ * Utility class for building-related operations.
+ * <p>
+ * Provides helper methods for converting screen coordinates to world coordinates,
+ * taking into account the tile dimensions defined by a {@link TiledMapTileLayer}.
+ * </p>
  */
 public class BuildingUtils {
 
     /**
+     * Calculates the world coordinate as tile indices based on screen coordinates.
+     * <p>
+     * This method converts the given screen coordinates into world coordinates using the provided
+     * {@link Viewport}. The resulting world coordinates are then divided by the tile width and height
+     * of the specified {@link TiledMapTileLayer} to determine the corresponding tile indices.
+     * </p>
      *
-     * @param viewport
-     * @param sampleLayer
-     * @param screenX
-     * @param screenY
-     * @return
+     * @param viewport    the {@link Viewport} used to unproject the screen coordinates.
+     * @param sampleLayer the {@link TiledMapTileLayer} that provides the tile dimensions.
+     * @param screenX     the x-coordinate on the screen.
+     * @param screenY     the y-coordinate on the screen.
+     * @return a {@link Vector2} representing the tile indices corresponding to the world coordinate.
      */
     static Vector2 calculateWorldCoordinate(
         Viewport viewport,

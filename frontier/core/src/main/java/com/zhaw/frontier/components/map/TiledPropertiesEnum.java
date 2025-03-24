@@ -7,21 +7,25 @@ package com.zhaw.frontier.components.map;
 public enum TiledPropertiesEnum {
     IS_BUILDABLE("isBuildable"),
     IS_TRAVERSABLE("isTraversable"),
-    IS_SPAWN_POINT("isSpawnPoint");
+    IS_SPAWN_POINT("isSpawnPoint"),
+
+    WOOD("wood"),
+    STONE("stone"),
+    IRON("iron");
 
     private final String property;
 
     /**
-     *
-     * @param property
+     * Constructor for the TiledPropertiesEnum.
+     * @param property the property of the tile
      */
     TiledPropertiesEnum(String property) {
         this.property = property;
     }
 
     /**
-     *
-     * @return
+     * Returns the property.
+     * @return property the property of the tile
      */
     @Override
     public String toString() {
