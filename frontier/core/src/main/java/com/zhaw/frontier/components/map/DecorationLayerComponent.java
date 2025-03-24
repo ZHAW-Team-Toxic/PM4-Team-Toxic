@@ -12,18 +12,5 @@ public class DecorationLayerComponent implements Component {
      * The decoration layer of the map.
      */
     public TiledMapTileLayer decorationLayer;
-    /**
-     * The name of the decoration layer.
-     */
-    public String decorationLayerName;
 
-    /**
-     * Constructor for the decoration layer component. Initializes the decoration layer.
-     * Loads the properties of the decoration layer.
-     * @param decorationLayer The decoration layer of the map.
-     */
-    public DecorationLayerComponent(TiledMapTileLayer decorationLayer) {
-        this.decorationLayer = decorationLayer;
-        this.decorationLayerName = decorationLayer.getName();
-    }
 }

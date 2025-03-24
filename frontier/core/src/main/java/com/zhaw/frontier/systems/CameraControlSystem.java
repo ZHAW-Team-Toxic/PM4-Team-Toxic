@@ -2,17 +2,13 @@ package com.zhaw.frontier.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zhaw.frontier.components.BorderComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.VelocityComponent;
-import com.zhaw.frontier.components.ZoomComponent;
 import com.zhaw.frontier.entities.Camera;
 import com.zhaw.frontier.mappers.CameraMapper;
-import com.zhaw.frontier.subsystems.RTSInputAdapter;
 import lombok.Getter;
 
 /**
@@ -42,7 +38,7 @@ public class CameraControlSystem extends IteratingSystem {
         Engine engine,
         OrthogonalTiledMapRenderer renderer
     ) {
-        super(Family.all(ZoomComponent.class).get());
+        super(Family.all().get());
         this.viewport = viewport;
         this.engine = engine;
         this.renderer = renderer;
@@ -59,29 +55,31 @@ public class CameraControlSystem extends IteratingSystem {
         // Update each camera entity based on input events processed via the InputProcessor
         super.update(deltaTime);
         renderer.setView(camera);
+        Gdx.app.debug("[DEBUG] - CameraControlSystem2", "Camera position: " + camera.position);
         viewport.apply();
         inputAdapter.update();
     }
 
+    /**
+     *
+     * @param entity The current Entity being processed
+     * @param deltaTime The delta time between the last and current frame
+     */
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        //todo probably needed for changing settings of camera during runtime
+        //TODO RTSInputAdapter should use camera component
     }
 
     private void setUpGameCamera(Viewport viewport) {
-        this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false);
+        camera.position.set(32 * 16, 32 * 16, 0);
+        Gdx.app.debug("[DEBUG] - CameraControlSystem", "Camera position: " + camera.position);
         this.camera.zoom = 40.0f;
         //TODO needs to be done through components in the future
         this.camera.update();
         viewport.setCamera(camera);
-
-        Camera cameraEntity = new Camera();
-        cameraEntity
-            .add(new ZoomComponent())
-            .add(new VelocityComponent())
-            .add(new PositionComponent())
-            .add(new BorderComponent());
+        Entity cameraEntity = Camera.createCamera(engine);
         engine.addEntity(cameraEntity);
     }
 }

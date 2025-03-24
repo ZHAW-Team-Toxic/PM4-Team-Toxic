@@ -1,15 +1,31 @@
 package com.zhaw.frontier.entities;
 
+import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.zhaw.frontier.components.map.BottomLayerComponent;
+import com.zhaw.frontier.components.map.DecorationLayerComponent;
+import com.zhaw.frontier.components.map.ResourceLayerComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Entity for the map.
+ *
  */
-public class Map extends Entity {
-
+public class Map {
     /**
-     * Constructor.
-     * Creates a new map entity.
+     *
+     * @param engine
+     * @return
      */
-    public Map() {}
+    public static Entity createDefaultMap(Engine engine) {
+        List<Component> components = new ArrayList<>();
+        components.add(new BottomLayerComponent());
+        components.add(new ResourceLayerComponent());
+        components.add(new DecorationLayerComponent());
+
+        return EntityFactory.buildEntity(engine, components);
+
+    }
 }

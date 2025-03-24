@@ -1,30 +1,28 @@
 package com.zhaw.frontier.entities;
 
+import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.BuildingPositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * HQ entity class. This class is used to create a HQ entity.
- * Current components:
- * - PositionComponent
- * - RenderComponent
+ *
  */
-public class HQ extends Entity {
+public class HQ {
+
 
     /**
-     * Constructor for the HQ entity.
+     *
      */
-    public HQ() {
-        add(new PositionComponent());
-        add(new RenderComponent());
-    }
+    public static Entity createDefaultHQ(Engine engine) {
+        List<Component> components = new ArrayList<>();
+        components.add(new BuildingPositionComponent());
+        components.add(new RenderComponent());
 
-    /**
-     * Create a default HQ.
-     * @return The default HQ.
-     */
-    public static HQ createDefaultHQ() {
-        return new HQ();
+        return EntityFactory.buildEntity(engine, components);
     }
 }

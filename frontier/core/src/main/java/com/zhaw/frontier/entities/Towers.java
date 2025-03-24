@@ -1,46 +1,44 @@
 package com.zhaw.frontier.entities;
 
+import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.AttackComponent;
+import com.zhaw.frontier.components.HealthComponent;
+import com.zhaw.frontier.components.BuildingPositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Tower entity class. This class is used to create a tower entity.
- * Current components:
- * - PositionComponent
- * - RenderComponent
+ *
  */
-public class Tower extends Entity {
+public class Towers {
 
     /**
-     * Constructor for the Tower entity.
-     * This constructor creates a tower entity with a position component and a render component.
+     *
      */
-    public Tower() {
-        add(new PositionComponent());
-
+    public static Entity createDefaultTower(Engine engine) {
+        List<Component> components = new ArrayList<>();
+        components.add(new BuildingPositionComponent());
+        components.add(new HealthComponent());
+        components.add(new AttackComponent());
         RenderComponent renderComponent = new RenderComponent();
 
         //TODO change placeholder for the actual tower texture
         Texture texture = createPlaceHolder();
         renderComponent.sprite = new Sprite(texture);
 
-        add(renderComponent);
+        components.add(renderComponent);
+        return EntityFactory.buildEntity(engine, components);
     }
 
-    /**
-     * Create a default tower.
-     * @return The default tower.
-     */
-    public static Tower createDefaultTower() {
-        return new Tower();
-    }
-
-    private Texture createPlaceHolder() {
+    private static Texture createPlaceHolder() {
         // Create a Pixmap with dimensions 12x12 using RGBA8888 format.
         Pixmap pixmap = new Pixmap(12, 12, Format.RGBA8888);
         // Set the drawing color to black.
@@ -53,4 +51,5 @@ public class Tower extends Entity {
         pixmap.dispose();
         return texture;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.zhaw.frontier.subsystems;
+package com.zhaw.frontier.systems;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

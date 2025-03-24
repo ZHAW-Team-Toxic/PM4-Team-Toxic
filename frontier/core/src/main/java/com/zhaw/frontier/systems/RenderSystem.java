@@ -3,21 +3,16 @@ package com.zhaw.frontier.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.BuildingPositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
-import com.zhaw.frontier.components.map.DecorationLayerComponent;
-import com.zhaw.frontier.components.map.ResourceLayerComponent;
-import com.zhaw.frontier.entities.Map;
-import com.zhaw.frontier.mappers.MapLayerMapper;
-import com.zhaw.frontier.mappers.TowerMapper;
-import com.zhaw.frontier.subsystems.BuildingManagerSystem;
-import com.zhaw.frontier.subsystems.MapLoaderSystem;
-import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import com.zhaw.frontier.mappers.*;
 
 /**
  * This class is responsible for rendering the map and all entities on it.
@@ -27,51 +22,37 @@ import com.zhaw.frontier.wrappers.SpriteBatchInterface;
  */
 public class RenderSystem extends EntitySystem {
 
-    private final SpriteBatchInterface batch;
     private final Viewport viewport;
     private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
-    private final BuildingManagerSystem buildingManagerSystem;
+    private final MapGridRenderer mapGridSystem;
 
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
+    private final HQMapper hqMapper = new HQMapper();
     private final TowerMapper towerMapper = new TowerMapper();
+    private final WallMapper wallMapper = new WallMapper();
+    private final ResourceBuildingMapper resourceBuildingMapper = new ResourceBuildingMapper();
 
     /**
-     * Constructor for the RenderSystem.
-     * Initializes the system with the necessary components and systems.
      *
-     * @param batch                 The sprite batch to be used for rendering.
-     * @param viewport              The viewport to be used.
-     * @param engine                The engine to be used.
-     * @param renderer              The renderer to be used.
-     * @param mapLoaderSystem       The map loader system to be used.
-     * @param buildingManagerSystem The building manager system to be used.
      */
     public RenderSystem(
-        SpriteBatchInterface batch,
         Viewport viewport,
         Engine engine,
-        OrthogonalTiledMapRenderer renderer,
-        MapLoaderSystem mapLoaderSystem,
-        BuildingManagerSystem buildingManagerSystem
+        OrthogonalTiledMapRenderer renderer
     ) {
-        this.batch = batch;
         this.viewport = viewport;
         this.engine = engine;
         this.renderer = renderer;
-        this.renderer.setMap(mapLoaderSystem.getMap());
-        this.buildingManagerSystem = buildingManagerSystem;
+
+        TiledMapTileLayer sampleLayer = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first().getComponent(
+            BottomLayerComponent.class
+        ).bottomLayer;
+        this.mapGridSystem = new MapGridRenderer(sampleLayer, viewport);
     }
 
     /**
-     * Renders the map and all entities on it.
-     * It first clears the screen, then applies the viewport and updates the camera.
-     * It renders in following order:
-     * - Map layers
-     * - Building entities
-     * - Other entities (not implemented yet)
      *
-     * @param deltaTime The time passed since last frame in seconds.
      */
     @Override
     public void update(float deltaTime) {
@@ -81,27 +62,53 @@ public class RenderSystem extends EntitySystem {
         // Apply viewport and update camera
         viewport.apply();
 
-        // Render map from the first layer to the last layer
-        for (Entity entity : engine.getEntitiesFor(mapLayerMapper.mapLayerFamily)) {
-            BottomLayerComponent bottomLayer = mapLayerMapper.bottomLayerMapper.get(entity);
-            DecorationLayerComponent decorationLayer = mapLayerMapper.decorationLayerMapper.get(
-                entity
-            );
-            ResourceLayerComponent resourceLayer = mapLayerMapper.resourceLayerMapper.get(entity);
-            renderer.getBatch().begin();
-            renderer.renderTileLayer(bottomLayer.bottomLayer);
-            renderer.renderTileLayer(decorationLayer.decorationLayer);
-            renderer.renderTileLayer(resourceLayer.resourceLayer);
-            renderer.getBatch().end();
-        }
+        renderer.setView((OrthographicCamera) viewport.getCamera());
 
-        //Here necessary to apply the viewport again, because the renderer changes the camera
-        viewport.apply();
-
-        // Render building entities
+        //begin the batch
         renderer.getBatch().begin();
-        for (Entity buildingEntity : buildingManagerSystem.getBuildingEntities()) {
-            PositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
+
+        // Render map from the first layer to the last layer
+        Entity mapEntity = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
+        TiledMapTileLayer bottomLayer = mapLayerMapper.bottomLayerMapper.get(mapEntity).bottomLayer;
+        TiledMapTileLayer decorationLayer = mapLayerMapper.decorationLayerMapper.get(mapEntity).decorationLayer;
+        TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(mapEntity).resourceLayer;
+
+        renderer.renderTileLayer(bottomLayer);
+        renderer.renderTileLayer(decorationLayer);
+        renderer.renderTileLayer(resourceLayer);
+
+        //Render Map grid todo doesnt work yet
+        //mapGridSystem.update((SpriteBatch) renderer.getBatch());
+
+        //Render all buildings
+        HQRenderer();
+        renderWalls();
+        renderTower();
+        renderResourceBuilding();
+
+
+        // Render other entities
+        //TODO: Implement rendering for enemies and other entities
+
+        renderer.getBatch().end();
+
+    }
+
+    private void HQRenderer(){
+        for (Entity hqEntity : engine.getEntitiesFor(hqMapper.HQFamily)) {
+            BuildingPositionComponent hqPosition = hqMapper.pm.get(hqEntity);
+            RenderComponent hqRender = hqMapper.rm.get(hqEntity);
+            Vector2 pixelCoordinate = calculatePixelCoordinate(
+                (int) hqPosition.position.x,
+                (int) hqPosition.position.y
+            );
+            renderer.getBatch().draw(hqRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
+        }
+    }
+
+    private void renderTower(){
+        for (Entity buildingEntity : engine.getEntitiesFor(towerMapper.towerFamily)) {
+            BuildingPositionComponent buildingPosition = towerMapper.pm.get(buildingEntity);
             RenderComponent buildingRender = towerMapper.rm.get(buildingEntity);
             Vector2 pixelCoordinate = calculatePixelCoordinate(
                 (int) buildingPosition.position.x,
@@ -109,18 +116,35 @@ public class RenderSystem extends EntitySystem {
             );
             renderer.getBatch().draw(buildingRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
         }
-        renderer.getBatch().end();
+    }
 
-        //Here necessary to apply the viewport again, because the renderer changes the camera
-        viewport.apply();
-        // Render other entities
-        //TODO: Implement rendering for enemies and other entities
+    private void renderWalls(){
+        for (Entity wallEntity : engine.getEntitiesFor(wallMapper.wallFamily)) {
+            BuildingPositionComponent wallPosition = wallMapper.pm.get(wallEntity);
+            RenderComponent wallRender = wallMapper.rm.get(wallEntity);
+            Vector2 pixelCoordinate = calculatePixelCoordinate(
+                (int) wallPosition.position.x,
+                (int) wallPosition.position.y
+            );
+            renderer.getBatch().draw(wallRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
+        }
+    }
 
+    private void renderResourceBuilding(){
+        for (Entity resourceBuildingEntity : engine.getEntitiesFor(resourceBuildingMapper.resouceBuildingFamily)) {
+            BuildingPositionComponent resourceBuildingPosition = resourceBuildingMapper.pm.get(resourceBuildingEntity);
+            RenderComponent resourceBuildingRender = resourceBuildingMapper.rm.get(resourceBuildingEntity);
+            Vector2 pixelCoordinate = calculatePixelCoordinate(
+                (int) resourceBuildingPosition.position.x,
+                (int) resourceBuildingPosition.position.y
+            );
+            renderer.getBatch().draw(resourceBuildingRender.sprite, pixelCoordinate.x, pixelCoordinate.y);
+        }
     }
 
     //used to fix the sprite on the bottom left corner of the tile
     private Vector2 calculatePixelCoordinate(int x, int y) {
-        Map map = buildingManagerSystem.getMap();
+        Entity map = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
         int tileX = x * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileWidth();
         int tileY = y * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileHeight();
         return new Vector2(tileX, tileY);

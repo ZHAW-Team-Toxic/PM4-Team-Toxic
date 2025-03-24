@@ -11,10 +11,18 @@ public enum TiledPropertiesEnum {
 
     private final String property;
 
+    /**
+     *
+     * @param property
+     */
     TiledPropertiesEnum(String property) {
         this.property = property;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return property;
