@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -29,6 +30,8 @@ public class LoadingScreen extends ScreenAdapter {
         this.batch = game.getBatch();
         this.font = new BitmapFont();
         this.mapLoaderSystem = new MapLoader();
+
+        assetManager.load("skins/skin.json", Skin.class);
     }
 
     @Override
@@ -45,7 +48,7 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if (assetManager.update()) {
-            game.switchScreen(new GameScreen(game));
+            game.switchScreen(new StartScreen(game));
         }
 
         float progress = assetManager.getProgress();
