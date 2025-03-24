@@ -60,3 +60,4 @@ To format the code run the following task:
 | Entity creation/lifecycle     | ✅ Integration Test       | Create entities, add/remove components, validate flow| ✅ Yes            |
 | System + Stage interaction    | ⚠ Mixed Integration Test | Simulate updates and check stage response            | ⚠ Partially      |
 | ECS + rendering coordination  | ❌ Screenshot Test (only visual) | Only test if visual correctness is essential  | ❌ Hard            |
+
