@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 
 import java.util.Map;
+import java.util.Collections;
 
 public class InventorySystem extends EntitySystem {
     private Engine engine;
@@ -18,6 +19,10 @@ public class InventorySystem extends EntitySystem {
         );
 
         this.engine = engine;
+    }
+
+    public Map<ResourceType, Integer> getPlayerResources() {
+        return Collections.unmodifiableMap(playerResources);
     }
 
     public void onTurnEnd() {
