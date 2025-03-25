@@ -19,6 +19,7 @@ import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
 import com.zhaw.frontier.systems.MapLoader;
+import com.zhaw.frontier.systems.InventorySystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
@@ -134,6 +135,7 @@ public class GameScreen implements Screen {
             " Camera zoom: " +
             ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
+        engine.addSystem(new InventorySystem(engine));
 
         // create game ui
         gameUi = new ScreenViewport();
