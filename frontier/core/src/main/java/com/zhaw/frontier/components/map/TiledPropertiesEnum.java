@@ -9,9 +9,9 @@ public enum TiledPropertiesEnum {
     IS_TRAVERSABLE("isTraversable"),
     IS_SPAWN_POINT("isSpawnPoint"),
 
-    WOOD("wood"),
-    STONE("stone"),
-    IRON("iron");
+    RESOURCE_TYPE_WOOD("wood"),
+    RESOURCE_TYPE_STONE("stone"),
+    RESOURCE_TYPE_IRON("iron");
 
     private final String property;
 

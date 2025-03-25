@@ -28,7 +28,7 @@ public class BuildingUtils {
      * @param screenY     the y-coordinate on the screen.
      * @return a {@link Vector2} representing the tile indices corresponding to the world coordinate.
      */
-    static Vector2 calculateWorldCoordinate(
+    public static Vector2 calculateWorldCoordinate(
         Viewport viewport,
         TiledMapTileLayer sampleLayer,
         float screenX,
