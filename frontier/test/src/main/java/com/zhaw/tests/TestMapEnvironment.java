@@ -45,10 +45,42 @@ public class TestMapEnvironment {
     private final AssetManager assetManager;
 
     /**
-     * Initializes the test map environment by setting up the engine, viewport,
-     * loading the map, and initializing its layers.
+     * Test class for the BuildingManagerSystem.
+     * Tests the placement of buildings on the map.
+     * This test uses the test map:
+     * "TMX/frontier_map_for_tests.tmx"
+     * It is structured like this:
      *
-     * @throws RuntimeException if the map file cannot be found or fails to load
+     * Bottom layer and Resource layer combined:
+     *
+     * 0,0,1,3,3,3,1,0,0,
+     * 0,0,1,1,3,1,1,0,0,
+     * 1,1,2,1,1,1,2,1,1,
+     * 4,1,1,1,1,1,1,1,5,
+     * 4,4,1,1,1,1,1,5,5,
+     * 4,1,1,1,1,1,1,1,5,
+     * 1,1,2,1,1,1,2,1,1,
+     * 0,0,1,1,3,1,1,0,0,
+     * 0,0,1,3,3,3,1,0,0
+     *
+     * Spawn area: 0
+     *  - Properties on Tile: isBuildable: {false}, isSpawnPoint: {true}, isTraversable: {true}
+     * Buildable area: 1
+     *  - Properties on Tile: isBuildable: {true}, isSpawnPoint: {false}, isTraversable: {true}
+     * Water area: 2
+     *  - Properties on Tile: isBuildable: {false}, isTraversable: {false}
+     * Wood resource tile: 3
+     *  - Properties on Tile: isBuildable: {false}, isTraversable: {true}, resourceType: {wood}
+     * Stone resource tile: 4
+     *  - Properties on Tile: isBuildable: {false}, isTraversable: {true}, resourceType: {stone}
+     * Iron resource tile: 5
+     *  - Properties on Tile: isBuildable: {false}, isTraversable: {true}, resourceType: {iron}
+     *
+     * Important:
+     *  - The map is 9x9 tiles.
+     *  - Tiles are 16 x 16 pixels.
+     *  - (0,0) is the bottom left corner of the map.
+     *    - Map gets rendered from bottom left corner.
      */
     public TestMapEnvironment() {
         testEngine = new Engine();
