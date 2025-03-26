@@ -46,8 +46,12 @@ To export a skin click on File => Export and then select where you want to store
 
 You can also click on File => Save As to save the actual project (as an SCMP file) if you want to modify the skin in the future.
 
-### Importing skin files
+### Importing Skin Files
 Just like for an export you click on File but then choose "Open" to select the SkinComposer project you want to open.
+
+### Replacing Existing Skin in Codebase
+If you updated the skin you must replace it in the Codebase. The skin is stored in frontier => assets => skins.
+![Skin in Codebase](https://github.com/user-attachments/assets/41e071c1-3d9a-4dc9-a12a-5cf0f721e355)
 
 ### Loading Skins in Code
 ```java
