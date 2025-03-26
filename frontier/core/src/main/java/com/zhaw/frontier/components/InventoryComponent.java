@@ -10,8 +10,8 @@ public class InventoryComponent implements Component {
     public Map<TiledPropertiesEnum, Integer> resources = new HashMap<>();
 
     public InventoryComponent() {
-        for (TiledPropertiesEnum resourceType : TiledPropertiesEnum.values()) {
-            resources.put(resourceType, 0);
-        }
+        resources.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 0);
+        resources.put(TiledPropertiesEnum.RESOURCE_TYPE_STONE, 0);
+        resources.put(TiledPropertiesEnum.RESOURCE_TYPE_IRON, 0);
     }
 }
