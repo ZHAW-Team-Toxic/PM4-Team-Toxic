@@ -11,7 +11,11 @@ public enum TiledPropertiesEnum {
 
     RESOURCE_TYPE_WOOD("wood"),
     RESOURCE_TYPE_STONE("stone"),
-    RESOURCE_TYPE_IRON("iron");
+    RESOURCE_TYPE_IRON("iron"),
+
+    BOTTOM_LAYER("bottomLayer"),
+    DECORATION_LAYER("decorationLayer"),
+    RESOURCE_LAYER("resourceLayer");
 
     private final String property;
 

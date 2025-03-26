@@ -51,8 +51,13 @@ configure(subprojects) {
   sourceCompatibility = 21
 
   dependencies {
+    // For main sources
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // For test sources
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
   }
 
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
