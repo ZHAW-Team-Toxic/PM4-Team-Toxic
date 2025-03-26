@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.BuildingUtils;
@@ -202,18 +201,14 @@ public class BuildingManagerTest {
         // Retrieve world coordinates from the bottom layer using BuildingUtils.
         float worldX = BuildingUtils.calculateWorldCoordinate(
             gameWorldView,
-            ((BottomLayerComponent) testMapEnvironment
-                    .getMapEntity()
-                    .getComponent(BottomLayerComponent.class)).bottomLayer,
+            testMapEnvironment.getBottomLayer(),
             screenX,
             screenY
         )
             .x;
         float worldY = BuildingUtils.calculateWorldCoordinate(
             gameWorldView,
-            ((BottomLayerComponent) testMapEnvironment
-                    .getMapEntity()
-                    .getComponent(BottomLayerComponent.class)).bottomLayer,
+            testMapEnvironment.getBottomLayer(),
             screenX,
             screenY
         )

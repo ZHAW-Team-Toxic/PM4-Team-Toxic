@@ -112,7 +112,7 @@ public class TestMapEnvironment {
             map = mapLoader.getMap();
             mapEntity = mapLoader.getMapEntity();
         } catch (MapLoadingException e) {
-            throw new RuntimeException("Failed to load map: " + e.getMessage());
+            throw new RuntimeException("Failed to load map: " + e.getMessage(), e);
         }
     }
 
