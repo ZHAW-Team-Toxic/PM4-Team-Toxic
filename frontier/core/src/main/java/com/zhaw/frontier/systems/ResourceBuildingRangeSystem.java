@@ -82,6 +82,10 @@ public class ResourceBuildingRangeSystem extends EntitySystem {
                 entity.getComponent(PositionComponent.class).position,
                 range.range
             );
+            //check the map for the resource type before accessing the production rate
+            if(production.productionRate.isEmpty()) {
+                continue;
+            }
             // Retrieve the first resource type from production rate map, if available
             Object key = production.productionRate.keySet().iterator().next();
             if (Objects.nonNull(key)) {
