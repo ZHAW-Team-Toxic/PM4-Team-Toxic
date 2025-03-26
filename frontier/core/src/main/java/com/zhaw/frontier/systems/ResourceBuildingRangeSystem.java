@@ -83,7 +83,7 @@ public class ResourceBuildingRangeSystem extends EntitySystem {
                 range.range
             );
             //check the map for the resource type before accessing the production rate
-            if(production.productionRate.isEmpty()) {
+            if (production.productionRate.isEmpty()) {
                 continue;
             }
             // Retrieve the first resource type from production rate map, if available
