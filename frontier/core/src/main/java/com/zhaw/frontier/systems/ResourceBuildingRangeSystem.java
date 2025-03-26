@@ -8,11 +8,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.ResourceCollectionRangeComponent;
+import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.exceptions.ResourceBuildingRangeException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,9 +62,15 @@ public class ResourceBuildingRangeSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         // Process each entity with a ResourceCollectionRangeComponent
-        for (Entity entity : engine.getEntitiesFor(Family.all(ResourceCollectionRangeComponent.class).get())) {
-            ResourceCollectionRangeComponent range = entity.getComponent(ResourceCollectionRangeComponent.class);
-            ResourceProductionComponent production = entity.getComponent(ResourceProductionComponent.class);
+        for (Entity entity : engine.getEntitiesFor(
+            Family.all(ResourceCollectionRangeComponent.class).get()
+        )) {
+            ResourceCollectionRangeComponent range = entity.getComponent(
+                ResourceCollectionRangeComponent.class
+            );
+            ResourceProductionComponent production = entity.getComponent(
+                ResourceProductionComponent.class
+            );
 
             // Skip entities that have already been calculated
             if (range.isCalculated) {
@@ -73,11 +78,17 @@ public class ResourceBuildingRangeSystem extends EntitySystem {
             }
 
             // Calculate the coordinates of tiles within range (excluding the center tile)
-            List<Vector2> tilesInRange = getTileCoordinatesInRange(entity.getComponent(PositionComponent.class).position, range.range);
+            List<Vector2> tilesInRange = getTileCoordinatesInRange(
+                entity.getComponent(PositionComponent.class).position,
+                range.range
+            );
             // Retrieve the first resource type from production rate map, if available
             Object key = production.productionRate.keySet().iterator().next();
             if (Objects.nonNull(key)) {
-                TiledPropertiesEnum resourceType = production.productionRate.keySet().iterator().next();
+                TiledPropertiesEnum resourceType = production.productionRate
+                    .keySet()
+                    .iterator()
+                    .next();
                 List<TiledMapTile> tiles = getTilesForResourceType(tilesInRange, resourceType);
                 int amount = tiles.size();
 
@@ -107,14 +118,20 @@ public class ResourceBuildingRangeSystem extends EntitySystem {
         return tiles;
     }
 
-    private List<TiledMapTile> getTilesForResourceType(List<Vector2> positions, TiledPropertiesEnum resourceType) {
+    private List<TiledMapTile> getTilesForResourceType(
+        List<Vector2> positions,
+        TiledPropertiesEnum resourceType
+    ) {
         List<TiledMapTile> tiles = new ArrayList<>();
 
         for (Vector2 position : positions) {
             TiledMapTileLayer.Cell cell = resourceLayer.getCell((int) position.x, (int) position.y);
             if (cell != null) {
                 TiledMapTile tile = cell.getTile();
-                if (tile.getProperties().containsKey("resourceType") && tile.getProperties().get("resourceType").equals(resourceType.toString())) {
+                if (
+                    tile.getProperties().containsKey("resourceType") &&
+                    tile.getProperties().get("resourceType").equals(resourceType.toString())
+                ) {
                     tiles.add(tile);
                 }
             }

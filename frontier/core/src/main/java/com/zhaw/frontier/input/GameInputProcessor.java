@@ -151,7 +151,9 @@ public class GameInputProcessor extends InputAdapter {
         }
 
         if (keycode == Input.Keys.P) {
-            Entity stock = engine.getEntitiesFor(Family.all(InventoryComponent.class).get()).first();
+            Entity stock = engine
+                .getEntitiesFor(Family.all(InventoryComponent.class).get())
+                .first();
             InventoryComponent inventory = stock.getComponent(InventoryComponent.class);
 
             Gdx.app.debug("GameInputProcessor", "Inventory: " + inventory.resources);

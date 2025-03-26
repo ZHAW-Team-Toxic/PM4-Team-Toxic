@@ -6,12 +6,10 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.zhaw.frontier.components.InventoryComponent;
-import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.ResourceCollectionRangeComponent;
+import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
-
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The ResourceProductionSystem aggregates the resource production from production buildings
@@ -64,27 +62,41 @@ public class ResourceProductionSystem extends EntitySystem {
      * </p>
      */
     public void endTurn() {
-        ImmutableArray<Entity> inventoryEntities = engine.getEntitiesFor(Family.all(InventoryComponent.class).get());
+        ImmutableArray<Entity> inventoryEntities = engine.getEntitiesFor(
+            Family.all(InventoryComponent.class).get()
+        );
         if (inventoryEntities.size() == 0) {
             // No inventory entity found, so nothing to update.
             return;
         }
-        InventoryComponent inventoryEntity = inventoryEntities.first().getComponent(InventoryComponent.class);
+        InventoryComponent inventoryEntity = inventoryEntities
+            .first()
+            .getComponent(InventoryComponent.class);
 
         // Process each building that produces resources and collects them.
         for (Entity building : engine.getEntitiesFor(
-            Family.all(ResourceProductionComponent.class, ResourceCollectionRangeComponent.class)
+            Family
+                .all(ResourceProductionComponent.class, ResourceCollectionRangeComponent.class)
                 .exclude(InventoryComponent.class)
-                .get())) {
-            ResourceProductionComponent production = building.getComponent(ResourceProductionComponent.class);
-            ResourceCollectionRangeComponent range = building.getComponent(ResourceCollectionRangeComponent.class);
+                .get()
+        )) {
+            ResourceProductionComponent production = building.getComponent(
+                ResourceProductionComponent.class
+            );
+            ResourceCollectionRangeComponent range = building.getComponent(
+                ResourceCollectionRangeComponent.class
+            );
             // For each resource type produced by the building, update the inventory.
-            for (Map.Entry<TiledPropertiesEnum, Integer> entry : production.productionRate.entrySet()) {
+            for (Map.Entry<
+                TiledPropertiesEnum,
+                Integer
+            > entry : production.productionRate.entrySet()) {
                 TiledPropertiesEnum resourceType = entry.getKey();
                 int productionRate = entry.getValue();
                 inventoryEntity.resources.put(
                     resourceType,
-                    inventoryEntity.resources.getOrDefault(resourceType, 0) + (productionRate * range.tilesInRange)
+                    inventoryEntity.resources.getOrDefault(resourceType, 0) +
+                    (productionRate * range.tilesInRange)
                 );
             }
         }

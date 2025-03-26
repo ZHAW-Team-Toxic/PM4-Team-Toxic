@@ -1,5 +1,7 @@
 package com.zhaw.tests;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -11,8 +13,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.ResourceCollectionRangeComponent;
+import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
@@ -20,15 +22,11 @@ import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.ResourceBuildingRangeSystem;
 import com.zhaw.frontier.systems.ResourceProductionSystem;
+import java.nio.file.Path;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.nio.file.Path;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * Test class for the BuildingManagerSystem.
@@ -71,13 +69,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(GdxExtension.class)
 public class ResourceTrackingSystemTest {
 
-
+    /** The Ashley engine used for testing. */
     private static Engine testEngine;
+
+    /** The viewport representing the game world. */
     private static ExtendViewport gameWorldView;
+
+    /** The system used to load the test map. */
     private static MapLoader mapLoaderSystem;
+
+    /** The asset manager used to load map assets. */
     private static AssetManager assetManager;
 
-    // Tile size constant
+    /** Tile size constant in pixels. */
     private static final int TILE_SIZE = 16;
 
     /**
@@ -92,10 +96,12 @@ public class ResourceTrackingSystemTest {
     @BeforeAll
     public static void setUp() {
         testEngine = new Engine();
+
         // Create an OrthographicCamera with world dimensions in pixels.
         OrthographicCamera camera = new OrthographicCamera(9 * TILE_SIZE, 9 * TILE_SIZE);
         // Set camera to y-up.
         camera.setToOrtho(false);
+
         // Create the viewport with the camera.
         gameWorldView = new ExtendViewport(9 * TILE_SIZE, 9 * TILE_SIZE, camera);
         // Force the screen bounds to start at (0,0) so that unproject interprets (0,0) as bottom left.
@@ -107,20 +113,27 @@ public class ResourceTrackingSystemTest {
         try {
             String mapPath = "./testAssets/TMX/frontier_map_for_tests.tmx";
             FileHandle fileHandle = Gdx.files.internal(mapPath);
+            // Verify that the map file exists.
             assertTrue(fileHandle.exists(), "Map file should exist");
 
             mapLoaderSystem = new MapLoader();
             assetManager = new AssetManager();
 
+            // Load the map and finish loading assets.
             mapLoaderSystem.loadMap(assetManager, Path.of(mapPath));
             assetManager.finishLoading();
+
+            // Initialize map layers as entities.
             mapLoaderSystem.initMapLayerEntities(testEngine);
+            // Assert that the map is loaded.
             assertNotNull(mapLoaderSystem.getMap(), "Map should be loaded");
+            // Assert that the bottom layer component is loaded.
             assertNotNull(
                 mapLoaderSystem.getMapEntity().getComponent(BottomLayerComponent.class),
                 "Bottom layer should be loaded"
             );
 
+            // Create and add the BuildingManagerSystem.
             BuildingManagerSystem buildingManagerSystem = new BuildingManagerSystem(
                 mapLoaderSystem.getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer,
                 gameWorldView,
@@ -128,96 +141,172 @@ public class ResourceTrackingSystemTest {
             );
             testEngine.addSystem(buildingManagerSystem);
 
-            ResourceBuildingRangeSystem resourceBuildingRangeSystem = new ResourceBuildingRangeSystem(
-                testEngine,
-                (TiledMapTileLayer) mapLoaderSystem.getMap().getLayers().get(TiledPropertiesEnum.RESOURCE_LAYER.toString())
-            );
+            // Create and add the ResourceBuildingRangeSystem.
+            ResourceBuildingRangeSystem resourceBuildingRangeSystem =
+                new ResourceBuildingRangeSystem(
+                    testEngine,
+                    (TiledMapTileLayer) mapLoaderSystem
+                        .getMap()
+                        .getLayers()
+                        .get(TiledPropertiesEnum.RESOURCE_LAYER.toString())
+                );
             testEngine.addSystem(resourceBuildingRangeSystem);
 
+            // Create and add a stock entity with an InventoryComponent.
             Entity stock = testEngine.createEntity();
             stock.add(new InventoryComponent());
             testEngine.addEntity(stock);
 
-            ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(testEngine);
+            // Create and add the ResourceProductionSystem.
+            ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(
+                testEngine
+            );
             testEngine.addSystem(resourceProductionSystem);
         } catch (Exception e) {
             fail("Failed to load map or initialize systems: " + e.getMessage());
         }
     }
 
-
+    /**
+     * Tests that wood resource production is tracked and collected.
+     * <p>
+     * A wood resource building is created, positioned at tile (4,2), with a production rate of 1 and a collection range of 1.
+     * After updating the system, the inventory should reflect that wood has been collected.
+     * </p>
+     */
     @Test
-    public void testResourceTrackingWood(){
+    public void testResourceTrackingWood() {
         Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
+        // Set building's position.
         building.getComponent(PositionComponent.class).position.set(4, 2);
-        building.getComponent(ResourceProductionComponent.class).productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 1);
+        // Set production rate for wood.
+        building
+            .getComponent(ResourceProductionComponent.class)
+            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 1);
+        // Set collection range.
         building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
 
         testEngine.addEntity(building);
 
+        // Update systems.
         testEngine.update(0.1f);
 
-        InventoryComponent inventory = testEngine.getEntitiesFor(Family.all(InventoryComponent.class).get()).first().getComponent(InventoryComponent.class);
-
+        // Retrieve inventory and assert that wood has been collected.
+        InventoryComponent inventory = testEngine
+            .getEntitiesFor(Family.all(InventoryComponent.class).get())
+            .first()
+            .getComponent(InventoryComponent.class);
         int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_WOOD);
 
         assertTrue(amount > 0, "Wood should be collected");
     }
 
+    /**
+     * Tests that stone resource production is tracked and collected.
+     * <p>
+     * A stone resource building is created, positioned at tile (2,4), with a production rate of 1 and a collection range of 1.
+     * After updating the system, the inventory should reflect that stone has been collected.
+     * </p>
+     */
     @Test
-    public void testResourceTrackingStone(){
+    public void testResourceTrackingStone() {
         Entity building = ResourceBuildingFactory.stoneResourceBuilding(testEngine);
+        // Set building's position.
         building.getComponent(PositionComponent.class).position.set(2, 4);
-        building.getComponent(ResourceProductionComponent.class).productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_STONE, 1);
+        // Set production rate for stone.
+        building
+            .getComponent(ResourceProductionComponent.class)
+            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_STONE, 1);
+        // Set collection range.
         building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
 
         testEngine.addEntity(building);
 
+        // Update systems.
         testEngine.update(0.1f);
 
-        InventoryComponent inventory = testEngine.getEntitiesFor(Family.all(InventoryComponent.class).get()).first().getComponent(InventoryComponent.class);
-
+        // Retrieve inventory and assert that stone has been collected.
+        InventoryComponent inventory = testEngine
+            .getEntitiesFor(Family.all(InventoryComponent.class).get())
+            .first()
+            .getComponent(InventoryComponent.class);
         int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_STONE);
 
         assertTrue(amount > 0, "Stone should be collected");
     }
 
+    /**
+     * Tests that iron resource production is tracked and collected.
+     * <p>
+     * An iron resource building is created, positioned at tile (6,4), with a production rate of 1 and a collection range of 1.
+     * After updating the system, the inventory should reflect that iron has been collected.
+     * </p>
+     */
     @Test
-    public void testResourceTrackingIron(){
+    public void testResourceTrackingIron() {
         Entity building = ResourceBuildingFactory.ironResourceBuilding(testEngine);
+        // Set building's position.
         building.getComponent(PositionComponent.class).position.set(6, 4);
-        building.getComponent(ResourceProductionComponent.class).productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_IRON, 1);
+        // Set production rate for iron.
+        building
+            .getComponent(ResourceProductionComponent.class)
+            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_IRON, 1);
+        // Set collection range.
         building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
 
         testEngine.addEntity(building);
 
+        // Update systems.
         testEngine.update(0.1f);
 
-        InventoryComponent inventory = testEngine.getEntitiesFor(Family.all(InventoryComponent.class).get()).first().getComponent(InventoryComponent.class);
-
+        // Retrieve inventory and assert that iron has been collected.
+        InventoryComponent inventory = testEngine
+            .getEntitiesFor(Family.all(InventoryComponent.class).get())
+            .first()
+            .getComponent(InventoryComponent.class);
         int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_IRON);
 
         assertTrue(amount > 0, "Iron should be collected");
     }
 
+    /**
+     * Tests that no wood resource is collected when the production rate is set to 0.
+     * <p>
+     * A wood resource building is created, positioned at tile (4,4), with a production rate of 0 and a collection range of 1.
+     * After updating the system, the inventory should not reflect any wood production.
+     * </p>
+     */
     @Test
-    public void testResourceTrackingWoodShouldNotBeCollected(){
+    public void testResourceTrackingWoodShouldNotBeCollected() {
         Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
+        // Set building's position.
         building.getComponent(PositionComponent.class).position.set(4, 4);
-        building.getComponent(ResourceProductionComponent.class).productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 0);
+        // Set production rate for wood to 0.
+        building
+            .getComponent(ResourceProductionComponent.class)
+            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 0);
+        // Set collection range.
         building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
 
         testEngine.addEntity(building);
 
+        // Update systems.
         testEngine.update(0.1f);
 
-        InventoryComponent inventory = testEngine.getEntitiesFor(Family.all(InventoryComponent.class).get()).first().getComponent(InventoryComponent.class);
-
+        // Retrieve inventory and assert that no wood has been collected.
+        InventoryComponent inventory = testEngine
+            .getEntitiesFor(Family.all(InventoryComponent.class).get())
+            .first()
+            .getComponent(InventoryComponent.class);
         int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_WOOD);
 
         assertFalse(amount > 0, "Wood should not be collected");
     }
 
+    /**
+     * Tears down the test environment by removing all entities and systems,
+     * and disposing of the asset manager.
+     */
     @AfterAll
     public static void tearDown() {
         testEngine.removeAllEntities();
