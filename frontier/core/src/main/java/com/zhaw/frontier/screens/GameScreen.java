@@ -15,7 +15,11 @@ import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
+import com.zhaw.frontier.systems.EnemyManagementSystem;
+import com.zhaw.frontier.systems.IdleBehaviourSystem;
 import com.zhaw.frontier.systems.MapLoader;
+import com.zhaw.frontier.systems.MovementSystem;
+import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
@@ -111,6 +115,7 @@ public class GameScreen implements Screen {
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         //set-up BuildingManager
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
+        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
@@ -137,6 +142,10 @@ public class GameScreen implements Screen {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
+
+        engine.addSystem(new IdleBehaviourSystem());
+        engine.addSystem(new PatrolBehaviourSystem());
+        engine.addSystem(new MovementSystem());
 
         var mx = new InputMultiplexer();
         if (cameraControlSystem != null) {
