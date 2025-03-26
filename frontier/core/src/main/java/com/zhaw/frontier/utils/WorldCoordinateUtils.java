@@ -1,18 +1,11 @@
-package com.zhaw.frontier.systems;
+package com.zhaw.frontier.utils;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-/**
- * Utility class for building-related operations.
- * <p>
- * Provides helper methods for converting screen coordinates to world coordinates,
- * taking into account the tile dimensions defined by a {@link TiledMapTileLayer}.
- * </p>
- */
-public class BuildingUtils {
+public class WorldCoordinateUtils {
 
     /**
      * Calculates the world coordinate as tile indices based on screen coordinates.
@@ -34,8 +27,8 @@ public class BuildingUtils {
         float screenX,
         float screenY
     ) {
-        int HAS_TO_BE_ZERO_FOR_2D_GAMES = 0;
-        Vector3 screenCoordinates = new Vector3(screenX, screenY, HAS_TO_BE_ZERO_FOR_2D_GAMES);
+        int is2dGame = 0;
+        Vector3 screenCoordinates = new Vector3(screenX, screenY, is2dGame);
         Vector3 worldCoordinates = viewport.unproject(screenCoordinates);
         return new Vector2(
             worldCoordinates.x / sampleLayer.getTileWidth(),
