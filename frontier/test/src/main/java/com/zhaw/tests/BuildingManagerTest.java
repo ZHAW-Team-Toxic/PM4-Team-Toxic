@@ -80,7 +80,13 @@ public class BuildingManagerTest {
 
     // Add the BuildingManagerSystem to the test engine.
     private static void addSystemsUnderTestHere() {
-        testEngine.addSystem(new BuildingManagerSystem(testMapEnvironment.getSampleLayer(), gameWorldView, testEngine));
+        testEngine.addSystem(
+            new BuildingManagerSystem(
+                testMapEnvironment.getSampleLayer(),
+                gameWorldView,
+                testEngine
+            )
+        );
     }
 
     /**
