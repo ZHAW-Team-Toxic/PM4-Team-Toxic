@@ -45,7 +45,7 @@ public class BuildingManagerTest {
      * @return the corresponding screen X coordinate.
      */
     private static float tileToScreenX(float tileCoord) {
-        return tileCoord * TestMapEnvironment.getTILE_SIZE();
+        return tileCoord * TestMapEnvironment.TILE_SIZE;
     }
 
     /**
@@ -59,7 +59,7 @@ public class BuildingManagerTest {
      * @return the corresponding screen Y coordinate.
      */
     private static float tileToScreenY(float tileCoord) {
-        return -tileCoord * TestMapEnvironment.getTILE_SIZE();
+        return -tileCoord * TestMapEnvironment.TILE_SIZE;
     }
 
     /**
@@ -82,7 +82,7 @@ public class BuildingManagerTest {
     private static void addSystemsUnderTestHere() {
         testEngine.addSystem(
             new BuildingManagerSystem(
-                testMapEnvironment.getSampleLayer(),
+                testMapEnvironment.getBottomLayer(),
                 gameWorldView,
                 testEngine
             )
@@ -184,6 +184,7 @@ public class BuildingManagerTest {
     @AfterAll
     public static void tearDown() {
         testEngine.removeAllEntities();
+        testMapEnvironment.dispose();
     }
 
     /**
