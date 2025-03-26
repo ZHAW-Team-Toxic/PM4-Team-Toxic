@@ -5,6 +5,11 @@ package com.zhaw.frontier.components.map;
  * //TODO maybe solve this differently
  */
 public enum TiledPropertiesEnum {
+
+    BOTTOM_LAYER("BottomLayer"),
+    DECORATION_LAYER("DecorationLayer"),
+    RESOURCE_LAYER("ResourceLayer"),
+
     IS_BUILDABLE("isBuildable"),
     IS_TRAVERSABLE("isTraversable"),
     IS_SPAWN_POINT("isSpawnPoint"),

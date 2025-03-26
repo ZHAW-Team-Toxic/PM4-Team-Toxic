@@ -5,10 +5,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.zhaw.frontier.components.HealthComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
-import com.zhaw.frontier.components.ResourceGeneratorComponent;
+import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 
 /**
  * A factory class responsible for creating Resource Building entities.
@@ -42,15 +40,76 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new PositionComponent());
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
+        resourceBuilding.add(new ResourceProductionComponent());
+        resourceBuilding.add(new ResourceCollectionRangeComponent());
+        resourceBuilding.add(new RenderComponent());
+        resourceBuilding.add(new AnimationComponent());
+        return resourceBuilding;
+    }
+
+    public static Entity woodResourceBuilding(Engine engine) {
+        Entity resourceBuilding = engine.createEntity();
+        resourceBuilding.add(new PositionComponent());
+        resourceBuilding.add(new HealthComponent());
+        resourceBuilding.add(new ResourceGeneratorComponent());
+
+        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
+        resourceProductionComponent.productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 1);
+        resourceBuilding.add(resourceProductionComponent);
+
+        resourceBuilding.add(new ResourceCollectionRangeComponent());
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
-
-        // TODO: Replace placeholder texture with the actual resource building texture.
         Texture texture = createPlaceHolder();
         renderComponent.sprite = new Sprite(texture);
 
         resourceBuilding.add(renderComponent);
+        resourceBuilding.add(new AnimationComponent());
+        return resourceBuilding;
+    }
+
+    public static Entity stoneResourceBuilding(Engine engine) {
+        Entity resourceBuilding = engine.createEntity();
+        resourceBuilding.add(new PositionComponent());
+        resourceBuilding.add(new HealthComponent());
+        resourceBuilding.add(new ResourceGeneratorComponent());
+
+        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
+        resourceProductionComponent.productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_STONE, 1);
+        resourceBuilding.add(resourceProductionComponent);
+
+        resourceBuilding.add(new ResourceCollectionRangeComponent());
+
+        RenderComponent renderComponent = new RenderComponent();
+        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
+        Texture texture = createPlaceHolder();
+        renderComponent.sprite = new Sprite(texture);
+
+        resourceBuilding.add(renderComponent);
+        resourceBuilding.add(new AnimationComponent());
+        return resourceBuilding;
+    }
+
+    public static Entity ironResourceBuilding(Engine engine) {
+        Entity resourceBuilding = engine.createEntity();
+        resourceBuilding.add(new PositionComponent());
+        resourceBuilding.add(new HealthComponent());
+        resourceBuilding.add(new ResourceGeneratorComponent());
+
+        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
+        resourceProductionComponent.productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_IRON, 1);
+        resourceBuilding.add(resourceProductionComponent);
+
+        resourceBuilding.add(new ResourceCollectionRangeComponent());
+
+        RenderComponent renderComponent = new RenderComponent();
+        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
+        Texture texture = createPlaceHolder();
+        renderComponent.sprite = new Sprite(texture);
+
+        resourceBuilding.add(renderComponent);
+        resourceBuilding.add(new AnimationComponent());
         return resourceBuilding;
     }
 
