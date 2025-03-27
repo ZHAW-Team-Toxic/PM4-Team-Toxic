@@ -1,11 +1,12 @@
 package com.zhaw.tests.screens;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.exceptions.MapLoadingException;
@@ -15,6 +16,7 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import com.zhaw.tests.GdxExtension;
 import java.nio.file.Path;
+import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class GameScreenTest {
 
     private FrontierGame mockGame;
+    private GameScreen gameScreen;
 
     @BeforeEach
     void setup() throws MapLoadingException {
@@ -30,9 +33,6 @@ class GameScreenTest {
 
         SpriteBatch mockSpriteBatch = mock(SpriteBatch.class);
         SpriteBatchInterface mockBatch = mock(SpriteBatchInterface.class);
-
-        when(mockSpriteBatch.getColor()).thenReturn(new Color(1, 1, 1, 1));
-
         when(mockBatch.getBatch()).thenReturn(mockSpriteBatch);
         when(mockGame.getBatch()).thenReturn(mockBatch);
 
@@ -42,6 +42,7 @@ class GameScreenTest {
         Path mapPath = Path.of("TMX/frontier_testmap.tmx");
         MapLoader.getInstance().loadMap(assetManager, mapPath);
         assetManager.finishLoading();
+        gameScreen = new GameScreen(mockGame);
     }
 
     @Test
@@ -49,10 +50,7 @@ class GameScreenTest {
         Input mockInput = mock(Input.class);
         Gdx.input = mockInput;
         when(mockInput.isKeyJustPressed(Input.Keys.ESCAPE)).thenReturn(true);
-
-        GameScreen screen = spy(new GameScreen(mockGame));
-        screen.render(1 / 60f);
-
+        gameScreen.render(0.016f);
         verify(mockGame).switchScreen(any(PauseScreen.class));
     }
 }
