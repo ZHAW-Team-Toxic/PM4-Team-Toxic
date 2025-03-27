@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 
 /**
@@ -28,8 +27,8 @@ public class PauseScreen implements Screen {
     public PauseScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
 
-        this.stage = new Stage(new ExtendViewport(1920, 1080,  new OrthographicCamera()));
-        this.skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);;
+        this.stage = new Stage(new ExtendViewport(1920, 1080, new OrthographicCamera()));
+        this.skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
     }
 
     @Override
@@ -44,27 +43,33 @@ public class PauseScreen implements Screen {
         TextButton saveButton = new TextButton("Save", skin);
         TextButton saveExitButton = new TextButton("Save & Exit", skin);
 
-        resumeButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                resumeGame();
+        resumeButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    resumeGame();
+                }
             }
-        });
+        );
 
-        saveButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                saveGame();
+        saveButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    saveGame();
+                }
             }
-        });
+        );
 
-        saveExitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                saveGame();
-                exitGame();
+        saveExitButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    saveGame();
+                    exitGame();
+                }
             }
-        });
+        );
 
         table.add(resumeButton).fillX().pad(10);
         table.row();
@@ -94,14 +99,10 @@ public class PauseScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
