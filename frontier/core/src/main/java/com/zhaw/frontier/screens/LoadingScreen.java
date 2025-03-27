@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -35,6 +36,8 @@ public class LoadingScreen extends ScreenAdapter {
     public void show() {
         // Add new assets here
         assetManager.load("libgdx.png", Texture.class);
+        assetManager.load("skins/skin.json", Skin.class);
+
         try {
             mapLoaderSystem.loadMap(assetManager, Path.of("TMX/frontier_testmap.tmx"));
         } catch (Exception e) {
