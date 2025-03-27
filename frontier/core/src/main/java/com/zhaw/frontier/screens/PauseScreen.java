@@ -28,13 +28,12 @@ public class PauseScreen implements Screen {
     public PauseScreen(FrontierGame frontierGame, Screen gameScreen) {
         this.frontierGame = frontierGame;
         this.gameScreen = gameScreen;
-
-        this.stage = new Stage(new ExtendViewport(1920, 1080, new OrthographicCamera()));
-        this.skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
     }
 
     @Override
     public void show() {
+        this.stage = new Stage(new ExtendViewport(1920, 1080, new OrthographicCamera()));
+        this.skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
         stage.clear();
 
         Table table = new Table();
