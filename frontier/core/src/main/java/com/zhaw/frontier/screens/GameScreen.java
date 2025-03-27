@@ -1,17 +1,24 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
+import com.zhaw.frontier.entityFactories.WallFactory;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
@@ -21,6 +28,8 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.util.ButtonClickObserver;
+import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
@@ -29,7 +38,7 @@ import com.zhaw.frontier.wrappers.SpriteBatchInterface;
  * Controls the handling of user input, rendering and game logic during each
  * render.
  */
-public class GameScreen implements Screen {
+public class GameScreen implements Screen, ButtonClickObserver {
 
     private FrontierGame frontierGame;
     private SpriteBatchInterface spriteBatchWrapper;
@@ -37,6 +46,8 @@ public class GameScreen implements Screen {
     private ScreenViewport gameUi;
     private Stage stage;
     private Engine engine;
+    private GameUIScreen gameUIScreen;
+    private GameMode gameMode = GameMode.NORMAL;
     private CameraControlSystem cameraControlSystem;
 
     private OrthogonalTiledMapRenderer renderer;
@@ -47,6 +58,10 @@ public class GameScreen implements Screen {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
+        frontierGame.getAssetManager().load("skins/skin.json", Skin.class);
+        frontierGame.getAssetManager().finishLoading();
+        gameUIScreen = new GameUIScreen(frontierGame, spriteBatchWrapper);
+        gameUIScreen.addObserver(this);
         this.engine = new Engine();
 
         this.gameWorldView = new ExtendViewport(16, 9);
@@ -148,12 +163,34 @@ public class GameScreen implements Screen {
         engine.addSystem(new MovementSystem());
 
         var mx = new InputMultiplexer();
+        mx.addProcessor(gameUIScreen.getStage());
+        mx.addProcessor(cameraControlSystem.getInputAdapter());
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
         mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
         Gdx.input.setInputProcessor(mx);
+
+        mx.addProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                if (gameMode == GameMode.BUILDING || gameMode == GameMode.DEMOLISH) {
+                    Vector3 worldCoordinates = cameraControlSystem.getCamera().unproject(new Vector3(screenX, screenY, 0));
+                    if (gameMode == GameMode.DEMOLISH) {
+                        //TODO: Check if the demolish logic works (must place building first, see below)
+                        engine.getSystem(BuildingManagerSystem.class).removeBuilding(worldCoordinates.x, worldCoordinates.y);
+                    } else {
+                        Entity entity = WallFactory.createDefaultWall(engine);
+                        entity.getComponent(PositionComponent.class).position = new Vector2(worldCoordinates.x, worldCoordinates.y);
+                        //TODO: Finish actual building process
+                        engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -161,6 +198,7 @@ public class GameScreen implements Screen {
         handleInput();
         engine.update(delta);
         updateUI();
+        gameUIScreen.render(delta);
     }
 
     private void handleInput() {
@@ -177,6 +215,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         gameUi.update(width, height);
         gameWorldView.update(width, height);
+        gameUIScreen.resize(width, height);
     }
 
     @Override
@@ -193,11 +232,21 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        gameUIScreen.dispose();
     }
 
     private void updateUI() {
         gameUi.apply();
         stage.act();
         stage.draw();
+    }
+
+    @Override
+    public void buttonClicked(GameMode gameMode) {
+        if (this.gameMode == gameMode) {
+            this.gameMode = GameMode.NORMAL;
+        } else {
+            this.gameMode = gameMode;
+        }
     }
 }
