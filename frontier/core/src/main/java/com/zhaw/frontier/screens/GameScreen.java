@@ -1,10 +1,7 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -138,24 +135,30 @@ public class GameScreen implements Screen {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
-
-        var mx = new InputMultiplexer();
-        mx.addProcessor(cameraControlSystem.getInputAdapter());
-        mx.addProcessor(stage);
-        mx.addProcessor(new GameInputProcessor(engine, frontierGame));
-        Gdx.input.setInputProcessor(mx);
     }
 
     @Override
-    public void show() {}
+    public void show() {
+        var mx = new InputMultiplexer();
+
+        CameraControlSystem cameraControlSystem = engine.getSystem(CameraControlSystem.class);
+        if (cameraControlSystem != null) {
+            mx.addProcessor(cameraControlSystem.getInputAdapter());
+        }
+
+        mx.addProcessor(stage);
+        mx.addProcessor(new GameInputProcessor(engine, frontierGame));
+
+        Gdx.input.setInputProcessor(mx);
+    }
 
     @Override
     public void render(float delta) {
         engine.update(delta);
         updateUI();
 
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ESCAPE)) {
-            frontierGame.switchScreen(new PauseScreen(frontierGame));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            frontierGame.switchScreen(new PauseScreen(frontierGame, this));
         }
     }
 
