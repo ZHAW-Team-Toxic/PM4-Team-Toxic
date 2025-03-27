@@ -20,12 +20,14 @@ import com.zhaw.frontier.FrontierGame;
  */
 public class PauseScreen implements Screen {
 
+    private final Screen gameScreen;
     private FrontierGame frontierGame;
     private Stage stage;
     private Skin skin;
 
-    public PauseScreen(FrontierGame frontierGame) {
+    public PauseScreen(FrontierGame frontierGame, Screen gameScreen) {
         this.frontierGame = frontierGame;
+        this.gameScreen = gameScreen;
 
         this.stage = new Stage(new ExtendViewport(1920, 1080, new OrthographicCamera()));
         this.skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
@@ -115,7 +117,7 @@ public class PauseScreen implements Screen {
     }
 
     private void resumeGame() {
-        frontierGame.switchScreen(new GameScreen(frontierGame));
+        frontierGame.switchScreen(gameScreen);
     }
 
     private void saveGame() {
