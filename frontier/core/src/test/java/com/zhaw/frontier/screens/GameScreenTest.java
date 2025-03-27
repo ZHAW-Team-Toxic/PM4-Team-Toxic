@@ -1,13 +1,11 @@
 package com.zhaw.tests.screens;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import static org.mockito.Mockito.*;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.backends.headless.HeadlessApplication;
-import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.exceptions.MapLoadingException;
@@ -16,14 +14,10 @@ import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import com.zhaw.tests.GdxExtension;
-import org.junit.jupiter.api.BeforeAll;
+import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.nio.file.Path;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(GdxExtension.class)
 class GameScreenTest {
