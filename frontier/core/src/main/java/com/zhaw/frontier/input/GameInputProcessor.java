@@ -9,10 +9,12 @@ import com.badlogic.gdx.InputAdapter;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
 
@@ -28,6 +30,7 @@ public class GameInputProcessor extends InputAdapter {
 
     private final Engine engine;
     private final FrontierGame frontierGame;
+    private final AppConfig appConfig;
 
     /**
      * Constructs a new GameInputProcessor.
@@ -38,6 +41,7 @@ public class GameInputProcessor extends InputAdapter {
     public GameInputProcessor(Engine engine, FrontierGame frontierGame) {
         this.engine = engine;
         this.frontierGame = frontierGame;
+        this.appConfig = frontierGame.getAppConfig();
     }
 
     /**
@@ -71,6 +75,10 @@ public class GameInputProcessor extends InputAdapter {
 
         if (enemyManagementSystem == null) {
             Gdx.app.error("GameInputProcessor", "EnemyManagementSystem not found in engine!");
+            return false;
+        }
+
+        if (this.appConfig.getEnvironment() != AppEnvironment.DEV) {
             return false;
         }
 
