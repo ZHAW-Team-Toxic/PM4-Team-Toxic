@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class WorldCoordinateUtils {
 
+    private WorldCoordinateUtils() {}
+
     /**
      * Calculates the world coordinate as tile indices based on screen coordinates.
      * <p>
