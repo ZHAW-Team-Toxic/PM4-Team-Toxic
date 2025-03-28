@@ -1,4 +1,4 @@
-package com.zhaw.tests.mocks;
+package com.zhaw.frontier.mocks;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

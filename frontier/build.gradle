@@ -33,30 +33,20 @@ allprojects {
   }
 }
 
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
-    }
-}
+
 
 sonar {
   properties {
     property "sonar.projectKey", "ZHAW-Team-Toxic_PM4-Team-Toxic"
     property "sonar.organization", "zhaw-team-toxic"
     property "sonar.host.url", "https://sonarcloud.io"
-    property "sonar.junit.reportPaths", "test/build/test-results/test"
-    property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test"
-  }
-}
-project(":test") {
-  sonar {
-    skipProject = true
   }
 }
 
 configure(subprojects) {
   apply plugin: 'java-library'
+  apply plugin: "jacoco"
+
   sourceCompatibility = 21
 
   dependencies {
@@ -67,6 +57,13 @@ configure(subprojects) {
     // For test sources
     testCompileOnly 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+    testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
   }
 
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
@@ -92,6 +89,36 @@ configure(subprojects) {
   compileJava {
     options.incremental = true
   }
+
+  test {
+    outputs.upToDateWhen { false }
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+    systemProperty("junit.jupiter.conditions.deactivate", "*")
+    systemProperty("junit.jupiter.extensions.autodetection.enabled", true)
+    systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
+  }
+
+  jacocoTestReport {
+    dependsOn test
+    reports {
+      xml.required = true
+    }
+  }
+
+  sourceSets {
+    test {
+      java.srcDirs = ["src/test/java"]
+      resources {
+        srcDir '../assets'  // Point to the external assets directory
+      }
+    }
+  }
+}
+project(":lwjgl3") {
+  sonar {
+    skipProject = true
+  }
 }
 
 // test.testResultsDir = ''
@@ -109,8 +136,12 @@ subprojects {
   }
   sonar {
     properties {
-      property "sonar.sources", "src"
-      ///TEST
+      //property "projectBaseDir"
+       property "sonar.sources", "src/main/java"
+       property "sonar.tests", "src/test/java"
+        property "sonar.exclusions", "src/test/java"
+      // properties["sonar.tests"] += sourceSets.test.allSource.srcDirs
+
     }
   }
 

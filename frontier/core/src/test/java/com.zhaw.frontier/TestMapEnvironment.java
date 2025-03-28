@@ -1,4 +1,4 @@
-package com.zhaw.tests;
+package com.zhaw.frontier;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -98,7 +98,7 @@ public class TestMapEnvironment {
         camera.update();
 
         // Load the map using MapLoader.
-        String mapPath = "./testAssets/TMX/frontier_map_for_tests.tmx";
+        String mapPath = "testAssets/TMX/frontier_map_for_tests.tmx";
         FileHandle fileHandle = Gdx.files.internal(mapPath);
         if (!fileHandle.exists()) {
             throw new RuntimeException("Map file does not exist: " + mapPath);
