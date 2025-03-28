@@ -9,13 +9,15 @@ import com.zhaw.frontier.components.RenderComponent;
 /**
  * Mapper for wall entities.
  * <p>
- * This class provides component mappers for the common components used by wall entities:
+ * This class provides component mappers for the common components used by wall
+ * entities:
  * <ul>
- *   <li>{@link PositionComponent} for position data,</li>
- *   <li>{@link RenderComponent} for rendering data,</li>
- *   <li>{@link HealthComponent} for health data.</li>
+ * <li>{@link PositionComponent} for position data,</li>
+ * <li>{@link RenderComponent} for rendering data,</li>
+ * <li>{@link HealthComponent} for health data.</li>
  * </ul>
- * It also defines a {@link Family} that groups all wall entities that contain these components.
+ * It also defines a {@link Family} that groups all wall entities that contain
+ * these components.
  * </p>
  */
 public class WallMapper {

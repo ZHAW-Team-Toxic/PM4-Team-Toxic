@@ -1,4 +1,4 @@
-package com.zhaw.tests;
+package com.zhaw.frontier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,9 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.BuildingUtils;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
