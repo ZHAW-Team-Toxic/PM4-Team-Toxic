@@ -56,27 +56,27 @@ public class GameUIScreen {
         float marginX = 20f;
         float marginY = 20f;
 
-        float button1X = uiViewport.getWorldWidth() - buttonWidth - marginX;
-        float button1Y = marginY;
+        float demolishButtonX = uiViewport.getWorldWidth() - buttonWidth - marginX;
+        float demolishButtonY = marginY;
 
-        float button2X = button1X - buttonWidth - 10;
-        float button2Y = button1Y;
+        float buildButtonX = demolishButtonX - buttonWidth - 10;
+        float buildButtonY = demolishButtonY;
 
-        float button3X = button1X;
-        float button3Y = button1Y + buttonHeight + 10;
+        float fireplaceButtonX = demolishButtonX;
+        float fireplaceButtonY = demolishButtonY + buttonHeight + 10;
 
-        float button4X = button3X;
-        float button4Y = button3Y + buttonHeight + 10;
+        float pauseButtonX = fireplaceButtonX;
+        float pauseButtonY = fireplaceButtonY + buttonHeight + 10;
 
-        TextButton.TextButtonStyle button1Style = new TextButton.TextButtonStyle();
-        button1Style.up = copperDrawable;
-        button1Style.down = copperDrawable;
-        button1Style.font = font;
-        TextButton button1 = new TextButton("Demolish", button1Style);
-        button1.setSize(buttonWidth, buttonHeight);
-        button1.setPosition(button1X, button1Y);
-        uiStage.addActor(button1);
-        button1.addListener(new ChangeListener() {
+        TextButton.TextButtonStyle demolishButtonStyle = new TextButton.TextButtonStyle();
+        demolishButtonStyle.up = copperDrawable;
+        demolishButtonStyle.down = copperDrawable;
+        demolishButtonStyle.font = font;
+        TextButton demolishButton = new TextButton("Demolish", demolishButtonStyle);
+        demolishButton.setSize(buttonWidth, buttonHeight);
+        demolishButton.setPosition(demolishButtonX, demolishButtonY);
+        uiStage.addActor(demolishButton);
+        demolishButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Demolish button was clicked!");
@@ -84,15 +84,15 @@ public class GameUIScreen {
             }
         });
 
-        TextButton.TextButtonStyle button2Style = new TextButton.TextButtonStyle();
-        button2Style.up = diamondDrawable;
-        button2Style.down = diamondDrawable;
-        button2Style.font = font;
-        TextButton button2 = new TextButton("Build", button2Style);
-        button2.setSize(buttonWidth, buttonHeight);
-        button2.setPosition(button2X, button2Y);
-        uiStage.addActor(button2);
-        button2.addListener(new ChangeListener() {
+        TextButton.TextButtonStyle buildButtonStyle = new TextButton.TextButtonStyle();
+        buildButtonStyle.up = diamondDrawable;
+        buildButtonStyle.down = diamondDrawable;
+        buildButtonStyle.font = font;
+        TextButton buildButton = new TextButton("Build", buildButtonStyle);
+        buildButton.setSize(buttonWidth, buttonHeight);
+        buildButton.setPosition(buildButtonX, buildButtonY);
+        uiStage.addActor(buildButton);
+        buildButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Build button was clicked!");
@@ -100,30 +100,30 @@ public class GameUIScreen {
             }
         });
 
-        TextButton.TextButtonStyle button3Style = new TextButton.TextButtonStyle();
-        button3Style.up = bronzeDrawable;
-        button3Style.down = bronzeDrawable;
-        button3Style.font = font;
-        TextButton button3 = new TextButton("Fire Place", button3Style);
-        button3.setSize(buttonWidth, buttonHeight);
-        button3.setPosition(button3X, button3Y);
-        uiStage.addActor(button3);
-        button3.addListener(new ChangeListener() {
+        TextButton.TextButtonStyle fireplaceButtonStyle = new TextButton.TextButtonStyle();
+        fireplaceButtonStyle.up = bronzeDrawable;
+        fireplaceButtonStyle.down = bronzeDrawable;
+        fireplaceButtonStyle.font = font;
+        TextButton fireplaceButton = new TextButton("Fire Place", fireplaceButtonStyle);
+        fireplaceButton.setSize(buttonWidth, buttonHeight);
+        fireplaceButton.setPosition(fireplaceButtonX, fireplaceButtonY);
+        uiStage.addActor(fireplaceButton);
+        fireplaceButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("skipping time");
             }
         });
 
-        TextButton.TextButtonStyle button4Style = new TextButton.TextButtonStyle();
-        button4Style.up = emeraldDrawable;
-        button4Style.down = emeraldDrawable;
-        button4Style.font = font;
-        TextButton button4 = new TextButton("Pause", button4Style);
-        button4.setSize(buttonWidth, buttonHeight);
-        button4.setPosition(button4X, button4Y);
-        uiStage.addActor(button4);
-        button4.addListener(new ChangeListener() {
+        TextButton.TextButtonStyle pauseButtonStyle = new TextButton.TextButtonStyle();
+        pauseButtonStyle.up = emeraldDrawable;
+        pauseButtonStyle.down = emeraldDrawable;
+        pauseButtonStyle.font = font;
+        TextButton pauseButton = new TextButton("Pause", pauseButtonStyle);
+        pauseButton.setSize(buttonWidth, buttonHeight);
+        pauseButton.setPosition(pauseButtonX, pauseButtonY);
+        uiStage.addActor(pauseButton);
+        pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //TODO: Wait for merge of issue #14

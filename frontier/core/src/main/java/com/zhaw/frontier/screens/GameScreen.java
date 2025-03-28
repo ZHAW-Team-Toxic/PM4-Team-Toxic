@@ -175,22 +175,20 @@ public class GameScreen implements Screen, ButtonClickObserver {
         mx.addProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                if (gameMode == GameMode.BUILDING || gameMode == GameMode.DEMOLISH) {
-                    Vector3 worldCoordinates = cameraControlSystem.getCamera().unproject(new Vector3(screenX, screenY, 0));
-                    if (gameMode == GameMode.DEMOLISH) {
-                        //TODO: Check if the demolish logic works (must place building first, see below)
-                        engine.getSystem(BuildingManagerSystem.class).removeBuilding(worldCoordinates.x, worldCoordinates.y);
-                    } else {
-                        Entity entity = WallFactory.createDefaultWall(engine);
-                        entity.getComponent(PositionComponent.class).position = new Vector2(worldCoordinates.x, worldCoordinates.y);
-                        //TODO: Finish actual building process
-                        engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
-                    }
-                    return true;
+                if (gameMode == GameMode.DEMOLISH) {
+                    engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY);
+                } else if (gameMode == GameMode.BUILDING) {
+                    Entity entity = WallFactory.createDefaultWall(engine);
+                    entity.getComponent(PositionComponent.class).position = new Vector2(screenX, screenY);
+                    engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
                 }
-                return false;
+                return true;
             }
         });
+    }
+
+    @Override
+    public void show() {
     }
 
     @Override
@@ -219,10 +217,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
     public void hide() {
