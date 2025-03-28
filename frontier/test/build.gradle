@@ -58,12 +58,12 @@ project(":test") {
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
     }
 
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true
+        }
     }
-}
     sourceSets {
         test {
           java.srcDirs = ["src/main/java"]
