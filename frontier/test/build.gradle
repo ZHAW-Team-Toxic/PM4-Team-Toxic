@@ -1,5 +1,6 @@
 project(":test") {
     apply plugin: "java"
+    apply plugin: "jacoco"
 
 
     dependencies {
@@ -51,11 +52,18 @@ project(":test") {
     }
     test {
         useJUnitPlatform()
+        finalizedBy jacocoTestReport
         systemProperty("junit.jupiter.conditions.deactivate", "*")
         systemProperty("junit.jupiter.extensions.autodetection.enabled", true)
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
     }
 
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+    }
+}
     sourceSets {
         test {
           java.srcDirs = ["src/main/java"]
