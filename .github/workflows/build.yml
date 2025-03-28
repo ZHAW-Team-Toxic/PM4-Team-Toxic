@@ -44,7 +44,7 @@ jobs:
       working-directory: ./frontier
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: ./gradlew :test:test build sonar --info
+      run: ./gradlew :test:test build jacocoTestReport sonar --info
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2

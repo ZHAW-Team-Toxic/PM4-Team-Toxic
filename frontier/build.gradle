@@ -15,6 +15,7 @@ buildscript {
 
 plugins {
   id 'java'
+  id "jacoco"
   id "org.sonarqube" version "6.0.1.5171"
   id "com.diffplug.spotless" version "7.0.2"
 }
@@ -32,12 +33,18 @@ allprojects {
   }
 }
 
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
 
 sonar {
   properties {
     property "sonar.projectKey", "ZHAW-Team-Toxic_PM4-Team-Toxic"
     property "sonar.organization", "zhaw-team-toxic"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.junit.reportPaths", "frontier/test/build/test-results/test"
   }
 }
 project(":test") {
@@ -85,6 +92,7 @@ configure(subprojects) {
   }
 }
 
+// test.testResultsDir = ''
 subprojects {
   version = "$projectVersion"
   ext.appName = 'Frontier'
@@ -100,6 +108,7 @@ subprojects {
   sonar {
     properties {
       property "sonar.sources", "src"
+      ///TEST
     }
   }
 
