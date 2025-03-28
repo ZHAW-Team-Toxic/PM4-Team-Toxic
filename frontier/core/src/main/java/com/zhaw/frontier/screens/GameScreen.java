@@ -42,7 +42,11 @@ public class GameScreen implements Screen {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
+        this.engine = new Engine();
+    }
 
+    @Override
+    public void show() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         // create view with world coordinates
@@ -50,7 +54,6 @@ public class GameScreen implements Screen {
 
         // setup up ecs(entity component system)
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing the engine.");
-        engine = new Engine();
 
         //set-up Map
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Map Layer Entities.");
@@ -135,20 +138,13 @@ public class GameScreen implements Screen {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
-    }
 
-    @Override
-    public void show() {
         var mx = new InputMultiplexer();
-
-        CameraControlSystem cameraControlSystem = engine.getSystem(CameraControlSystem.class);
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
-
         mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
-
         Gdx.input.setInputProcessor(mx);
     }
 
@@ -183,8 +179,12 @@ public class GameScreen implements Screen {
     }
 
     private void updateUI() {
-        gameUi.apply();
-        stage.act();
-        stage.draw();
+        if (gameUi != null) {
+            gameUi.apply();
+        }
+        if (stage != null) {
+            stage.act();
+            stage.draw();
+        }
     }
 }
