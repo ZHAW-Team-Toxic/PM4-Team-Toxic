@@ -72,48 +72,48 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(BottomLayerComponent.class)
-                .bottomLayer.getName() +
-            " loaded."
+                MapLoader
+                    .getInstance()
+                    .getMapEntity()
+                    .getComponent(BottomLayerComponent.class)
+                    .bottomLayer.getName() +
+                " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(DecorationLayerComponent.class)
-                .decorationLayer.getName() +
-            " loaded."
+                MapLoader
+                    .getInstance()
+                    .getMapEntity()
+                    .getComponent(DecorationLayerComponent.class)
+                    .decorationLayer.getName() +
+                " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(ResourceLayerComponent.class)
-                .resourceLayer.getName() +
-            " loaded."
+                MapLoader
+                    .getInstance()
+                    .getMapEntity()
+                    .getComponent(ResourceLayerComponent.class)
+                    .resourceLayer.getName() +
+                " loaded."
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing sample layer.");
         //init sample layer  as base for the map width / map height
         sampleLayer =
-        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+            MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Sample Layer loaded. Map width: " +
-            sampleLayer.getWidth() +
-            " Map height: " +
-            sampleLayer.getHeight() +
-            " Tile width: " +
-            sampleLayer.getTileWidth() +
-            " Tile height: " +
-            sampleLayer.getTileHeight()
+                sampleLayer.getWidth() +
+                " Map height: " +
+                sampleLayer.getHeight() +
+                " Tile width: " +
+                sampleLayer.getTileWidth() +
+                " Tile height: " +
+                sampleLayer.getTileHeight()
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
@@ -137,13 +137,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Camera Control System initialized." +
-            " Camera position: " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
-            " x " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
-            " y" +
-            " Camera zoom: " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
+                " Camera position: " +
+                ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
+                " x " +
+                ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
+                " y" +
+                " Camera zoom: " +
+                ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
         // create game ui
@@ -160,26 +160,21 @@ public class GameScreen implements Screen, ButtonClickObserver {
         mx.addProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                if (gameMode == GameMode.BUILDING || gameMode == GameMode.DEMOLISH) {
-                    Vector3 worldCoordinates = cameraControlSystem.getCamera().unproject(new Vector3(screenX, screenY, 0));
-                    if (gameMode == GameMode.DEMOLISH) {
-                        //TODO: Check if the demolish logic works (must place building first, see below)
-                        engine.getSystem(BuildingManagerSystem.class).removeBuilding(worldCoordinates.x, worldCoordinates.y);
-                    } else {
-                        Entity entity = WallFactory.createDefaultWall(engine);
-                        entity.getComponent(PositionComponent.class).position = new Vector2(worldCoordinates.x, worldCoordinates.y);
-                        //TODO: Finish actual building process
-                        engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
-                    }
-                    return true;
+                if (gameMode == GameMode.DEMOLISH) {
+                    engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY);
+                } else if (gameMode == GameMode.BUILDING) {
+                    Entity entity = WallFactory.createDefaultWall(engine);
+                    entity.getComponent(PositionComponent.class).position = new Vector2(screenX, screenY);
+                    engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
                 }
-                return false;
+                return true;
             }
         });
     }
 
     @Override
-    public void show() {}
+    public void show() {
+    }
 
     @Override
     public void render(float delta) {
@@ -196,13 +191,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
