@@ -2,9 +2,11 @@ package com.zhaw.frontier.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -13,14 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class GameUIScreen {
+
     private Array<ButtonClickObserver> observers = new Array<>();
     private Stage uiStage;
     private Viewport uiViewport;
@@ -36,21 +37,19 @@ public class GameUIScreen {
 
         BitmapFont font = skin.getFont("ArchivoBlack");
 
-        //TODO: Change Assets used for the four buttons (placeholders at the moment to be able to distinguish them)
+        Sprite demolishSprite = atlas.createSprite("BrokenPickaxe");
+        SpriteDrawable demolishDrawable = new SpriteDrawable(demolishSprite);
 
-        Sprite copperSprite = atlas.createSprite("Copper");
-        SpriteDrawable copperDrawable = new SpriteDrawable(copperSprite);
+        Sprite buildSprite = atlas.createSprite("Pickaxe");
+        SpriteDrawable buildDrawable = new SpriteDrawable(buildSprite);
 
-        Sprite diamondSprite = atlas.createSprite("Diamond");
-        SpriteDrawable diamondDrawable = new SpriteDrawable(diamondSprite);
+        Sprite fireplaceSprite = atlas.createSprite("Campfire");
+        SpriteDrawable fireplaceDrawable = new SpriteDrawable(fireplaceSprite);
 
-        Sprite bronzeSprite = atlas.createSprite("Bronze");
-        SpriteDrawable bronzeDrawable = new SpriteDrawable(bronzeSprite);
+        Sprite pauseSprite = atlas.createSprite("Gears");
+        SpriteDrawable pauseDrawable = new SpriteDrawable(pauseSprite);
 
-        Sprite emeraldSprite = atlas.createSprite("Emerald");
-        SpriteDrawable emeraldDrawable = new SpriteDrawable(emeraldSprite);
-
-        float buttonWidth = uiViewport.getWorldWidth() * 0.05f;
+        float buttonWidth = uiViewport.getWorldWidth() * 0.03f;
         float buttonHeight = uiViewport.getWorldHeight() * 0.04f;
 
         float marginX = 20f;
@@ -69,67 +68,75 @@ public class GameUIScreen {
         float pauseButtonY = fireplaceButtonY + buttonHeight + 10;
 
         TextButton.TextButtonStyle demolishButtonStyle = new TextButton.TextButtonStyle();
-        demolishButtonStyle.up = copperDrawable;
-        demolishButtonStyle.down = copperDrawable;
+        demolishButtonStyle.up = demolishDrawable;
+        demolishButtonStyle.down = demolishDrawable;
         demolishButtonStyle.font = font;
-        TextButton demolishButton = new TextButton("Demolish", demolishButtonStyle);
+        TextButton demolishButton = new TextButton("", demolishButtonStyle);
         demolishButton.setSize(buttonWidth, buttonHeight);
         demolishButton.setPosition(demolishButtonX, demolishButtonY);
         uiStage.addActor(demolishButton);
-        demolishButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Demolish button was clicked!");
-                notifyObservers(GameMode.DEMOLISH);
+        demolishButton.addListener(
+            new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    System.out.println("Demolish button was clicked!");
+                    notifyObservers(GameMode.DEMOLISH);
+                }
             }
-        });
+        );
 
         TextButton.TextButtonStyle buildButtonStyle = new TextButton.TextButtonStyle();
-        buildButtonStyle.up = diamondDrawable;
-        buildButtonStyle.down = diamondDrawable;
+        buildButtonStyle.up = buildDrawable;
+        buildButtonStyle.down = buildDrawable;
         buildButtonStyle.font = font;
-        TextButton buildButton = new TextButton("Build", buildButtonStyle);
+        TextButton buildButton = new TextButton("", buildButtonStyle);
         buildButton.setSize(buttonWidth, buttonHeight);
         buildButton.setPosition(buildButtonX, buildButtonY);
         uiStage.addActor(buildButton);
-        buildButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Build button was clicked!");
-                notifyObservers(GameMode.BUILDING);
+        buildButton.addListener(
+            new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    System.out.println("Build button was clicked!");
+                    notifyObservers(GameMode.BUILDING);
+                }
             }
-        });
+        );
 
         TextButton.TextButtonStyle fireplaceButtonStyle = new TextButton.TextButtonStyle();
-        fireplaceButtonStyle.up = bronzeDrawable;
-        fireplaceButtonStyle.down = bronzeDrawable;
+        fireplaceButtonStyle.up = fireplaceDrawable;
+        fireplaceButtonStyle.down = fireplaceDrawable;
         fireplaceButtonStyle.font = font;
-        TextButton fireplaceButton = new TextButton("Fire Place", fireplaceButtonStyle);
+        TextButton fireplaceButton = new TextButton("", fireplaceButtonStyle);
         fireplaceButton.setSize(buttonWidth, buttonHeight);
         fireplaceButton.setPosition(fireplaceButtonX, fireplaceButtonY);
         uiStage.addActor(fireplaceButton);
-        fireplaceButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("skipping time");
+        fireplaceButton.addListener(
+            new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    System.out.println("skipping time");
+                }
             }
-        });
+        );
 
         TextButton.TextButtonStyle pauseButtonStyle = new TextButton.TextButtonStyle();
-        pauseButtonStyle.up = emeraldDrawable;
-        pauseButtonStyle.down = emeraldDrawable;
+        pauseButtonStyle.up = pauseDrawable;
+        pauseButtonStyle.down = pauseDrawable;
         pauseButtonStyle.font = font;
-        TextButton pauseButton = new TextButton("Pause", pauseButtonStyle);
+        TextButton pauseButton = new TextButton("", pauseButtonStyle);
         pauseButton.setSize(buttonWidth, buttonHeight);
         pauseButton.setPosition(pauseButtonX, pauseButtonY);
         uiStage.addActor(pauseButton);
-        pauseButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                //TODO: Wait for merge of issue #14
-                System.out.println("opening pause menu...");
+        pauseButton.addListener(
+            new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    //TODO: Wait for merge of issue #14
+                    System.out.println("opening pause menu...");
+                }
             }
-        });
+        );
 
         Gdx.input.setInputProcessor(uiStage);
     }
