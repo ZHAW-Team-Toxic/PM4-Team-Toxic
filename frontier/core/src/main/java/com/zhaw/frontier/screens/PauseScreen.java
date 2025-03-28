@@ -1,24 +1,18 @@
 package com.zhaw.frontier.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.ui.PauseScreenUI;
 
 /**
  * Shows a pause screen with options to resume, save, or save and exit the game.
  */
-public class PauseScreen implements Screen {
+public class PauseScreen extends ScreenAdapter {
 
     private final Screen gameScreen;
     private FrontierGame frontierGame;
@@ -37,47 +31,7 @@ public class PauseScreen implements Screen {
     public void show() {
         stage.clear();
 
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        TextButton resumeButton = new TextButton("Resume", skin);
-        TextButton saveButton = new TextButton("Save", skin);
-        TextButton saveExitButton = new TextButton("Save & Exit", skin);
-
-        resumeButton.addListener(
-            new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    resumeGame();
-                }
-            }
-        );
-
-        saveButton.addListener(
-            new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    saveGame();
-                }
-            }
-        );
-
-        saveExitButton.addListener(
-            new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    saveGame();
-                    exitGame();
-                }
-            }
-        );
-
-        table.add(resumeButton).fillX().pad(10);
-        table.row();
-        table.add(saveButton).fillX().pad(10);
-        table.row();
-        table.add(saveExitButton).fillX().pad(10);
+        new PauseScreenUI(stage, skin, this::resumeGame, this::saveGame, this::exitGame);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(stage));
     }
@@ -99,12 +53,6 @@ public class PauseScreen implements Screen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
-
-    @Override
-    public void pause() {}
-
-    @Override
-    public void resume() {}
 
     @Override
     public void hide() {
