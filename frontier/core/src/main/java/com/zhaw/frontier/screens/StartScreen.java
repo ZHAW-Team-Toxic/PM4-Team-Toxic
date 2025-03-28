@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class StartScreen extends ScreenAdapter {
@@ -26,6 +27,7 @@ public class StartScreen extends ScreenAdapter {
     public StartScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
+        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
         background = new ExtendViewport(16, 9);
         background.getCamera().position.set(8, 4.5f, 0);
 

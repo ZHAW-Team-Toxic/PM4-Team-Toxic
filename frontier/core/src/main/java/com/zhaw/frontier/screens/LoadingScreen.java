@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.nio.file.Path;
@@ -29,6 +30,7 @@ public class LoadingScreen extends ScreenAdapter {
         this.batch = game.getBatch();
         this.font = new BitmapFont();
         this.mapLoaderSystem = new MapLoader();
+        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
     }
 
     @Override
