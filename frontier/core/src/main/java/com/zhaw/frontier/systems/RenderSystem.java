@@ -112,7 +112,9 @@ public class RenderSystem extends EntitySystem {
         for (Entity building : engine.getEntitiesFor(buildingFamily)) {
             if (
                 building.getComponent(RenderComponent.class).renderType ==
-                RenderComponent.RenderType.BUILDING
+                    RenderComponent.RenderType.BUILDING ||
+                building.getComponent(RenderComponent.class).renderType ==
+                    RenderComponent.RenderType.ENEMY
             ) {
                 PositionComponent positionComponent = building.getComponent(
                     PositionComponent.class
