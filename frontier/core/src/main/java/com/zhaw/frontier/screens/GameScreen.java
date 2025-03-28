@@ -1,7 +1,6 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -46,7 +45,7 @@ public class GameScreen implements Screen {
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
 
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.setLogLevel(frontierGame.getAppConfig().getLogLevel());
 
         // create view with world coordinates
         gameWorldView = new ExtendViewport(16, 9);
