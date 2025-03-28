@@ -43,6 +43,12 @@ sonar {
   }
 }
 
+project(":lwjgl3") {
+  sonar {
+    skipProject = true
+  }
+}
+
 configure(subprojects) {
   apply plugin: 'java-library'
   apply plugin: "jacoco"
@@ -115,13 +121,7 @@ configure(subprojects) {
     }
   }
 }
-project(":lwjgl3") {
-  sonar {
-    skipProject = true
-  }
-}
 
-// test.testResultsDir = ''
 subprojects {
   version = "$projectVersion"
   ext.appName = 'Frontier'
@@ -136,12 +136,9 @@ subprojects {
   }
   sonar {
     properties {
-      //property "projectBaseDir"
        property "sonar.sources", "src/main/java"
        property "sonar.tests", "src/test/java"
-        property "sonar.exclusions", "src/test/java"
-      // properties["sonar.tests"] += sourceSets.test.allSource.srcDirs
-
+       property "sonar.exclusions", "src/test/java"
     }
   }
 
