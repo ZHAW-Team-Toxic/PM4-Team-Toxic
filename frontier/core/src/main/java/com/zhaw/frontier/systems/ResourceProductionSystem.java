@@ -28,6 +28,7 @@ import java.util.Map;
 public class ResourceProductionSystem extends EntitySystem {
 
     private final Engine engine;
+    private ImmutableArray<Entity> productionBuildings;
 
     /**
      * Constructs a new ResourceProductionSystem.
@@ -37,6 +38,16 @@ public class ResourceProductionSystem extends EntitySystem {
     public ResourceProductionSystem(Engine engine) {
         super();
         this.engine = engine;
+    }
+
+    @Override
+    public void addedToEngine(Engine engine) {
+        productionBuildings = engine.getEntitiesFor(
+            Family
+                .all(ResourceProductionComponent.class, ResourceCollectionRangeComponent.class)
+                .exclude(InventoryComponent.class)
+                .get()
+        );
     }
 
     /**
@@ -74,12 +85,7 @@ public class ResourceProductionSystem extends EntitySystem {
             .getComponent(InventoryComponent.class);
 
         // Process each building that produces resources and collects them.
-        for (Entity building : engine.getEntitiesFor(
-            Family
-                .all(ResourceProductionComponent.class, ResourceCollectionRangeComponent.class)
-                .exclude(InventoryComponent.class)
-                .get()
-        )) {
+        for (Entity building : productionBuildings) {
             ResourceProductionComponent production = building.getComponent(
                 ResourceProductionComponent.class
             );
