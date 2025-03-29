@@ -9,7 +9,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.GameScreenUtils;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.exceptions.MapLoadingException;
 import com.zhaw.frontier.systems.MapLoader;
@@ -41,6 +44,11 @@ public class GameScreenTest {
         MapLoader.getInstance().loadMap(assetManager, mapPath);
         assetManager.finishLoading();
         gameScreen = new GameScreen(mockGame);
+
+        Stage stage = mock(Stage.class);
+        ScreenViewport screenViewport = mock(ScreenViewport.class);
+        GameScreenUtils.setStage(gameScreen, "stage", stage);
+        GameScreenUtils.setScreenViewport(gameScreen, "gameUi", screenViewport);
     }
 
     @Test

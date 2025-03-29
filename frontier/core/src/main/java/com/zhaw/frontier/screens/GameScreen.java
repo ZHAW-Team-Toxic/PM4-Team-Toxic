@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
     private ScreenViewport gameUi;
     private Stage stage;
     private Engine engine;
+    private CameraControlSystem cameraControlSystem;
 
     private OrthogonalTiledMapRenderer renderer;
 
@@ -43,16 +44,17 @@ public class GameScreen implements Screen {
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
         this.engine = new Engine();
+
+        this.gameWorldView = new ExtendViewport(16, 9);
+        this.gameWorldView.getCamera().position.set(8, 4.5f, 0);
+        this.gameWorldView.getCamera().update();
+
+        this.cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
     }
 
     @Override
     public void show() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-
-        // create view with world coordinates
-        gameWorldView = new ExtendViewport(16, 9);
-        gameWorldView.getCamera().position.set(8, 4.5f, 0);
-
         // setup up ecs(entity component system)
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing the engine.");
 
@@ -118,11 +120,7 @@ public class GameScreen implements Screen {
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
         // setup camera
-        CameraControlSystem cameraControlSystem = new CameraControlSystem(
-            gameWorldView,
-            engine,
-            renderer
-        );
+
         engine.addSystem(cameraControlSystem);
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
@@ -179,7 +177,9 @@ public class GameScreen implements Screen {
     public void resume() {}
 
     @Override
-    public void hide() {}
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+    }
 
     @Override
     public void dispose() {
@@ -187,12 +187,8 @@ public class GameScreen implements Screen {
     }
 
     private void updateUI() {
-        if (gameUi != null) {
-            gameUi.apply();
-        }
-        if (stage != null) {
-            stage.act();
-            stage.draw();
-        }
+        gameUi.apply();
+        stage.act();
+        stage.draw();
     }
 }

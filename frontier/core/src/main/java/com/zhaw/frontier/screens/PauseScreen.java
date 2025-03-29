@@ -32,7 +32,7 @@ public class PauseScreen extends ScreenAdapter {
 
         new PauseScreenUI(stage, skin, this::resumeGame, this::saveGame, this::exitGame);
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(stage));
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
