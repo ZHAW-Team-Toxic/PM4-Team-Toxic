@@ -154,10 +154,6 @@ public class GameScreen implements Screen {
         handleInput();
         engine.update(delta);
         updateUI();
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            frontierGame.switchScreen(new PauseScreen(frontierGame, this));
-        }
     }
 
     private void handleInput() {

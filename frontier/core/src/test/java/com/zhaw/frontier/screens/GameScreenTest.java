@@ -1,7 +1,9 @@
 package com.zhaw.frontier.screens;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -18,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GdxExtension.class)
-class GameScreenTest {
+public class GameScreenTest {
 
     private FrontierGame mockGame;
     private GameScreen gameScreen;
