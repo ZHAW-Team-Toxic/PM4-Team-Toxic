@@ -1,4 +1,4 @@
-package com.zhaw.tests.screens;
+package com.zhaw.frontier.screens;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.exceptions.MapLoadingException;
-import com.zhaw.frontier.screens.GameScreen;
-import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.nio.file.Path;
@@ -49,6 +47,6 @@ class GameScreenTest {
         Gdx.input = mockInput;
         when(mockInput.isKeyJustPressed(Input.Keys.ESCAPE)).thenReturn(true);
         gameScreen.render(0.016f);
-        verify(mockGame, times(1)).switchScreen(any(PauseScreen.class));
+        verify(mockGame).switchScreen(any(PauseScreen.class));
     }
 }
