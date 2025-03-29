@@ -2,20 +2,18 @@ package com.zhaw.tests.screens;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.exceptions.MapLoadingException;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
-import com.zhaw.tests.GdxExtension;
-import java.nio.file.Path;
 import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,6 +49,6 @@ class GameScreenTest {
         Gdx.input = mockInput;
         when(mockInput.isKeyJustPressed(Input.Keys.ESCAPE)).thenReturn(true);
         gameScreen.render(0.016f);
-        verify(mockGame).switchScreen(any(PauseScreen.class));
+        verify(mockGame, times(1)).switchScreen(any(PauseScreen.class));
     }
 }
