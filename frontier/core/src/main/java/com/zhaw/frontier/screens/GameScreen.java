@@ -1,10 +1,7 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -36,6 +33,7 @@ public class GameScreen implements Screen {
     private ScreenViewport gameUi;
     private Stage stage;
     private Engine engine;
+    private CameraControlSystem cameraControlSystem;
 
     private OrthogonalTiledMapRenderer renderer;
 
@@ -45,15 +43,20 @@ public class GameScreen implements Screen {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
+        this.engine = new Engine();
 
+        this.gameWorldView = new ExtendViewport(16, 9);
+        this.gameWorldView.getCamera().position.set(8, 4.5f, 0);
+        this.gameWorldView.getCamera().update();
+
+        this.cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
+    }
+
+    @Override
+    public void show() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-
-        // create view with world coordinates
-        gameWorldView = new ExtendViewport(16, 9);
-
         // setup up ecs(entity component system)
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing the engine.");
-        engine = new Engine();
 
         //set-up Map
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Map Layer Entities.");
@@ -117,11 +120,7 @@ public class GameScreen implements Screen {
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
         // setup camera
-        CameraControlSystem cameraControlSystem = new CameraControlSystem(
-            gameWorldView,
-            engine,
-            renderer
-        );
+
         engine.addSystem(cameraControlSystem);
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
@@ -140,19 +139,29 @@ public class GameScreen implements Screen {
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
 
         var mx = new InputMultiplexer();
-        mx.addProcessor(cameraControlSystem.getInputAdapter());
+        if (cameraControlSystem != null) {
+            mx.addProcessor(cameraControlSystem.getInputAdapter());
+        }
         mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
         Gdx.input.setInputProcessor(mx);
     }
 
     @Override
-    public void show() {}
-
-    @Override
     public void render(float delta) {
+        handleInput();
         engine.update(delta);
         updateUI();
+    }
+
+    private void handleInput() {
+        // TODO handle other input
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            frontierGame.switchScreen(new StartScreen(frontierGame));
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            frontierGame.switchScreen(new PauseScreen(frontierGame, this));
+        }
     }
 
     @Override
@@ -168,7 +177,9 @@ public class GameScreen implements Screen {
     public void resume() {}
 
     @Override
-    public void hide() {}
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+    }
 
     @Override
     public void dispose() {
