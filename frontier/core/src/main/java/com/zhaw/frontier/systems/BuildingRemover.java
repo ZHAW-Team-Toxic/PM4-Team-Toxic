@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
 /**
  * Responsible for removing building entities from the map.
@@ -47,7 +48,7 @@ public class BuildingRemover {
      * @return {@code true} if a building entity was found and removed; {@code false} otherwise.
      */
     public boolean removeBuilding(TiledMapTileLayer sampleLayer, float x, float y) {
-        Vector2 worldCoordinate = BuildingUtils.calculateWorldCoordinate(
+        Vector2 worldCoordinate = WorldCoordinateUtils.calculateWorldCoordinate(
             viewport,
             sampleLayer,
             x,

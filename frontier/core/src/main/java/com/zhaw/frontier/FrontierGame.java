@@ -16,7 +16,6 @@ public class FrontierGame extends Game {
     public void create() {
         batch = new FrontierSpriteBatch();
         assetManager = new AssetManager();
-
         this.setScreen(new LoadingScreen(this));
     }
 
