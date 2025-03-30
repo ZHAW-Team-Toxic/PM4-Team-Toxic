@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 
 /**
@@ -41,7 +42,6 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
         resourceBuilding.add(new ResourceProductionComponent());
-        resourceBuilding.add(new ResourceCollectionRangeComponent());
         resourceBuilding.add(new RenderComponent());
         resourceBuilding.add(new AnimationComponent());
         return resourceBuilding;
@@ -54,10 +54,9 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 1);
+        resourceProductionComponent.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1);
         resourceBuilding.add(resourceProductionComponent);
 
-        resourceBuilding.add(new ResourceCollectionRangeComponent());
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
@@ -76,10 +75,9 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_STONE, 1);
+        resourceProductionComponent.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 1);
         resourceBuilding.add(resourceProductionComponent);
 
-        resourceBuilding.add(new ResourceCollectionRangeComponent());
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
@@ -98,10 +96,9 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_IRON, 1);
+        resourceProductionComponent.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 1);
         resourceBuilding.add(resourceProductionComponent);
 
-        resourceBuilding.add(new ResourceCollectionRangeComponent());
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;

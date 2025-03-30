@@ -6,15 +6,14 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.zhaw.frontier.components.InventoryComponent;
-import com.zhaw.frontier.components.ResourceCollectionRangeComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import java.util.Map;
 
 /**
  * The ResourceProductionSystem aggregates the resource production from production buildings
  * and updates the central inventory. Each production building with a {@link ResourceProductionComponent}
- * and a {@link ResourceCollectionRangeComponent} contributes to the inventory based on its production rate
  * and the number of resource tiles within its range.
  *
  * <p>Currently, the system updates the inventory on every frame by calling {@link #endTurn()},
@@ -22,7 +21,6 @@ import java.util.Map;
  *
  * @see InventoryComponent
  * @see ResourceProductionComponent
- * @see ResourceCollectionRangeComponent
  * @see TiledPropertiesEnum
  */
 public class ResourceProductionSystem extends EntitySystem {
@@ -44,7 +42,7 @@ public class ResourceProductionSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
         productionBuildings = engine.getEntitiesFor(
             Family
-                .all(ResourceProductionComponent.class, ResourceCollectionRangeComponent.class)
+                .all(ResourceProductionComponent.class)
                 .exclude(InventoryComponent.class)
                 .get()
         );
@@ -67,7 +65,6 @@ public class ResourceProductionSystem extends EntitySystem {
      * <p>
      * This method retrieves the inventory entity (which is expected to be the only entity containing
      * an {@link InventoryComponent}) and then iterates over all building entities that have both a
-     * {@link ResourceProductionComponent} and a {@link ResourceCollectionRangeComponent}. For each building,
      * it multiplies its production rate (per resource type) by the number of resource tiles in range
      * and adds the result to the corresponding resource count in the inventory.
      * </p>
@@ -89,20 +86,18 @@ public class ResourceProductionSystem extends EntitySystem {
             ResourceProductionComponent production = building.getComponent(
                 ResourceProductionComponent.class
             );
-            ResourceCollectionRangeComponent range = building.getComponent(
-                ResourceCollectionRangeComponent.class
-            );
+
             // For each resource type produced by the building, update the inventory.
             for (Map.Entry<
-                TiledPropertiesEnum,
+                ResourceTypeEnum,
                 Integer
             > entry : production.productionRate.entrySet()) {
-                TiledPropertiesEnum resourceType = entry.getKey();
+                ResourceTypeEnum resourceType = entry.getKey();
                 int productionRate = entry.getValue();
                 inventoryEntity.resources.put(
                     resourceType,
                     inventoryEntity.resources.getOrDefault(resourceType, 0) +
-                    (productionRate * range.tilesInRange)
+                    (productionRate * production.countOfAdjacentResources)
                 );
             }
         }

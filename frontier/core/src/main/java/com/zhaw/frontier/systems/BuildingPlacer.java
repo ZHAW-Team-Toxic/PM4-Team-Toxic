@@ -9,6 +9,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.ResourceGeneratorComponent;
+import com.zhaw.frontier.components.ResourceProductionComponent;
+import com.zhaw.frontier.components.map.MapLayerEnum;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.mappers.MapLayerMapper;
 
@@ -65,10 +68,10 @@ public class BuildingPlacer {
         Gdx.app.debug(
             "[DEBUG] - BuildingPlacer",
             "Checking if tile is buildable on coordinates: " +
-            worldCoordinateX +
-            " x " +
-            worldCoordinateY +
-            " y"
+                worldCoordinateX +
+                " x " +
+                worldCoordinateY +
+                " y"
         );
 
         if (!checkIfTileIsBuildableOnBottomLayer(engine, worldCoordinateX, worldCoordinateY)) {
@@ -86,10 +89,23 @@ public class BuildingPlacer {
             return false;
         }
 
-        Gdx.app.debug(
-            "[DEBUG] - BuildingPlacer",
-            "Placing building on coordinates: " + worldCoordinateX + " x " + worldCoordinateY + " y"
-        );
+        if(checkIfBuildingIsResourceBuilding(entityType)) {
+            Gdx.app.debug(
+                "[DEBUG] - BuildingPlacer",
+                "Building is a resource building. Checking for adjacent resources."
+            );
+            TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(
+                engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()
+            ).resourceLayer;
+            if(!manageResourceBuildingPlacement(entityType, resourceLayer)) {
+                Gdx.app.debug(
+                    "[DEBUG] - BuildingPlacer",
+                    "Tile is buildable on resource layer but has no adjacent resource."
+                );
+                return false;
+            }
+        }
+
         engine.addEntity(entityType);
         return true;
     }
@@ -146,7 +162,7 @@ public class BuildingPlacer {
      * @param tileX  the x-coordinate of the tile.
      * @param tileY  the y-coordinate of the tile.
      * @return {@code true} if the tile is buildable on the resource layer or if the cell is absent;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     private boolean checkIfTileIsBuildableOnResourceLayer(Engine engine, float tileX, float tileY) {
         TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(
@@ -162,4 +178,27 @@ public class BuildingPlacer {
             .getProperties()
             .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
     }
+
+    private boolean checkIfBuildingIsResourceBuilding(Entity entityType) {
+        return entityType.getComponent(ResourceProductionComponent.class) != null;
+    }
+
+    private boolean manageResourceBuildingPlacement(Entity entityType, TiledMapTileLayer sampleLayer) {
+
+        if (ResourceAdjacencyChecker.hasAdjacentResource(entityType, sampleLayer)) {
+            Gdx.app.debug(
+                "[DEBUG] - BuildingPlacer",
+                "Tile is buildable on resource layer and has an adjacent resource."
+            );
+            return true;
+        }
+
+        Gdx.app.debug(
+            "[DEBUG] - BuildingPlacer",
+            "Tile is buildable on resource layer and has no adjacent resource."
+        );
+        return false;
+    }
+
+
 }

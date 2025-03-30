@@ -13,14 +13,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.ResourceCollectionRangeComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
-import com.zhaw.frontier.components.map.TiledPropertiesEnum;
+import com.zhaw.frontier.components.map.MapLayerEnum;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.MapLoader;
-import com.zhaw.frontier.systems.ResourceBuildingRangeSystem;
 import com.zhaw.frontier.systems.ResourceProductionSystem;
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterAll;
@@ -141,17 +140,6 @@ public class ResourceTrackingSystemTest {
             );
             testEngine.addSystem(buildingManagerSystem);
 
-            // Create and add the ResourceBuildingRangeSystem.
-            ResourceBuildingRangeSystem resourceBuildingRangeSystem =
-                new ResourceBuildingRangeSystem(
-                    testEngine,
-                    (TiledMapTileLayer) mapLoaderSystem
-                        .getMap()
-                        .getLayers()
-                        .get(TiledPropertiesEnum.RESOURCE_LAYER.toString())
-                );
-            testEngine.addSystem(resourceBuildingRangeSystem);
-
             // Create and add a stock entity with an InventoryComponent.
             Entity stock = testEngine.createEntity();
             stock.add(new InventoryComponent());
@@ -182,9 +170,7 @@ public class ResourceTrackingSystemTest {
         // Set production rate for wood.
         building
             .getComponent(ResourceProductionComponent.class)
-            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 1);
-        // Set collection range.
-        building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
+            .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1);
 
         testEngine.addEntity(building);
 
@@ -196,7 +182,7 @@ public class ResourceTrackingSystemTest {
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
             .first()
             .getComponent(InventoryComponent.class);
-        int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_WOOD);
+        int amount = inventory.resources.get(ResourceTypeEnum.RESOURCE_TYPE_WOOD);
 
         assertTrue(amount > 0, "Wood should be collected");
     }
@@ -216,9 +202,7 @@ public class ResourceTrackingSystemTest {
         // Set production rate for stone.
         building
             .getComponent(ResourceProductionComponent.class)
-            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_STONE, 1);
-        // Set collection range.
-        building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
+            .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 1);
 
         testEngine.addEntity(building);
 
@@ -230,7 +214,7 @@ public class ResourceTrackingSystemTest {
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
             .first()
             .getComponent(InventoryComponent.class);
-        int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_STONE);
+        int amount = inventory.resources.get(ResourceTypeEnum.RESOURCE_TYPE_STONE);
 
         assertTrue(amount > 0, "Stone should be collected");
     }
@@ -250,9 +234,7 @@ public class ResourceTrackingSystemTest {
         // Set production rate for iron.
         building
             .getComponent(ResourceProductionComponent.class)
-            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_IRON, 1);
-        // Set collection range.
-        building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
+            .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 1);
 
         testEngine.addEntity(building);
 
@@ -264,7 +246,7 @@ public class ResourceTrackingSystemTest {
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
             .first()
             .getComponent(InventoryComponent.class);
-        int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_IRON);
+        int amount = inventory.resources.get(ResourceTypeEnum.RESOURCE_TYPE_IRON);
 
         assertTrue(amount > 0, "Iron should be collected");
     }
@@ -284,9 +266,7 @@ public class ResourceTrackingSystemTest {
         // Set production rate for wood to 0.
         building
             .getComponent(ResourceProductionComponent.class)
-            .productionRate.put(TiledPropertiesEnum.RESOURCE_TYPE_WOOD, 0);
-        // Set collection range.
-        building.getComponent(ResourceCollectionRangeComponent.class).range = 1;
+            .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 0);
 
         testEngine.addEntity(building);
 
@@ -298,7 +278,7 @@ public class ResourceTrackingSystemTest {
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
             .first()
             .getComponent(InventoryComponent.class);
-        int amount = inventory.resources.get(TiledPropertiesEnum.RESOURCE_TYPE_WOOD);
+        int amount = inventory.resources.get(ResourceTypeEnum.RESOURCE_TYPE_WOOD);
 
         assertFalse(amount > 0, "Wood should not be collected");
     }

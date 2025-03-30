@@ -145,18 +145,6 @@ public class GameScreen implements Screen {
         engine.addSystem(resourceProductionSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 
-        // setup resource building range system
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Building Range System.");
-        ResourceBuildingRangeSystem resourceBuildingRangeSystem = new ResourceBuildingRangeSystem(
-            engine,
-            (TiledMapTileLayer) MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(ResourceLayerComponent.class)
-                .resourceLayer
-        );
-        engine.addSystem(resourceBuildingRangeSystem);
-        Gdx.app.debug("[DEBUG] - GameScreen", "Resource Building Range System initialized.");
 
         // create game ui
         gameUi = new ScreenViewport();
