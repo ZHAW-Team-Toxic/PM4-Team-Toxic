@@ -1,4 +1,4 @@
-package com.zhaw.tests;
+package com.zhaw.frontier;
 
 import static org.mockito.Mockito.mock;
 

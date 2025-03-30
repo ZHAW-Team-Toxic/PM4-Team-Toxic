@@ -12,6 +12,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.mappers.MapLayerMapper;
+import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
 /**
  * Responsible for validating and placing building entities on a tiled map.
@@ -73,7 +74,7 @@ public class BuildingPlacer {
      */
     boolean placeBuilding(Entity entityType, TiledMapTileLayer sampleLayer) {
         PositionComponent positionComponent = entityType.getComponent(PositionComponent.class);
-        Vector2 worldCoordinate = BuildingUtils.calculateWorldCoordinate(
+        Vector2 worldCoordinate = WorldCoordinateUtils.calculateWorldCoordinate(
             viewport,
             sampleLayer,
             positionComponent.position.x,

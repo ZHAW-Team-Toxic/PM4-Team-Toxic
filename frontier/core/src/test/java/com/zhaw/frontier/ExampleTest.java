@@ -1,6 +1,5 @@
-package com.zhaw.tests;
+package com.zhaw.frontier;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.Gdx;
@@ -31,6 +30,6 @@ public class ExampleTest {
      */
     @Test
     public void testMockedGLWorks() {
-        assertDoesNotThrow(() -> new Image(new Texture("donkey.png")));
+        assertDoesNotThrow(() -> new Image(new Texture("testAssets/donkey.png")));
     }
 }

@@ -1,0 +1,19 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - documentation
+  categories:
+    - title: Gamechanging new Features 🚀
+      labels:
+        - gamechangers
+    - title: Small but Mighty ⚡️
+      labels:
+        - enhancement
+    - title: Bug Extermination 🐛🔥
+      labels:
+        - bugfix
+        - bug
+    - title: Other changes
+      labels:
+        - "*"

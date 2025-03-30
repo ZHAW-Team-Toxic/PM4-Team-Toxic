@@ -16,7 +16,6 @@ public class FrontierGame extends Game {
     public void create() {
         batch = new FrontierSpriteBatch();
         assetManager = new AssetManager();
-
         this.setScreen(new LoadingScreen(this));
     }
 
@@ -30,6 +29,7 @@ public class FrontierGame extends Game {
         if (getScreen() != null) {
             getScreen().dispose();
         }
+        // just a test to get the coverage to analyze this
         setScreen(newScreen);
     }
 

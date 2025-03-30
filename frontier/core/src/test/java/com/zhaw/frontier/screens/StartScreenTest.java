@@ -1,4 +1,4 @@
-package com.zhaw.tests.screens;
+package com.zhaw.frontier.screens;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -9,9 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.screens.StartScreen;
+import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
-import com.zhaw.tests.GdxExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
