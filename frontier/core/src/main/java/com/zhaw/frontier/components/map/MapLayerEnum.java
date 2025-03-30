@@ -1,7 +1,9 @@
 package com.zhaw.frontier.components.map;
 
+/**
+ * Enum representing different layers of a map.
+ */
 public enum MapLayerEnum {
-
     BOTTOM_LAYER("BottomLayer"),
     DECORATION_LAYER("DecorationLayer"),
     RESOURCE_LAYER("ResourceLayer");

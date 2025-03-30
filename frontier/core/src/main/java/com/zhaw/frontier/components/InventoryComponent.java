@@ -2,10 +2,13 @@ package com.zhaw.frontier.components;
 
 import com.badlogic.ashley.core.Component;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
-import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Component for the inventory of an entity.
+ * This component acts as the stock for the resources of the player.
+ */
 public class InventoryComponent implements Component {
 
     public Map<ResourceTypeEnum, Integer> resources = new HashMap<>();

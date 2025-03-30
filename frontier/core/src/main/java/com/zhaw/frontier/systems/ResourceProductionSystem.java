@@ -12,15 +12,24 @@ import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import java.util.Map;
 
 /**
- * The ResourceProductionSystem aggregates the resource production from production buildings
- * and updates the central inventory. Each production building with a {@link ResourceProductionComponent}
- * and the number of resource tiles within its range.
+ * The {@code ResourceProductionSystem} is responsible for collecting resources produced by
+ * buildings and updating the central inventory accordingly.
  *
- * <p>Currently, the system updates the inventory on every frame by calling {@link #endTurn()},
- * but this may later be adjusted to update at specific intervals or turn-based events.</p>
+ * <p>Each entity with a {@link ResourceProductionComponent} contributes to the global inventory
+ * based on its production rate and the number of adjacent resource tiles.
+ * The number of adjacent tiles is expected to be calculated beforehand and stored in
+ * {@link ResourceProductionComponent#countOfAdjacentResources}.</p>
+ *
+ * <p>This system updates the inventory every frame by default (via {@link #update(float)}),
+ * but the actual resource collection logic is encapsulated in {@link #endTurn()},
+ * which can later be triggered manually for turn-based gameplay.</p>
+ *
+ * <p>Only one entity in the engine should contain an {@link InventoryComponent},
+ * which serves as the global resource store.</p>
  *
  * @see InventoryComponent
  * @see ResourceProductionComponent
+ * @see ResourceAdjacencyChecker
  * @see TiledPropertiesEnum
  */
 public class ResourceProductionSystem extends EntitySystem {
@@ -29,44 +38,52 @@ public class ResourceProductionSystem extends EntitySystem {
     private ImmutableArray<Entity> productionBuildings;
 
     /**
-     * Constructs a new ResourceProductionSystem.
+     * Constructs a new {@code ResourceProductionSystem}.
      *
-     * @param engine the Ashley engine that contains the entities to be processed
+     * @param engine the Ashley engine that manages game entities
      */
     public ResourceProductionSystem(Engine engine) {
         super();
         this.engine = engine;
     }
 
+    /**
+     * Called when the system is added to the engine. Retrieves all entities
+     * that produce resources (i.e., have a {@link ResourceProductionComponent})
+     * but are not inventories themselves.
+     *
+     * @param engine the engine that the system is added to
+     */
     @Override
     public void addedToEngine(Engine engine) {
-        productionBuildings = engine.getEntitiesFor(
-            Family
-                .all(ResourceProductionComponent.class)
-                .exclude(InventoryComponent.class)
-                .get()
+        productionBuildings =
+        engine.getEntitiesFor(
+            Family.all(ResourceProductionComponent.class).exclude(InventoryComponent.class).get()
         );
     }
 
     /**
-     * Called every frame to update the system. For now, it delegates to {@link #endTurn()}
-     * to update the inventory based on production from the buildings.
+     * Called every frame to update the system.
+     * Currently delegates to {@link #endTurn()} to simulate turn-based collection.
      *
      * @param deltaTime the time in seconds since the last update
      */
     @Override
     public void update(float deltaTime) {
-        // TODO: Update inventory at specific intervals instead of every frame.
+        // TODO: Replace with time-based or turn-based execution if needed.
         endTurn();
     }
 
     /**
-     * Aggregates resource production from each building entity and updates the central inventory.
+     * Aggregates resource production from each building and updates the central inventory.
      * <p>
-     * This method retrieves the inventory entity (which is expected to be the only entity containing
-     * an {@link InventoryComponent}) and then iterates over all building entities that have both a
-     * it multiplies its production rate (per resource type) by the number of resource tiles in range
-     * and adds the result to the corresponding resource count in the inventory.
+     * For each resource-producing building, this method multiplies the configured
+     * production rate per resource type by the number of adjacent matching resource tiles,
+     * then adds the total to the inventory.
+     * </p>
+     * <p>
+     * Example: A building producing wood at rate 2 and with 3 adjacent wood tiles
+     * will contribute 6 wood to the inventory.
      * </p>
      */
     public void endTurn() {
@@ -81,23 +98,22 @@ public class ResourceProductionSystem extends EntitySystem {
             .first()
             .getComponent(InventoryComponent.class);
 
-        // Process each building that produces resources and collects them.
         for (Entity building : productionBuildings) {
             ResourceProductionComponent production = building.getComponent(
                 ResourceProductionComponent.class
             );
 
-            // For each resource type produced by the building, update the inventory.
             for (Map.Entry<
                 ResourceTypeEnum,
                 Integer
             > entry : production.productionRate.entrySet()) {
                 ResourceTypeEnum resourceType = entry.getKey();
                 int productionRate = entry.getValue();
+                int totalProduction = productionRate * production.countOfAdjacentResources;
+
                 inventoryEntity.resources.put(
                     resourceType,
-                    inventoryEntity.resources.getOrDefault(resourceType, 0) +
-                    (productionRate * production.countOfAdjacentResources)
+                    inventoryEntity.resources.getOrDefault(resourceType, 0) + totalProduction
                 );
             }
         }
