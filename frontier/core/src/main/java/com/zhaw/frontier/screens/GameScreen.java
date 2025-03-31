@@ -23,6 +23,9 @@ import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.zhaw.frontier.ui.ResourceUI;
+
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
  * render the game.
@@ -42,6 +45,11 @@ public class GameScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
 
     private TiledMapTileLayer sampleLayer;
+
+    //***********************************
+    private ResourceUI resourceUI;
+    private Skin skin;
+    //***********************************
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -68,48 +76,48 @@ public class GameScreen implements Screen {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(BottomLayerComponent.class)
-                .bottomLayer.getName() +
-            " loaded."
+                MapLoader
+                    .getInstance()
+                    .getMapEntity()
+                    .getComponent(BottomLayerComponent.class)
+                    .bottomLayer.getName() +
+                " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(DecorationLayerComponent.class)
-                .decorationLayer.getName() +
-            " loaded."
+                MapLoader
+                    .getInstance()
+                    .getMapEntity()
+                    .getComponent(DecorationLayerComponent.class)
+                    .decorationLayer.getName() +
+                " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(ResourceLayerComponent.class)
-                .resourceLayer.getName() +
-            " loaded."
+                MapLoader
+                    .getInstance()
+                    .getMapEntity()
+                    .getComponent(ResourceLayerComponent.class)
+                    .resourceLayer.getName() +
+                " loaded."
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing sample layer.");
         //init sample layer  as base for the map width / map height
         sampleLayer =
-        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+            MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Sample Layer loaded. Map width: " +
-            sampleLayer.getWidth() +
-            " Map height: " +
-            sampleLayer.getHeight() +
-            " Tile width: " +
-            sampleLayer.getTileWidth() +
-            " Tile height: " +
-            sampleLayer.getTileHeight()
+                sampleLayer.getWidth() +
+                " Map height: " +
+                sampleLayer.getHeight() +
+                " Tile width: " +
+                sampleLayer.getTileWidth() +
+                " Tile height: " +
+                sampleLayer.getTileHeight()
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
@@ -130,18 +138,23 @@ public class GameScreen implements Screen {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Camera Control System initialized." +
-            " Camera position: " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
-            " x " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
-            " y" +
-            " Camera zoom: " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
+                " Camera position: " +
+                ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
+                " x " +
+                ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
+                " y" +
+                " Camera zoom: " +
+                ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
+
+        //***********************************
+        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        resourceUI = new ResourceUI(skin, stage);
+        //***********************************
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
@@ -180,10 +193,12 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
     public void hide() {
