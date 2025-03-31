@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
@@ -21,10 +22,8 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
-import com.zhaw.frontier.wrappers.SpriteBatchInterface;
-
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.zhaw.frontier.ui.ResourceUI;
+import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -49,6 +48,7 @@ public class GameScreen implements Screen {
     //***********************************
     private ResourceUI resourceUI;
     private Skin skin;
+
     //***********************************
 
     public GameScreen(FrontierGame frontierGame) {
@@ -76,48 +76,48 @@ public class GameScreen implements Screen {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(BottomLayerComponent.class)
-                    .bottomLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(BottomLayerComponent.class)
+                .bottomLayer.getName() +
+            " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(DecorationLayerComponent.class)
-                    .decorationLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(DecorationLayerComponent.class)
+                .decorationLayer.getName() +
+            " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(ResourceLayerComponent.class)
-                    .resourceLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(ResourceLayerComponent.class)
+                .resourceLayer.getName() +
+            " loaded."
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing sample layer.");
         //init sample layer  as base for the map width / map height
         sampleLayer =
-            MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Sample Layer loaded. Map width: " +
-                sampleLayer.getWidth() +
-                " Map height: " +
-                sampleLayer.getHeight() +
-                " Tile width: " +
-                sampleLayer.getTileWidth() +
-                " Tile height: " +
-                sampleLayer.getTileHeight()
+            sampleLayer.getWidth() +
+            " Map height: " +
+            sampleLayer.getHeight() +
+            " Tile width: " +
+            sampleLayer.getTileWidth() +
+            " Tile height: " +
+            sampleLayer.getTileHeight()
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
@@ -138,13 +138,13 @@ public class GameScreen implements Screen {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Camera Control System initialized." +
-                " Camera position: " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
-                " x " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
-                " y" +
-                " Camera zoom: " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
+            " Camera position: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
+            " x " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
+            " y" +
+            " Camera zoom: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
         // create game ui
@@ -193,12 +193,10 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-    }
+    public void resume() {}
 
     @Override
     public void hide() {

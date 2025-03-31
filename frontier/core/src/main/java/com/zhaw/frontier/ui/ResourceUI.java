@@ -1,9 +1,7 @@
 package com.zhaw.frontier.ui;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lombok.Setter;
 
 public class ResourceUI {
@@ -14,19 +12,23 @@ public class ResourceUI {
 
     @Setter
     private int wood;
+
     @Setter
     private int woodIncome;
+
     @Setter
     private int stone;
+
     @Setter
     private int stoneIncome;
+
     @Setter
     private int gold;
+
     @Setter
     private int goldIncome;
 
     public ResourceUI(Skin skin, Stage stage) {
-
         // Stage für die UI
         Table root = new Table();
         root.setFillParent(true);
@@ -37,7 +39,6 @@ public class ResourceUI {
         stoneLabel = new Label("Stein: " + stone + " + " + stoneIncome, skin);
         goldLabel = new Label("Gold: " + gold + " + " + goldIncome, skin);
 
-
         root.top().right().pad(10);
         root.add(woodlabel).padBottom(10);
         root.row();
@@ -46,7 +47,24 @@ public class ResourceUI {
         root.add(goldLabel).padBottom(10);
     }
 
-    public void updateResources(int wood, int woodIncome, int stone, int stoneIncome, int gold, int goldIncome) {
+    /**
+     * Update the resource labels with new values.
+     *
+     * @param wood        The current amount of wood.
+     * @param woodIncome  The income of wood.
+     * @param stone       The current amount of stone.
+     * @param stoneIncome The income of stone.
+     * @param gold        The current amount of gold.
+     * @param goldIncome  The income of gold.
+     */
+    public void updateResources(
+        int wood,
+        int woodIncome,
+        int stone,
+        int stoneIncome,
+        int gold,
+        int goldIncome
+    ) {
         this.wood = wood;
         this.woodIncome = woodIncome;
         this.stone = stone;
@@ -60,7 +78,7 @@ public class ResourceUI {
         goldLabel.setText("Gold: " + gold + " + " + goldIncome);
     }
 
-    /***********/
+    /**********************************************************************/
     // Getter methods for the labels for testing purposes
     public Label getWoodLabel() {
         return woodlabel;
@@ -73,5 +91,5 @@ public class ResourceUI {
     public Label getGoldLabel() {
         return goldLabel;
     }
-    /***********/
+    /**********************************************************************/
 }

@@ -1,5 +1,8 @@
 package com.zhaw.frontier.ui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -8,9 +11,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 public class ResourceUITest {
 
