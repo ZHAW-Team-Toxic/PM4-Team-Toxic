@@ -49,7 +49,7 @@ public class TowerFactory {
 
         // TODO: Replace placeholder texture with the actual tower texture.
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.textureRegion = new Sprite(texture);
 
         tower.add(renderComponent);
         return tower;

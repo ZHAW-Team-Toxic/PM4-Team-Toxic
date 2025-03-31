@@ -85,8 +85,8 @@ public class GameInputProcessor extends InputAdapter {
             try {
                 Entity tower = TowerFactory.createDefaultTower(engine);
                 PositionComponent bp = tower.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                bp.currentPosition.x = mouseX;
+                bp.currentPosition.y = mouseY;
                 if (buildingManagerSystem.placeBuilding(tower)) {
                     Gdx.app.debug("GameInputProcessor", "Tower placed successfully");
                 } else {
@@ -108,6 +108,7 @@ public class GameInputProcessor extends InputAdapter {
                 mouseY,
                 frontierGame.getAssetManager()
             );
+
             enemyManagementSystem.spawnEnemy(enemyBasic);
             return true;
         }
@@ -135,8 +136,8 @@ public class GameInputProcessor extends InputAdapter {
             try {
                 Entity wall = WallFactory.createDefaultWall(engine);
                 PositionComponent bp = wall.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                bp.currentPosition.x = mouseX;
+                bp.currentPosition.y = mouseY;
                 if (buildingManagerSystem.placeBuilding(wall)) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
@@ -159,8 +160,8 @@ public class GameInputProcessor extends InputAdapter {
                     engine
                 );
                 PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                bp.currentPosition.x = mouseX;
+                bp.currentPosition.y = mouseY;
                 if (buildingManagerSystem.placeBuilding(resourceBuilding)) {
                     Gdx.app.debug("GameInputProcessor", "Resource building placed successfully");
                 } else {

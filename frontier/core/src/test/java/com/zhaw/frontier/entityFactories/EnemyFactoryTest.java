@@ -38,8 +38,8 @@ public class EnemyFactoryTest {
         // Verify PositionComponent
         PositionComponent position = enemy.getComponent(PositionComponent.class);
         assertNotNull(position, "PositionComponent should not be null");
-        assertEquals(x, position.position.x, "X position should match");
-        assertEquals(y, position.position.y, "Y position should match");
+        assertEquals(x, position.currentPosition.x, "X position should match");
+        assertEquals(y, position.currentPosition.y, "Y position should match");
 
         // Verify VelocityComponent
         VelocityComponent velocity = enemy.getComponent(VelocityComponent.class);

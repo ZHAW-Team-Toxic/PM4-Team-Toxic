@@ -13,14 +13,7 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.input.GameInputProcessor;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
-import com.zhaw.frontier.systems.CameraControlSystem;
-import com.zhaw.frontier.systems.EnemyManagementSystem;
-import com.zhaw.frontier.systems.IdleBehaviourSystem;
-import com.zhaw.frontier.systems.MapLoader;
-import com.zhaw.frontier.systems.MovementSystem;
-import com.zhaw.frontier.systems.PatrolBehaviourSystem;
-import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
@@ -119,8 +112,9 @@ public class GameScreen implements Screen {
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
+
         //setup render system
-        engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
+
         Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
@@ -146,6 +140,11 @@ public class GameScreen implements Screen {
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
         engine.addSystem(new MovementSystem());
+
+        AnimationSystem animationSystem = new AnimationSystem();
+        engine.addSystem(animationSystem);
+
+        engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
 
         var mx = new InputMultiplexer();
         if (cameraControlSystem != null) {

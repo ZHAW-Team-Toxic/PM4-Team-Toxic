@@ -103,8 +103,8 @@ public class BuildingManagerTest {
         Entity tower = TowerFactory.createDefaultTower(testEngine);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         // Set screen coordinates corresponding to tile (5,5)
-        bp.position.x = tileToScreenX(5);
-        bp.position.y = tileToScreenY(5);
+        bp.currentPosition.x = tileToScreenX(5);
+        bp.currentPosition.y = tileToScreenY(5);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(bms.placeBuilding(tower), "Building should be placed on buildable tile.");
@@ -122,8 +122,8 @@ public class BuildingManagerTest {
         Entity tower = TowerFactory.createDefaultTower(testEngine);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         // Set screen coordinates corresponding to tile (2,2) which is non-buildable
-        bp.position.x = tileToScreenX(2);
-        bp.position.y = tileToScreenY(2);
+        bp.currentPosition.x = tileToScreenX(2);
+        bp.currentPosition.y = tileToScreenY(2);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
@@ -144,8 +144,8 @@ public class BuildingManagerTest {
         Entity tower = TowerFactory.createDefaultTower(testEngine);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         // Set screen coordinates corresponding to tile (0,4) which is a resource tile
-        bp.position.x = tileToScreenX(0);
-        bp.position.y = tileToScreenY(4);
+        bp.currentPosition.x = tileToScreenX(0);
+        bp.currentPosition.y = tileToScreenY(4);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(bms.placeBuilding(tower), "Building should not be placed on resource tile.");
@@ -164,8 +164,8 @@ public class BuildingManagerTest {
         Entity tower = TowerFactory.createDefaultTower(testEngine);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         // Set screen coordinates corresponding to tile (4,4)
-        bp.position.x = tileToScreenX(4);
-        bp.position.y = tileToScreenY(4);
+        bp.currentPosition.x = tileToScreenX(4);
+        bp.currentPosition.y = tileToScreenY(4);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(bms.placeBuilding(tower), "Building should be placed on buildable tile.");
@@ -173,8 +173,8 @@ public class BuildingManagerTest {
         Entity tower2 = TowerFactory.createDefaultTower(testEngine);
         PositionComponent bp2 = tower2.getComponent(PositionComponent.class);
         // Set the same screen coordinates for the second tower
-        bp2.position.x = tileToScreenX(4);
-        bp2.position.y = tileToScreenY(4);
+        bp2.currentPosition.x = tileToScreenX(4);
+        bp2.currentPosition.y = tileToScreenY(4);
 
         assertFalse(bms.placeBuilding(tower2), "Building should not be placed on occupied tile.");
     }

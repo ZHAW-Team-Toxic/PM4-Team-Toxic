@@ -40,6 +40,8 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);
 
+        assetManager.load("packed/animationsDemoOrc2.atlas", TextureAtlas.class);
+
         try {
             mapLoaderSystem.loadMap(assetManager, Path.of("TMX/frontier_testmap.tmx"));
         } catch (Exception e) {

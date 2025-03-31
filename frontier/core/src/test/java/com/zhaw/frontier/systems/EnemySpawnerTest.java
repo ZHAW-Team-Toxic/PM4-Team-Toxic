@@ -55,7 +55,7 @@ public class EnemySpawnerTest {
     void testSpawnEnemy() {
         Entity enemy = new Entity();
         PositionComponent position = new PositionComponent();
-        position.position.set(5, 5);
+        position.currentPosition.set(5, 5);
         enemy.add(position);
         enemy.add(new EnemyComponent());
 
@@ -69,7 +69,7 @@ public class EnemySpawnerTest {
     void testSpawnEnemyWithRealViewport() {
         Entity enemy = new Entity();
         PositionComponent position = new PositionComponent();
-        position.position.set(400, 300); // screen coordinates
+        position.currentPosition.set(400, 300); // screen coordinates
         enemy.add(position);
         enemy.add(new EnemyComponent());
 
@@ -84,7 +84,7 @@ public class EnemySpawnerTest {
         float expectedY = world.y;
 
         // Make sure position has been updated correctly
-        assertEquals(expectedX, position.position.x, 0.001f);
-        assertEquals(expectedY, position.position.y, 0.001f);
+        assertEquals(expectedX, position.currentPosition.x, 0.001f);
+        assertEquals(expectedY, position.currentPosition.y, 0.001f);
     }
 }

@@ -56,13 +56,13 @@ public class BuildingPlacer {
         Vector2 worldCoordinate = WorldCoordinateUtils.calculateWorldCoordinate(
             viewport,
             sampleLayer,
-            positionComponent.position.x,
-            positionComponent.position.y
+            positionComponent.currentPosition.x,
+            positionComponent.currentPosition.y
         );
         int worldCoordinateX = (int) worldCoordinate.x;
         int worldCoordinateY = (int) worldCoordinate.y;
-        positionComponent.position.x = worldCoordinateX;
-        positionComponent.position.y = worldCoordinateY;
+        positionComponent.currentPosition.x = worldCoordinateX;
+        positionComponent.currentPosition.y = worldCoordinateY;
         Gdx.app.debug(
             "[DEBUG] - BuildingPlacer",
             "Checking if tile is buildable on coordinates: " +
@@ -110,7 +110,7 @@ public class BuildingPlacer {
 
         for (Entity entity : entitiesWithPosition) {
             PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
-            if (positionComponent.position.x == tileX && positionComponent.position.y == tileY) {
+            if (positionComponent.currentPosition.x == tileX && positionComponent.currentPosition.y == tileY) {
                 return true;
             }
         }

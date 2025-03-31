@@ -43,7 +43,7 @@ public class WallFactory {
 
         // TODO: Replace placeholder texture with the actual wall texture.
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.textureRegion = new Sprite(texture);
 
         wall.add(renderComponent);
         return wall;

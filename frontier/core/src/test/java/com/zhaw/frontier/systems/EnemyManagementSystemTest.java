@@ -55,7 +55,7 @@ public class EnemyManagementSystemTest {
     void testSpawnEnemy() {
         Entity enemy = new Entity();
         PositionComponent position = new PositionComponent();
-        position.position.set(5, 5);
+        position.currentPosition.set(5, 5);
         enemy.add(new EnemyComponent());
         enemy.add(position);
         when(enemySpawner.spawnEnemy(enemy, sampleLayer)).thenReturn(true);

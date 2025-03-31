@@ -48,7 +48,7 @@ public class ResourceBuildingFactory {
 
         // TODO: Replace placeholder texture with the actual resource building texture.
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.textureRegion = new Sprite(texture);
 
         resourceBuilding.add(renderComponent);
         return resourceBuilding;

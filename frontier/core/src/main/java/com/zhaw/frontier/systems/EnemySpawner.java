@@ -45,13 +45,13 @@ public class EnemySpawner {
         Vector2 worldCoordinate = WorldCoordinateUtils.calculateWorldCoordinate(
             viewport,
             sampleLayer,
-            positionComponent.position.x,
-            positionComponent.position.y
+            positionComponent.currentPosition.x,
+            positionComponent.currentPosition.y
         );
         int worldCoordinateX = (int) worldCoordinate.x;
         int worldCoordinateY = (int) worldCoordinate.y;
-        positionComponent.position.x = worldCoordinateX;
-        positionComponent.position.y = worldCoordinateY;
+        positionComponent.currentPosition.x = worldCoordinateX;
+        positionComponent.currentPosition.y = worldCoordinateY;
 
         Gdx.app.debug(
             "[DEBUG] - EnemySpawner",

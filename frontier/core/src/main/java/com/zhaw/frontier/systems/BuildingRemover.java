@@ -63,8 +63,8 @@ public class BuildingRemover {
         for (Entity entity : entitiesWithPosition) {
             PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
             if (
-                positionComponent.position.x == worldCoordinateX &&
-                positionComponent.position.y == worldCoordinateY
+                positionComponent.currentPosition.x == worldCoordinateX &&
+                positionComponent.currentPosition.y == worldCoordinateY
             ) {
                 engine.removeEntity(entity);
                 return true;
