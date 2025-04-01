@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 
 public class CursorFactory {
+
     public static Cursor createDefaultCursor() {
         var pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
         pixmap.setColor(0x181818FF);
