@@ -7,11 +7,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.entityFactories.EnemyFactory;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.WallFactory;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
+import com.zhaw.frontier.systems.EnemyManagementSystem;
 
 /**
  * A placeholder input processor for handling game input via keyboard.
@@ -56,7 +58,7 @@ public class GameInputProcessor extends InputAdapter {
     }
 
     /**
-     * Processes key down events to perform various game actions.
+     * Processes key down events to perform various game actions during development mode.
      * <p>
      * Supported key actions:
      * <ul>
@@ -64,18 +66,28 @@ public class GameInputProcessor extends InputAdapter {
      *   <li>{@code N}: Places a wall at the current mouse coordinates.</li>
      *   <li>{@code M}: Places a resource building at the current mouse coordinates.</li>
      *   <li>{@code R}: Removes a building at the current mouse coordinates.</li>
+     *   <li>{@code E}: Spawns a basic enemy at the current mouse coordinates.</li>
+     *   <li>{@code I}: Spawns an idle enemy at the current mouse coordinates.</li>
      * </ul>
+     * <p>
+     * These debug actions are only enabled in the {@link com.zhaw.frontier.enums.AppEnvironment#DEV} environment.
      * </p>
      *
-     * @param keycode the code of the key that was pressed.
-     * @return true if the key event was handled, false otherwise.
+     * @param keycode the code of the key that was pressed
+     * @return true if the key event was handled, false otherwise
      */
     @Override
     public boolean keyDown(int keycode) {
         // Retrieve the BuildingManagerSystem from the engine.
         BuildingManagerSystem buildingManagerSystem = engine.getSystem(BuildingManagerSystem.class);
+        EnemyManagementSystem enemyManagementSystem = engine.getSystem(EnemyManagementSystem.class);
         if (buildingManagerSystem == null) {
             Gdx.app.error("GameInputProcessor", "BuildingManagerSystem not found in engine!");
+            return false;
+        }
+
+        if (enemyManagementSystem == null) {
+            Gdx.app.error("GameInputProcessor", "EnemyManagementSystem not found in engine!");
             return false;
         }
 
@@ -102,6 +114,34 @@ public class GameInputProcessor extends InputAdapter {
             } catch (Exception e) {
                 Gdx.app.error("GameInputProcessor", "Error placing tower", e);
             }
+            return true;
+        }
+
+        if (keycode == Input.Keys.E) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyBasic = EnemyFactory.createPatrolEnemy(
+                mouseX,
+                mouseY,
+                frontierGame.getAssetManager()
+            );
+            enemyManagementSystem.spawnEnemy(enemyBasic);
+            return true;
+        }
+
+        if (keycode == Input.Keys.I) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyIdle = EnemyFactory.createIdleEnemy(
+                mouseX,
+                mouseY,
+                frontierGame.getAssetManager()
+            );
+            enemyManagementSystem.spawnEnemy(enemyIdle);
             return true;
         }
 

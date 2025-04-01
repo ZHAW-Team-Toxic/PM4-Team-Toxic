@@ -1,4 +1,4 @@
-package com.zhaw.tests;
+package com.zhaw.frontier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,8 +10,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
-import com.zhaw.frontier.systems.BuildingUtils;
-import org.junit.jupiter.api.*;
+import com.zhaw.frontier.utils.WorldCoordinateUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
@@ -199,14 +201,14 @@ public class BuildingManagerTest {
         int screenX = (int) tileToScreenX(5);
         int screenY = (int) tileToScreenY(5);
         // Retrieve world coordinates from the bottom layer using BuildingUtils.
-        float worldX = BuildingUtils.calculateWorldCoordinate(
+        float worldX = WorldCoordinateUtils.calculateWorldCoordinate(
             gameWorldView,
             testMapEnvironment.getBottomLayer(),
             screenX,
             screenY
         )
             .x;
-        float worldY = BuildingUtils.calculateWorldCoordinate(
+        float worldY = WorldCoordinateUtils.calculateWorldCoordinate(
             gameWorldView,
             testMapEnvironment.getBottomLayer(),
             screenX,
