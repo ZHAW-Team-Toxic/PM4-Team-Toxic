@@ -57,7 +57,6 @@ public class GameScreenTest {
         Gdx.input = mockInput;
         when(mockInput.isKeyJustPressed(Input.Keys.ESCAPE)).thenReturn(true);
         gameScreen.handleInput();
-        //gameScreen.render(0.016f);
         verify(mockGame).switchScreen(any(PauseScreen.class));
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
+import com.zhaw.frontier.ui.BaseUIScreen;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

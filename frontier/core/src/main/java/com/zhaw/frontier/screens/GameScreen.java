@@ -26,6 +26,7 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.ui.BaseUIScreen;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
