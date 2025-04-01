@@ -1,44 +1,53 @@
-name: Build
+name: Release
 
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "v*"
 jobs:
   test:
     runs-on: ubuntu-latest
     permissions:
-        contents: write
-        issues: read
-        id-token: write
+      contents: write
+      issues: read
+      id-token: write
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-    - name: Cache Gradle packages
-      uses: actions/cache@v4
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-        restore-keys: ${{ runner.os }}-gradle
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
 
-    - name: build for all the platforms
-      working-directory: ./frontier
-      run: ./gradlew :lwjgl3:packageMacM1 :lwjgl3:packageMacX64 :lwjgl3:packageWinX64 :lwjgl3:packageLinuxX64
+      - name: build for all the platforms
+        working-directory: ./frontier
+        run: ./gradlew :lwjgl3:packageMacM1 :lwjgl3:packageMacX64 :lwjgl3:packageWinX64 :lwjgl3:packageLinuxX64
 
-    - name: Release
-      uses: softprops/action-gh-release@v2
-      with:
-        generate_release_notes: true
-        files: |
-          frontier/lwjgl3/build/construo/dist/Frontier-*.zip
+      - name: Release (prerelease)
+        uses: softprops/action-gh-release@v2
+        if: (contains(github.ref, '-alpha') || contains(github.ref, '-beta'))
+        with:
+          generate_release_notes: true
+          prerelease: true
+          files: |
+            frontier/lwjgl3/build/construo/dist/Frontier-*.zip
+
+      - name: Release
+        if: (!contains(github.ref, '-alpha') && !contains(github.ref, '-beta'))
+        with:
+          generate_release_notes: true
+          files: |
+            frontier/lwjgl3/build/construo/dist/Frontier-*.zip
