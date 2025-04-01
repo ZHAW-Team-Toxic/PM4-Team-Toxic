@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
@@ -26,7 +25,7 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
-import com.zhaw.frontier.ui.BaseUIScreen;
+import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -45,7 +44,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private ScreenViewport gameUi;
     private Stage stage;
     private Engine engine;
-    private BaseUIScreen baseUIScreen;
+    private BaseUI baseUI;
     private GameMode gameMode = GameMode.NORMAL;
     private CameraControlSystem cameraControlSystem;
 
@@ -57,10 +56,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
-        frontierGame.getAssetManager().load("skins/skin.json", Skin.class);
-        frontierGame.getAssetManager().finishLoading();
-        baseUIScreen = new BaseUIScreen(frontierGame, spriteBatchWrapper, this);
-        baseUIScreen.addObserver(this);
+        baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
+        baseUI.addObserver(this);
         this.engine = new Engine();
 
         this.gameWorldView = new ExtendViewport(16, 9);
@@ -162,7 +159,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new MovementSystem());
 
         var mx = new InputMultiplexer();
-        mx.addProcessor(baseUIScreen.getStage());
+        mx.addProcessor(baseUI.getStage());
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
@@ -195,7 +192,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         handleInput();
         engine.update(delta);
         updateUI();
-        baseUIScreen.render(delta);
+        baseUI.render(delta);
     }
 
     void handleInput() {
@@ -212,7 +209,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public void resize(int width, int height) {
         gameUi.update(width, height);
         gameWorldView.update(width, height);
-        baseUIScreen.resize(width, height);
+        baseUI.resize(width, height);
     }
 
     @Override

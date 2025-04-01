@@ -3,8 +3,6 @@ package com.zhaw.frontier.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,7 +25,7 @@ import com.zhaw.frontier.wrappers.SpriteBatchInterface;
  * The game modes are represented by buttons that are displayed on the screen.
  * The buttons include: demolish, build, fireplace, and pause.
  */
-public class BaseUIScreen {
+public class BaseUI {
 
     private Array<ButtonClickObserver> observers = new Array<>();
     private Stage uiStage;
@@ -41,7 +39,7 @@ public class BaseUIScreen {
      * @param spriteBatch   The sprite batch
      * @param gameScreen    The game screen
      */
-    public BaseUIScreen(
+    public BaseUI(
         FrontierGame frontierGame,
         SpriteBatchInterface spriteBatch,
         GameScreen gameScreen
@@ -51,20 +49,6 @@ public class BaseUIScreen {
 
         skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
         atlas = new TextureAtlas(Gdx.files.internal("skins/skin.atlas"));
-
-        BitmapFont font = skin.getFont("ArchivoBlack");
-
-        Sprite demolishSprite = atlas.createSprite("BrokenPickaxe");
-        SpriteDrawable demolishDrawable = new SpriteDrawable(demolishSprite);
-
-        Sprite buildSprite = atlas.createSprite("Pickaxe");
-        SpriteDrawable buildDrawable = new SpriteDrawable(buildSprite);
-
-        Sprite fireplaceSprite = atlas.createSprite("Campfire");
-        SpriteDrawable fireplaceDrawable = new SpriteDrawable(fireplaceSprite);
-
-        Sprite pauseSprite = atlas.createSprite("Gears");
-        SpriteDrawable pauseDrawable = new SpriteDrawable(pauseSprite);
 
         float buttonWidth = uiViewport.getWorldWidth() * 0.03f;
         float buttonHeight = uiViewport.getWorldHeight() * 0.04f;
@@ -122,8 +106,6 @@ public class BaseUIScreen {
                 System.out.println("Opening pause menu...");
             }
         );
-
-        Gdx.input.setInputProcessor(uiStage);
     }
 
     /**

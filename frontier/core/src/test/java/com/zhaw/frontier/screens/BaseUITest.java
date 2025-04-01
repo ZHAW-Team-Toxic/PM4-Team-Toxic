@@ -9,19 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
-import com.zhaw.frontier.ui.BaseUIScreen;
+import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GdxExtension.class)
-class BaseUIScreenTest {
+class BaseUITest {
 
     private FrontierGame mockGame;
     private GameScreen mockGameScreen;
     private SpriteBatch mockBatch;
-    private BaseUIScreen baseUIScreen;
+    private BaseUI baseUI;
     private SpriteBatchInterface mockSpriteBatchWrapper;
     private AssetManager mockAssetManager;
 
@@ -39,12 +39,12 @@ class BaseUIScreenTest {
         when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
         when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
 
-        baseUIScreen = spy(new BaseUIScreen(mockGame, mockSpriteBatchWrapper, mockGameScreen));
+        baseUI = spy(new BaseUI(mockGame, mockSpriteBatchWrapper, mockGameScreen));
     }
 
     @Test
     void testBaseUIPauseButton() {
-        TextButton pauseButton = baseUIScreen.getStage().getRoot().findActor("pauseButton");
+        TextButton pauseButton = baseUI.getStage().getRoot().findActor("pauseButton");
 
         InputEvent event = new InputEvent();
         event.setType(InputEvent.Type.touchDown);
