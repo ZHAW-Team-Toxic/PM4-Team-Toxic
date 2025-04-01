@@ -139,6 +139,7 @@ public class GameScreen implements Screen {
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
+        engine.addSystem(new SquarePatrolBehaviourSystem());
         engine.addSystem(new MovementSystem());
 
         AnimationSystem animationSystem = new AnimationSystem();

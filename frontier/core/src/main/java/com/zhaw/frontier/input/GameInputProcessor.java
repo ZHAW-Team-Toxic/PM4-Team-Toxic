@@ -127,6 +127,20 @@ public class GameInputProcessor extends InputAdapter {
             return true;
         }
 
+        if (keycode == Input.Keys.Q) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemySquare = EnemyFactory.createSquarePatrolEnemy(
+                mouseX,
+                mouseY,
+                frontierGame.getAssetManager()
+            );
+            enemyManagementSystem.spawnEnemy(enemySquare);
+            return true;
+        }
+
         // Place a wall if N is pressed.
         if (keycode == Input.Keys.N) {
             Gdx.app.debug(

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
+import com.zhaw.frontier.components.behaviours.SquarePatrolBehaviourComponent;
+
 import java.util.EnumMap;
 
 /**
@@ -50,6 +52,12 @@ public class EnemyFactory {
 
         animationsInitialized = true;
         Gdx.app.debug("EnemyFactory", "Animations initialized and cached.");
+    }
+
+    public static Entity createSquarePatrolEnemy(float x, float y, AssetManager assetManager) {
+        Entity enemy = createBaseEnemy(x, y, assetManager);
+        enemy.add(new SquarePatrolBehaviourComponent(5f));
+        return enemy;
     }
 
     public static Entity createPatrolEnemy(float x, float y, AssetManager assetManager) {

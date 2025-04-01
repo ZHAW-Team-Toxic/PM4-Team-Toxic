@@ -3,6 +3,8 @@ package com.zhaw.frontier.systems;
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.AnimationComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
@@ -38,8 +40,13 @@ public class AnimationSystem extends EntitySystem {
             handleEnemyDirection(entity);
 
             anim.stateTime += deltaTime;
-            render.textureRegion =
-            anim.animations.get(anim.currentAnimation).getKeyFrame(anim.stateTime, true);
+            Animation<TextureRegion> animation = anim.animations.get(anim.currentAnimation);
+            if (animation == null) {
+                Gdx.app.error("AnimationSystem", "No animation found for " + anim.currentAnimation + " in entity: " + entity);
+                continue;
+            }
+            render.textureRegion = animation
+                .getKeyFrame(anim.stateTime, true);
         }
     }
 
