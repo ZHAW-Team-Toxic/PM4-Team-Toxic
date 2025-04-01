@@ -7,10 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.entityFactories.EnemyFactory;
-import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
-import com.zhaw.frontier.entityFactories.TowerFactory;
-import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
 
@@ -76,6 +73,20 @@ public class GameInputProcessor extends InputAdapter {
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.input.getY();
 
+        if(keycode == Input.Keys.E){
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemy = EnemyFactory.createPatrolEnemy(
+                mouseX,
+                mouseY,
+                frontierGame.getAssetManager()
+            );
+            enemyManagementSystem.spawnEnemy(enemy);
+            return true;
+        }
+
         // Place a tower if B is pressed.
         if (keycode == Input.Keys.B) {
             Gdx.app.debug(
@@ -98,18 +109,21 @@ public class GameInputProcessor extends InputAdapter {
             return true;
         }
 
-        if (keycode == Input.Keys.E) {
+        if (keycode == Input.Keys.H) {
             Gdx.app.debug(
                 "GameInputProcessor",
                 "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
-            Entity enemyBasic = EnemyFactory.createPatrolEnemy(
-                mouseX,
-                mouseY,
-                frontierGame.getAssetManager()
-            );
+            Entity hq = HQFactory.createDefaultHQ(engine, frontierGame.getAssetManager());
 
-            enemyManagementSystem.spawnEnemy(enemyBasic);
+            PositionComponent bp = hq.getComponent(PositionComponent.class);
+            bp.currentPosition.x = mouseX;
+            bp.currentPosition.y = mouseY;
+            if (buildingManagerSystem.placeBuilding(hq)) {
+                Gdx.app.debug("GameInputProcessor", "HQ placed successfully");
+            } else {
+                Gdx.app.debug("GameInputProcessor", "HQ could not be placed");
+            }
             return true;
         }
 

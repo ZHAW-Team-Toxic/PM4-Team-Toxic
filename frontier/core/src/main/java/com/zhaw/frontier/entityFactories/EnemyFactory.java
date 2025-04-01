@@ -27,7 +27,7 @@ public class EnemyFactory {
         if (animationsInitialized) return;
 
         TextureAtlas atlas = assetManager.get(
-            "packed/animationsDemoOrc2.atlas",
+            "packed/animationDemoThursday.atlas",
             TextureAtlas.class
         );
 

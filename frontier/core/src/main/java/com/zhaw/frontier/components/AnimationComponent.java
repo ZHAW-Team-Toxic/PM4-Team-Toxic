@@ -15,7 +15,14 @@ public class AnimationComponent implements Component {
         WALK_LEFT,
         WALK_RIGHT,
         ATTACK,
+        IDLE,
         DIE,
+        PRODUCE,
+        GETTING_ATTACKED,
+        BUILDING,
+        REPAIRING,
+        DESTROYING,
+        FILLING,
     }
 
     /** stores animations by type */

@@ -2,8 +2,16 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
+import com.zhaw.frontier.components.MultiTileAnimationComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
+
+import java.util.EnumMap;
 
 /**
  * A factory class for creating Headquarters (HQ) entities.
@@ -15,24 +23,63 @@ import com.zhaw.frontier.components.RenderComponent;
  */
 public class HQFactory {
 
-    /**
-     * Creates a default HQ entity with the required components.
-     * <p>
-     * The created entity is given a {@link PositionComponent} to hold its position data
-     * and a {@link RenderComponent} with its {@code renderType} set to
-     * {@link RenderComponent.RenderType#BUILDING}. This entity is intended to represent a headquarters.
-     * </p>
-     *
-     * @param engine the Ashley {@link Engine} used to create the entity.
-     * @return the newly created HQ entity.
-     */
-    public static Entity createDefaultHQ(Engine engine) {
+    private static final EnumMap<MultiTileAnimationComponent.MultiTileAnimationType, MultiTileAnimationComponent>
+        sharedAnimations = new EnumMap<>(MultiTileAnimationComponent.MultiTileAnimationType.class);
+
+    public static Entity createDefaultHQ(Engine engine, AssetManager assetManager) {
+        initAnimation(assetManager);
+
         Entity hq = engine.createEntity();
         hq.add(new PositionComponent());
+
         RenderComponent render = new RenderComponent();
         render.renderType = RenderComponent.RenderType.BUILDING;
+        render.textureRegion = null;
+
+        MultiTileAnimationComponent shared = sharedAnimations.get(
+            MultiTileAnimationComponent.MultiTileAnimationType.FILLING
+        );
+
+        MultiTileAnimationComponent clone = new MultiTileAnimationComponent(
+            cloneAnimation(shared.get("topLeft")),
+            cloneAnimation(shared.get("topRight")),
+            cloneAnimation(shared.get("bottomLeft")),
+            cloneAnimation(shared.get("bottomRight"))
+        );
+
         hq.add(render);
+        hq.add(clone);
 
         return hq;
+    }
+
+    private static void initAnimation(AssetManager assetManager) {
+        if (!sharedAnimations.isEmpty()) return;
+
+        TextureAtlas atlas = assetManager.get(
+            "packed/animationDemoThursday.atlas",
+            TextureAtlas.class
+        );
+
+        Array<TextureAtlas.AtlasRegion> topLeftRegions = atlas.findRegions("hq_sandclock_topleft");
+        Array<TextureAtlas.AtlasRegion> topRightRegions = atlas.findRegions("hq_sandclock_topright");
+        Array<TextureAtlas.AtlasRegion> bottomLeftRegions = atlas.findRegions("hq_sandclock_bottomleft");
+        Array<TextureAtlas.AtlasRegion> bottomRightRegions = atlas.findRegions("hq_sandclock_bottomright");
+
+        MultiTileAnimationComponent fillingAnimation = new MultiTileAnimationComponent(
+            new Animation<>(0.20f, topLeftRegions, Animation.PlayMode.LOOP),
+            new Animation<>(0.20f, topRightRegions, Animation.PlayMode.LOOP),
+            new Animation<>(0.20f, bottomLeftRegions, Animation.PlayMode.LOOP),
+            new Animation<>(0.20f, bottomRightRegions, Animation.PlayMode.LOOP)
+        );
+
+        sharedAnimations.put(
+            MultiTileAnimationComponent.MultiTileAnimationType.FILLING,
+            fillingAnimation
+        );
+    }
+
+    private static Animation<TextureRegion> cloneAnimation(Animation<TextureRegion> source) {
+        return new Animation<>(source.getFrameDuration(), new Array<>(source.getKeyFrames()), source.getPlayMode());
     }
 }

@@ -8,7 +8,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import java.util.Objects;
 
-public class AnimationSystem extends EntitySystem {
+public class EnemyAnimationSystem extends EntitySystem {
 
     private final ComponentMapper<AnimationComponent> am = ComponentMapper.getFor(
         AnimationComponent.class
