@@ -10,6 +10,7 @@ import com.zhaw.frontier.components.EnemyComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
+import com.zhaw.frontier.components.behaviours.SquarePatrolBehaviourComponent;
 
 public class IdleBehaviourSystem extends EntitySystem {
 
@@ -25,7 +26,7 @@ public class IdleBehaviourSystem extends EntitySystem {
         engine.getEntitiesFor(
             Family
                 .all(VelocityComponent.class, IdleBehaviourComponent.class, EnemyComponent.class)
-                .exclude(PatrolBehaviourComponent.class)
+                .exclude(PatrolBehaviourComponent.class, SquarePatrolBehaviourComponent.class)
                 .get()
         );
     }

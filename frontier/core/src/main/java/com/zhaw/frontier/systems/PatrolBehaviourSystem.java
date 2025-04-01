@@ -11,6 +11,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
+import com.zhaw.frontier.components.behaviours.SquarePatrolBehaviourComponent;
 
 public class PatrolBehaviourSystem extends EntitySystem {
 
@@ -37,7 +38,7 @@ public class PatrolBehaviourSystem extends EntitySystem {
                     PatrolBehaviourComponent.class,
                     EnemyComponent.class
                 )
-                .exclude(IdleBehaviourComponent.class)
+                .exclude(IdleBehaviourComponent.class, SquarePatrolBehaviourComponent.class)
                 .get()
         );
     }
