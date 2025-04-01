@@ -2,20 +2,24 @@ package com.zhaw.frontier.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 
 public class MovementSystem extends EntitySystem {
 
-    private final ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
-    private final ComponentMapper<VelocityComponent> vm = ComponentMapper.getFor(VelocityComponent.class);
+    private final ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(
+        PositionComponent.class
+    );
+    private final ComponentMapper<VelocityComponent> vm = ComponentMapper.getFor(
+        VelocityComponent.class
+    );
 
     private ImmutableArray<Entity> entities;
 
     @Override
     public void addedToEngine(Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
+        entities =
+        engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
     }
 
     @Override
@@ -45,7 +49,5 @@ public class MovementSystem extends EntitySystem {
             // optional: nicht verändern oder auf null setzen
             pos.lookingDirection.set(0, 0);
         }
-
     }
-
 }

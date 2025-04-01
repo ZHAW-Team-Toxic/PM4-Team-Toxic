@@ -3,7 +3,6 @@ package com.zhaw.frontier.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class AnimationComponent implements Component {
         WALK_LEFT,
         WALK_RIGHT,
         ATTACK,
-        DIE
+        DIE,
     }
 
     /** stores animations by type */

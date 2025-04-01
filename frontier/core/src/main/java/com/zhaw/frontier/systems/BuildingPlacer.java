@@ -110,7 +110,10 @@ public class BuildingPlacer {
 
         for (Entity entity : entitiesWithPosition) {
             PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
-            if (positionComponent.currentPosition.x == tileX && positionComponent.currentPosition.y == tileY) {
+            if (
+                positionComponent.currentPosition.x == tileX &&
+                positionComponent.currentPosition.y == tileY
+            ) {
                 return true;
             }
         }

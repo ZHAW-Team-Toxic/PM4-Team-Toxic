@@ -112,7 +112,7 @@ public class RenderSystem extends EntitySystem {
         for (Entity building : engine.getEntitiesFor(buildingFamily)) {
             if (
                 building.getComponent(RenderComponent.class).renderType ==
-                    RenderComponent.RenderType.BUILDING
+                RenderComponent.RenderType.BUILDING
             ) {
                 PositionComponent positionComponent = building.getComponent(
                     PositionComponent.class
@@ -133,11 +133,9 @@ public class RenderSystem extends EntitySystem {
                 renderEnemies(building, renderer);
             }
         }
-
     }
 
     private void renderEnemies(Entity entity, SpriteBatch renderer) {
-
         PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
         RenderComponent renderComponent = entity.getComponent(RenderComponent.class);
         Vector2 pixelCoordinate = calculatePixelCoordinateForEnemies(
@@ -151,7 +149,6 @@ public class RenderSystem extends EntitySystem {
             renderComponent.textureRegion.getRegionWidth(),
             renderComponent.textureRegion.getRegionHeight()
         );
-
     }
 
     /**
@@ -178,5 +175,4 @@ public class RenderSystem extends EntitySystem {
         float tileY = y * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileHeight();
         return new Vector2(tileX, tileY);
     }
-
 }

@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
-
 import java.util.EnumMap;
 
 /**
@@ -19,13 +18,18 @@ import java.util.EnumMap;
 public class EnemyFactory {
 
     private static boolean animationsInitialized = false;
-    private static final EnumMap<AnimationComponent.AnimationType, Animation<TextureRegion>> sharedAnimations =
-        new EnumMap<>(AnimationComponent.AnimationType.class);
+    private static final EnumMap<
+        AnimationComponent.AnimationType,
+        Animation<TextureRegion>
+    > sharedAnimations = new EnumMap<>(AnimationComponent.AnimationType.class);
 
     public static void initializeAnimations(AssetManager assetManager) {
         if (animationsInitialized) return;
 
-        TextureAtlas atlas = assetManager.get("packed/animationsDemoOrc2.atlas", TextureAtlas.class);
+        TextureAtlas atlas = assetManager.get(
+            "packed/animationsDemoOrc2.atlas",
+            TextureAtlas.class
+        );
 
         sharedAnimations.put(
             AnimationComponent.AnimationType.WALK_DOWN,
@@ -79,9 +83,8 @@ public class EnemyFactory {
         }
         animationComponent.stateTime = 0f;
 
-        renderComponent.textureRegion = sharedAnimations
-            .get(AnimationComponent.AnimationType.WALK_LEFT)
-            .getKeyFrame(0);
+        renderComponent.textureRegion =
+        sharedAnimations.get(AnimationComponent.AnimationType.WALK_LEFT).getKeyFrame(0);
 
         enemy.add(renderComponent);
         enemy.add(position);
