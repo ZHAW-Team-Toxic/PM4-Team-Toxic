@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -20,7 +21,7 @@ import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
-public class GameUIScreen {
+public class BaseUIScreen {
 
     private Array<ButtonClickObserver> observers = new Array<>();
     private Stage uiStage;
@@ -28,7 +29,11 @@ public class GameUIScreen {
     private Skin skin;
     private TextureAtlas atlas;
 
-    public GameUIScreen(FrontierGame frontierGame, SpriteBatchInterface spriteBatch) {
+    public BaseUIScreen(
+        FrontierGame frontierGame,
+        SpriteBatchInterface spriteBatch,
+        GameScreen gameScreen
+    ) {
         uiViewport = new ScreenViewport(new OrthographicCamera());
         uiStage = new Stage(uiViewport, spriteBatch.getBatch());
 
@@ -125,6 +130,7 @@ public class GameUIScreen {
         pauseButtonStyle.down = pauseDrawable;
         pauseButtonStyle.font = font;
         TextButton pauseButton = new TextButton("", pauseButtonStyle);
+        pauseButton.setName("pauseButton");
         pauseButton.setSize(buttonWidth, buttonHeight);
         pauseButton.setPosition(pauseButtonX, pauseButtonY);
         uiStage.addActor(pauseButton);
@@ -132,7 +138,7 @@ public class GameUIScreen {
             new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    //TODO: Wait for merge of issue #14
+                    frontierGame.switchScreen(new PauseScreen(frontierGame, gameScreen));
                     System.out.println("opening pause menu...");
                 }
             }
@@ -183,5 +189,9 @@ public class GameUIScreen {
     public void dispose() {
         uiStage.dispose();
         skin.dispose();
+    }
+
+    Table getTable() {
+        return (Table) getStage().getActors().first();
     }
 }

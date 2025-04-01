@@ -3,7 +3,6 @@ package com.zhaw.frontier.screens;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -45,7 +44,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private ScreenViewport gameUi;
     private Stage stage;
     private Engine engine;
-    private GameUIScreen gameUIScreen;
+    private BaseUIScreen baseUIScreen;
     private GameMode gameMode = GameMode.NORMAL;
     private CameraControlSystem cameraControlSystem;
 
@@ -59,8 +58,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
         frontierGame.getAssetManager().load("skins/skin.json", Skin.class);
         frontierGame.getAssetManager().finishLoading();
-        gameUIScreen = new GameUIScreen(frontierGame, spriteBatchWrapper);
-        gameUIScreen.addObserver(this);
+        baseUIScreen = new BaseUIScreen(frontierGame, spriteBatchWrapper, this);
+        baseUIScreen.addObserver(this);
         this.engine = new Engine();
 
         this.gameWorldView = new ExtendViewport(16, 9);
@@ -82,48 +81,48 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(BottomLayerComponent.class)
-                    .bottomLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(BottomLayerComponent.class)
+                .bottomLayer.getName() +
+            " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(DecorationLayerComponent.class)
-                    .decorationLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(DecorationLayerComponent.class)
+                .decorationLayer.getName() +
+            " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(ResourceLayerComponent.class)
-                    .resourceLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(ResourceLayerComponent.class)
+                .resourceLayer.getName() +
+            " loaded."
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing sample layer.");
         //init sample layer  as base for the map width / map height
         sampleLayer =
-            MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Sample Layer loaded. Map width: " +
-                sampleLayer.getWidth() +
-                " Map height: " +
-                sampleLayer.getHeight() +
-                " Tile width: " +
-                sampleLayer.getTileWidth() +
-                " Tile height: " +
-                sampleLayer.getTileHeight()
+            sampleLayer.getWidth() +
+            " Map height: " +
+            sampleLayer.getHeight() +
+            " Tile width: " +
+            sampleLayer.getTileWidth() +
+            " Tile height: " +
+            sampleLayer.getTileHeight()
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
@@ -144,13 +143,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Camera Control System initialized." +
-                " Camera position: " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
-                " x " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
-                " y" +
-                " Camera zoom: " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
+            " Camera position: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
+            " x " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
+            " y" +
+            " Camera zoom: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
         // create game ui
@@ -162,8 +161,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new MovementSystem());
 
         var mx = new InputMultiplexer();
-        mx.addProcessor(gameUIScreen.getStage());
-        mx.addProcessor(cameraControlSystem.getInputAdapter());
+        mx.addProcessor(baseUIScreen.getStage());
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
@@ -188,11 +186,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
                     return true;
                 }
             }
-        });
-    }
-
-    @Override
-    public void show() {
+        );
     }
 
     @Override
@@ -200,10 +194,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
         handleInput();
         engine.update(delta);
         updateUI();
-        gameUIScreen.render(delta);
+        baseUIScreen.render(delta);
     }
 
-    private void handleInput() {
+    void handleInput() {
         // TODO handle other input
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             frontierGame.switchScreen(new StartScreen(frontierGame));
@@ -217,16 +211,14 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public void resize(int width, int height) {
         gameUi.update(width, height);
         gameWorldView.update(width, height);
-        gameUIScreen.resize(width, height);
+        baseUIScreen.resize(width, height);
     }
 
     @Override
-    public void pause() {
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
@@ -236,7 +228,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void dispose() {
         stage.dispose();
-        gameUIScreen.dispose();
     }
 
     private void updateUI() {
