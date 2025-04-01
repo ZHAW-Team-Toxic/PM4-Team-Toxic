@@ -46,6 +46,7 @@ jobs:
             frontier/lwjgl3/build/construo/dist/Frontier-*.zip
 
       - name: Release
+        uses: softprops/action-gh-release@v2
         if: (!contains(github.ref, '-alpha') && !contains(github.ref, '-beta'))
         with:
           generate_release_notes: true
