@@ -73,6 +73,21 @@ public class GameInputProcessor extends InputAdapter {
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.input.getY();
 
+
+        if(keycode == Input.Keys.S){
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "S pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemy = EnemyFactory.createSquarePatrolEnemy(
+                mouseX,
+                mouseY,
+                frontierGame.getAssetManager()
+            );
+            enemyManagementSystem.spawnEnemy(enemy);
+            return true;
+        }
+
         if(keycode == Input.Keys.E){
             Gdx.app.debug(
                 "GameInputProcessor",
