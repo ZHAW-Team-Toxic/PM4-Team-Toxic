@@ -21,6 +21,11 @@ import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
+/**
+ * BaseUIScreen provides a basic interface for the game that allows you to switch between different game modes.
+ * The game modes are represented by buttons that are displayed on the screen.
+ * The buttons include: demolish, build, fireplace, and pause.
+ */
 public class BaseUIScreen {
 
     private Array<ButtonClickObserver> observers = new Array<>();
@@ -29,6 +34,12 @@ public class BaseUIScreen {
     private Skin skin;
     private TextureAtlas atlas;
 
+    /**
+     * Constructor for BaseUIScreen.
+     * @param frontierGame  The game instance
+     * @param spriteBatch   The sprite batch
+     * @param gameScreen    The game screen
+     */
     public BaseUIScreen(
         FrontierGame frontierGame,
         SpriteBatchInterface spriteBatch,
@@ -147,6 +158,10 @@ public class BaseUIScreen {
         Gdx.input.setInputProcessor(uiStage);
     }
 
+    /**
+     * Add an observer to the list of observers.
+     * @param observer  The observer to add
+     */
     public void addObserver(ButtonClickObserver observer) {
         observers.add(observer);
     }
@@ -157,6 +172,10 @@ public class BaseUIScreen {
         }
     }
 
+    /**
+     * Render the screen.
+     * @param delta The time in seconds since the last render
+     */
     public void render(float delta) {
         uiViewport.apply();
 
@@ -178,14 +197,26 @@ public class BaseUIScreen {
         uiStage.draw();
     }
 
+    /**
+     * Resize the screen.
+     * @param width The width
+     * @param height    The height
+     */
     public void resize(int width, int height) {
         uiViewport.update(width, height, true);
     }
 
+    /**
+     * Get the stage.
+     * @return  The stage
+     */
     public Stage getStage() {
         return uiStage;
     }
 
+    /**
+     * Dispose of the screen.
+     */
     public void dispose() {
         uiStage.dispose();
         skin.dispose();
