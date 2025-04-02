@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
@@ -21,6 +22,7 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.ui.ResourceUI;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
@@ -42,6 +44,12 @@ public class GameScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
 
     private TiledMapTileLayer sampleLayer;
+
+    //***********************************
+    private ResourceUI resourceUI;
+    private Skin skin;
+
+    //***********************************
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -142,6 +150,11 @@ public class GameScreen implements Screen {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
+
+        //***********************************
+        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        resourceUI = new ResourceUI(skin, stage);
+        //***********************************
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
