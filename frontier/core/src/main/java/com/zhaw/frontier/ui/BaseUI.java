@@ -224,6 +224,11 @@ public class BaseUI {
         return button;
     }
 
+    /**
+     * Creates an input adapter that switches between building and demolishing mode.
+     * @param engine    The engine instance to use for building and demolishing
+     * @return          The input adapter that switches between building and demolishing mode
+     */
     public InputAdapter createInputAdapter(Engine engine) {
         return new InputAdapter() {
             @Override
