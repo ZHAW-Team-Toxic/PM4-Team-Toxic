@@ -15,10 +15,10 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.input.GameInputProcessor;
+import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
-import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
