@@ -1,21 +1,17 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
-import com.zhaw.frontier.entityFactories.WallFactory;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
@@ -45,7 +41,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private Stage stage;
     private Engine engine;
     private BaseUI baseUI;
-    private GameMode gameMode = GameMode.NORMAL;
     private CameraControlSystem cameraControlSystem;
 
     private OrthogonalTiledMapRenderer renderer;
@@ -165,26 +160,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         }
         mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
+        mx.addProcessor(baseUI.createInputAdapter(engine));
         Gdx.input.setInputProcessor(mx);
-
-        mx.addProcessor(
-            new InputAdapter() {
-                @Override
-                public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                    if (gameMode == GameMode.DEMOLISH) {
-                        engine
-                            .getSystem(BuildingManagerSystem.class)
-                            .removeBuilding(screenX, screenY);
-                    } else if (gameMode == GameMode.BUILDING) {
-                        Entity entity = WallFactory.createDefaultWall(engine);
-                        entity.getComponent(PositionComponent.class).position =
-                        new Vector2(screenX, screenY);
-                        engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
-                    }
-                    return true;
-                }
-            }
-        );
     }
 
     @Override
@@ -236,10 +213,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
     @Override
     public void buttonClicked(GameMode gameMode) {
-        if (this.gameMode == gameMode) {
-            this.gameMode = GameMode.NORMAL;
+        if (baseUI.getGameMode() == gameMode) {
+            baseUI.setGameMode(GameMode.NORMAL);
         } else {
-            this.gameMode = gameMode;
+            baseUI.setGameMode(gameMode);
         }
     }
 }

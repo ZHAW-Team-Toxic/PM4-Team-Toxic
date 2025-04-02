@@ -1,9 +1,13 @@
 package com.zhaw.frontier.ui;
 
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,11 +18,16 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.entityFactories.WallFactory;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
+import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * BaseUIScreen provides a basic interface for the game that allows you to switch between different game modes.
@@ -33,11 +42,16 @@ public class BaseUI {
     private Skin skin;
     private TextureAtlas atlas;
 
+    @Setter
+    @Getter
+    GameMode gameMode = GameMode.NORMAL;
+
     /**
      * Constructor for BaseUIScreen.
-     * @param frontierGame  The game instance
-     * @param spriteBatch   The sprite batch
-     * @param gameScreen    The game screen
+     *
+     * @param frontierGame The game instance
+     * @param spriteBatch  The sprite batch
+     * @param gameScreen   The game screen
      */
     public BaseUI(
         FrontierGame frontierGame,
@@ -110,7 +124,8 @@ public class BaseUI {
 
     /**
      * Add an observer to the list of observers.
-     * @param observer  The observer to add
+     *
+     * @param observer The observer to add
      */
     public void addObserver(ButtonClickObserver observer) {
         observers.add(observer);
@@ -124,6 +139,7 @@ public class BaseUI {
 
     /**
      * Render the screen.
+     *
      * @param delta The time in seconds since the last render
      */
     public void render(float delta) {
@@ -149,8 +165,9 @@ public class BaseUI {
 
     /**
      * Resize the screen.
-     * @param width The width
-     * @param height    The height
+     *
+     * @param width  The width
+     * @param height The height
      */
     public void resize(int width, int height) {
         uiViewport.update(width, height, true);
@@ -158,7 +175,8 @@ public class BaseUI {
 
     /**
      * Get the stage.
-     * @return  The stage
+     *
+     * @return The stage
      */
     public Stage getStage() {
         return uiStage;
@@ -204,5 +222,22 @@ public class BaseUI {
 
         uiStage.addActor(button);
         return button;
+    }
+
+    public InputAdapter createInputAdapter(Engine engine) {
+        return new InputAdapter() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                if (getGameMode() == GameMode.DEMOLISH) {
+                    engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY);
+                } else if (getGameMode() == GameMode.BUILDING) {
+                    Entity entity = WallFactory.createDefaultWall(engine);
+                    entity.getComponent(PositionComponent.class).position =
+                    new Vector2(screenX, screenY);
+                    engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
+                }
+                return true;
+            }
+        };
     }
 }
