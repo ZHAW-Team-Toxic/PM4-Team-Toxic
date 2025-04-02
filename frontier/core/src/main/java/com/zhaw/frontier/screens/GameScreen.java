@@ -1,6 +1,7 @@
 package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -9,21 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.input.GameInputProcessor;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
-import com.zhaw.frontier.systems.CameraControlSystem;
-import com.zhaw.frontier.systems.EnemyManagementSystem;
-import com.zhaw.frontier.systems.IdleBehaviourSystem;
-import com.zhaw.frontier.systems.MapLoader;
-import com.zhaw.frontier.systems.MovementSystem;
-import com.zhaw.frontier.systems.PatrolBehaviourSystem;
-import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
+import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
@@ -144,6 +139,17 @@ public class GameScreen implements Screen, ButtonClickObserver {
             " Camera zoom: " +
             ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
+
+        // create stock entity
+        Entity stock = engine.createEntity();
+        stock.add(new InventoryComponent());
+        engine.addEntity(stock);
+
+        // setup resource tracking system
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
+        ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
+        engine.addSystem(resourceProductionSystem);
+        Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 
         // create game ui
         gameUi = new ScreenViewport();
