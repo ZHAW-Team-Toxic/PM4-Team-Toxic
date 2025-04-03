@@ -59,7 +59,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
     @Override
     public void show() {
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.setLogLevel(this.frontierGame.getAppConfig().getLogLevel());
         // setup up ecs(entity component system)
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing the engine.");
 
