@@ -52,7 +52,7 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if (assetManager.update()) {
-            game.switchScreen(new GameScreen(game));
+            game.switchScreen(new StartScreen(game));
         }
 
         float progress = assetManager.getProgress();

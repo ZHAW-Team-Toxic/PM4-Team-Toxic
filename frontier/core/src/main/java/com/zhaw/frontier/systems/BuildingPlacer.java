@@ -9,17 +9,33 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.mappers.MapLayerMapper;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
 /**
- * Responsible for placing building entities on a tiled map.
+ * Responsible for validating and placing building entities on a tiled map.
+ *
  * <p>
- * The {@code BuildingPlacer} checks whether a given tile is buildable based on the properties
- * from the bottom and resource layers, and ensures that the tile is not already occupied by another building.
- * If all conditions are met, the building entity is added to the engine.
+ * The {@code BuildingPlacer} is responsible for checking whether a building can be placed on a given tile.
+ * It verifies that the tile is buildable on both the bottom and resource layer, that it is not already
+ * occupied by another building, and—if the entity is a resource-producing building—that it has adjacent
+ * resource tiles of the correct type.
  * </p>
+ *
+ * <p>
+ * The coordinates of the building are automatically converted from screen to world coordinates
+ * using the provided {@link Viewport}.
+ * </p>
+ *
+ * <p>
+ * If all placement conditions are met, the building entity is added to the {@link Engine}.
+ * </p>
+ *
+ * @see com.zhaw.frontier.components.ResourceProductionComponent
+ * @see com.zhaw.frontier.components.PositionComponent
+ * @see ResourceAdjacencyChecker
  */
 public class BuildingPlacer {
 
@@ -39,17 +55,22 @@ public class BuildingPlacer {
     }
 
     /**
-     * Attempts to place a building entity on the map.
+     * Attempts to place a building entity on the map based on its current position and map layers.
+     *
      * <p>
-     * This method calculates the world coordinate from the building's current position and
-     * the given tile layer. It then verifies whether the target tile is buildable on both the
-     * bottom and resource layers and whether the location is already occupied. If the tile is
-     * buildable and unoccupied, the building entity is added to the engine.
+     * This method performs the following validation steps in order:
+     * <ol>
+     *     <li>Converts the entity's screen position to world coordinates</li>
+     *     <li>Checks if the tile is buildable on the bottom layer</li>
+     *     <li>Checks if the tile is buildable on the resource layer</li>
+     *     <li>Checks if the tile is already occupied by another building</li>
+     *     <li>If the building is a resource producer, checks for adjacent resources</li>
+     * </ol>
      * </p>
      *
-     * @param entityType  the building entity to be placed.
-     * @param sampleLayer the {@link TiledMapTileLayer} representing the map layer used for placement.
-     * @return {@code true} if the building is successfully placed; {@code false} otherwise.
+     * @param entityType  the building entity to be placed
+     * @param sampleLayer the tile layer used for coordinate conversion
+     * @return {@code true} if the building was successfully placed; {@code false} otherwise
      */
     boolean placeBuilding(Entity entityType, TiledMapTileLayer sampleLayer) {
         PositionComponent positionComponent = entityType.getComponent(PositionComponent.class);
@@ -87,10 +108,24 @@ public class BuildingPlacer {
             return false;
         }
 
-        Gdx.app.debug(
-            "[DEBUG] - BuildingPlacer",
-            "Placing building on coordinates: " + worldCoordinateX + " x " + worldCoordinateY + " y"
-        );
+        if (checkIfBuildingIsResourceBuilding(entityType)) {
+            Gdx.app.debug(
+                "[DEBUG] - BuildingPlacer",
+                "Building is a resource building. Checking for adjacent resources."
+            );
+            TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(
+                engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()
+            )
+                .resourceLayer;
+            if (!checkIfResourceBuildingIsPlaceable(entityType, resourceLayer)) {
+                Gdx.app.debug(
+                    "[DEBUG] - BuildingPlacer",
+                    "Tile is buildable on resource layer but has no adjacent resource."
+                );
+                return false;
+            }
+        }
+
         engine.addEntity(entityType);
         return true;
     }
@@ -147,7 +182,7 @@ public class BuildingPlacer {
      * @param tileX  the x-coordinate of the tile.
      * @param tileY  the y-coordinate of the tile.
      * @return {@code true} if the tile is buildable on the resource layer or if the cell is absent;
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     private boolean checkIfTileIsBuildableOnResourceLayer(Engine engine, float tileX, float tileY) {
         TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(
@@ -162,5 +197,33 @@ public class BuildingPlacer {
             .getTile()
             .getProperties()
             .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
+    }
+
+    /**
+     * Determines if the given entity is a resource-producing building.
+     *
+     * @param entityType the building entity
+     * @return {@code true} if the entity has a {@link ResourceProductionComponent}; {@code false} otherwise
+     */
+    private boolean checkIfBuildingIsResourceBuilding(Entity entityType) {
+        return entityType.getComponent(ResourceProductionComponent.class) != null;
+    }
+
+    /**
+     * Handles the placement check for a resource-producing building.
+     * <p>
+     * This method delegates to {@link ResourceAdjacencyChecker} to validate if the building
+     * has any adjacent resource tiles of the required type.
+     * </p>
+     *
+     * @param entityType   the resource building to be placed
+     * @param sampleLayer  the resource tile layer to check against
+     * @return {@code true} if adjacent resources are found; {@code false} otherwise
+     */
+    private boolean checkIfResourceBuildingIsPlaceable(
+        Entity entityType,
+        TiledMapTileLayer sampleLayer
+    ) {
+        return ResourceAdjacencyChecker.hasAdjacentResource(entityType, sampleLayer);
     }
 }

@@ -2,10 +2,12 @@ package com.zhaw.frontier.input;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
@@ -174,9 +176,7 @@ public class GameInputProcessor extends InputAdapter {
                 "M pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity resourceBuilding = ResourceBuildingFactory.createDefaultResourceBuilding(
-                    engine
-                );
+                Entity resourceBuilding = ResourceBuildingFactory.woodResourceBuilding(engine);
                 PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
                 bp.position.x = mouseX;
                 bp.position.y = mouseY;
@@ -207,6 +207,15 @@ public class GameInputProcessor extends InputAdapter {
                 Gdx.app.error("GameInputProcessor", "Error removing building", e);
             }
             return true;
+        }
+
+        if (keycode == Input.Keys.P) {
+            Entity stock = engine
+                .getEntitiesFor(Family.all(InventoryComponent.class).get())
+                .first();
+            InventoryComponent inventory = stock.getComponent(InventoryComponent.class);
+
+            Gdx.app.debug("GameInputProcessor", "Inventory: " + inventory.resources);
         }
 
         return false;

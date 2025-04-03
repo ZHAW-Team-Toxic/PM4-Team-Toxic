@@ -50,7 +50,7 @@ public class StartScreen extends ScreenAdapter {
             new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    frontierGame.switchScreen(new LevelSelectionScreen(frontierGame));
+                    frontierGame.switchScreen(new GameScreen(frontierGame));
                 }
             }
         );

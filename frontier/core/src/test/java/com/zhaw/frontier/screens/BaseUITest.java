@@ -9,23 +9,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
+import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GdxExtension.class)
-class StartScreenTest {
+class BaseUITest {
 
     private FrontierGame mockGame;
+    private GameScreen mockGameScreen;
     private SpriteBatch mockBatch;
-    private StartScreen startScreen;
+    private BaseUI baseUI;
     private SpriteBatchInterface mockSpriteBatchWrapper;
     private AssetManager mockAssetManager;
 
     @BeforeEach
     void setUp() {
         mockGame = mock(FrontierGame.class);
+        mockGameScreen = mock(GameScreen.class);
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
         mockAssetManager = new AssetManager();
@@ -36,23 +39,23 @@ class StartScreenTest {
         when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
         when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
 
-        startScreen = spy(new StartScreen(mockGame));
+        baseUI = spy(new BaseUI(mockGame, mockSpriteBatchWrapper, mockGameScreen));
     }
 
     @Test
-    void testStartScreenButtonActsProperly() {
-        TextButton startButton = (TextButton) startScreen.getTable().getChildren().first();
+    void testBaseUIPauseButton() {
+        TextButton pauseButton = baseUI.getStage().getRoot().findActor("pauseButton");
 
         InputEvent event = new InputEvent();
         event.setType(InputEvent.Type.touchDown);
-        event.setListenerActor(startButton);
-        event.setStage(startScreen.getStage());
+        event.setListenerActor(pauseButton);
+        event.setStage(pauseButton.getStage());
 
-        startButton.fire(event);
+        pauseButton.fire(event);
         event.setType(InputEvent.Type.touchUp);
 
         verify(mockGame, never()).switchScreen(any());
-        startButton.fire(event);
+        pauseButton.fire(event);
         verify(mockGame).switchScreen(any());
     }
 }
