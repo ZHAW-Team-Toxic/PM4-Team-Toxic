@@ -14,6 +14,7 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
+import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.ui.BaseUI;
@@ -45,6 +46,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
+        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
         baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
         baseUI.addObserver(this);
