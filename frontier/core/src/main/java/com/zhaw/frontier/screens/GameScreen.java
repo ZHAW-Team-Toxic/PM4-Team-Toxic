@@ -23,7 +23,11 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.systems.ResourceProductionSystem;
+import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
+import com.zhaw.frontier.util.ButtonClickObserver;
+import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 /**
@@ -159,7 +163,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
-        BuildingMenuUi buildingMenuUi = new BuildingMenuUi(stage, frontierGame.getAssetManager());
+        BuildingMenuUi buildingMenuUi = new BuildingMenuUi(engine, stage, frontierGame.getAssetManager());
+        baseUI.addObserver(buildingMenuUi);
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
@@ -173,7 +178,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
         mx.addProcessor(baseUI.createInputAdapter(engine));
-        mx.addProcessor(buildingMenuUi.getInputProcessor());
 
         // TODO add mouse input handler mx.addProcessor();
         Gdx.input.setInputProcessor(mx);
