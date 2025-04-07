@@ -1,7 +1,6 @@
 package com.zhaw.frontier.systems;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.HQRoundAnimationComponent;
@@ -13,7 +12,7 @@ import java.util.List;
 public class RoundAnimationSystem {
 
     // Leerer Konstruktor – kann erweitert werden, falls du das System in Ashley als echtes System registrieren willst
-    public RoundAnimationSystem(Family family) {}
+    public RoundAnimationSystem() {}
 
     /**
      * Diese Methode wird manuell aufgerufen (z. B. bei Rundenwechsel),

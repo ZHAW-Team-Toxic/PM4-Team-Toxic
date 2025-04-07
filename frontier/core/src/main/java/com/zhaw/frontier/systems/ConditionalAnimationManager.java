@@ -48,12 +48,21 @@ public class ConditionalAnimationManager {
 
             if (enemyAnimM.has(entity)) {
                 EnemyAnimationComponent anim = enemyAnimM.get(entity);
+
+                // Enemy can only have one active animation at a time (currentAnimation).
+                // When a non-looping animation finishes, we reset it to IDLE
+                // and reset stateTime so the idle animation starts from the beginning.
                 anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE;
                 anim.stateTime = 0f;
             }
 
             if (buildingAnimM.has(entity)) {
                 BuildingAnimationComponent anim = buildingAnimM.get(entity);
+
+                // Buildings can have multiple animations playing at the same time.
+                // When a conditional animation ends, we just remove it from the active set
+                // and also remove its tracked time — no reset needed because each animation
+                // manages its own stateTime individually.
                 anim.activeAnimations.remove(current.animationType);
                 anim.stateTimes.remove(current.animationType);
             }
