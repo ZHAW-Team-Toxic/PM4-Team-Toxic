@@ -1,26 +1,31 @@
 package com.zhaw.frontier.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.zhaw.frontier.utils.LayeredSprite;
+import com.zhaw.frontier.utils.TileOffset;
+import java.util.HashMap;
+import java.util.List;
 
-/** contains sprite data for rendering an {@link com.badlogic.ashley.core.Entity} */
+/**
+ * contains sprite data for rendering an {@link com.badlogic.ashley.core.Entity}
+ */
 public class RenderComponent implements Component {
 
-    /**
-     * What type of render this is
-     */
     public enum RenderType {
         BUILDING,
         ENEMY,
     }
 
-    /**
-     * the sprite to render
-     */
-    public Sprite sprite;
+    public RenderType renderType;
 
     /**
-     * the type of render
+     * Sprites relativ zur Basis-Position
      */
-    public RenderType renderType;
+    public HashMap<TileOffset, List<LayeredSprite>> sprites = new HashMap<>();
+
+    /**
+     * Gibt an, wie viele Tiles breit/hoch das Objekt ist
+     */
+    public int widthInTiles;
+    public int heightInTiles;
 }

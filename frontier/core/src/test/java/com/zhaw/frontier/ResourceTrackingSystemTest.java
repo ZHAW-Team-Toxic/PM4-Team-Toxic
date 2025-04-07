@@ -92,8 +92,8 @@ public class ResourceTrackingSystemTest {
     @Test
     public void testResourceTrackingWood() {
         Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
-        building.getComponent(PositionComponent.class).position.x = tileToScreenX(4);
-        building.getComponent(PositionComponent.class).position.y = tileToScreenY(2);
+        building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(4);
+        building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(2);
         building
             .getComponent(ResourceProductionComponent.class)
             .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1);
@@ -123,8 +123,8 @@ public class ResourceTrackingSystemTest {
     @Test
     public void testResourceTrackingStone() {
         Entity building = ResourceBuildingFactory.stoneResourceBuilding(testEngine);
-        building.getComponent(PositionComponent.class).position.x = tileToScreenX(2);
-        building.getComponent(PositionComponent.class).position.y = tileToScreenY(4);
+        building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(2);
+        building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(4);
         building
             .getComponent(ResourceProductionComponent.class)
             .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 1);
@@ -154,8 +154,8 @@ public class ResourceTrackingSystemTest {
     @Test
     public void testResourceTrackingIron() {
         Entity building = ResourceBuildingFactory.ironResourceBuilding(testEngine);
-        building.getComponent(PositionComponent.class).position.x = tileToScreenX(6);
-        building.getComponent(PositionComponent.class).position.y = tileToScreenY(4);
+        building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(6);
+        building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(4);
         building
             .getComponent(ResourceProductionComponent.class)
             .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 1);
@@ -185,8 +185,8 @@ public class ResourceTrackingSystemTest {
     @Test
     public void testResourceTrackingWoodShouldNotBeCollected() {
         Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
-        building.getComponent(PositionComponent.class).position.x = tileToScreenX(4);
-        building.getComponent(PositionComponent.class).position.y = tileToScreenY(4);
+        building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(4);
+        building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(4);
         building
             .getComponent(ResourceProductionComponent.class)
             .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 0);

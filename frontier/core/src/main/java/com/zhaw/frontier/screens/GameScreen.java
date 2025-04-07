@@ -116,7 +116,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         //set-up BuildingManager
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Remover System.");
+        //set-up Enemy Management System
         engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Building Remover System initialized.");
+
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
@@ -124,9 +130,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
         Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
 
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Animation System.");
+        //setup animation system
+        engine.addSystem(new AnimationSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
+
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
         // setup camera
-
         engine.addSystem(cameraControlSystem);
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
@@ -140,14 +150,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
             ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
+        Gdx.app.debug("[DEBUG] - GameScreen", "Creating stock entity.");
         // create stock entity
         Entity stock = engine.createEntity();
         stock.add(new InventoryComponent());
         engine.addEntity(stock);
+        Gdx.app.debug("[DEBUG] - GameScreen", "Stock entity created.");
 
-        // setup resource tracking system
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
         ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
+        // set-up Resource Production System
         engine.addSystem(resourceProductionSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 

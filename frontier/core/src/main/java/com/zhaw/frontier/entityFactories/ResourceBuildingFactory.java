@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.utils.LayeredSprite;
+import com.zhaw.frontier.utils.TileOffset;
+import java.util.List;
 
 /**
  * A factory class responsible for creating Resource Building entities.
@@ -38,17 +41,22 @@ public class ResourceBuildingFactory {
     public static Entity createDefaultResourceBuilding(Engine engine) {
         Entity resourceBuilding = engine.createEntity();
         resourceBuilding.add(new PositionComponent());
+        resourceBuilding.add(new OccupiesTilesComponent());
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
         resourceBuilding.add(new ResourceProductionComponent());
         resourceBuilding.add(new RenderComponent());
-        resourceBuilding.add(new AnimationComponent());
+        resourceBuilding.add(new BuildingAnimationComponent());
         return resourceBuilding;
     }
 
     public static Entity woodResourceBuilding(Engine engine) {
         Entity resourceBuilding = engine.createEntity();
-        resourceBuilding.add(new PositionComponent());
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = 1;
+        positionComponent.widthInTiles = 1;
+        resourceBuilding.add(positionComponent);
+        resourceBuilding.add(new OccupiesTilesComponent());
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
 
@@ -59,16 +67,25 @@ public class ResourceBuildingFactory {
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.sprites.put(
+            new TileOffset(0, 0),
+            (List<LayeredSprite>) new Sprite(texture)
+        );
+        renderComponent.widthInTiles = 1;
+        renderComponent.heightInTiles = 1;
 
         resourceBuilding.add(renderComponent);
-        resourceBuilding.add(new AnimationComponent());
+        resourceBuilding.add(new BuildingAnimationComponent());
         return resourceBuilding;
     }
 
     public static Entity stoneResourceBuilding(Engine engine) {
         Entity resourceBuilding = engine.createEntity();
-        resourceBuilding.add(new PositionComponent());
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = 1;
+        positionComponent.widthInTiles = 1;
+        resourceBuilding.add(positionComponent);
+        resourceBuilding.add(new OccupiesTilesComponent());
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
 
@@ -79,16 +96,24 @@ public class ResourceBuildingFactory {
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.sprites.put(
+            new TileOffset(0, 0),
+            (List<LayeredSprite>) new Sprite(texture)
+        );
 
         resourceBuilding.add(renderComponent);
-        resourceBuilding.add(new AnimationComponent());
+        resourceBuilding.add(new BuildingAnimationComponent());
         return resourceBuilding;
     }
 
     public static Entity ironResourceBuilding(Engine engine) {
         Entity resourceBuilding = engine.createEntity();
         resourceBuilding.add(new PositionComponent());
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = 1;
+        positionComponent.widthInTiles = 1;
+        resourceBuilding.add(positionComponent);
+        resourceBuilding.add(new OccupiesTilesComponent());
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
 
@@ -99,10 +124,15 @@ public class ResourceBuildingFactory {
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.sprites.put(
+            new TileOffset(0, 0),
+            (List<LayeredSprite>) new Sprite(texture)
+        );
+        renderComponent.widthInTiles = 1;
+        renderComponent.heightInTiles = 1;
 
         resourceBuilding.add(renderComponent);
-        resourceBuilding.add(new AnimationComponent());
+        resourceBuilding.add(new BuildingAnimationComponent());
         return resourceBuilding;
     }
 

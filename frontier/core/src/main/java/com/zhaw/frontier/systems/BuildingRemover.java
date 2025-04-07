@@ -7,6 +7,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
@@ -58,16 +59,20 @@ public class BuildingRemover {
         int worldCoordinateY = (int) worldCoordinate.y;
 
         ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(
-            Family.all(PositionComponent.class).get()
+            Family.all(PositionComponent.class, OccupiesTilesComponent.class).get()
         );
         for (Entity entity : entitiesWithPosition) {
-            PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
-            if (
-                positionComponent.position.x == worldCoordinateX &&
-                positionComponent.position.y == worldCoordinateY
-            ) {
-                engine.removeEntity(entity);
-                return true;
+            OccupiesTilesComponent occupiesTilesComponent = entity.getComponent(
+                OccupiesTilesComponent.class
+            );
+
+            if (occupiesTilesComponent != null) {
+                for (Vector2 tile : occupiesTilesComponent.occupiedTiles) {
+                    if (tile.x == worldCoordinateX && tile.y == worldCoordinateY) {
+                        engine.removeEntity(entity);
+                        return true;
+                    }
+                }
             }
         }
         return false;

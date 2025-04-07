@@ -8,11 +8,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zhaw.frontier.components.EnemyComponent;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.mappers.MapLayerMapper;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Responsible for validating and placing building entities on a tiled map.
@@ -74,16 +78,27 @@ public class BuildingPlacer {
      */
     boolean placeBuilding(Entity entityType, TiledMapTileLayer sampleLayer) {
         PositionComponent positionComponent = entityType.getComponent(PositionComponent.class);
-        Vector2 worldCoordinate = WorldCoordinateUtils.calculateWorldCoordinate(
+        Vector2 worldCoordinate = WorldCoordinateUtils.centerClickWithBuilding(
             viewport,
             sampleLayer,
-            positionComponent.position.x,
-            positionComponent.position.y
+            positionComponent.basePosition.x,
+            positionComponent.basePosition.y,
+            entityType,
+            engine
+        );
+        Gdx.app.debug(
+            "[DEBUG] - BuildingPlacer",
+            "World coordinates for building placement: " +
+            worldCoordinate.x +
+            " x " +
+            worldCoordinate.y +
+            " y"
         );
         int worldCoordinateX = (int) worldCoordinate.x;
         int worldCoordinateY = (int) worldCoordinate.y;
-        positionComponent.position.x = worldCoordinateX;
-        positionComponent.position.y = worldCoordinateY;
+
+        positionComponent.basePosition.x = worldCoordinateX;
+        positionComponent.basePosition.y = worldCoordinateY;
         Gdx.app.debug(
             "[DEBUG] - BuildingPlacer",
             "Checking if tile is buildable on coordinates: " +
@@ -93,18 +108,25 @@ public class BuildingPlacer {
             " y"
         );
 
-        if (!checkIfTileIsBuildableOnBottomLayer(engine, worldCoordinateX, worldCoordinateY)) {
+        if (!checkIfTileIsBuildableOnBottomLayer(engine, entityType)) {
             Gdx.app.debug("[DEBUG] - BuildingPlacer", "Tile is not buildable on bottom layer.");
             return false;
         }
 
-        if (!checkIfTileIsBuildableOnResourceLayer(engine, worldCoordinateX, worldCoordinateY)) {
+        if (!checkIfTileIsBuildableOnResourceLayer(engine, entityType)) {
             Gdx.app.debug("[DEBUG] - BuildingPlacer", "Tile is not buildable on resource layer.");
             return false;
         }
 
-        if (checkIfPlaceIsOccupiedByBuilding(engine, worldCoordinateX, worldCoordinateY)) {
-            Gdx.app.debug("[DEBUG] - BuildingPlacer", "Place is occupied by building.");
+        if (checkIfPlaceIsOccupiedByBuilding(engine, entityType)) {
+            Gdx.app.debug(
+                "[DEBUG] - BuildingPlacer",
+                "Tile is occupied by another building at coordinates: " +
+                worldCoordinateY +
+                " x " +
+                worldCoordinateY +
+                " y"
+            );
             return false;
         }
 
@@ -126,6 +148,12 @@ public class BuildingPlacer {
             }
         }
 
+        occupyTile(entityType);
+        Gdx.app.debug(
+            "[DEBUG] - BuildingPlacer",
+            "Tile is buildable on resource layer and has adjacent resource."
+        );
+
         engine.addEntity(entityType);
         return true;
     }
@@ -138,17 +166,46 @@ public class BuildingPlacer {
      * @param tileY  the y-coordinate of the tile.
      * @return {@code true} if the tile is occupied; {@code false} otherwise.
      */
-    private boolean checkIfPlaceIsOccupiedByBuilding(Engine engine, float tileX, float tileY) {
+    private boolean checkIfPlaceIsOccupiedByBuilding(Engine engine, Entity entityBuilding) {
         ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(
-            Family.all(PositionComponent.class).get()
+            Family.all(PositionComponent.class).exclude(EnemyComponent.class).get()
         );
 
-        for (Entity entity : entitiesWithPosition) {
-            PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
-            if (positionComponent.position.x == tileX && positionComponent.position.y == tileY) {
-                return true;
+        Vector2 targetTile = new Vector2(
+            (int) entityBuilding.getComponent(PositionComponent.class).basePosition.x,
+            (int) entityBuilding.getComponent(PositionComponent.class).basePosition.y
+        );
+
+        int width = entityBuilding.getComponent(PositionComponent.class).widthInTiles;
+        int height = entityBuilding.getComponent(PositionComponent.class).heightInTiles;
+
+        // Alle Tiles, die das neue Gebäude beanspruchen würde
+        List<Vector2> tilesToCheck = new ArrayList<>();
+        for (int dx = 0; dx < width; dx++) {
+            for (int dy = 0; dy < height; dy++) {
+                tilesToCheck.add(new Vector2(targetTile.x + dx, targetTile.y + dy));
             }
         }
+
+        // Prüfe, ob eins dieser Tiles bereits von anderen Entities belegt ist
+        for (Entity entity : entitiesWithPosition) {
+            if (entity == entityBuilding) continue;
+
+            PositionComponent pos = entity.getComponent(PositionComponent.class);
+            for (int x = (int) pos.basePosition.x; x < pos.basePosition.x + pos.widthInTiles; x++) {
+                for (
+                    int y = (int) pos.basePosition.y;
+                    y < pos.basePosition.y + pos.heightInTiles;
+                    y++
+                ) {
+                    Vector2 occupiedTile = new Vector2(x, y);
+                    if (tilesToCheck.contains(occupiedTile)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
@@ -160,19 +217,37 @@ public class BuildingPlacer {
      * @param tileY  the y-coordinate of the tile.
      * @return {@code true} if the tile is buildable; {@code false} otherwise.
      */
-    private boolean checkIfTileIsBuildableOnBottomLayer(Engine engine, float tileX, float tileY) {
+    private boolean checkIfTileIsBuildableOnBottomLayer(Engine engine, Entity entityBuilding) {
+        PositionComponent position = entityBuilding.getComponent(PositionComponent.class);
+
         TiledMapTileLayer bottomLayer = mapLayerMapper.bottomLayerMapper.get(
             engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()
         )
             .bottomLayer;
-        if (bottomLayer.getCell((int) tileX, (int) tileY) == null) {
-            return false;
+
+        for (
+            int x = (int) position.basePosition.x;
+            x < position.basePosition.x + position.widthInTiles;
+            x++
+        ) {
+            for (
+                int y = (int) position.basePosition.y;
+                y < position.basePosition.y + position.heightInTiles;
+                y++
+            ) {
+                TiledMapTileLayer.Cell cell = bottomLayer.getCell(x, y);
+                if (cell == null) return false;
+
+                Boolean buildable = cell
+                    .getTile()
+                    .getProperties()
+                    .get(TiledPropertiesEnum.IS_BUILDABLE.toString(), Boolean.class);
+                if (!Boolean.TRUE.equals(buildable)) {
+                    return false;
+                }
+            }
         }
-        return (boolean) bottomLayer
-            .getCell((int) tileX, (int) tileY)
-            .getTile()
-            .getProperties()
-            .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
+        return true;
     }
 
     /**
@@ -184,19 +259,37 @@ public class BuildingPlacer {
      * @return {@code true} if the tile is buildable on the resource layer or if the cell is absent;
      * {@code false} otherwise.
      */
-    private boolean checkIfTileIsBuildableOnResourceLayer(Engine engine, float tileX, float tileY) {
+    private boolean checkIfTileIsBuildableOnResourceLayer(Engine engine, Entity entityBuilding) {
+        PositionComponent position = entityBuilding.getComponent(PositionComponent.class);
+
         TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(
             engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first()
         )
             .resourceLayer;
-        if (resourceLayer.getCell((int) tileX, (int) tileY) == null) {
-            return true;
+
+        for (
+            int x = (int) position.basePosition.x;
+            x < position.basePosition.x + position.widthInTiles;
+            x++
+        ) {
+            for (
+                int y = (int) position.basePosition.y;
+                y < position.basePosition.y + position.heightInTiles;
+                y++
+            ) {
+                TiledMapTileLayer.Cell cell = resourceLayer.getCell(x, y);
+                if (cell != null) {
+                    Boolean buildable = cell
+                        .getTile()
+                        .getProperties()
+                        .get(TiledPropertiesEnum.IS_BUILDABLE.toString(), Boolean.class);
+                    if (Boolean.FALSE.equals(buildable)) {
+                        return false;
+                    }
+                }
+            }
         }
-        return (boolean) resourceLayer
-            .getCell((int) tileX, (int) tileY)
-            .getTile()
-            .getProperties()
-            .get(TiledPropertiesEnum.IS_BUILDABLE.toString());
+        return true;
     }
 
     /**
@@ -216,8 +309,8 @@ public class BuildingPlacer {
      * has any adjacent resource tiles of the required type.
      * </p>
      *
-     * @param entityType   the resource building to be placed
-     * @param sampleLayer  the resource tile layer to check against
+     * @param entityType  the resource building to be placed
+     * @param sampleLayer the resource tile layer to check against
      * @return {@code true} if adjacent resources are found; {@code false} otherwise
      */
     private boolean checkIfResourceBuildingIsPlaceable(
@@ -225,5 +318,23 @@ public class BuildingPlacer {
         TiledMapTileLayer sampleLayer
     ) {
         return ResourceAdjacencyChecker.hasAdjacentResource(entityType, sampleLayer);
+    }
+
+    private void occupyTile(Entity entity) {
+        PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
+        OccupiesTilesComponent occupiesTilesComponent = entity.getComponent(
+            OccupiesTilesComponent.class
+        );
+        int tileX = (int) positionComponent.basePosition.x;
+        int tileY = (int) positionComponent.basePosition.y;
+
+        int offsetX = positionComponent.widthInTiles;
+        int offsetY = positionComponent.heightInTiles;
+
+        for (int x = tileX; x < tileX + offsetX; x++) {
+            for (int y = tileY; y < tileY + offsetY; y++) {
+                occupiesTilesComponent.occupiedTiles.add(new Vector2(x, y));
+            }
+        }
     }
 }

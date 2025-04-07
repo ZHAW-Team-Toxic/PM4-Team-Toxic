@@ -42,16 +42,27 @@ public class EnemySpawner {
      */
     public boolean spawnEnemy(Entity entityType, TiledMapTileLayer sampleLayer) {
         PositionComponent positionComponent = entityType.getComponent(PositionComponent.class);
+        Gdx.app.debug(
+            "[DEBUG] - EnemySpawner",
+            "PositionComponent: " +
+            positionComponent.basePosition.x +
+            " x " +
+            positionComponent.basePosition.y
+        );
         Vector2 worldCoordinate = WorldCoordinateUtils.calculateWorldCoordinate(
             viewport,
             sampleLayer,
-            positionComponent.position.x,
-            positionComponent.position.y
+            positionComponent.basePosition.x,
+            positionComponent.basePosition.y
+        );
+        Gdx.app.debug(
+            "[DEBUG] - EnemySpawner",
+            "World Coordinate: " + worldCoordinate.x + " x " + worldCoordinate.y
         );
         int worldCoordinateX = (int) worldCoordinate.x;
         int worldCoordinateY = (int) worldCoordinate.y;
-        positionComponent.position.x = worldCoordinateX;
-        positionComponent.position.y = worldCoordinateY;
+        positionComponent.basePosition.x = worldCoordinateX;
+        positionComponent.basePosition.y = worldCoordinateY;
 
         Gdx.app.debug(
             "[DEBUG] - EnemySpawner",

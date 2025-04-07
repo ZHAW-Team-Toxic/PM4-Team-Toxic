@@ -57,7 +57,7 @@ public class ResourceAdjacencyChecker {
             throw new IllegalArgumentException("Entity does not have a PositionComponent.");
         }
 
-        Vector2 position = positionComponent.position;
+        Vector2 position = positionComponent.basePosition;
         Vector2[] directions = {
             new Vector2(-1, 0),
             new Vector2(1, 0),

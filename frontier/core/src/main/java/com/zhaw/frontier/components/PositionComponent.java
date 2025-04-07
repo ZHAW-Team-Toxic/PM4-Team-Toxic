@@ -9,5 +9,16 @@ public class PositionComponent implements Component {
     /**
      * The position of the entity.
      */
-    public Vector2 position = new Vector2();
+    public Vector2 basePosition = new Vector2();
+
+    /**
+     * The previous position of the entity.
+     */
+    public Vector2 previousPosition = new Vector2();
+
+    public Vector2 lookingDirection = new Vector2();
+
+    public int widthInTiles;
+
+    public int heightInTiles;
 }

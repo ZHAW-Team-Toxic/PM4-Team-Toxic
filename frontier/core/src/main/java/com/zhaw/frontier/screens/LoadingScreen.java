@@ -39,6 +39,8 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);
+        assetManager.load("packed/buildings/buildingAtlas.atlas", TextureAtlas.class);
+        assetManager.load("packed/enemies/enemieAtlas.atlas", TextureAtlas.class);
 
         try {
             mapLoaderSystem.loadMap(assetManager, Path.of("TMX/frontier_testmap.tmx"));

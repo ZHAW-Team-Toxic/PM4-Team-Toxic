@@ -10,10 +10,7 @@ import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.configs.AppConfig;
-import com.zhaw.frontier.entityFactories.EnemyFactory;
-import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
-import com.zhaw.frontier.entityFactories.TowerFactory;
-import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
@@ -95,8 +92,8 @@ public class GameInputProcessor extends InputAdapter {
             try {
                 Entity tower = TowerFactory.createDefaultTower(engine);
                 PositionComponent bp = tower.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                bp.basePosition.x = mouseX;
+                bp.basePosition.y = mouseY;
                 if (buildingManagerSystem.placeBuilding(tower)) {
                     Gdx.app.debug("GameInputProcessor", "Tower placed successfully");
                 } else {
@@ -104,6 +101,28 @@ public class GameInputProcessor extends InputAdapter {
                 }
             } catch (Exception e) {
                 Gdx.app.error("GameInputProcessor", "Error placing tower", e);
+            }
+            return true;
+        }
+
+        // Place a tower if B is pressed.
+        if (keycode == Input.Keys.H) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            try {
+                Entity hq = HQFactory.createSandClockHQ(engine, frontierGame.getAssetManager());
+                PositionComponent bp = hq.getComponent(PositionComponent.class);
+                bp.basePosition.x = mouseX;
+                bp.basePosition.y = mouseY;
+                if (buildingManagerSystem.placeBuilding(hq)) {
+                    Gdx.app.debug("GameInputProcessor", "Hq placed successfully");
+                } else {
+                    Gdx.app.debug("GameInputProcessor", "Hq could not be placed");
+                }
+            } catch (Exception e) {
+                Gdx.app.error("GameInputProcessor", "Error placing hq", e);
             }
             return true;
         }
@@ -145,8 +164,8 @@ public class GameInputProcessor extends InputAdapter {
             try {
                 Entity wall = WallFactory.createDefaultWall(engine);
                 PositionComponent bp = wall.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                bp.basePosition.x = mouseX;
+                bp.basePosition.y = mouseY;
                 if (buildingManagerSystem.placeBuilding(wall)) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
@@ -167,8 +186,8 @@ public class GameInputProcessor extends InputAdapter {
             try {
                 Entity resourceBuilding = ResourceBuildingFactory.woodResourceBuilding(engine);
                 PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                bp.basePosition.x = mouseX;
+                bp.basePosition.y = mouseY;
                 if (buildingManagerSystem.placeBuilding(resourceBuilding)) {
                     Gdx.app.debug("GameInputProcessor", "Resource building placed successfully");
                 } else {

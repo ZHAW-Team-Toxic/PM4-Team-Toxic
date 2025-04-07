@@ -46,7 +46,26 @@ public class MovementSystem extends EntitySystem {
             PositionComponent pos = pm.get(entity);
             VelocityComponent vel = vm.get(entity);
 
-            pos.position.mulAdd(vel.velocity, deltaTime);
+            pos.previousPosition.set(pos.basePosition);
+            pos.basePosition.x += vel.velocity.x * deltaTime;
+            pos.basePosition.y += vel.velocity.y * deltaTime;
+
+            calculateLookingDirection(entity);
+        }
+    }
+
+    private void calculateLookingDirection(Entity entity) {
+        final float DIRECTION_EPSILON = 0.05f;
+        PositionComponent pos = pm.get(entity);
+
+        float deltaX = pos.basePosition.x - pos.previousPosition.x;
+        float deltaY = pos.basePosition.y - pos.previousPosition.y;
+
+        if (Math.abs(deltaX) > DIRECTION_EPSILON || Math.abs(deltaY) > DIRECTION_EPSILON) {
+            pos.lookingDirection.set(deltaX, deltaY).nor();
+        } else {
+            // optional: nicht verändern oder auf null setzen
+            pos.lookingDirection.set(0, 0);
         }
     }
 }

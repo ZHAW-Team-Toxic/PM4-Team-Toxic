@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.HealthComponent;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.utils.LayeredSprite;
+import com.zhaw.frontier.utils.TileOffset;
+import java.util.List;
 
 /**
  * Factory class for creating wall entities.
@@ -35,7 +39,11 @@ public class WallFactory {
      */
     public static Entity createDefaultWall(Engine engine) {
         Entity wall = engine.createEntity();
-        wall.add(new PositionComponent());
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = 1;
+        positionComponent.widthInTiles = 1;
+        wall.add(positionComponent);
+        wall.add(new OccupiesTilesComponent());
         wall.add(new HealthComponent());
 
         RenderComponent renderComponent = new RenderComponent();
@@ -43,7 +51,12 @@ public class WallFactory {
 
         // TODO: Replace placeholder texture with the actual wall texture.
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.sprites.put(
+            new TileOffset(0, 0),
+            (List<LayeredSprite>) new Sprite(texture)
+        );
+        renderComponent.heightInTiles = 1;
+        renderComponent.widthInTiles = 1;
 
         wall.add(renderComponent);
         return wall;

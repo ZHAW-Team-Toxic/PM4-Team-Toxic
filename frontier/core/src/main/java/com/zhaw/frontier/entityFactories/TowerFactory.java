@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.zhaw.frontier.components.AttackComponent;
-import com.zhaw.frontier.components.HealthComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.utils.LayeredSprite;
+import com.zhaw.frontier.utils.TileOffset;
+import java.util.List;
 
 /**
  * A factory class responsible for creating Tower entities.
@@ -41,6 +41,11 @@ public class TowerFactory {
     public static Entity createDefaultTower(Engine engine) {
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
+        PositionComponent positionComponent = tower.getComponent(PositionComponent.class);
+        positionComponent.heightInTiles = 1;
+        positionComponent.widthInTiles = 1;
+        tower.add(positionComponent);
+        tower.add(new OccupiesTilesComponent());
         tower.add(new HealthComponent());
         tower.add(new AttackComponent());
 
@@ -49,7 +54,12 @@ public class TowerFactory {
 
         // TODO: Replace placeholder texture with the actual tower texture.
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        renderComponent.sprites.put(
+            new TileOffset(0, 0),
+            (List<LayeredSprite>) new Sprite(texture)
+        );
+        renderComponent.heightInTiles = 1;
+        renderComponent.widthInTiles = 1;
 
         tower.add(renderComponent);
         return tower;

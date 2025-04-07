@@ -1,7 +1,6 @@
 package com.zhaw.frontier.entityFactories;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.assets.AssetManager;
@@ -38,8 +37,8 @@ public class EnemyFactoryTest {
         // Verify PositionComponent
         PositionComponent position = enemy.getComponent(PositionComponent.class);
         assertNotNull(position, "PositionComponent should not be null");
-        assertEquals(x, position.position.x, "X position should match");
-        assertEquals(y, position.position.y, "Y position should match");
+        assertEquals(x, position.basePosition.x, "X position should match");
+        assertEquals(y, position.basePosition.y, "Y position should match");
 
         // Verify VelocityComponent
         VelocityComponent velocity = enemy.getComponent(VelocityComponent.class);
@@ -48,7 +47,7 @@ public class EnemyFactoryTest {
         // Verify RenderComponent
         RenderComponent render = enemy.getComponent(RenderComponent.class);
         assertNotNull(render, "RenderComponent should not be null");
-        assertNotNull(render.sprite, "Sprite in RenderComponent should not be null");
+        assertTrue(render.sprites.isEmpty(), "Sprite in RenderComponent should not be empty");
 
         // Verify EnemyComponent
         EnemyComponent enemyComponent = enemy.getComponent(EnemyComponent.class);
