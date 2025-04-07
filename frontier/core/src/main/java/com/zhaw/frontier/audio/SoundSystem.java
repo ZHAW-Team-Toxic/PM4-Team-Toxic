@@ -3,8 +3,8 @@ package com.zhaw.frontier.audio;
 
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 /**
  * Handles game sound effects and background music using libGDX audio system.

@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+//TODO
+import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
@@ -20,8 +22,6 @@ import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
-//TODO
-import com.zhaw.frontier.audio.SoundSystem;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -71,54 +71,52 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(BottomLayerComponent.class)
-                    .bottomLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(BottomLayerComponent.class)
+                .bottomLayer.getName() +
+            " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(DecorationLayerComponent.class)
-                    .decorationLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(DecorationLayerComponent.class)
+                .decorationLayer.getName() +
+            " loaded."
         );
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Layer " +
-                MapLoader
-                    .getInstance()
-                    .getMapEntity()
-                    .getComponent(ResourceLayerComponent.class)
-                    .resourceLayer.getName() +
-                " loaded."
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(ResourceLayerComponent.class)
+                .resourceLayer.getName() +
+            " loaded."
         );
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing sample layer.");
         //init sample layer  as base for the map width / map height
         sampleLayer =
-            MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Sample Layer loaded. Map width: " +
-                sampleLayer.getWidth() +
-                " Map height: " +
-                sampleLayer.getHeight() +
-                " Tile width: " +
-                sampleLayer.getTileWidth() +
-                " Tile height: " +
-                sampleLayer.getTileHeight()
+            sampleLayer.getWidth() +
+            " Map height: " +
+            sampleLayer.getHeight() +
+            " Tile width: " +
+            sampleLayer.getTileWidth() +
+            " Tile height: " +
+            sampleLayer.getTileHeight()
         );
-
 
         //TODO Fezzsack
         engine.addSystem(new SoundSystem());
-
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         //set-up BuildingManager
@@ -138,13 +136,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
             "Camera Control System initialized." +
-                " Camera position: " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
-                " x " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
-                " y" +
-                " Camera zoom: " +
-                ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
+            " Camera position: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
+            " x " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
+            " y" +
+            " Camera zoom: " +
+            ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
         // create stock entity
@@ -201,7 +199,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
                 soundSystem.playClick();
             }
         }
-
     }
 
     @Override
@@ -212,12 +209,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
     }
 
     @Override
-    public void pause() {
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
