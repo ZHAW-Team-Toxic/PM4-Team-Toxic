@@ -83,8 +83,7 @@ public class BuildingPlacer {
             sampleLayer,
             positionComponent.basePosition.x,
             positionComponent.basePosition.y,
-            entityType,
-            engine
+            entityType
         );
         Gdx.app.debug(
             "[DEBUG] - BuildingPlacer",

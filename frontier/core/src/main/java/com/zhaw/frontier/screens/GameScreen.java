@@ -130,11 +130,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
         Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Animation System.");
-        //setup animation system
-        engine.addSystem(new AnimationSystem());
-        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
-
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
         // setup camera
         engine.addSystem(cameraControlSystem);
@@ -170,6 +165,11 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
         engine.addSystem(new MovementSystem());
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Animation System.");
+        //setup animation system
+        engine.addSystem(new AnimationSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
 
         var mx = new InputMultiplexer();
         mx.addProcessor(baseUI.getStage());

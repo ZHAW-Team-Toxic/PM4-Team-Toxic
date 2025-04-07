@@ -1,6 +1,5 @@
 package com.zhaw.frontier.utils;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -46,77 +45,27 @@ public class WorldCoordinateUtils {
         TiledMapTileLayer sampleLayer,
         float screenX,
         float screenY,
-        Entity entity,
-        Engine engine
+        Entity entity
     ) {
         PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
         int widthInTiles = positionComponent.widthInTiles;
         int heightInTiles = positionComponent.heightInTiles;
 
-        if (widthInTiles == 1 && heightInTiles == 1) {
-            return calculateWorldCoordinate(viewport, sampleLayer, screenX, screenY);
-        }
-        if (widthInTiles == 1 && heightInTiles == 2) {
-            Vector2 worldCoordinate = calculateWorldCoordinate(
-                viewport,
-                sampleLayer,
-                screenX,
-                screenY
-            );
-            worldCoordinate.x = (int) worldCoordinate.x;
-            worldCoordinate.y = (int) worldCoordinate.y - 1;
-            return worldCoordinate;
-        }
-        if (widthInTiles == 2 && heightInTiles == 2) {
-            Vector2 worldCoordinate = calculateWorldCoordinate(
-                viewport,
-                sampleLayer,
-                screenX,
-                screenY
-            );
-            worldCoordinate.x = (int) worldCoordinate.x;
-            worldCoordinate.y = (int) worldCoordinate.y;
-            return worldCoordinate;
-        }
-        if (widthInTiles == 3 && heightInTiles == 3) {
-            Vector2 worldCoordinate = calculateWorldCoordinate(
-                viewport,
-                sampleLayer,
-                screenX,
-                screenY
-            );
-            worldCoordinate.x = (int) worldCoordinate.x - 1;
-            worldCoordinate.y = (int) worldCoordinate.y - 1;
-            Vector2 pixelCoordinate = calculatePixelCoordinateForEnemies(
-                (int) worldCoordinate.x,
-                (int) worldCoordinate.y,
-                sampleLayer
-            );
-            return new Vector2(pixelCoordinate.x, pixelCoordinate.y);
-        }
-        if (widthInTiles == 4 && heightInTiles == 4) {
-            Vector2 worldCoordinate = calculateWorldCoordinate(
-                viewport,
-                sampleLayer,
-                screenX,
-                screenY
-            );
-            worldCoordinate.x = (int) worldCoordinate.x - 1;
-            worldCoordinate.y = (int) worldCoordinate.y - 1;
-            return worldCoordinate;
-        }
-        if (widthInTiles == 5 && heightInTiles == 5) {
-            Vector2 worldCoordinate = calculateWorldCoordinate(
-                viewport,
-                sampleLayer,
-                screenX,
-                screenY
-            );
-            worldCoordinate.x = (int) worldCoordinate.x - 4;
-            worldCoordinate.y = (int) worldCoordinate.y - 4;
-            return worldCoordinate;
-        }
-        return new Vector2(0, 0);
+        Vector2 worldCoordinate = calculateWorldCoordinate(viewport, sampleLayer, screenX, screenY);
+
+        // Round to integer tile position
+        int tileX = (int) worldCoordinate.x;
+        int tileY = (int) worldCoordinate.y;
+
+        // Offset so that the building is centered on the click
+        int offsetX = widthInTiles / 2;
+        int offsetY = heightInTiles / 2;
+
+        // Adjust for even-sized buildings: place top-left of the "center"
+        if (widthInTiles % 2 == 0) offsetX -= 1;
+        if (heightInTiles % 2 == 0) offsetY -= 1;
+
+        return new Vector2(tileX - offsetX, tileY - offsetY);
     }
 
     /**
@@ -130,23 +79,13 @@ public class WorldCoordinateUtils {
      * @param y the tile y-coordinate.
      * @return a {@link Vector2} representing the pixel coordinates.
      */
-    public static Vector2 calculatePixelCoordinateForEnemies(
-        int x,
-        int y,
-        TiledMapTileLayer sampleLayer
-    ) {
-        float pixelX = x * sampleLayer.getTileWidth();
-        float pixelY = y * sampleLayer.getTileHeight();
-        return new Vector2(pixelX, pixelY);
-    }
-
-    public static Vector2 calculatePixelCoordinateForEnemies(
+    public static Vector2 calculatePixelCoordinateForBuildings(
         float x,
         float y,
         TiledMapTileLayer sampleLayer
     ) {
-        float pixelX = x * sampleLayer.getTileWidth();
-        float pixelY = y * sampleLayer.getTileHeight();
+        int pixelX = (int) x * sampleLayer.getTileWidth();
+        int pixelY = (int) y * sampleLayer.getTileHeight();
         return new Vector2(pixelX, pixelY);
     }
 }

@@ -22,6 +22,7 @@ import com.zhaw.frontier.mappers.MapLayerMapper;
 import com.zhaw.frontier.utils.LayerRenderEntry;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
+import com.zhaw.frontier.utils.WorldCoordinateUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -182,9 +183,10 @@ public class RenderSystem extends EntitySystem {
                     HQRoundAnimationComponent.class
                 );
 
-                Vector2 pixelCoordinate = new Vector2(
-                    (int) positionComponent.basePosition.x,
-                    (int) positionComponent.basePosition.y
+                Vector2 pixelCoordinate = WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
+                    positionComponent.basePosition.x,
+                    positionComponent.basePosition.y,
+                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
                 );
 
                 for (int i = 0; i < renderComponent.widthInTiles; i++) {
@@ -216,8 +218,8 @@ public class RenderSystem extends EntitySystem {
 
                             renderer.draw(
                                 region,
-                                (pixelCoordinate.x * 16) + i * 16,
-                                (pixelCoordinate.y * 16) + j * 16,
+                                pixelCoordinate.x + i * 16,
+                                pixelCoordinate.y + j * 16,
                                 region.getRegionWidth(),
                                 region.getRegionHeight()
                             );

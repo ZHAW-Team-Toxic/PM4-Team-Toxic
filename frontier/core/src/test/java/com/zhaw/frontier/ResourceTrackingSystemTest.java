@@ -6,11 +6,8 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.zhaw.frontier.components.InventoryComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.ResourceProductionComponent;
+import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
-import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.ResourceProductionSystem;
 import org.junit.jupiter.api.AfterAll;
@@ -81,6 +78,25 @@ public class ResourceTrackingSystemTest {
         testEngine.addEntity(stock);
     }
 
+    private Entity createMockedResourceBuilding(
+        ResourceTypeEnum resourceType,
+        int heightInTiles,
+        int widthInTiles
+    ) {
+        Entity resourceBuilding = testEngine.createEntity();
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = heightInTiles;
+        positionComponent.widthInTiles = widthInTiles;
+        resourceBuilding.add(positionComponent);
+        resourceBuilding.add(new OccupiesTilesComponent());
+        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
+        resourceProductionComponent.productionRate.put(resourceType, 1);
+        resourceBuilding.add(resourceProductionComponent);
+        ResourceGeneratorComponent resourceGeneratorComponent = new ResourceGeneratorComponent();
+        resourceBuilding.add(resourceGeneratorComponent);
+        return resourceBuilding;
+    }
+
     /**
      * Tests that a wood-producing building at tile (4,2) successfully collects wood resources.
      *
@@ -91,7 +107,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingWood() {
-        Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
+        Entity building = createMockedResourceBuilding(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1, 1);
         building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(4);
         building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(2);
         building
@@ -110,6 +126,7 @@ public class ResourceTrackingSystemTest {
         int amount = inventory.resources.get(ResourceTypeEnum.RESOURCE_TYPE_WOOD);
 
         assertTrue(amount > 0, "Wood should be collected");
+        testEngine.removeEntity(building);
     }
 
     /**
@@ -122,7 +139,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingStone() {
-        Entity building = ResourceBuildingFactory.stoneResourceBuilding(testEngine);
+        Entity building = createMockedResourceBuilding(ResourceTypeEnum.RESOURCE_TYPE_STONE, 1, 1);
         building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(2);
         building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(4);
         building
@@ -141,6 +158,7 @@ public class ResourceTrackingSystemTest {
         int amount = inventory.resources.get(ResourceTypeEnum.RESOURCE_TYPE_STONE);
 
         assertTrue(amount > 0, "Stone should be collected");
+        testEngine.removeEntity(building);
     }
 
     /**
@@ -153,7 +171,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingIron() {
-        Entity building = ResourceBuildingFactory.ironResourceBuilding(testEngine);
+        Entity building = createMockedResourceBuilding(ResourceTypeEnum.RESOURCE_TYPE_IRON, 1, 1);
         building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(6);
         building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(4);
         building
@@ -172,6 +190,7 @@ public class ResourceTrackingSystemTest {
         int amount = inventory.resources.get(ResourceTypeEnum.RESOURCE_TYPE_IRON);
 
         assertTrue(amount > 0, "Iron should be collected");
+        testEngine.removeEntity(building);
     }
 
     /**
@@ -184,7 +203,7 @@ public class ResourceTrackingSystemTest {
      */
     @Test
     public void testResourceTrackingWoodShouldNotBeCollected() {
-        Entity building = ResourceBuildingFactory.woodResourceBuilding(testEngine);
+        Entity building = createMockedResourceBuilding(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1, 1);
         building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(4);
         building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(4);
         building
@@ -196,6 +215,27 @@ public class ResourceTrackingSystemTest {
             bms.placeBuilding(building),
             "Building should not be placed on a tile where there are no adjacent resources."
         );
+        testEngine.removeEntity(building);
+    }
+
+    @Test
+    public void checkIfAdjacentResourceAreCalculatedCorrectly() {
+        Entity building = createMockedResourceBuilding(ResourceTypeEnum.RESOURCE_TYPE_STONE, 2, 2);
+        building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(2);
+        building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(3);
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
+
+        testEngine.update(0.1f);
+
+        ResourceProductionComponent resourceProductionComponent = building.getComponent(
+            ResourceProductionComponent.class
+        );
+        int amount = resourceProductionComponent.countOfAdjacentResources;
+
+        assertEquals(1, amount, "Adjacent resources should be 1");
+        testEngine.removeEntity(building);
     }
 
     /**
