@@ -2,14 +2,11 @@ package com.zhaw.frontier.systems;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-
 import java.util.HashMap;
 
 public class ConditionalAnimationManager {
@@ -31,11 +28,6 @@ public class ConditionalAnimationManager {
 
         ConditionalAnimationComponent current = queue.queue.peek();
         current.timeLeft -= deltaTime;
-        Gdx.app.log(
-            "AnimationSystem",
-            "Processing conditional animation: " + current.animationType + ", time left: " +
-            current.timeLeft
-        );
 
         if (enemyAnimM.has(entity)) {
             EnemyAnimationComponent anim = enemyAnimM.get(entity);
@@ -59,34 +51,24 @@ public class ConditionalAnimationManager {
 
         if (current.timeLeft <= 0 && !current.loop) {
             queue.queue.poll();
-            Gdx.app.log(
-                "AnimationSystem",
-                "Queue size after poll: " + queue.queue.size()
-            );
 
             if (enemyAnimM.has(entity)) {
                 EnemyAnimationComponent anim = enemyAnimM.get(entity);
                 PositionComponent pos = entity.getComponent(PositionComponent.class);
-                Gdx.app.log(
-                    "AnimationSystem",
-                    "Looking direction: " + pos.lookingDirection.x + ", " + pos.lookingDirection.y
-                );
+
                 // Enemy can only have one active animation at a time (currentAnimation).
                 // When a non-looping animation finishes, we reset it to IDLE
                 // and reset stateTime so the idle animation starts from the beginning.
-                if(pos.lookingDirection.x > 0 && pos.lookingDirection.y == 0) {
+                if (pos.lookingDirection.x > 0 && pos.lookingDirection.y == 0) {
                     anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT;
-                } else if(pos.lookingDirection.x < 0 && pos.lookingDirection.y == 0) {
+                } else if (pos.lookingDirection.x < 0 && pos.lookingDirection.y == 0) {
                     anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_LEFT;
-                } else if(pos.lookingDirection.x == 0 && pos.lookingDirection.y > 0) {
+                } else if (pos.lookingDirection.x == 0 && pos.lookingDirection.y > 0) {
                     anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_UP;
-                } else if(pos.lookingDirection.x == 0 && pos.lookingDirection.y < 0) {
+                } else if (pos.lookingDirection.x == 0 && pos.lookingDirection.y < 0) {
                     anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_DOWN;
                 }
-                Gdx.app.log(
-                    "AnimationSystem",
-                    "Resetting enemy animation to IDLE: " + anim.currentAnimation
-                );
+
                 anim.stateTime = 0f;
 
                 renderEnemySprite(entity);
@@ -108,7 +90,7 @@ public class ConditionalAnimationManager {
         }
     }
 
-    private void renderEnemySprite(Entity entity){
+    private void renderEnemySprite(Entity entity) {
         RenderComponent render = entity.getComponent(RenderComponent.class);
         EnemyAnimationComponent anim = enemyAnimM.get(entity);
 
@@ -126,20 +108,23 @@ public class ConditionalAnimationManager {
         }
     }
 
-    private void renderBuildingSprite(Entity entity){
+    private void renderBuildingSprite(Entity entity) {
         RenderComponent render = entity.getComponent(RenderComponent.class);
         BuildingAnimationComponent anim = buildingAnimM.get(entity);
 
         if (anim != null) {
             for (BuildingAnimationComponent.BuildingAnimationType type : anim.activeAnimations) {
-                HashMap<TileOffset, Animation<TextureRegion>> animationMap = anim.animations.get(type);
+                HashMap<TileOffset, Animation<TextureRegion>> animationMap = anim.animations.get(
+                    type
+                );
                 if (animationMap != null) {
                     Animation<TextureRegion> animation = animationMap.get(new TileOffset(0, 0));
                     if (animation != null) {
                         render.sprites.forEach((offset, layers) -> {
                             for (LayeredSprite layer : layers) {
                                 if (layer.zIndex == 0) {
-                                    layer.region = animation.getKeyFrame(anim.stateTimes.get(type), false);
+                                    layer.region =
+                                    animation.getKeyFrame(anim.stateTimes.get(type), false);
                                 }
                             }
                         });

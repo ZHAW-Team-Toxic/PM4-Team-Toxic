@@ -15,6 +15,10 @@ import java.util.*;
 
 public class EnemyFactory {
 
+    public static final float ORC_ATTACK_DURATION = 0.1f;
+    public static final float ORC_IDLE_DURATION = 0.1f;
+    public static final float ORC_WALK_DURATION = 0.1f;
+
     private static final EnumMap<
         EnemyAnimationComponent.EnemyAnimationType,
         Animation<TextureRegion>
@@ -67,10 +71,8 @@ public class EnemyFactory {
             layers.add(new LayeredSprite(firstFrame, 0)); // Basis-Layer
             render.sprites.put(offset, layers);
         } else {
-            Gdx.app.error("EnemyFactory", "❌ Kein erstes Frame gefunden für WALK_DOWN");
+            Gdx.app.error("EnemyFactory", "Kein erstes Frame gefunden für WALK_DOWN");
         }
-
-        Gdx.app.debug("EnemyFactory", "Animations: " + enemyAnimation.animations.size());
 
         AnimationQueueComponent queue = new AnimationQueueComponent();
         enemy.add(queue);
@@ -94,51 +96,99 @@ public class EnemyFactory {
 
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN,
-                new Animation<>(0.10f, atlas.findRegions("walk_down_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_WALK_DURATION,
+                    atlas.findRegions("walk_down_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT,
-                new Animation<>(0.10f, atlas.findRegions("walk_left_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_WALK_DURATION,
+                    atlas.findRegions("walk_left_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_RIGHT,
-                new Animation<>(0.10f, atlas.findRegions("walk_right_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_WALK_DURATION,
+                    atlas.findRegions("walk_right_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_UP,
-                new Animation<>(0.10f, atlas.findRegions("walk_up_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_WALK_DURATION,
+                    atlas.findRegions("walk_up_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.IDLE_DOWN,
-                new Animation<>(0.10f, atlas.findRegions("idle_down_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_IDLE_DURATION,
+                    atlas.findRegions("idle_down_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.IDLE_LEFT,
-                new Animation<>(0.10f, atlas.findRegions("idle_left_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_IDLE_DURATION,
+                    atlas.findRegions("idle_left_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT,
-                new Animation<>(0.21f, atlas.findRegions("idle_right_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_IDLE_DURATION,
+                    atlas.findRegions("idle_right_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.IDLE_UP,
-                new Animation<>(0.10f, atlas.findRegions("idle_up_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_IDLE_DURATION,
+                    atlas.findRegions("idle_up_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN,
-                new Animation<>(0.10f, atlas.findRegions("attack_down_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_ATTACK_DURATION,
+                    atlas.findRegions("attack_down_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.ATTACK_LEFT,
-                new Animation<>(0.10f, atlas.findRegions("attack_left_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_ATTACK_DURATION,
+                    atlas.findRegions("attack_left_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.ATTACK_RIGHT,
-                new Animation<>(0.10f, atlas.findRegions("attack_right_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_ATTACK_DURATION,
+                    atlas.findRegions("attack_right_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.ATTACK_UP,
-                new Animation<>(0.10f, atlas.findRegions("attack_up_orc"), Animation.PlayMode.LOOP)
+                new Animation<>(
+                    ORC_ATTACK_DURATION,
+                    atlas.findRegions("attack_up_orc"),
+                    Animation.PlayMode.LOOP
+                )
             );
         }
     }

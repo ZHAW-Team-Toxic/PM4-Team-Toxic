@@ -150,21 +150,15 @@ public class GameInputProcessor extends InputAdapter {
                 mouseY,
                 frontierGame.getAssetManager()
             );
-            PositionComponent pos =
-                enemyIdle.getComponent(PositionComponent.class);
+            PositionComponent pos = enemyIdle.getComponent(PositionComponent.class);
             pos.lookingDirection.set(0, -1);
             ConditionalAnimationComponent enemyAnim = new ConditionalAnimationComponent();
             enemyAnim.animationType = EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN;
             enemyAnim.timeLeft = 1f;
             enemyAnim.loop = false;
             enemyIdle.add(enemyAnim);
-            AnimationQueueComponent queue =
-                enemyIdle.getComponent(AnimationQueueComponent.class);
+            AnimationQueueComponent queue = enemyIdle.getComponent(AnimationQueueComponent.class);
             queue.queue.add(enemyAnim);
-            Gdx.app.debug(
-                "GameInputProcessor",
-                "Looking direction: " + pos.lookingDirection.x + ", " + pos.lookingDirection.y
-            );
             enemyManagementSystem.spawnEnemy(enemyIdle);
             return true;
         }

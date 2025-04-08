@@ -21,6 +21,9 @@ import java.util.Map;
  */
 public class HQFactory {
 
+    private static final float SAND_CLOCK_FRAME_DURATION = 0.2f;
+    private static final int HQ_TILE_SIZE = 4;
+
     private static final Map<
         Enum<?>,
         HashMap<TileOffset, Animation<TextureRegion>>
@@ -50,7 +53,6 @@ public class HQFactory {
                 "packed/buildings/buildingAtlas.atlas",
                 TextureAtlas.class
             );
-            float frameDuration = 0.2f;
 
             HashMap<TileOffset, Animation<TextureRegion>> clockAnimation = new HashMap<>();
 
@@ -58,7 +60,7 @@ public class HQFactory {
             clockAnimation.put(
                 new TileOffset(1, 1),
                 new Animation<>(
-                    frameDuration,
+                    SAND_CLOCK_FRAME_DURATION,
                     atlas.findRegions("hq_sandclock_D5"),
                     Animation.PlayMode.LOOP
                 )
@@ -68,7 +70,7 @@ public class HQFactory {
             clockAnimation.put(
                 new TileOffset(2, 1),
                 new Animation<>(
-                    frameDuration,
+                    SAND_CLOCK_FRAME_DURATION,
                     atlas.findRegions("hq_sandclock_D6"),
                     Animation.PlayMode.LOOP
                 )
@@ -78,7 +80,7 @@ public class HQFactory {
             clockAnimation.put(
                 new TileOffset(1, 2),
                 new Animation<>(
-                    frameDuration,
+                    SAND_CLOCK_FRAME_DURATION,
                     atlas.findRegions("hq_sandclock_D9"),
                     Animation.PlayMode.LOOP
                 )
@@ -90,7 +92,7 @@ public class HQFactory {
             hq00Frames.add(atlas.findRegion("hq_sandclock_00_S"));
             clockAnimation.put(
                 new TileOffset(0, 0),
-                new Animation<>(frameDuration, hq00Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq00Frames, Animation.PlayMode.LOOP)
             );
 
             // Repeat for all other static tiles
@@ -99,7 +101,7 @@ public class HQFactory {
             hq01Frames.add(atlas.findRegion("hq_sandclock_10_S"));
             clockAnimation.put(
                 new TileOffset(1, 0),
-                new Animation<>(frameDuration, hq01Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq01Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 02
@@ -107,7 +109,7 @@ public class HQFactory {
             hq02Frames.add(atlas.findRegion("hq_sandclock_20_S"));
             clockAnimation.put(
                 new TileOffset(2, 0),
-                new Animation<>(frameDuration, hq02Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq02Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 03
@@ -115,7 +117,7 @@ public class HQFactory {
             hq03Frames.add(atlas.findRegion("hq_sandclock_30_S"));
             clockAnimation.put(
                 new TileOffset(3, 0),
-                new Animation<>(frameDuration, hq03Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq03Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 04
@@ -123,7 +125,7 @@ public class HQFactory {
             hq04Frames.add(atlas.findRegion("hq_sandclock_01_S"));
             clockAnimation.put(
                 new TileOffset(0, 1),
-                new Animation<>(frameDuration, hq04Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq04Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 07
@@ -131,7 +133,7 @@ public class HQFactory {
             hq07Frames.add(atlas.findRegion("hq_sandclock_31_S"));
             clockAnimation.put(
                 new TileOffset(3, 1),
-                new Animation<>(frameDuration, hq07Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq07Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 08
@@ -139,7 +141,7 @@ public class HQFactory {
             hq08Frames.add(atlas.findRegion("hq_sandclock_02_S"));
             clockAnimation.put(
                 new TileOffset(0, 2),
-                new Animation<>(frameDuration, hq08Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq08Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 10
@@ -147,7 +149,7 @@ public class HQFactory {
             hq10Frames.add(atlas.findRegion("hq_sandclock_22_S"));
             clockAnimation.put(
                 new TileOffset(2, 2),
-                new Animation<>(frameDuration, hq10Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq10Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 11
@@ -155,7 +157,7 @@ public class HQFactory {
             hq11Frames.add(atlas.findRegion("hq_sandclock_32_S"));
             clockAnimation.put(
                 new TileOffset(3, 2),
-                new Animation<>(frameDuration, hq11Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq11Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 12
@@ -163,7 +165,7 @@ public class HQFactory {
             hq12Frames.add(atlas.findRegion("hq_sandclock_03_S"));
             clockAnimation.put(
                 new TileOffset(0, 3),
-                new Animation<>(frameDuration, hq12Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq12Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 13
@@ -171,7 +173,7 @@ public class HQFactory {
             hq13Frames.add(atlas.findRegion("hq_sandclock_13_S"));
             clockAnimation.put(
                 new TileOffset(1, 3),
-                new Animation<>(frameDuration, hq13Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq13Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 14
@@ -179,7 +181,7 @@ public class HQFactory {
             hq14Frames.add(atlas.findRegion("hq_sandclock_23_S"));
             clockAnimation.put(
                 new TileOffset(2, 3),
-                new Animation<>(frameDuration, hq14Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq14Frames, Animation.PlayMode.LOOP)
             );
 
             // tile 15
@@ -187,7 +189,7 @@ public class HQFactory {
             hq15Frames.add(atlas.findRegion("hq_sandclock_33_S"));
             clockAnimation.put(
                 new TileOffset(3, 3),
-                new Animation<>(frameDuration, hq15Frames, Animation.PlayMode.LOOP)
+                new Animation<>(SAND_CLOCK_FRAME_DURATION, hq15Frames, Animation.PlayMode.LOOP)
             );
 
             clockAnimationCache.put(
@@ -200,13 +202,13 @@ public class HQFactory {
 
     private static void applyComponents(Entity hq) {
         PositionComponent position = hq.getComponent(PositionComponent.class);
-        position.widthInTiles = 4;
-        position.heightInTiles = 4;
+        position.widthInTiles = HQ_TILE_SIZE;
+        position.heightInTiles = HQ_TILE_SIZE;
 
         RenderComponent render = hq.getComponent(RenderComponent.class);
         render.renderType = RenderComponent.RenderType.BUILDING;
-        render.widthInTiles = 4;
-        render.heightInTiles = 4;
+        render.widthInTiles = HQ_TILE_SIZE;
+        render.heightInTiles = HQ_TILE_SIZE;
 
         HQRoundAnimationComponent roundAnimation = hq.getComponent(HQRoundAnimationComponent.class);
         roundAnimation.currentFrameIndex = 0;

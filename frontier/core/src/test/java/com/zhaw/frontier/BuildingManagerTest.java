@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
@@ -367,6 +368,78 @@ public class BuildingManagerTest {
             OccupiesTilesComponent.class
         );
         assertEquals(9, occupiesTilesComponent.occupiedTiles.size(), "Tiles should be occupied.");
+        testEngine.removeEntity(hq);
+    }
+
+    @Test
+    public void place1x1BuildingRemoveDiffrentLocation() {
+        Entity hq = createMockedHQ(1, 1);
+        PositionComponent bp = hq.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
+            OccupiesTilesComponent.class
+        );
+        assertEquals(1, occupiesTilesComponent.occupiedTiles.size(), "Tiles should be occupied.");
+
+        Vector2 screenCoordinate = new Vector2(
+            TestMapEnvironment.tileToScreenX(5),
+            TestMapEnvironment.tileToScreenY(4)
+        );
+        assertFalse(
+            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y),
+            "Building should not be removed."
+        );
+        testEngine.removeEntity(hq);
+    }
+
+    @Test
+    public void place2x2BuildingRemoveItWithAnchorTile() {
+        Entity hq = createMockedHQ(2, 2);
+        PositionComponent bp = hq.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
+            OccupiesTilesComponent.class
+        );
+        assertEquals(4, occupiesTilesComponent.occupiedTiles.size(), "Tiles should be occupied.");
+
+        Vector2 screenCoordinate = new Vector2(
+            TestMapEnvironment.tileToScreenX(4),
+            TestMapEnvironment.tileToScreenY(4)
+        );
+        assertTrue(
+            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y),
+            "Building should be removed."
+        );
+        testEngine.removeEntity(hq);
+    }
+
+    @Test
+    public void place2x2BuildingRemoveItWithoutAnchorTIle() {
+        Entity hq = createMockedHQ(2, 2);
+        PositionComponent bp = hq.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
+            OccupiesTilesComponent.class
+        );
+        assertEquals(4, occupiesTilesComponent.occupiedTiles.size(), "Tiles should be occupied.");
+
+        Vector2 screenCoordinate = new Vector2(
+            TestMapEnvironment.tileToScreenX(5),
+            TestMapEnvironment.tileToScreenY(4)
+        );
+        assertTrue(
+            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y),
+            "Building should be removed."
+        );
         testEngine.removeEntity(hq);
     }
 
