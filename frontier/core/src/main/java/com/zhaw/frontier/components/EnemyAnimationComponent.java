@@ -15,9 +15,14 @@ public class EnemyAnimationComponent implements Component {
         WALK_UP,
         WALK_LEFT,
         WALK_RIGHT,
-        ATTACK,
-        IDLE,
-        DIE,
+        IDLE_DOWN,
+        IDLE_UP,
+        IDLE_LEFT,
+        IDLE_RIGHT,
+        ATTACK_DOWN,
+        ATTACK_UP,
+        ATTACK_LEFT,
+        ATTACK_RIGHT,
     }
 
     /** All animations mapped by type */

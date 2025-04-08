@@ -2,10 +2,15 @@ package com.zhaw.frontier.systems;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.zhaw.frontier.components.AnimationQueueComponent;
-import com.zhaw.frontier.components.BuildingAnimationComponent;
-import com.zhaw.frontier.components.ConditionalAnimationComponent;
-import com.zhaw.frontier.components.EnemyAnimationComponent;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
+import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.utils.LayeredSprite;
+import com.zhaw.frontier.utils.TileOffset;
+
+import java.util.HashMap;
 
 public class ConditionalAnimationManager {
 
@@ -26,12 +31,19 @@ public class ConditionalAnimationManager {
 
         ConditionalAnimationComponent current = queue.queue.peek();
         current.timeLeft -= deltaTime;
+        Gdx.app.log(
+            "AnimationSystem",
+            "Processing conditional animation: " + current.animationType + ", time left: " +
+            current.timeLeft
+        );
 
         if (enemyAnimM.has(entity)) {
             EnemyAnimationComponent anim = enemyAnimM.get(entity);
             anim.currentAnimation =
             (EnemyAnimationComponent.EnemyAnimationType) current.animationType;
             anim.stateTime += deltaTime;
+
+            renderEnemySprite(entity);
         }
 
         if (buildingAnimM.has(entity)) {
@@ -41,23 +53,50 @@ public class ConditionalAnimationManager {
 
             anim.activeAnimations.add(type);
             anim.stateTimes.merge(type, deltaTime, Float::sum);
+
+            renderBuildingSprite(entity);
         }
 
         if (current.timeLeft <= 0 && !current.loop) {
             queue.queue.poll();
+            Gdx.app.log(
+                "AnimationSystem",
+                "Queue size after poll: " + queue.queue.size()
+            );
 
             if (enemyAnimM.has(entity)) {
                 EnemyAnimationComponent anim = enemyAnimM.get(entity);
-
+                PositionComponent pos = entity.getComponent(PositionComponent.class);
+                Gdx.app.log(
+                    "AnimationSystem",
+                    "Looking direction: " + pos.lookingDirection.x + ", " + pos.lookingDirection.y
+                );
                 // Enemy can only have one active animation at a time (currentAnimation).
                 // When a non-looping animation finishes, we reset it to IDLE
                 // and reset stateTime so the idle animation starts from the beginning.
-                anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE;
+                if(pos.lookingDirection.x > 0 && pos.lookingDirection.y == 0) {
+                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT;
+                } else if(pos.lookingDirection.x < 0 && pos.lookingDirection.y == 0) {
+                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_LEFT;
+                } else if(pos.lookingDirection.x == 0 && pos.lookingDirection.y > 0) {
+                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_UP;
+                } else if(pos.lookingDirection.x == 0 && pos.lookingDirection.y < 0) {
+                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.IDLE_DOWN;
+                }
+                Gdx.app.log(
+                    "AnimationSystem",
+                    "Resetting enemy animation to IDLE: " + anim.currentAnimation
+                );
                 anim.stateTime = 0f;
+
+                renderEnemySprite(entity);
+                entity.remove(ConditionalAnimationComponent.class);
             }
 
             if (buildingAnimM.has(entity)) {
                 BuildingAnimationComponent anim = buildingAnimM.get(entity);
+
+                renderBuildingSprite(entity);
 
                 // Buildings can have multiple animations playing at the same time.
                 // When a conditional animation ends, we just remove it from the active set
@@ -65,6 +104,47 @@ public class ConditionalAnimationManager {
                 // manages its own stateTime individually.
                 anim.activeAnimations.remove(current.animationType);
                 anim.stateTimes.remove(current.animationType);
+            }
+        }
+    }
+
+    private void renderEnemySprite(Entity entity){
+        RenderComponent render = entity.getComponent(RenderComponent.class);
+        EnemyAnimationComponent anim = enemyAnimM.get(entity);
+
+        if (anim != null) {
+            Animation<TextureRegion> animation = anim.animations.get(anim.currentAnimation);
+            if (animation != null) {
+                render.sprites.forEach((offset, layers) -> {
+                    for (LayeredSprite layer : layers) {
+                        if (layer.zIndex == 0) {
+                            layer.region = animation.getKeyFrame(anim.stateTime, false);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private void renderBuildingSprite(Entity entity){
+        RenderComponent render = entity.getComponent(RenderComponent.class);
+        BuildingAnimationComponent anim = buildingAnimM.get(entity);
+
+        if (anim != null) {
+            for (BuildingAnimationComponent.BuildingAnimationType type : anim.activeAnimations) {
+                HashMap<TileOffset, Animation<TextureRegion>> animationMap = anim.animations.get(type);
+                if (animationMap != null) {
+                    Animation<TextureRegion> animation = animationMap.get(new TileOffset(0, 0));
+                    if (animation != null) {
+                        render.sprites.forEach((offset, layers) -> {
+                            for (LayeredSprite layer : layers) {
+                                if (layer.zIndex == 0) {
+                                    layer.region = animation.getKeyFrame(anim.stateTimes.get(type), false);
+                                }
+                            }
+                        });
+                    }
+                }
             }
         }
     }

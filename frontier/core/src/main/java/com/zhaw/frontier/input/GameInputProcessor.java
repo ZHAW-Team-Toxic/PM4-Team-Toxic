@@ -7,8 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.components.InventoryComponent;
-import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.enums.AppEnvironment;
@@ -150,6 +149,21 @@ public class GameInputProcessor extends InputAdapter {
                 mouseX,
                 mouseY,
                 frontierGame.getAssetManager()
+            );
+            PositionComponent pos =
+                enemyIdle.getComponent(PositionComponent.class);
+            pos.lookingDirection.set(0, -1);
+            ConditionalAnimationComponent enemyAnim = new ConditionalAnimationComponent();
+            enemyAnim.animationType = EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN;
+            enemyAnim.timeLeft = 1f;
+            enemyAnim.loop = false;
+            enemyIdle.add(enemyAnim);
+            AnimationQueueComponent queue =
+                enemyIdle.getComponent(AnimationQueueComponent.class);
+            queue.queue.add(enemyAnim);
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "Looking direction: " + pos.lookingDirection.x + ", " + pos.lookingDirection.y
             );
             enemyManagementSystem.spawnEnemy(enemyIdle);
             return true;

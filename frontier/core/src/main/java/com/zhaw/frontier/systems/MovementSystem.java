@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 
@@ -63,9 +64,7 @@ public class MovementSystem extends EntitySystem {
 
         if (Math.abs(deltaX) > DIRECTION_EPSILON || Math.abs(deltaY) > DIRECTION_EPSILON) {
             pos.lookingDirection.set(deltaX, deltaY).nor();
-        } else {
-            // optional: nicht verändern oder auf null setzen
-            pos.lookingDirection.set(0, 0);
         }
+
     }
 }

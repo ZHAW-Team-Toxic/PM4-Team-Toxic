@@ -18,9 +18,10 @@ public class AnimationSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        defaultManager.process(entity, deltaTime);
         if (entity.getComponent(ConditionalAnimationComponent.class) != null) {
             conditionalManager.process(entity, deltaTime);
+        } else {
+            defaultManager.process(entity, deltaTime);
         }
     }
 }
