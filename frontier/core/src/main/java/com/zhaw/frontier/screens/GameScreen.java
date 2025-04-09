@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
-//TODO
 import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
@@ -115,7 +114,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
             sampleLayer.getTileHeight()
         );
 
-        //TODO Fezzsack
         engine.addSystem(new SoundSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
@@ -192,7 +190,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
             frontierGame.switchScreen(new PauseScreen(frontierGame, this));
         }
 
-        //TODO Fezzsack
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             SoundSystem soundSystem = engine.getSystem(SoundSystem.class);
             if (soundSystem != null) {

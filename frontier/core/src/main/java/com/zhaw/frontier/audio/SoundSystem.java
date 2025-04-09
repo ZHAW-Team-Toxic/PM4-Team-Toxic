@@ -1,4 +1,3 @@
-// Pfad: core/src/com/zhaw/frontier/audio/SoundSystem.java
 package com.zhaw.frontier.audio;
 
 import com.badlogic.ashley.core.EntitySystem;
