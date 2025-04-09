@@ -8,7 +8,7 @@ public class ResourceUI {
 
     private Label woodlabel;
     private Label stoneLabel;
-    private Label goldLabel;
+    private Label ironLabel;
 
     @Setter
     private int wood;
@@ -23,10 +23,10 @@ public class ResourceUI {
     private int stoneIncome;
 
     @Setter
-    private int gold;
+    private int iron;
 
     @Setter
-    private int goldIncome;
+    private int ironIncome;
 
     public ResourceUI(Skin skin, Stage stage) {
         // Stage für die UI
@@ -37,14 +37,14 @@ public class ResourceUI {
         // Ressourcenanzeige oben rechts
         woodlabel = new Label("Holz: " + wood + " + " + woodIncome, skin);
         stoneLabel = new Label("Stein: " + stone + " + " + stoneIncome, skin);
-        goldLabel = new Label("Gold: " + gold + " + " + goldIncome, skin);
+        ironLabel = new Label("Eisen: " + iron + " + " + ironIncome, skin);
 
         root.top().right().pad(10);
         root.add(woodlabel).padBottom(10);
         root.row();
         root.add(stoneLabel).padBottom(10);
         root.row();
-        root.add(goldLabel).padBottom(10);
+        root.add(ironLabel).padBottom(10);
     }
 
     /**
@@ -54,31 +54,32 @@ public class ResourceUI {
      * @param woodIncome  The income of wood.
      * @param stone       The current amount of stone.
      * @param stoneIncome The income of stone.
-     * @param gold        The current amount of gold.
-     * @param goldIncome  The income of gold.
+     * @param iron        The current amount of gold.
+     * @param ironIncome  The income of gold.
      */
     public void updateResources(
         int wood,
         int woodIncome,
         int stone,
         int stoneIncome,
-        int gold,
-        int goldIncome
+        int iron,
+        int ironIncome
     ) {
         this.wood = wood;
         this.woodIncome = woodIncome;
         this.stone = stone;
         this.stoneIncome = stoneIncome;
-        this.gold = gold;
-        this.goldIncome = goldIncome;
+        this.iron = iron;
+        this.ironIncome = ironIncome;
 
         // Update the labels with the new values
         woodlabel.setText("Holz: " + wood + " + " + woodIncome);
         stoneLabel.setText("Stein: " + stone + " + " + stoneIncome);
-        goldLabel.setText("Gold: " + gold + " + " + goldIncome);
+        ironLabel.setText("Eisen: " + iron + " + " + ironIncome);
     }
 
     /**********************************************************************/
+    // Getter methods for the resource values for testing purposes
     // Getter methods for the labels for testing purposes
     public Label getWoodLabel() {
         return woodlabel;
@@ -88,8 +89,8 @@ public class ResourceUI {
         return stoneLabel;
     }
 
-    public Label getGoldLabel() {
-        return goldLabel;
+    public Label getIronLabel() {
+        return ironLabel;
     }
     /**********************************************************************/
 }
