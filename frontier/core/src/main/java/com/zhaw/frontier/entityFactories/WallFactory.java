@@ -67,7 +67,7 @@ public class WallFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created wall entity.
      */
-    public static Entity createDefaultWall(Engine engine, AssetManager assetManager) {
+    public static Entity createDefaultWall(Engine engine) {
         Entity wall = engine.createEntity();
 
         PositionComponent position = new PositionComponent();

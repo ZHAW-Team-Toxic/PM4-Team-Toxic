@@ -173,7 +173,7 @@ public class GameInputProcessor extends InputAdapter {
                 "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity wall = WallFactory.createDefaultWall(engine, frontierGame.getAssetManager());
+                Entity wall = WallFactory.createDefaultWall(engine);
                 PositionComponent bp = wall.getComponent(PositionComponent.class);
                 bp.basePosition.x = mouseX;
                 bp.basePosition.y = mouseY;
