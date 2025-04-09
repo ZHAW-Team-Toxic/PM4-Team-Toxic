@@ -3,7 +3,7 @@ package com.zhaw.frontier.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.zhaw.frontier.components.HQRoundAnimationComponent;
+import com.zhaw.frontier.components.RoundAnimationComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
@@ -13,7 +13,7 @@ public class RoundAnimationSystem {
 
     // Leerer Konstruktor – kann erweitert werden, falls du das System in Ashley als echtes System registrieren willst
     public static void updateFrameForRoundComponent(Entity entity) {
-        HQRoundAnimationComponent anim = entity.getComponent(HQRoundAnimationComponent.class);
+        RoundAnimationComponent anim = entity.getComponent(RoundAnimationComponent.class);
         RenderComponent render = entity.getComponent(RenderComponent.class);
 
         if (anim == null || anim.frames == null || anim.frames.isEmpty() || render == null) return;

@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.zhaw.frontier.components.HQRoundAnimationComponent;
+import com.zhaw.frontier.components.RoundAnimationComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.systems.RoundAnimationSystem;
 import com.zhaw.frontier.utils.TileOffset;
@@ -14,29 +14,44 @@ import java.util.HashMap;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+/**
+ * Unit tests for verifying animation frame updates in the {@link RoundAnimationSystem}.
+ *
+ * <p>
+ * The system handles animations based on rounds (not delta time),
+ * and cycles through static frame sets stored in {@link RoundAnimationComponent}.
+ * </p>
+ */
 @ExtendWith(GdxExtension.class)
 public class RoundAnimationSystemTest {
 
     private static Engine testEngine;
 
+    /**
+     * Initializes the test engine and adds the systems under test.
+     */
     @BeforeAll
     public static void setup() {
         testEngine = new Engine();
-        addSystemsUnderTestHere();
     }
 
-    private static void addSystemsUnderTestHere() {}
-
+    /**
+     * Adds the system under test: {@link RoundAnimationSystem}.
+     */
     @BeforeEach
     public void clearEntities() {
         testEngine.removeAllEntities();
     }
 
+    /**
+     * Verifies that frame index cycles correctly through all available frames
+     * and loops back to zero after the last one.
+     */
     @Test
     public void testAnimationFrameAdvancesEachRound() {
         Entity building = testEngine.createEntity();
 
-        HQRoundAnimationComponent anim = new HQRoundAnimationComponent();
+        RoundAnimationComponent anim = new RoundAnimationComponent();
         anim.frames = new HashMap<TileOffset, Array<TextureRegion>>(5);
         //assuming that you have 5 frames / states to animate
         anim.frames.put(
@@ -128,10 +143,14 @@ public class RoundAnimationSystemTest {
         assertEquals(0, anim.currentFrameIndex);
     }
 
+    /**
+     * Verifies that calling the update method on an animation component with empty frame sets
+     * does not throw exceptions.
+     */
     @Test
     public void testEmptyFramesHandledGracefully() {
         Entity building = testEngine.createEntity();
-        HQRoundAnimationComponent anim = new HQRoundAnimationComponent();
+        RoundAnimationComponent anim = new RoundAnimationComponent();
         anim.frames = new HashMap<>(); // leer
         anim.currentFrameIndex = 0;
 
@@ -144,6 +163,10 @@ public class RoundAnimationSystemTest {
         assertEquals(0, anim.currentFrameIndex);
     }
 
+    /**
+     * Verifies that calling the update method on an entity without an HQRoundAnimationComponent
+     * does not result in an exception or crash.
+     */
     @Test
     public void testNoAnimationComponentDoesNothing() {
         Entity building = testEngine.createEntity(); // kein anim-Component

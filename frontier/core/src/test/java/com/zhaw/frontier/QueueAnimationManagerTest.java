@@ -13,17 +13,36 @@ import com.zhaw.frontier.systems.QueueAnimationManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Unit tests for verifying conditional animation logic handled by {@link QueueAnimationManager}.
+ *
+ * <p>
+ * The tests check whether queued animations are activated, run for the specified duration,
+ * and return to an idle state when done. Also verifies that looping animations are not removed.
+ * </p>
+ */
 public class QueueAnimationManagerTest {
 
     private Engine testEngine;
     private QueueAnimationManager manager;
 
+    /**
+     * Initializes the test engine and the animation manager before each test.
+     */
     @BeforeEach
     public void setup() {
         testEngine = new Engine();
+        addSystemsUnderTestHere();
+    }
+
+    public void addSystemsUnderTestHere() {
         manager = new QueueAnimationManager();
     }
 
+    /**
+     * Tests that a non-looping conditional animation (e.g., ATTACK_DOWN) runs for the given time
+     * and then resets to the appropriate IDLE animation based on the entity's direction.
+     */
     @Test
     public void testEnemyConditionalAnimationFinishesAfterTime() {
         Entity enemy = testEngine.createEntity();
@@ -74,6 +93,12 @@ public class QueueAnimationManagerTest {
         assertTrue(queue.queue.isEmpty());
     }
 
+    /**
+     * Tests that a looping conditional animation is not removed from the queue after time passes.
+     * <p>
+     * Even though timeLeft is decreased, the animation should remain active.
+     * </p>
+     */
     @Test
     public void testLoopingConditionalAnimationPersists() {
         Entity enemy = testEngine.createEntity();

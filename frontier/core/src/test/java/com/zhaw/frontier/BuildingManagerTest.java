@@ -20,27 +20,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Integration tests for verifying the functionality of the {@link BuildingManagerSystem}.
- *
- * <p>This test class covers various building placement scenarios:
- * <ul>
- *     <li>Valid placement on buildable tiles</li>
- *     <li>Rejection of placement on non-buildable tiles</li>
- *     <li>Rejection on resource tiles</li>
- *     <li>Prevention of overlapping placements</li>
- *     <li>Special validation logic for resource buildings</li>
- * </ul>
- * </p>
+ * Integration tests for verifying the building placement system handled by {@link BuildingManagerSystem}.
  *
  * <p>
- * The test map and game environment are initialized using {@link TestMapEnvironment}, which sets up
- * a fixed 9x9 tile TMX map with predefined tile properties (buildable, resource, blocked, etc.).
+ * Tests cover:
+ * <ul>
+ *     <li>Valid placements on buildable tiles</li>
+ *     <li>Invalid placements (non-buildable, overlapping, resource tiles)</li>
+ *     <li>Special rules for resource-producing buildings</li>
+ * </ul>
  * </p>
- *
- * @see BuildingManagerSystem
- * @see TowerFactory
- * @see ResourceBuildingFactory
- * @see TestMapEnvironment
  */
 @ExtendWith(GdxExtension.class)
 public class BuildingManagerTest {
@@ -81,46 +70,8 @@ public class BuildingManagerTest {
         );
     }
 
-    private Entity createMockedTower(int height, int width) {
-        Entity tower = testEngine.createEntity();
-        PositionComponent positionComponent = new PositionComponent();
-        positionComponent.heightInTiles = height;
-        positionComponent.widthInTiles = width;
-        OccupiesTilesComponent occupiesTilesComponent = new OccupiesTilesComponent();
-        tower.add(occupiesTilesComponent);
-        tower.add(positionComponent);
-        return tower;
-    }
-
-    private Entity createMockedResourceBuilding(int height, int width, ResourceTypeEnum type) {
-        Entity resourceBuilding = testEngine.createEntity();
-        PositionComponent positionComponent = new PositionComponent();
-        positionComponent.heightInTiles = height;
-        positionComponent.widthInTiles = width;
-        OccupiesTilesComponent occupiesTilesComponent = new OccupiesTilesComponent();
-        resourceBuilding.add(occupiesTilesComponent);
-        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(type, 1);
-        ResourceGeneratorComponent resourceGeneratorComponent = new ResourceGeneratorComponent();
-        resourceBuilding.add(positionComponent);
-        resourceBuilding.add(resourceProductionComponent);
-        resourceBuilding.add(resourceGeneratorComponent);
-        return resourceBuilding;
-    }
-
-    private Entity createMockedHQ(int height, int width) {
-        Entity hq = testEngine.createEntity();
-        PositionComponent positionComponent = new PositionComponent();
-        positionComponent.heightInTiles = height;
-        positionComponent.widthInTiles = width;
-        OccupiesTilesComponent occupiesTilesComponent = new OccupiesTilesComponent();
-        hq.add(positionComponent);
-        hq.add(occupiesTilesComponent);
-        return hq;
-    }
-
     /**
-     * Tests that a tower can be placed on a buildable tile.
+     * Verifies that a 1x1 tower can be placed on a buildable tile.
      */
     @Test
     public void testBuildingPlacementOnBuildableTile1x1() {
@@ -134,6 +85,9 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower);
     }
 
+    /**
+     * Verifies that a 2x2 tower can be placed on a buildable area.
+     */
     @Test
     public void testBuildingPlacementOnBuildableTile2x2() {
         Entity tower = createMockedTower(2, 2);
@@ -147,7 +101,7 @@ public class BuildingManagerTest {
     }
 
     /**
-     * Tests that a building is not placed on a non-buildable tile (e.g. water).
+     * Ensures that placement on water or non-buildable terrain is rejected for a 1x1 tower building.
      */
     @Test
     public void testBuildingNotPlacedOnNonBuildableTile1x1() {
@@ -164,6 +118,9 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower);
     }
 
+    /**
+     * Ensures that placement on water or non-buildable terrain is rejected for a 2x2 tower building.
+     */
     @Test
     public void testBuildingNotPlacedOnNonBuildableTile2x2() {
         Entity tower = createMockedTower(2, 2);
@@ -180,7 +137,7 @@ public class BuildingManagerTest {
     }
 
     /**
-     * Tests that a building is not placed on a resource tile (e.g. stone/wood/iron).
+     * Ensures that resource tiles (e.g., stone, wood) block placement of non-resource buildings for 1x1.
      */
     @Test
     public void testBuildingNotPlacedOnResourceTile1x1() {
@@ -194,6 +151,9 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower);
     }
 
+    /**
+     * Ensures that resource tiles (e.g., stone, wood) block placement of non-resource buildings for a 2x2.
+     */
     @Test
     public void testBuildingNotPlacedOnResourceTile2x2() {
         Entity tower = createMockedTower(2, 2);
@@ -207,7 +167,7 @@ public class BuildingManagerTest {
     }
 
     /**
-     * Tests that a building cannot be placed on an already occupied tile.
+     * Verifies that overlapping building placement is prevented.
      */
     @Test
     public void testBuildingNotPlacedOnOccupiedTile1x1VS1x1() {
@@ -228,6 +188,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower);
     }
 
+    /**
+     * Verifies that overlapping building placement is prevented.
+     * Checks here if the occupying of tiles works correctly.
+     */
     @Test
     public void testBuildingNotPlacedOnOccupiedTile1x1VS2x2() {
         Entity tower = createMockedTower(1, 1);
@@ -270,6 +234,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(resourceBuilding);
     }
 
+    /**
+     * Tests that a valid resource-producing building is placed correctly when adjacent resource tiles exist.
+     * The resource building is from type "stone".
+     */
     @Test
     public void testResourceBuildingPlacementWorks2x2() {
         Entity resourceBuilding = createMockedResourceBuilding(
@@ -325,6 +293,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(resourceBuilding);
     }
 
+    /**
+     * Tests that a resource-producing building is rejected if no matching adjacent resource tiles exist.
+     * The resource building is from type "wood" and it's a 2x2 building.
+     */
     @Test
     public void checkResourceBuildingNotPlaced2x2() {
         Entity resourceBuilding = createMockedResourceBuilding(
@@ -344,6 +316,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(resourceBuilding);
     }
 
+    /**
+     * Tests if a multiple building can be placed on a buildable tile.
+     * The building is a 2x2 building.
+     */
     @Test
     public void checkMultiTIleBuildingPlacement2x2() {
         Entity hq = createMockedHQ(2, 2);
@@ -359,6 +335,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(hq);
     }
 
+    /**
+     * Tests if a multiple building can be placed on a buildable tile.
+     * The building is a 3x3 building.
+     */
     @Test
     public void checkMultiTIleBuildingPlacement3x3() {
         Entity hq = createMockedHQ(3, 3);
@@ -374,8 +354,12 @@ public class BuildingManagerTest {
         testEngine.removeEntity(hq);
     }
 
+    /**
+     * Tests if a building can be removed from a different location than the one it was placed.
+     * The building is a 1x1 building.
+     */
     @Test
-    public void place1x1BuildingRemoveDiffrentLocation() {
+    public void place1x1BuildingRemoveDifferentLocation() {
         Entity hq = createMockedHQ(1, 1);
         PositionComponent bp = hq.getComponent(PositionComponent.class);
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
@@ -398,6 +382,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(hq);
     }
 
+    /**
+     * Tests if a building can be removed from the same location it was placed.
+     * The building is a 2x2 building.
+     */
     @Test
     public void place2x2BuildingRemoveItWithAnchorTile() {
         Entity hq = createMockedHQ(2, 2);
@@ -422,6 +410,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(hq);
     }
 
+    /**
+     * Tests if a building can be removed from a different location than the one it was placed.
+     * The building is a 2x2 building.
+     */
     @Test
     public void place2x2BuildingRemoveItWithoutAnchorTIle() {
         Entity hq = createMockedHQ(2, 2);
@@ -446,6 +438,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(hq);
     }
 
+    /**
+     * Tests if a building can be placed again after it was removed.
+     * The building is a 1x1 building.
+     */
     @Test
     public void testRebuildAfterRemoval() {
         Entity tower = createMockedTower(1, 1);
@@ -469,6 +465,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower2);
     }
 
+    /**
+     * Tests if a building can be placed on a tile that is partially occupied by another building.
+     * The building is a 2x2 building.
+     */
     @Test
     public void testPartialPlacementOnInvalidTilesFails() {
         Entity tower = createMockedTower(2, 2);
@@ -481,6 +481,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower);
     }
 
+    /**
+     * Tests if a resource building can be placed if the resource is only diagonally adjacent.
+     * The building is a 1x1 building.
+     */
     @Test
     public void testDiagonalResourceShouldBeCounted() {
         Entity resourceBuilding = createMockedResourceBuilding(1, 1, ResourceTypeEnum.RESOURCE_TYPE_STONE);
@@ -493,6 +497,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(resourceBuilding);
     }
 
+    /**
+     * Tests if the same entity can be placed and added to the engine.
+     * The building is a 1x1 building.
+     */
     @Test
     public void testDoublePlacementFails() {
         Entity tower = createMockedTower(1, 1);
@@ -506,6 +514,10 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower);
     }
 
+    /**
+     * Tests if a building placement fails when it goes out of map bounds.
+     * The building is a 2x2 building.
+     */
     @Test
     public void testBuildingPlacementOutOfBoundsFails() {
         Entity tower = createMockedTower(2, 2);
@@ -527,5 +539,44 @@ public class BuildingManagerTest {
     public static void tearDown() {
         testEngine.removeAllEntities();
         testMapEnvironment.dispose();
+    }
+
+
+    private Entity createMockedTower(int height, int width) {
+        Entity tower = testEngine.createEntity();
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = height;
+        positionComponent.widthInTiles = width;
+        OccupiesTilesComponent occupiesTilesComponent = new OccupiesTilesComponent();
+        tower.add(occupiesTilesComponent);
+        tower.add(positionComponent);
+        return tower;
+    }
+
+    private Entity createMockedResourceBuilding(int height, int width, ResourceTypeEnum type) {
+        Entity resourceBuilding = testEngine.createEntity();
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = height;
+        positionComponent.widthInTiles = width;
+        OccupiesTilesComponent occupiesTilesComponent = new OccupiesTilesComponent();
+        resourceBuilding.add(occupiesTilesComponent);
+        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
+        resourceProductionComponent.productionRate.put(type, 1);
+        ResourceGeneratorComponent resourceGeneratorComponent = new ResourceGeneratorComponent();
+        resourceBuilding.add(positionComponent);
+        resourceBuilding.add(resourceProductionComponent);
+        resourceBuilding.add(resourceGeneratorComponent);
+        return resourceBuilding;
+    }
+
+    private Entity createMockedHQ(int height, int width) {
+        Entity hq = testEngine.createEntity();
+        PositionComponent positionComponent = new PositionComponent();
+        positionComponent.heightInTiles = height;
+        positionComponent.widthInTiles = width;
+        OccupiesTilesComponent occupiesTilesComponent = new OccupiesTilesComponent();
+        hq.add(positionComponent);
+        hq.add(occupiesTilesComponent);
+        return hq;
     }
 }

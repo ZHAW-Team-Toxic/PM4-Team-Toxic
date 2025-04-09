@@ -19,7 +19,7 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.mappers.MapLayerMapper;
-import com.zhaw.frontier.utils.LayerRenderEntry;
+import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
@@ -120,24 +120,24 @@ public class RenderSystem extends EntitySystem {
 
     private void renderMapLayers() {
         // Liste aller Layer + gewünschte Z-Index-Reihenfolge
-        List<LayerRenderEntry> layersToRender = new ArrayList<>();
+        List<MapLayerRenderEntry> layersToRender = new ArrayList<>();
 
         layersToRender.add(
-            new LayerRenderEntry(
+            new MapLayerRenderEntry(
                 "bottomLayer",
                 0,
                 mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
             )
         );
         layersToRender.add(
-            new LayerRenderEntry(
+            new MapLayerRenderEntry(
                 "decorationLayer",
                 1,
                 mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer
             )
         );
         layersToRender.add(
-            new LayerRenderEntry(
+            new MapLayerRenderEntry(
                 "resourceLayer",
                 2,
                 mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer
@@ -148,7 +148,7 @@ public class RenderSystem extends EntitySystem {
         layersToRender.sort(Comparator.comparingInt(l -> l.zIndex));
 
         // Render alle Layer (später: hier kannst du Culling einbauen)
-        for (LayerRenderEntry layer : layersToRender) {
+        for (MapLayerRenderEntry layer : layersToRender) {
             if (layer.layer != null) {
                 // TODO später hier intercepten
                 renderer.renderTileLayer(layer.layer);
@@ -179,8 +179,8 @@ public class RenderSystem extends EntitySystem {
                     PositionComponent.class
                 );
                 RenderComponent renderComponent = building.getComponent(RenderComponent.class);
-                HQRoundAnimationComponent roundAnimComponent = building.getComponent(
-                    HQRoundAnimationComponent.class
+                RoundAnimationComponent roundAnimComponent = building.getComponent(
+                    RoundAnimationComponent.class
                 );
 
                 Vector2 pixelCoordinate = WorldCoordinateUtils.calculatePixelCoordinateForBuildings(

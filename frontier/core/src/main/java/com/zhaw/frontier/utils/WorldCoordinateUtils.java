@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.PositionComponent;
 
+/**
+ * Utility class for converting between screen, world, and tile coordinates.
+ */
 public class WorldCoordinateUtils {
 
     private WorldCoordinateUtils() {}
@@ -14,16 +17,15 @@ public class WorldCoordinateUtils {
     /**
      * Calculates the world coordinate as tile indices based on screen coordinates.
      * <p>
-     * This method converts the given screen coordinates into world coordinates using the provided
-     * {@link Viewport}. The resulting world coordinates are then divided by the tile width and height
-     * of the specified {@link TiledMapTileLayer} to determine the corresponding tile indices.
+     * Converts screen coordinates into world space using the given {@link Viewport},
+     * then divides by tile size to get the tile indices.
      * </p>
      *
-     * @param viewport    the {@link Viewport} used to unproject the screen coordinates.
-     * @param sampleLayer the {@link TiledMapTileLayer} that provides the tile dimensions.
-     * @param screenX     the x-coordinate on the screen.
-     * @param screenY     the y-coordinate on the screen.
-     * @return a {@link Vector2} representing the tile indices corresponding to the world coordinate.
+     * @param viewport    the viewport used for unprojecting the screen coordinates
+     * @param sampleLayer the tile layer providing tile size information
+     * @param screenX     the x coordinate of the screen click
+     * @param screenY     the y coordinate of the screen click
+     * @return a {@link Vector2} representing the tile coordinates in world space
      */
     public static Vector2 calculateWorldCoordinate(
         Viewport viewport,
@@ -40,6 +42,19 @@ public class WorldCoordinateUtils {
         );
     }
 
+    /**
+     * Calculates the top-left tile position to center a multi-tile building on a clicked point.
+     * <p>
+     * Uses entity size (in tiles) and adjusts the click to center the building properly.
+     * </p>
+     *
+     * @param viewport    the viewport for screen-to-world projection
+     * @param sampleLayer the tile layer used for tile size
+     * @param screenX     the x coordinate of the screen click
+     * @param screenY     the y coordinate of the screen click
+     * @param entity      the entity to center (must have a {@link PositionComponent})
+     * @return a {@link Vector2} representing the tile position where the building should be placed
+     */
     public static Vector2 centerClickWithBuilding(
         Viewport viewport,
         TiledMapTileLayer sampleLayer,
@@ -53,15 +68,12 @@ public class WorldCoordinateUtils {
 
         Vector2 worldCoordinate = calculateWorldCoordinate(viewport, sampleLayer, screenX, screenY);
 
-        // Round to integer tile position
         int tileX = (int) worldCoordinate.x;
         int tileY = (int) worldCoordinate.y;
 
-        // Offset so that the building is centered on the click
         int offsetX = widthInTiles / 2;
         int offsetY = heightInTiles / 2;
 
-        // Adjust for even-sized buildings: place top-left of the "center"
         if (widthInTiles % 2 == 0) offsetX -= 1;
         if (heightInTiles % 2 == 0) offsetY -= 1;
 
@@ -69,15 +81,15 @@ public class WorldCoordinateUtils {
     }
 
     /**
-     * Calculates the pixel coordinate corresponding to a given tile coordinate.
+     * Converts a tile coordinate to a pixel coordinate for placing buildings.
      * <p>
-     * This method converts tile indices (x, y) to pixel coordinates by multiplying them with the tile width and height
-     * from the bottom layer of the map.
+     * Useful for rendering buildings based on tile positions.
      * </p>
      *
-     * @param x the tile x-coordinate.
-     * @param y the tile y-coordinate.
-     * @return a {@link Vector2} representing the pixel coordinates.
+     * @param x           the tile x position
+     * @param y           the tile y position
+     * @param sampleLayer the tile layer with tile size information
+     * @return a {@link Vector2} representing the pixel coordinate
      */
     public static Vector2 calculatePixelCoordinateForBuildings(
         float x,

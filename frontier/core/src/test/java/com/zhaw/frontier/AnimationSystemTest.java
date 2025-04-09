@@ -14,14 +14,26 @@ import com.zhaw.frontier.utils.QueueAnimation;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+/**
+ * Unit tests for verifying the animation logic managed by {@link AnimationSystem}.
+ *
+ * <p>
+ * These tests simulate enemy movement and conditional animations and verify
+ * that the correct animations are selected and processed in the correct sequence.
+ * </p>
+ */
 @ExtendWith(GdxExtension.class)
 public class AnimationSystemTest {
 
-    public static Engine testEngine;
+    private static Engine testEngine;
 
+    /**
+     * Initializes the test engine and adds the systems under test.
+     */
     @BeforeAll
     public static void setup() {
         testEngine = new Engine();
+        testEngine.addSystem(new MovementSystem());
         addSystemsUnderTestHere();
     }
 
@@ -29,15 +41,21 @@ public class AnimationSystemTest {
      * Fügt das zu testende System in die Engine ein: {@link AnimationSystem}.
      */
     private static void addSystemsUnderTestHere() {
-        testEngine.addSystem(new MovementSystem());
         testEngine.addSystem(new AnimationSystem());
     }
 
+    /**
+     * Clears all entities from the engine before each test.
+     * This ensures that each test starts with a clean state.
+     */
     @BeforeEach
     public void clearEntities() {
         testEngine.removeAllEntities();
     }
 
+    /**
+     * Verifies that when an entity moves upward, the animation system selects the WALK_UP animation.
+     */
     @Test
     public void testWalkUpAnimationIsSelectedWhenMovingUp() {
         // Entity vorbereiten
@@ -91,6 +109,18 @@ public class AnimationSystemTest {
         assertEquals(EnemyAnimationComponent.EnemyAnimationType.WALK_UP, anim.currentAnimation);
     }
 
+    /**
+     * Verifies that multiple conditional animations in a queue are processed in order.
+     * <p>
+     * The test simulates two sequential conditional animations:
+     * ATTACK_DOWN followed by IDLE_RIGHT. It asserts that the animation system:
+     * <ul>
+     *     <li>Sets ATTACK_DOWN as the current animation first</li>
+     *     <li>After time runs out, switches to IDLE_RIGHT</li>
+     *     <li>Removes both animations from the queue</li>
+     * </ul>
+     * </p>
+     */
     @Test
     public void testMultipleConditionalAnimationsProcessedInSequence() {
         AnimationSystem animationSystem = testEngine.getSystem(AnimationSystem.class);
@@ -146,8 +176,8 @@ public class AnimationSystemTest {
     }
 
     /**
-     * DummyAnimation dient als Platzhalter für echte Animationen,
-     * damit wir ohne Texturen testen können.
+     * DummyAnimation is a minimal Animation implementation used for testing animation switching logic
+     * without requiring actual texture assets.
      */
     private static class DummyAnimation extends Animation<TextureRegion> {
 

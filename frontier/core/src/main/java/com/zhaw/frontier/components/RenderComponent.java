@@ -26,6 +26,6 @@ public class RenderComponent implements Component {
     /**
      * Gibt an, wie viele Tiles breit/hoch das Objekt ist
      */
-    public int widthInTiles;
-    public int heightInTiles;
+    public int widthInTiles = 1;
+    public int heightInTiles = 1;
 }

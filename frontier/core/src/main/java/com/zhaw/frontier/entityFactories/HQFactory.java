@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.*;
-import com.zhaw.frontier.components.HQRoundAnimationComponent;
+import com.zhaw.frontier.components.RoundAnimationComponent;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.ArrayList;
@@ -29,6 +29,12 @@ public class HQFactory {
         HashMap<TileOffset, Animation<TextureRegion>>
     > clockAnimationCache = new HashMap<>();
 
+    /**
+     * Creates a new Headquarters (HQ) entity with a sand clock animation.
+     * @param engine the engine to which the entity will be added
+     * @param assetManager the asset manager for loading assets
+     * @return the created HQ entity
+     */
     public static Entity createSandClockHQ(Engine engine, AssetManager assetManager) {
         Entity hq = createDefaultHQ(engine);
         initAnimationCache(assetManager);
@@ -41,7 +47,7 @@ public class HQFactory {
         hq.add(new PositionComponent());
         hq.add(new OccupiesTilesComponent());
         hq.add(new BuildingAnimationComponent());
-        hq.add(new HQRoundAnimationComponent());
+        hq.add(new RoundAnimationComponent());
         hq.add(new AnimationQueueComponent());
         hq.add(new RenderComponent());
         return hq;
@@ -193,7 +199,7 @@ public class HQFactory {
             );
 
             clockAnimationCache.put(
-                HQRoundAnimationComponent.HQRoundAnimationType.SAND_CLOCK,
+                RoundAnimationComponent.HQRoundAnimationType.SAND_CLOCK,
                 clockAnimation
             );
             // Add more animations as needed
@@ -210,11 +216,11 @@ public class HQFactory {
         render.widthInTiles = HQ_TILE_SIZE;
         render.heightInTiles = HQ_TILE_SIZE;
 
-        HQRoundAnimationComponent roundAnimation = hq.getComponent(HQRoundAnimationComponent.class);
+        RoundAnimationComponent roundAnimation = hq.getComponent(RoundAnimationComponent.class);
         roundAnimation.currentFrameIndex = 0;
 
         HashMap<TileOffset, Animation<TextureRegion>> tileAnimations = clockAnimationCache.get(
-            HQRoundAnimationComponent.HQRoundAnimationType.SAND_CLOCK
+            RoundAnimationComponent.HQRoundAnimationType.SAND_CLOCK
         );
 
         for (var entry : tileAnimations.entrySet()) {

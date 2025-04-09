@@ -8,10 +8,14 @@ import java.util.*;
 
 /**
  * Animation component for buildings.
- * Supports multiple parallel animations (e.g. BUILDING + SPARKS + SMOKE).
+ * Supports multiple parallel animations.
  */
 public class BuildingAnimationComponent implements Component {
 
+    /**
+     * Enum representing the different types of building animations.
+     * Each type corresponds to a specific animation state.
+     */
     public enum BuildingAnimationType {
         BUILDING,
         REPAIRING,
@@ -37,6 +41,4 @@ public class BuildingAnimationComponent implements Component {
     public EnumMap<BuildingAnimationType, Float> stateTimes = new EnumMap<>(
         BuildingAnimationType.class
     );
-
-    public int lastFrameIndex = -1;
 }
