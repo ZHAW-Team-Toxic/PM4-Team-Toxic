@@ -6,10 +6,10 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.AnimationQueueComponent;
-import com.zhaw.frontier.utils.QueueAnimation;
 import com.zhaw.frontier.components.EnemyAnimationComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.systems.QueueAnimationManager;
+import com.zhaw.frontier.utils.QueueAnimation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -89,7 +89,10 @@ public class QueueAnimationManagerTest {
             EnemyAnimationComponent.EnemyAnimationType.IDLE_DOWN,
             enemyAnim.currentAnimation
         );
-        assertTrue(enemyAnim.stateTime <= 0.001f, "StateTime should be reset after returning to idle");
+        assertTrue(
+            enemyAnim.stateTime <= 0.001f,
+            "StateTime should be reset after returning to idle"
+        );
         assertTrue(queue.queue.isEmpty());
     }
 

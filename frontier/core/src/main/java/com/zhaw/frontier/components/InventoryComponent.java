@@ -11,8 +11,16 @@ import java.util.Map;
  */
 public class InventoryComponent implements Component {
 
+    /**
+     * The inventory of the entity.
+     * This is a map of resource types to their quantities.
+     */
     public Map<ResourceTypeEnum, Integer> resources = new HashMap<>();
 
+    /**
+     * Constructor for the InventoryComponent.
+     * Initializes the inventory with zero quantities for each resource type.
+     */
     public InventoryComponent() {
         resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 0);
         resources.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 0);

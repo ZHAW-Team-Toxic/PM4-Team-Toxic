@@ -19,8 +19,8 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.mappers.MapLayerMapper;
-import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.LayeredSprite;
+import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.TileOffset;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 import java.util.ArrayList;
@@ -62,6 +62,14 @@ public class RenderSystem extends EntitySystem {
         this.renderer = renderer;
     }
 
+    /**
+     * Called when the system is added to an engine.
+     * <p>
+     *     This method retrieves the map entity and all building entities from the engine.
+     *     It initializes the map layers and buildings so they can be rendered in the update method.
+     * </p>
+     * @param engine The {@link Engine} this system was added to.
+     */
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
@@ -119,35 +127,38 @@ public class RenderSystem extends EntitySystem {
     }
 
     private void renderMapLayers() {
-        // Liste aller Layer + gewünschte Z-Index-Reihenfolge
+        int BOTTOM_LAYER = 0;
+        int DECORATION_LAYER = 1;
+        int RESOURCE_LAYER = 2;
+
         List<MapLayerRenderEntry> layersToRender = new ArrayList<>();
 
         layersToRender.add(
             new MapLayerRenderEntry(
                 "bottomLayer",
-                0,
+                BOTTOM_LAYER,
                 mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
             )
         );
         layersToRender.add(
             new MapLayerRenderEntry(
                 "decorationLayer",
-                1,
+                DECORATION_LAYER,
                 mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer
             )
         );
         layersToRender.add(
             new MapLayerRenderEntry(
                 "resourceLayer",
-                2,
+                RESOURCE_LAYER,
                 mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer
             )
         );
 
-        // Sortiere nach gewünschtem Z-Index
+        // sort with z-index
         layersToRender.sort(Comparator.comparingInt(l -> l.zIndex));
 
-        // Render alle Layer (später: hier kannst du Culling einbauen)
+        // Render alle Layers
         for (MapLayerRenderEntry layer : layersToRender) {
             if (layer.layer != null) {
                 // TODO später hier intercepten
@@ -170,6 +181,8 @@ public class RenderSystem extends EntitySystem {
      * @param renderer the {@link SpriteBatch} used for drawing sprites.
      */
     private void renderMultiTiledBuildings(SpriteBatch renderer) {
+        //for now we use the layer 10 as the animation layer
+        int ANIMATION_LAYER = 10;
         for (Entity building : buildings) {
             if (
                 building.getComponent(RenderComponent.class).renderType ==
@@ -196,14 +209,14 @@ public class RenderSystem extends EntitySystem {
 
                         if (layers == null) continue;
 
-                        // Optional: sort layers by z-index
+                        // sort layers by z-index
                         layers.sort(Comparator.comparingInt(ls -> ls.zIndex));
 
                         for (LayeredSprite layer : layers) {
                             TextureRegion region = layer.region;
 
                             // If this is the animated layer, override with current animation frame
-                            if (roundAnimComponent != null && layer.zIndex == 10) {
+                            if (roundAnimComponent != null && layer.zIndex == ANIMATION_LAYER) {
                                 Array<TextureRegion> animFrames = roundAnimComponent.frames.get(
                                     offset
                                 );
@@ -250,12 +263,12 @@ public class RenderSystem extends EntitySystem {
 
                         if (layers == null) continue;
 
-                        // Optional: sort layers by z-index
+                        // sort layers by z-index
                         layers.sort(Comparator.comparingInt(ls -> ls.zIndex));
 
                         for (LayeredSprite layer : layers) {
                             TextureRegion region = layer.region;
-
+                            //place sprite on tile map and also if its multi-tiled place it i or j further on the tile
                             spriteBatch.draw(
                                 region,
                                 (pixelCoordinate.x * 16) + i * 16,

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -45,6 +44,7 @@ public class DefaultAnimationManager {
     }
 
     private void processEnemy(Entity entity, float deltaTime) {
+        int BASE_SPRITE_LAYER = 0;
         if (!enemyAnimM.has(entity) || !velocityM.has(entity)) return;
 
         EnemyAnimationComponent anim = enemyAnimM.get(entity);
@@ -64,7 +64,8 @@ public class DefaultAnimationManager {
 
                     render.sprites.forEach((offset, layers) -> {
                         for (LayeredSprite layer : layers) {
-                            if (layer.zIndex == 0) {
+                            //we use layer 0 as the base layer for all sprites at the moment
+                            if (layer.zIndex == BASE_SPRITE_LAYER) {
                                 layer.region = frame;
                             }
                         }
@@ -86,11 +87,13 @@ public class DefaultAnimationManager {
         EnemyAnimationComponent.EnemyAnimationType newAnim = anim.currentAnimation;
 
         if (Math.abs(dx) > Math.abs(dy)) {
-            newAnim = (dx > 0)
+            newAnim =
+            (dx > 0)
                 ? EnemyAnimationComponent.EnemyAnimationType.WALK_RIGHT
                 : EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT;
         } else if (Math.abs(dy) > 0) {
-            newAnim = (dy > 0)
+            newAnim =
+            (dy > 0)
                 ? EnemyAnimationComponent.EnemyAnimationType.WALK_UP
                 : EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN;
         }
@@ -103,6 +106,7 @@ public class DefaultAnimationManager {
     }
 
     private void processBuilding(Entity entity, float deltaTime) {
+        int BASE_SPRITE_LAYER = 0;
         if (!buildingAnimM.has(entity)) return;
 
         BuildingAnimationComponent anim = buildingAnimM.get(entity);
@@ -113,25 +117,20 @@ public class DefaultAnimationManager {
         RenderComponent render = rm.get(entity);
 
         for (BuildingAnimationComponent.BuildingAnimationType type : anim.activeAnimations) {
-            HashMap<TileOffset, Animation<TextureRegion>> animationMap = anim.animations.get(
-                type
-            );
+            HashMap<TileOffset, Animation<TextureRegion>> animationMap = anim.animations.get(type);
             if (animationMap != null) {
                 Animation<TextureRegion> animation = animationMap.get(new TileOffset(0, 0));
                 if (animation != null) {
                     render.sprites.forEach((offset, layers) -> {
                         for (LayeredSprite layer : layers) {
-                            if (layer.zIndex == 0) {
+                            if (layer.zIndex == BASE_SPRITE_LAYER) {
                                 layer.region =
-                                    animation.getKeyFrame(anim.stateTimes.get(type), false);
+                                animation.getKeyFrame(anim.stateTimes.get(type), false);
                             }
                         }
                     });
                 }
             }
         }
-
     }
-
-    //todo render buildings
 }

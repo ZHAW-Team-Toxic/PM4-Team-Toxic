@@ -19,27 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Responsible for validating and placing building entities on a tiled map.
+ * Handles validation and placement of buildings onto a tiled map based on
+ * buildability, occupancy, and adjacency rules.
  *
  * <p>
- * The {@code BuildingPlacer} is responsible for checking whether a building can be placed on a given tile.
- * It verifies that the tile is buildable on both the bottom and resource layer, that it is not already
- * occupied by another building, and—if the entity is a resource-producing building—that it has adjacent
- * resource tiles of the correct type.
+ * The {@code BuildingPlacer} coordinates the following logic:
+ * <ul>
+ *     <li>Converts screen coordinates to world/tile coordinates</li>
+ *     <li>Checks if tiles are buildable on both bottom and resource layers</li>
+ *     <li>Checks for existing building collisions</li>
+ *     <li>If the building is a resource producer, checks for adjacent resources</li>
+ *     <li>Marks the tile area as occupied and adds the entity to the engine</li>
+ * </ul>
  * </p>
- *
- * <p>
- * The coordinates of the building are automatically converted from screen to world coordinates
- * using the provided {@link Viewport}.
- * </p>
- *
- * <p>
- * If all placement conditions are met, the building entity is added to the {@link Engine}.
- * </p>
- *
- * @see com.zhaw.frontier.components.ResourceProductionComponent
- * @see com.zhaw.frontier.components.PositionComponent
- * @see ResourceAdjacencyChecker
  */
 public class BuildingPlacer {
 
@@ -59,22 +51,19 @@ public class BuildingPlacer {
     }
 
     /**
-     * Attempts to place a building entity on the map based on its current position and map layers.
+     * Attempts to place a building entity on the map based on its current position.
      *
-     * <p>
-     * This method performs the following validation steps in order:
-     * <ol>
-     *     <li>Converts the entity's screen position to world coordinates</li>
-     *     <li>Checks if the tile is buildable on the bottom layer</li>
-     *     <li>Checks if the tile is buildable on the resource layer</li>
-     *     <li>Checks if the tile is already occupied by another building</li>
-     *     <li>If the building is a resource producer, checks for adjacent resources</li>
-     * </ol>
-     * </p>
+     * <p>This method performs multiple checks to ensure valid placement:</p>
+     * <ul>
+     *     <li>Convert screen to world coordinates using {@link Viewport}</li>
+     *     <li>Check for buildable tiles on both bottom and resource layers</li>
+     *     <li>Check for collisions with existing entities</li>
+     *     <li>If applicable, validate adjacency to matching resource tiles</li>
+     * </ul>
      *
-     * @param entityType  the building entity to be placed
-     * @param sampleLayer the tile layer used for coordinate conversion
-     * @return {@code true} if the building was successfully placed; {@code false} otherwise
+     * @param entityType  the building entity to attempt placement for
+     * @param sampleLayer the layer used to calculate tile positions and sizes
+     * @return true if the building was successfully placed, false otherwise
      */
     boolean placeBuilding(Entity entityType, TiledMapTileLayer sampleLayer) {
         PositionComponent positionComponent = entityType.getComponent(PositionComponent.class);
@@ -158,12 +147,11 @@ public class BuildingPlacer {
     }
 
     /**
-     * Checks whether the specified tile is already occupied by a building.
+     * Checks whether the tiles required by the building are already occupied by another building.
      *
-     * @param engine the {@link Engine} used to retrieve existing entities.
-     * @param tileX  the x-coordinate of the tile.
-     * @param tileY  the y-coordinate of the tile.
-     * @return {@code true} if the tile is occupied; {@code false} otherwise.
+     * @param engine         the ECS engine
+     * @param entityBuilding the building being placed
+     * @return true if a tile is already occupied, false otherwise
      */
     private boolean checkIfPlaceIsOccupiedByBuilding(Engine engine, Entity entityBuilding) {
         ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(
@@ -209,12 +197,12 @@ public class BuildingPlacer {
     }
 
     /**
-     * Checks whether the tile at the specified coordinates is buildable on the bottom layer.
+     * Validates whether the tiles the building wants to occupy are marked as buildable
+     * on the bottom layer.
      *
-     * @param engine the {@link Engine} used to retrieve the map layer entity.
-     * @param tileX  the x-coordinate of the tile.
-     * @param tileY  the y-coordinate of the tile.
-     * @return {@code true} if the tile is buildable; {@code false} otherwise.
+     * @param engine         the ECS engine
+     * @param entityBuilding the building being placed
+     * @return true if all tiles are buildable, false otherwise
      */
     private boolean checkIfTileIsBuildableOnBottomLayer(Engine engine, Entity entityBuilding) {
         PositionComponent position = entityBuilding.getComponent(PositionComponent.class);
@@ -250,13 +238,15 @@ public class BuildingPlacer {
     }
 
     /**
-     * Checks whether the tile at the specified coordinates is buildable on the resource layer.
+     * Validates whether the tiles the building wants to occupy are buildable on the
+     * resource layer, if applicable.
      *
-     * @param engine the {@link Engine} used to retrieve the map layer entity.
-     * @param tileX  the x-coordinate of the tile.
-     * @param tileY  the y-coordinate of the tile.
-     * @return {@code true} if the tile is buildable on the resource layer or if the cell is absent;
-     * {@code false} otherwise.
+     * <p>If no cell is present on the resource layer, it's considered buildable.
+     * If a cell exists and is marked as not buildable, the tile is rejected.</p>
+     *
+     * @param engine         the ECS engine
+     * @param entityBuilding the building being placed
+     * @return true if all resource layer tiles are buildable or empty, false otherwise
      */
     private boolean checkIfTileIsBuildableOnResourceLayer(Engine engine, Entity entityBuilding) {
         PositionComponent position = entityBuilding.getComponent(PositionComponent.class);
@@ -292,25 +282,23 @@ public class BuildingPlacer {
     }
 
     /**
-     * Determines if the given entity is a resource-producing building.
+     * Checks whether the entity has a {@link ResourceProductionComponent}, identifying
+     * it as a resource-generating building.
      *
-     * @param entityType the building entity
-     * @return {@code true} if the entity has a {@link ResourceProductionComponent}; {@code false} otherwise
+     * @param entityType the building to check
+     * @return true if it produces resources, false otherwise
      */
     private boolean checkIfBuildingIsResourceBuilding(Entity entityType) {
         return entityType.getComponent(ResourceProductionComponent.class) != null;
     }
 
     /**
-     * Handles the placement check for a resource-producing building.
-     * <p>
-     * This method delegates to {@link ResourceAdjacencyChecker} to validate if the building
-     * has any adjacent resource tiles of the required type.
-     * </p>
+     * Validates that a resource-producing building has at least one adjacent matching
+     * resource tile, using the {@link ResourceAdjacencyChecker}.
      *
-     * @param entityType  the resource building to be placed
-     * @param sampleLayer the resource tile layer to check against
-     * @return {@code true} if adjacent resources are found; {@code false} otherwise
+     * @param entityType  the building to validate
+     * @param sampleLayer the resource tile layer
+     * @return true if valid placement is possible, false otherwise
      */
     private boolean checkIfResourceBuildingIsPlaceable(
         Entity entityType,
@@ -319,6 +307,13 @@ public class BuildingPlacer {
         return ResourceAdjacencyChecker.hasAdjacentResource(entityType, sampleLayer);
     }
 
+    /**
+     * Registers the tiles a building occupies into its {@link OccupiesTilesComponent}.
+     *
+     * <p>Populates all covered tile coordinates based on its position and size.</p>
+     *
+     * @param entity the building to register
+     */
     private void occupyTile(Entity entity) {
         PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
         OccupiesTilesComponent occupiesTilesComponent = entity.getComponent(

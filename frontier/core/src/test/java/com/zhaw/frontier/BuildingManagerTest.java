@@ -11,8 +11,6 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceGeneratorComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
-import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
-import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -53,8 +51,7 @@ public class BuildingManagerTest {
 
         addSystemsUnderTestHere();
 
-        assertEquals(
-            1, testEngine.getEntities().size(), "Only the map entity should be present.");
+        assertEquals(1, testEngine.getEntities().size(), "Only the map entity should be present.");
     }
 
     /**
@@ -455,7 +452,10 @@ public class BuildingManagerTest {
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(5);
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(5);
 
-        assertTrue(bms.removeBuilding(bp.basePosition.x, bp.basePosition.y), "Building should be removed.");
+        assertTrue(
+            bms.removeBuilding(bp.basePosition.x, bp.basePosition.y),
+            "Building should be removed."
+        );
 
         Entity tower2 = createMockedTower(1, 1);
         PositionComponent bp2 = tower2.getComponent(PositionComponent.class);
@@ -477,7 +477,10 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(2);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertFalse(bms.placeBuilding(tower), "Building should not be placed if part is on non-buildable tiles.");
+        assertFalse(
+            bms.placeBuilding(tower),
+            "Building should not be placed if part is on non-buildable tiles."
+        );
         testEngine.removeEntity(tower);
     }
 
@@ -487,13 +490,20 @@ public class BuildingManagerTest {
      */
     @Test
     public void testDiagonalResourceShouldBeCounted() {
-        Entity resourceBuilding = createMockedResourceBuilding(1, 1, ResourceTypeEnum.RESOURCE_TYPE_STONE);
+        Entity resourceBuilding = createMockedResourceBuilding(
+            1,
+            1,
+            ResourceTypeEnum.RESOURCE_TYPE_STONE
+        );
         PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(1); // diagonal zu (0,4) mit Stein
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(3);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(resourceBuilding), "Diagonal adjacent resource should be counted.");
+        assertTrue(
+            bms.placeBuilding(resourceBuilding),
+            "Diagonal adjacent resource should be counted."
+        );
         testEngine.removeEntity(resourceBuilding);
     }
 
@@ -531,7 +541,6 @@ public class BuildingManagerTest {
         testEngine.removeEntity(tower);
     }
 
-
     /**
      * Cleans up the test environment by removing all entities and disposing of map resources.
      */
@@ -540,7 +549,6 @@ public class BuildingManagerTest {
         testEngine.removeAllEntities();
         testMapEnvironment.dispose();
     }
-
 
     private Entity createMockedTower(int height, int width) {
         Entity tower = testEngine.createEntity();

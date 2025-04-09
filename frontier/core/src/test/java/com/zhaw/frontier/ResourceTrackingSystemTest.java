@@ -245,7 +245,10 @@ public class ResourceTrackingSystemTest {
         building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(5);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertFalse(bms.placeBuilding(building), "Should not be placed without adjacent resources.");
+        assertFalse(
+            bms.placeBuilding(building),
+            "Should not be placed without adjacent resources."
+        );
     }
 
     /**

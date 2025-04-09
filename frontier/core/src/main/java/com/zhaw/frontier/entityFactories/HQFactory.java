@@ -242,6 +242,7 @@ public class HQFactory {
                 .add(new LayeredSprite(baseFrame, 0));
 
             // Layer 10: overlay animation (same frame initially)
+            //for now we use layer 10
             render.sprites.get(offset).add(new LayeredSprite(baseFrame, 10));
         }
 

@@ -16,9 +16,17 @@ public class PositionComponent implements Component {
      */
     public Vector2 previousPosition = new Vector2();
 
+    /**
+     * The looking direction of the entity.
+     */
     public Vector2 lookingDirection = new Vector2();
 
+    /**
+     * The tile offset of the entity.
+     */
     public int widthInTiles;
-
+    /**
+     * The tile offset of the entity.
+     */
     public int heightInTiles;
 }

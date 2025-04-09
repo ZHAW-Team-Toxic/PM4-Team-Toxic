@@ -144,7 +144,10 @@ public class AnimationSystemTest {
         enemy.add(queue);
 
         animationSystem.update(enemy, 1f);
-        assertEquals(EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT, enemyAnim.currentAnimation);
+        assertEquals(
+            EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT,
+            enemyAnim.currentAnimation
+        );
         assertTrue(queue.queue.isEmpty());
 
         QueueAnimation attack = new QueueAnimation();
@@ -161,18 +164,25 @@ public class AnimationSystemTest {
 
         queue.queue.add(idle_right);
 
+        animationSystem.update(enemy, 0.5f);
+        assertEquals(
+            EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN,
+            enemyAnim.currentAnimation
+        );
+        animationSystem.update(enemy, 0.5f);
 
-        animationSystem.update(enemy,0.5f);
-        assertEquals(EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN, enemyAnim.currentAnimation);
-        animationSystem.update(enemy,0.5f);
+        assertEquals(
+            EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT,
+            enemyAnim.currentAnimation
+        );
 
-        assertEquals(EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT, enemyAnim.currentAnimation);
+        animationSystem.update(enemy, 1f);
 
-        animationSystem.update(enemy,1f);
-
-        assertEquals(EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT, enemyAnim.currentAnimation);
+        assertEquals(
+            EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT,
+            enemyAnim.currentAnimation
+        );
         assertTrue(queue.queue.isEmpty());
-
     }
 
     /**

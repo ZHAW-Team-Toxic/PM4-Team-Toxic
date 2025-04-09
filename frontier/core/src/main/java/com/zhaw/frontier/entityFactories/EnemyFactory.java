@@ -13,11 +13,19 @@ import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.*;
 
+/**
+ * Factory class for creating enemy entities in the game.
+ * This class provides methods to create different types of enemies with specific behaviors.
+ * Current enemies are:
+ * - Orcs:
+ *   - Patrol
+ *   - Idle
+ */
 public class EnemyFactory {
 
-    public static final float ORC_ATTACK_DURATION = 0.1f;
-    public static final float ORC_IDLE_DURATION = 0.1f;
-    public static final float ORC_WALK_DURATION = 0.1f;
+    private static final float ORC_ATTACK_DURATION = 0.1f;
+    private static final float ORC_IDLE_DURATION = 0.1f;
+    private static final float ORC_WALK_DURATION = 0.1f;
 
     private static final EnumMap<
         EnemyAnimationComponent.EnemyAnimationType,
@@ -50,7 +58,7 @@ public class EnemyFactory {
         return enemy;
     }
 
-    private static void initializeAnimations(AssetManager assetManager) {
+    private static void initializeOrcAnimations(AssetManager assetManager) {
         if (sharedAnimations.isEmpty()) {
             TextureAtlas atlas = assetManager.get(
                 "packed/enemies/enemyAtlas.atlas",
@@ -174,7 +182,7 @@ public class EnemyFactory {
         render.heightInTiles = 1;
 
         // Animationen
-        initializeAnimations(assetManager);
+        initializeOrcAnimations(assetManager);
         EnemyAnimationComponent enemyAnimation = new EnemyAnimationComponent();
         enemyAnimation.animations = sharedAnimations;
 

@@ -9,6 +9,7 @@ import java.util.EnumMap;
  * Animation component specifically for enemies, supporting a single active animation.
  */
 public class EnemyAnimationComponent implements Component {
+
     /**
      * Enum representing the different types of enemy animations.
      * Each type corresponds to a specific animation state.
@@ -34,7 +35,7 @@ public class EnemyAnimationComponent implements Component {
     );
 
     /** Currently active animation */
-    public EnemyAnimationType currentAnimation = null;
+    public EnemyAnimationType currentAnimation = EnemyAnimationType.IDLE_DOWN;
 
     /** Time passed for the current animation */
     public float stateTime = 0f;
