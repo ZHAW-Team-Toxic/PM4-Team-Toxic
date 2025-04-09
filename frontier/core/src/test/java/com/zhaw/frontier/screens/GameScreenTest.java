@@ -8,8 +8,11 @@ import static org.mockito.Mockito.when;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GameScreenUtils;
@@ -40,9 +43,15 @@ public class GameScreenTest {
         AssetManager assetManager = new AssetManager();
         when(mockGame.getAssetManager()).thenReturn(assetManager);
 
+        assetManager.load("packed/textures.atlas", TextureAtlas.class);
+        assetManager.load("libgdx.png", Texture.class);
+        assetManager.load("skins/skin.json", Skin.class);
+
         Path mapPath = Path.of("TMX/frontier_testmap.tmx");
         MapLoader.getInstance().loadMap(assetManager, mapPath);
+
         assetManager.finishLoading();
+
         gameScreen = new GameScreen(mockGame);
 
         Stage stage = mock(Stage.class);
@@ -56,7 +65,7 @@ public class GameScreenTest {
         Input mockInput = mock(Input.class);
         Gdx.input = mockInput;
         when(mockInput.isKeyJustPressed(Input.Keys.ESCAPE)).thenReturn(true);
-        gameScreen.render(0.016f);
+        gameScreen.handleInput();
         verify(mockGame).switchScreen(any(PauseScreen.class));
     }
 }
