@@ -5,11 +5,12 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.utils.QueueAnimation;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 
-public class ConditionalAnimationManager {
+public class QueueAnimationManager {
 
     private final ComponentMapper<EnemyAnimationComponent> enemyAnimM = ComponentMapper.getFor(
         EnemyAnimationComponent.class
@@ -26,7 +27,7 @@ public class ConditionalAnimationManager {
         AnimationQueueComponent queue = queueM.get(entity);
         if (queue.queue.isEmpty()) return;
 
-        ConditionalAnimationComponent current = queue.queue.peek();
+        QueueAnimation current = queue.queue.peek();
         current.timeLeft -= deltaTime;
 
         if (enemyAnimM.has(entity)) {
@@ -72,7 +73,6 @@ public class ConditionalAnimationManager {
                 anim.stateTime = 0f;
 
                 renderEnemySprite(entity);
-                entity.remove(ConditionalAnimationComponent.class);
             }
 
             if (buildingAnimM.has(entity)) {

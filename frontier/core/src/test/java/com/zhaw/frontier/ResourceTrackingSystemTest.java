@@ -238,6 +238,16 @@ public class ResourceTrackingSystemTest {
         testEngine.removeEntity(building);
     }
 
+    @Test
+    public void testNoProductionIfNoAdjacentTiles() {
+        Entity building = createMockedResourceBuilding(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1, 1);
+        building.getComponent(PositionComponent.class).basePosition.x = tileToScreenX(5);
+        building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(5);
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertFalse(bms.placeBuilding(building), "Should not be placed without adjacent resources.");
+    }
+
     /**
      * Cleans up the test environment after all tests have run.
      *

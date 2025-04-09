@@ -128,6 +128,30 @@ public class RoundAnimationSystemTest {
         assertEquals(0, anim.currentFrameIndex);
     }
 
+    @Test
+    public void testEmptyFramesHandledGracefully() {
+        Entity building = testEngine.createEntity();
+        HQRoundAnimationComponent anim = new HQRoundAnimationComponent();
+        anim.frames = new HashMap<>(); // leer
+        anim.currentFrameIndex = 0;
+
+        building.add(anim);
+        building.add(new RenderComponent());
+        testEngine.addEntity(building);
+
+        // sollte keine Exception werfen
+        assertDoesNotThrow(() -> RoundAnimationSystem.updateFrameForRoundComponent(building));
+        assertEquals(0, anim.currentFrameIndex);
+    }
+
+    @Test
+    public void testNoAnimationComponentDoesNothing() {
+        Entity building = testEngine.createEntity(); // kein anim-Component
+
+        // Sollte keine Exception auslösen
+        assertDoesNotThrow(() -> RoundAnimationSystem.updateFrameForRoundComponent(building));
+    }
+
     @AfterAll
     public static void tearDown() {
         testEngine.removeAllEntities();

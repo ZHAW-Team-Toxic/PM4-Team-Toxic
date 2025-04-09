@@ -7,12 +7,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.zhaw.frontier.components.EnemyAnimationComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
-import com.zhaw.frontier.components.VelocityComponent;
+import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.systems.AnimationSystem;
 import com.zhaw.frontier.systems.MovementSystem;
+import com.zhaw.frontier.utils.QueueAnimation;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -48,12 +46,13 @@ public class AnimationSystemTest {
         PositionComponent position = new PositionComponent();
         position.basePosition.x = 4;
         position.basePosition.y = 4;
+        position.lookingDirection = new Vector2(0, 1); // Bewegung nach oben
         entity.add(position);
 
         RenderComponent render = new RenderComponent();
         render.renderType = RenderComponent.RenderType.ENEMY;
-        render.widthInTiles = 1;
         render.heightInTiles = 1;
+        render.widthInTiles = 1;
         entity.add(render);
 
         EnemyAnimationComponent anim = new EnemyAnimationComponent();
@@ -73,6 +72,7 @@ public class AnimationSystemTest {
             EnemyAnimationComponent.EnemyAnimationType.WALK_RIGHT,
             new DummyAnimation("WALK_RIGHT")
         );
+        anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN; // Initiale Animation
 
         VelocityComponent vel = new VelocityComponent();
         vel.velocity.set(new Vector2(0, 1)); // Bewegung nach oben
@@ -83,10 +83,66 @@ public class AnimationSystemTest {
         testEngine.addEntity(entity);
 
         // System verarbeiten
-        testEngine.update(2f);
+        AnimationSystem animationSystem = testEngine.getSystem(AnimationSystem.class);
+
+        animationSystem.update(entity, 2f);
 
         // Erwartung: WALK_UP wurde gesetzt
         assertEquals(EnemyAnimationComponent.EnemyAnimationType.WALK_UP, anim.currentAnimation);
+    }
+
+    @Test
+    public void testMultipleConditionalAnimationsProcessedInSequence() {
+        AnimationSystem animationSystem = testEngine.getSystem(AnimationSystem.class);
+
+        Entity enemy = testEngine.createEntity();
+        PositionComponent position = new PositionComponent();
+        position.lookingDirection = new Vector2(-1, 0);
+        enemy.add(position);
+
+        RenderComponent render = new RenderComponent();
+        render.renderType = RenderComponent.RenderType.ENEMY;
+        render.heightInTiles = 1;
+        render.widthInTiles = 1;
+        enemy.add(render);
+
+        EnemyAnimationComponent enemyAnim = new EnemyAnimationComponent();
+        enemyAnim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT;
+        enemy.add(enemyAnim);
+
+        AnimationQueueComponent queue = new AnimationQueueComponent();
+        enemy.add(queue);
+
+        animationSystem.update(enemy, 1f);
+        assertEquals(EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT, enemyAnim.currentAnimation);
+        assertTrue(queue.queue.isEmpty());
+
+        QueueAnimation attack = new QueueAnimation();
+        attack.animationType = EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN;
+        attack.timeLeft = 1.0f;
+        position.lookingDirection = new Vector2(0, -1);
+
+        queue.queue.add(attack);
+
+        QueueAnimation idle_right = new QueueAnimation();
+        idle_right.animationType = EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT;
+        idle_right.timeLeft = 1.0f;
+        position.lookingDirection = new Vector2(1, 0);
+
+        queue.queue.add(idle_right);
+
+
+        animationSystem.update(enemy,0.5f);
+        assertEquals(EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN, enemyAnim.currentAnimation);
+        animationSystem.update(enemy,0.5f);
+
+        assertEquals(EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT, enemyAnim.currentAnimation);
+
+        animationSystem.update(enemy,1f);
+
+        assertEquals(EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT, enemyAnim.currentAnimation);
+        assertTrue(queue.queue.isEmpty());
+
     }
 
     /**
@@ -110,6 +166,7 @@ public class AnimationSystemTest {
 
     @AfterAll
     public static void tearDown() {
-        // Optionale Aufräumarbeiten
+        testEngine.removeAllEntities();
+        testEngine.removeAllSystems();
     }
 }

@@ -12,51 +12,44 @@ import java.util.List;
 public class RoundAnimationSystem {
 
     // Leerer Konstruktor – kann erweitert werden, falls du das System in Ashley als echtes System registrieren willst
-    public RoundAnimationSystem() {}
-
-    /**
-     * Diese Methode wird manuell aufgerufen (z. B. bei Rundenwechsel),
-     * um die animierten HQ-Frames auf das nächste Bild zu schalten.
-     */
     public static void updateFrameForRoundComponent(Entity entity) {
-        // Komponenten vom Entity holen
         HQRoundAnimationComponent anim = entity.getComponent(HQRoundAnimationComponent.class);
         RenderComponent render = entity.getComponent(RenderComponent.class);
 
-        // Wenn keine Animation oder Render-Komponente vorhanden ist: nichts tun
-        if (anim == null || anim.frames.isEmpty() || render == null) return;
+        if (anim == null || anim.frames == null || anim.frames.isEmpty() || render == null) return;
 
-        // Referenz-Framearray holen, um die maximale Frameanzahl zu kennen
-        Array<TextureRegion> anyFrameArray = anim.frames.values().iterator().next();
-        if (anyFrameArray == null || anyFrameArray.isEmpty()) return;
-
-        // Frame-Zähler erhöhen und ggf. auf 0 zurücksetzen (Loop)
-        anim.currentFrameIndex++;
-        if (anim.currentFrameIndex >= anyFrameArray.size) {
-            anim.currentFrameIndex = 0;
+        // Kleinste Frame-Anzahl ermitteln (manuell, ohne Streams)
+        int minFrameCount = Integer.MAX_VALUE;
+        for (Array<TextureRegion> frameArray : anim.frames.values()) {
+            if (frameArray != null && frameArray.size < minFrameCount) {
+                minFrameCount = frameArray.size;
+            }
         }
 
-        // Über alle animierten Tiles iterieren
+        // Wenn keine Frames vorhanden, abbrechen
+        if (minFrameCount <= 0 || minFrameCount == Integer.MAX_VALUE) return;
+
+        // Frame-Index zyklisch erhöhen
+        anim.currentFrameIndex = (anim.currentFrameIndex + 1) % minFrameCount;
+
+        // Über animierte TileOffsets iterieren und Sprites aktualisieren
         for (var entry : anim.frames.entrySet()) {
-            TileOffset offset = entry.getKey(); // Tile-Position (z. B. (1,1))
-            Array<TextureRegion> frames = entry.getValue(); // Animationsframes für dieses Tile
+            TileOffset offset = entry.getKey();
+            Array<TextureRegion> frames = entry.getValue();
 
-            if (frames.isEmpty()) continue;
+            if (frames == null || frames.size == 0) continue;
 
-            // Index begrenzen (nur als Fallback-Sicherheit)
+            // Sicherstellen, dass der Index gültig ist
             int clampedIndex = Math.min(anim.currentFrameIndex, frames.size - 1);
-            TextureRegion newFrame = frames.get(clampedIndex); // Das neue Bild für dieses Tile
+            TextureRegion newFrame = frames.get(clampedIndex);
 
-            // LayeredSprite-Liste an dieser Tile-Position holen
             List<LayeredSprite> layers = render.sprites.get(offset);
             if (layers == null) continue;
 
-            // Gesuchten Layer (z. B. der animierte Overlay mit zIndex 10) aktualisieren
             for (LayeredSprite layer : layers) {
                 if (layer.zIndex == 10) {
-                    // Das Bild im Layer auf das neue Frame setzen (per Referenz, d.h. kein Neuanlegen nötig)
                     layer.region.setRegion(newFrame);
-                    break; // Nur der erste passende Layer wird aktualisiert
+                    break;
                 }
             }
         }

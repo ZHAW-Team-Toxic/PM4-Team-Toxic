@@ -52,7 +52,7 @@ public class EnemyFactory {
         render.renderType = RenderComponent.RenderType.ENEMY;
         render.widthInTiles = 1;
         render.heightInTiles = 1;
-        render.sprites = new HashMap<>();
+        render.sprites = new HashMap<>(); //todo shoul already be initialized in  component
 
         // Animationen
         initializeAnimations(assetManager);

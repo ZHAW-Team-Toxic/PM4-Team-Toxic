@@ -26,8 +26,19 @@ public class DefaultAnimationManager {
         ComponentMapper.getFor(BuildingAnimationComponent.class);
 
     public void process(Entity entity, float deltaTime) {
-        processEnemy(entity, deltaTime);
-        processBuilding(entity, deltaTime);
+        if(Objects.nonNull(entity.getComponent(RenderComponent.class))) {
+            RenderComponent render = rm.get(entity);
+            if(render.renderType == RenderComponent.RenderType.ENEMY) {
+                if(Objects.nonNull(entity.getComponent(EnemyAnimationComponent.class))) {
+                    processEnemy(entity, deltaTime);
+                }
+            }
+            if(render.renderType == RenderComponent.RenderType.BUILDING) {
+                if(Objects.nonNull(entity.getComponent(BuildingAnimationComponent.class))) {
+                    processBuilding(entity, deltaTime);
+                }
+            }
+        }
     }
 
     private void processEnemy(Entity entity, float deltaTime) {
@@ -57,7 +68,7 @@ public class DefaultAnimationManager {
         RenderComponent render = rm.get(entity);
         PositionComponent pos = pm.get(entity);
 
-        if (Objects.requireNonNull(render.renderType) == RenderComponent.RenderType.ENEMY) {
+        if (Objects.nonNull(render) && Objects.nonNull(pos)) {
             float dx = pos.lookingDirection.x;
             float dy = pos.lookingDirection.y;
 
@@ -87,4 +98,6 @@ public class DefaultAnimationManager {
             anim.stateTimes.merge(type, deltaTime, Float::sum);
         }
     }
+
+    //todo render buildings
 }

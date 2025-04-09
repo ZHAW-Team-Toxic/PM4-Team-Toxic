@@ -63,6 +63,9 @@ public class BuildingManagerTest {
         gameWorldView = testMapEnvironment.getGameWorldView();
 
         addSystemsUnderTestHere();
+
+        assertEquals(
+            1, testEngine.getEntities().size(), "Only the map entity should be present.");
     }
 
     /**
@@ -442,6 +445,80 @@ public class BuildingManagerTest {
         );
         testEngine.removeEntity(hq);
     }
+
+    @Test
+    public void testRebuildAfterRemoval() {
+        Entity tower = createMockedTower(1, 1);
+        PositionComponent bp = tower.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(5);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(5);
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(bms.placeBuilding(tower), "Initial building placement should succeed.");
+
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(5);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(5);
+
+        assertTrue(bms.removeBuilding(bp.basePosition.x, bp.basePosition.y), "Building should be removed.");
+
+        Entity tower2 = createMockedTower(1, 1);
+        PositionComponent bp2 = tower2.getComponent(PositionComponent.class);
+        bp2.basePosition.set(bp.basePosition);
+
+        assertTrue(bms.placeBuilding(tower2), "Building should be placeable again after removal.");
+        testEngine.removeEntity(tower2);
+    }
+
+    @Test
+    public void testPartialPlacementOnInvalidTilesFails() {
+        Entity tower = createMockedTower(2, 2);
+        PositionComponent bp = tower.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(1); // eine Ecke im Wasser
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(2);
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertFalse(bms.placeBuilding(tower), "Building should not be placed if part is on non-buildable tiles.");
+        testEngine.removeEntity(tower);
+    }
+
+    @Test
+    public void testDiagonalResourceShouldBeCounted() {
+        Entity resourceBuilding = createMockedResourceBuilding(1, 1, ResourceTypeEnum.RESOURCE_TYPE_STONE);
+        PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(1); // diagonal zu (0,4) mit Stein
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(3);
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(bms.placeBuilding(resourceBuilding), "Diagonal adjacent resource should be counted.");
+        testEngine.removeEntity(resourceBuilding);
+    }
+
+    @Test
+    public void testDoublePlacementFails() {
+        Entity tower = createMockedTower(1, 1);
+        PositionComponent bp = tower.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(bms.placeBuilding(tower), "First placement should succeed.");
+        assertFalse(bms.placeBuilding(tower), "Second placement of same entity should fail.");
+        testEngine.removeEntity(tower);
+    }
+
+    @Test
+    public void testBuildingPlacementOutOfBoundsFails() {
+        Entity tower = createMockedTower(2, 2);
+        PositionComponent bp = tower.getComponent(PositionComponent.class);
+        // Rechte untere Ecke der Karte ist (8,8), also führt 8,8 + 1 Tile drüber hinaus
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(8);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(8);
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertFalse(bms.placeBuilding(tower), "Placement beyond map bounds should fail.");
+        testEngine.removeEntity(tower);
+    }
+
 
     /**
      * Cleans up the test environment by removing all entities and disposing of map resources.

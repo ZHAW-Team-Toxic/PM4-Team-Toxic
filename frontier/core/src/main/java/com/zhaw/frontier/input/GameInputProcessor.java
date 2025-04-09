@@ -13,6 +13,7 @@ import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
+import com.zhaw.frontier.utils.QueueAnimation;
 
 /**
  * A placeholder input processor for handling game input via keyboard.
@@ -152,11 +153,10 @@ public class GameInputProcessor extends InputAdapter {
             );
             PositionComponent pos = enemyIdle.getComponent(PositionComponent.class);
             pos.lookingDirection.set(0, -1);
-            ConditionalAnimationComponent enemyAnim = new ConditionalAnimationComponent();
+            QueueAnimation enemyAnim = new QueueAnimation();
             enemyAnim.animationType = EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN;
             enemyAnim.timeLeft = 1f;
             enemyAnim.loop = false;
-            enemyIdle.add(enemyAnim);
             AnimationQueueComponent queue = enemyIdle.getComponent(AnimationQueueComponent.class);
             queue.queue.add(enemyAnim);
             enemyManagementSystem.spawnEnemy(enemyIdle);
