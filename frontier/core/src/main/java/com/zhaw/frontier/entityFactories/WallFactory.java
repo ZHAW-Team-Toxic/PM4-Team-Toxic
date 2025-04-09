@@ -13,7 +13,6 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,9 +30,18 @@ import java.util.Map;
  */
 public class WallFactory {
 
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> woodWallAnimationCache = new HashMap<>();
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> stoneWallAnimationCache = new HashMap<>();
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> ironWallAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > woodWallAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > stoneWallAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > ironWallAnimationCache = new HashMap<>();
 
     public Entity createWoodWall(Engine engine, AssetManager assetManager) {
         return createDefaultWall(engine);
@@ -78,10 +86,7 @@ public class WallFactory {
         TextureRegion region = new TextureRegion(createPlaceHolder());
         LayeredSprite sprite = new LayeredSprite(region, 0);
 
-        render.sprites.put(
-            new TileOffset(0, 0),
-            new ArrayList<>(List.of(sprite))
-        );
+        render.sprites.put(new TileOffset(0, 0), new ArrayList<>(List.of(sprite)));
 
         wall.add(render);
         return wall;

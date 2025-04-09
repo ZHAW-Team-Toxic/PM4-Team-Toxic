@@ -12,7 +12,6 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-
 import java.util.*;
 
 /**
@@ -23,9 +22,19 @@ import java.util.*;
 public class ResourceBuildingFactory {
 
     private static final int TILE_SIZE = 16;
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> woodResourceBuildingAnimationCache = new HashMap<>();
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> stoneResourceBuildingAnimationCache = new HashMap<>();
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> ironResourceBuildingAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > woodResourceBuildingAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > stoneResourceBuildingAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > ironResourceBuildingAnimationCache = new HashMap<>();
+
     /**
      * Creates a wood-producing building.
      *

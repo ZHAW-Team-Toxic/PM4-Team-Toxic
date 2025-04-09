@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,13 +32,19 @@ import java.util.Map;
  */
 public class TowerFactory {
 
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> ballistaTowerAnimationCache = new HashMap<>();
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> cannonTowerAnimationCache = new HashMap<>();
-
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > ballistaTowerAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > cannonTowerAnimationCache = new HashMap<>();
 
     public static Entity createBallistaTower(Engine engine, AssetManager assetManager) {
         return createDefaultTower(engine, assetManager);
     }
+
     /**
      * Creates a default Tower entity with the required components.
      * <p>
@@ -71,10 +76,7 @@ public class TowerFactory {
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
         renderComponent.heightInTiles = 1;
         renderComponent.widthInTiles = 1;
-        renderComponent.sprites.put(
-            new TileOffset(0, 0),
-            new ArrayList<>(List.of(baseSprite))
-        );
+        renderComponent.sprites.put(new TileOffset(0, 0), new ArrayList<>(List.of(baseSprite)));
 
         tower.add(renderComponent);
         tower.add(new BuildingAnimationComponent());

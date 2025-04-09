@@ -90,7 +90,10 @@ public class GameInputProcessor extends InputAdapter {
                 "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity tower = TowerFactory.createDefaultTower(engine, frontierGame.getAssetManager());
+                Entity tower = TowerFactory.createDefaultTower(
+                    engine,
+                    frontierGame.getAssetManager()
+                );
                 PositionComponent bp = tower.getComponent(PositionComponent.class);
                 bp.basePosition.x = mouseX;
                 bp.basePosition.y = mouseY;
@@ -192,7 +195,10 @@ public class GameInputProcessor extends InputAdapter {
                 "M pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity resourceBuilding = ResourceBuildingFactory.createWoodBuilding(engine, frontierGame.getAssetManager());
+                Entity resourceBuilding = ResourceBuildingFactory.createWoodBuilding(
+                    engine,
+                    frontierGame.getAssetManager()
+                );
                 PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
                 bp.basePosition.x = mouseX;
                 bp.basePosition.y = mouseY;
