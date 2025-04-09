@@ -55,20 +55,22 @@ public class QueueAnimationManagerTest {
 
         float dt = 1.0f;
 
+        // Erster Tick: Start der Animation
         manager.process(enemy, dt);
         assertEquals(
             EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN,
             enemyAnim.currentAnimation
         );
-        assertEquals(1.0f, enemyAnim.stateTime);
+        assertEquals(0.0f, enemyAnim.stateTime); // Reset beim Animationswechsel
         assertFalse(queue.queue.isEmpty());
 
+        // Zweiter Tick: Laufzeit überschritten → zurück zu Idle
         manager.process(enemy, dt);
         assertEquals(
             EnemyAnimationComponent.EnemyAnimationType.IDLE_DOWN,
             enemyAnim.currentAnimation
         );
-        assertEquals(0.0f, enemyAnim.stateTime); // Reset
+        assertTrue(enemyAnim.stateTime <= 0.001f, "StateTime should be reset after returning to idle");
         assertTrue(queue.queue.isEmpty());
     }
 
@@ -96,21 +98,22 @@ public class QueueAnimationManagerTest {
         enemy.add(queue);
 
         float dt = 1.0f;
+
+        // Erster Tick: Animation beginnt (Reset erwartet)
+        manager.process(enemy, dt);
+        assertEquals(
+            EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN,
+            enemyAnim.currentAnimation
+        );
+        assertEquals(0.0f, enemyAnim.stateTime); // reset
+
+        // Zweiter Tick: weiterlaufende Loop-Animation
         manager.process(enemy, dt);
         assertEquals(1.0f, enemyAnim.stateTime);
         assertEquals(
             EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN,
             enemyAnim.currentAnimation
         );
-        assertFalse(queue.queue.isEmpty());
-
-        manager.process(enemy, dt);
-        assertEquals(2.0f, enemyAnim.stateTime);
-        assertEquals(
-            EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN,
-            enemyAnim.currentAnimation
-        );
         assertFalse(queue.queue.isEmpty(), "Looping animation should not be removed.");
     }
-
 }

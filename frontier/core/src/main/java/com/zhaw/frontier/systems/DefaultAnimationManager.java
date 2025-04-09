@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.utils.LayeredSprite;
+import com.zhaw.frontier.utils.TileOffset;
+
+import java.util.HashMap;
 import java.util.Objects;
 
 public class DefaultAnimationManager {
@@ -26,15 +29,15 @@ public class DefaultAnimationManager {
         ComponentMapper.getFor(BuildingAnimationComponent.class);
 
     public void process(Entity entity, float deltaTime) {
-        if(Objects.nonNull(entity.getComponent(RenderComponent.class))) {
+        if (Objects.nonNull(entity.getComponent(RenderComponent.class))) {
             RenderComponent render = rm.get(entity);
-            if(render.renderType == RenderComponent.RenderType.ENEMY) {
-                if(Objects.nonNull(entity.getComponent(EnemyAnimationComponent.class))) {
+            if (render.renderType == RenderComponent.RenderType.ENEMY) {
+                if (Objects.nonNull(entity.getComponent(EnemyAnimationComponent.class))) {
                     processEnemy(entity, deltaTime);
                 }
             }
-            if(render.renderType == RenderComponent.RenderType.BUILDING) {
-                if(Objects.nonNull(entity.getComponent(BuildingAnimationComponent.class))) {
+            if (render.renderType == RenderComponent.RenderType.BUILDING) {
+                if (Objects.nonNull(entity.getComponent(BuildingAnimationComponent.class))) {
                     processBuilding(entity, deltaTime);
                 }
             }
@@ -51,42 +54,51 @@ public class DefaultAnimationManager {
 
         anim.stateTime += deltaTime;
 
-        Animation<TextureRegion> animation = anim.animations.get(anim.currentAnimation);
-        if (animation != null) {
-            render.sprites.forEach((offset, layers) -> {
-                for (LayeredSprite layer : layers) {
-                    if (layer.zIndex == 0) {
-                        layer.region = animation.getKeyFrame(anim.stateTime, true);
-                    }
+        if (anim != null && anim.currentAnimation != null) {
+            Animation<TextureRegion> animation = anim.animations.get(anim.currentAnimation);
+            if (animation != null) {
+                int currentFrameIndex = animation.getKeyFrameIndex(anim.stateTime);
+
+                if (currentFrameIndex != anim.lastFrameIndex) {
+                    TextureRegion frame = animation.getKeyFrame(anim.stateTime);
+
+                    render.sprites.forEach((offset, layers) -> {
+                        for (LayeredSprite layer : layers) {
+                            if (layer.zIndex == 0) {
+                                layer.region = frame;
+                            }
+                        }
+                    });
+
+                    anim.lastFrameIndex = currentFrameIndex;
                 }
-            });
+            }
         }
     }
 
     private void handleEnemyDirection(Entity entity) {
         EnemyAnimationComponent anim = enemyAnimM.get(entity);
-        RenderComponent render = rm.get(entity);
         PositionComponent pos = pm.get(entity);
 
-        if (Objects.nonNull(render) && Objects.nonNull(pos)) {
-            float dx = pos.lookingDirection.x;
-            float dy = pos.lookingDirection.y;
+        float dx = pos.lookingDirection.x;
+        float dy = pos.lookingDirection.y;
 
-            if (Math.abs(dx) > Math.abs(dy)) {
-                // Horizontal dominiert
-                if (dx > 0) {
-                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.WALK_RIGHT;
-                } else {
-                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT;
-                }
-            } else if (Math.abs(dy) > 0) {
-                // Vertikal dominiert
-                if (dy > 0) {
-                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.WALK_UP;
-                } else {
-                    anim.currentAnimation = EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN;
-                }
-            }
+        EnemyAnimationComponent.EnemyAnimationType newAnim = anim.currentAnimation;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            newAnim = (dx > 0)
+                ? EnemyAnimationComponent.EnemyAnimationType.WALK_RIGHT
+                : EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT;
+        } else if (Math.abs(dy) > 0) {
+            newAnim = (dy > 0)
+                ? EnemyAnimationComponent.EnemyAnimationType.WALK_UP
+                : EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN;
+        }
+
+        if (anim.currentAnimation != newAnim) {
+            anim.currentAnimation = newAnim;
+            anim.stateTime = 0f;
+            anim.lastFrameIndex = -1; // ← Reset bei Animationswechsel
         }
     }
 
@@ -97,6 +109,28 @@ public class DefaultAnimationManager {
         for (var type : anim.activeAnimations) {
             anim.stateTimes.merge(type, deltaTime, Float::sum);
         }
+
+        RenderComponent render = rm.get(entity);
+
+        for (BuildingAnimationComponent.BuildingAnimationType type : anim.activeAnimations) {
+            HashMap<TileOffset, Animation<TextureRegion>> animationMap = anim.animations.get(
+                type
+            );
+            if (animationMap != null) {
+                Animation<TextureRegion> animation = animationMap.get(new TileOffset(0, 0));
+                if (animation != null) {
+                    render.sprites.forEach((offset, layers) -> {
+                        for (LayeredSprite layer : layers) {
+                            if (layer.zIndex == 0) {
+                                layer.region =
+                                    animation.getKeyFrame(anim.stateTimes.get(type), false);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
     }
 
     //todo render buildings

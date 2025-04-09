@@ -35,4 +35,6 @@ public class EnemyAnimationComponent implements Component {
 
     /** Time passed for the current animation */
     public float stateTime = 0f;
+
+    public int lastFrameIndex = -1;
 }

@@ -37,4 +37,6 @@ public class BuildingAnimationComponent implements Component {
     public EnumMap<BuildingAnimationType, Float> stateTimes = new EnumMap<>(
         BuildingAnimationType.class
     );
+
+    public int lastFrameIndex = -1;
 }
