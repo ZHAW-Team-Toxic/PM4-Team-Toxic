@@ -35,9 +35,9 @@ public class ResourceBuildingFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created resource building entity.
      */
-    public static Entity createDefaultResourceBuilding(Engine engine) {
+    public static Entity createDefaultResourceBuilding(Engine engine, float x, float y) {
         Entity resourceBuilding = engine.createEntity();
-        resourceBuilding.add(new PositionComponent());
+        resourceBuilding.add(new PositionComponent(x, y));
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
         resourceBuilding.add(new ResourceProductionComponent());
@@ -46,62 +46,38 @@ public class ResourceBuildingFactory {
         return resourceBuilding;
     }
 
-    public static Entity woodResourceBuilding(Engine engine) {
-        Entity resourceBuilding = engine.createEntity();
-        resourceBuilding.add(new PositionComponent());
-        resourceBuilding.add(new HealthComponent());
-        resourceBuilding.add(new ResourceGeneratorComponent());
-
-        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1);
-        resourceBuilding.add(resourceProductionComponent);
-
-        RenderComponent renderComponent = new RenderComponent();
-        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
-        Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
-
-        resourceBuilding.add(renderComponent);
-        resourceBuilding.add(new AnimationComponent());
-        return resourceBuilding;
+    public static Entity woodResourceBuilding(Engine engine, float x, float y) {
+        return createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_WOOD);
     }
 
-    public static Entity stoneResourceBuilding(Engine engine) {
-        Entity resourceBuilding = engine.createEntity();
-        resourceBuilding.add(new PositionComponent());
-        resourceBuilding.add(new HealthComponent());
-        resourceBuilding.add(new ResourceGeneratorComponent());
-
-        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 1);
-        resourceBuilding.add(resourceProductionComponent);
-
-        RenderComponent renderComponent = new RenderComponent();
-        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
-        Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
-
-        resourceBuilding.add(renderComponent);
-        resourceBuilding.add(new AnimationComponent());
-        return resourceBuilding;
+    public static Entity stoneResourceBuilding(Engine engine, float x, float y) {
+        return createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_STONE);
     }
 
-    public static Entity ironResourceBuilding(Engine engine) {
+    public static Entity ironResourceBuilding(Engine engine, float x, float y) {
+        return createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_IRON);
+    }
+
+    private static Entity createResourceBuildingWithType(
+        Engine engine,
+        float x,
+        float y,
+        ResourceTypeEnum resourceType
+    ) {
         Entity resourceBuilding = engine.createEntity();
-        resourceBuilding.add(new PositionComponent());
+        resourceBuilding.add(new PositionComponent(x, y));
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 1);
+        resourceProductionComponent.productionRate.put(resourceType, 1);
         resourceBuilding.add(resourceProductionComponent);
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
-        Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
-
+        renderComponent.sprite = new Sprite(createPlaceHolder());
         resourceBuilding.add(renderComponent);
+
         resourceBuilding.add(new AnimationComponent());
         return resourceBuilding;
     }

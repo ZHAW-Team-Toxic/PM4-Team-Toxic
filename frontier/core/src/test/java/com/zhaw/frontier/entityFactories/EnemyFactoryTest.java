@@ -12,6 +12,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,7 @@ public class EnemyFactoryTest {
 
     @BeforeEach
     void setUp() {
-        assetManager = new AssetManager();
+        assetManager = AssetManagerInstance.getManager();
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.finishLoading();
     }
@@ -33,7 +34,7 @@ public class EnemyFactoryTest {
         float x = 10f;
         float y = 20f;
 
-        Entity enemy = EnemyFactory.createIdleEnemy(x, y, assetManager);
+        Entity enemy = EnemyFactory.createIdleEnemy(x, y);
 
         // Verify PositionComponent
         PositionComponent position = enemy.getComponent(PositionComponent.class);

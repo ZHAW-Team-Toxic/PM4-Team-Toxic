@@ -33,9 +33,9 @@ public class WallFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created wall entity.
      */
-    public static Entity createDefaultWall(Engine engine) {
+    public static Entity createDefaultWall(Engine engine, float x, float y) {
         Entity wall = engine.createEntity();
-        wall.add(new PositionComponent());
+        wall.add(new PositionComponent(x, y));
         wall.add(new HealthComponent());
 
         RenderComponent renderComponent = new RenderComponent();

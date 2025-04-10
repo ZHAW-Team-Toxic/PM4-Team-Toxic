@@ -10,6 +10,7 @@ import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 
 /**
  * Factory class responsible for creating enemy entities with their
@@ -31,8 +32,8 @@ public class EnemyFactory {
      * @param assetManager the {@link AssetManager} used to retrieve textures
      * @return a fully constructed enemy {@link Entity}
      */
-    public static Entity createPatrolEnemy(float x, float y, AssetManager assetManager) {
-        Entity enemy = createBaseEnemy(x, y, assetManager);
+    public static Entity createPatrolEnemy(float x, float y) {
+        Entity enemy = createBaseEnemy(x, y);
         enemy.add(new PatrolBehaviourComponent(30f));
         return enemy;
     }
@@ -50,13 +51,13 @@ public class EnemyFactory {
      * @param assetManager the {@link AssetManager} used to retrieve textures
      * @return a fully constructed idle enemy {@link Entity}
      */
-    public static Entity createIdleEnemy(float x, float y, AssetManager assetManager) {
-        Entity enemy = createBaseEnemy(x, y, assetManager);
+    public static Entity createIdleEnemy(float x, float y) {
+        Entity enemy = createBaseEnemy(x, y);
         enemy.add(new IdleBehaviourComponent());
         return enemy;
     }
 
-    private static Entity createBaseEnemy(float x, float y, AssetManager assetManager) {
+    private static Entity createBaseEnemy(float x, float y) {
         Entity enemy = new Entity();
 
         PositionComponent position = new PositionComponent();
@@ -68,7 +69,9 @@ public class EnemyFactory {
         renderComponent.renderType = RenderComponent.RenderType.ENEMY;
 
         // TODO: Replace placeholder texture with the actual resource building texture.
-        TextureAtlas atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        TextureAtlas atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         Sprite texture = atlas.createSprite("demo/donkey");
         texture.setSize(16, 16);
         renderComponent.sprite = new Sprite(texture);

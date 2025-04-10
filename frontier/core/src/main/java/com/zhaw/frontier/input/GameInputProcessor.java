@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.InventoryComponent;
-import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
@@ -93,10 +92,7 @@ public class GameInputProcessor extends InputAdapter {
                 "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity tower = TowerFactory.createDefaultTower(engine);
-                PositionComponent bp = tower.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                Entity tower = TowerFactory.createDefaultTower(engine, mouseX, mouseY);
                 if (buildingManagerSystem.placeBuilding(tower)) {
                     Gdx.app.debug("GameInputProcessor", "Tower placed successfully");
                 } else {
@@ -113,11 +109,7 @@ public class GameInputProcessor extends InputAdapter {
                 "GameInputProcessor",
                 "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
-            Entity enemyBasic = EnemyFactory.createPatrolEnemy(
-                mouseX,
-                mouseY,
-                frontierGame.getAssetManager()
-            );
+            Entity enemyBasic = EnemyFactory.createPatrolEnemy(mouseX, mouseY);
             enemyManagementSystem.spawnEnemy(enemyBasic);
             return true;
         }
@@ -127,11 +119,7 @@ public class GameInputProcessor extends InputAdapter {
                 "GameInputProcessor",
                 "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
-            Entity enemyIdle = EnemyFactory.createIdleEnemy(
-                mouseX,
-                mouseY,
-                frontierGame.getAssetManager()
-            );
+            Entity enemyIdle = EnemyFactory.createIdleEnemy(mouseX, mouseY);
             enemyManagementSystem.spawnEnemy(enemyIdle);
             return true;
         }
@@ -143,10 +131,7 @@ public class GameInputProcessor extends InputAdapter {
                 "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity wall = WallFactory.createDefaultWall(engine);
-                PositionComponent bp = wall.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                Entity wall = WallFactory.createDefaultWall(engine, mouseX, mouseY);
                 if (buildingManagerSystem.placeBuilding(wall)) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
@@ -165,10 +150,11 @@ public class GameInputProcessor extends InputAdapter {
                 "M pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity resourceBuilding = ResourceBuildingFactory.woodResourceBuilding(engine);
-                PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
-                bp.position.x = mouseX;
-                bp.position.y = mouseY;
+                Entity resourceBuilding = ResourceBuildingFactory.woodResourceBuilding(
+                    engine,
+                    mouseX,
+                    mouseY
+                );
                 if (buildingManagerSystem.placeBuilding(resourceBuilding)) {
                     Gdx.app.debug("GameInputProcessor", "Resource building placed successfully");
                 } else {

@@ -38,9 +38,9 @@ public class TowerFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created Tower entity.
      */
-    public static Entity createDefaultTower(Engine engine) {
+    public static Entity createDefaultTower(Engine engine, float x, float y) {
         Entity tower = engine.createEntity();
-        tower.add(new PositionComponent());
+        tower.add(new PositionComponent(x, y));
         tower.add(new HealthComponent());
         tower.add(new AttackComponent());
 
@@ -50,7 +50,6 @@ public class TowerFactory {
         // TODO: Replace placeholder texture with the actual tower texture.
         Texture texture = createPlaceHolder();
         renderComponent.sprite = new Sprite(texture);
-
         tower.add(renderComponent);
         return tower;
     }

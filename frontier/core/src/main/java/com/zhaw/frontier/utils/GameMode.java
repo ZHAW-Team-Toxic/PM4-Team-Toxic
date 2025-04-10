@@ -1,4 +1,4 @@
-package com.zhaw.frontier.util;
+package com.zhaw.frontier.utils;
 
 public enum GameMode {
     NORMAL,

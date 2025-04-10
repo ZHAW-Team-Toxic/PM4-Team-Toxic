@@ -78,7 +78,7 @@ public class BuildingManagerTest {
      */
     @Test
     public void testBuildingPlacementOnBuildableTile() {
-        Entity tower = TowerFactory.createDefaultTower(testEngine);
+        Entity tower = TowerFactory.createDefaultTower(testEngine, 0, 0);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         bp.position.x = TestMapEnvironment.tileToScreenX(5);
         bp.position.y = TestMapEnvironment.tileToScreenY(5);
@@ -92,7 +92,7 @@ public class BuildingManagerTest {
      */
     @Test
     public void testBuildingNotPlacedOnNonBuildableTile() {
-        Entity tower = TowerFactory.createDefaultTower(testEngine);
+        Entity tower = TowerFactory.createDefaultTower(testEngine, 0, 0);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         bp.position.x = TestMapEnvironment.tileToScreenX(2);
         bp.position.y = TestMapEnvironment.tileToScreenY(2);
@@ -109,7 +109,7 @@ public class BuildingManagerTest {
      */
     @Test
     public void testBuildingNotPlacedOnResourceTile() {
-        Entity tower = TowerFactory.createDefaultTower(testEngine);
+        Entity tower = TowerFactory.createDefaultTower(testEngine, 0, 0);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         bp.position.x = TestMapEnvironment.tileToScreenX(0);
         bp.position.y = TestMapEnvironment.tileToScreenY(4);
@@ -123,7 +123,7 @@ public class BuildingManagerTest {
      */
     @Test
     public void testBuildingNotPlacedOnOccupiedTile() {
-        Entity tower = TowerFactory.createDefaultTower(testEngine);
+        Entity tower = TowerFactory.createDefaultTower(testEngine, 0, 0);
         PositionComponent bp = tower.getComponent(PositionComponent.class);
         bp.position.x = TestMapEnvironment.tileToScreenX(4);
         bp.position.y = TestMapEnvironment.tileToScreenY(4);
@@ -131,7 +131,7 @@ public class BuildingManagerTest {
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(bms.placeBuilding(tower), "Building should be placed on buildable tile.");
 
-        Entity tower2 = TowerFactory.createDefaultTower(testEngine);
+        Entity tower2 = TowerFactory.createDefaultTower(testEngine, 0, 0);
         PositionComponent bp2 = tower2.getComponent(PositionComponent.class);
         bp2.position.x = TestMapEnvironment.tileToScreenX(4);
         bp2.position.y = TestMapEnvironment.tileToScreenY(4);
@@ -144,7 +144,7 @@ public class BuildingManagerTest {
      */
     @Test
     public void testResourceBuildingPlacementWorks() {
-        Entity resourceBuilding = ResourceBuildingFactory.stoneResourceBuilding(testEngine);
+        Entity resourceBuilding = ResourceBuildingFactory.stoneResourceBuilding(testEngine, 0, 0);
         PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
         bp.position.x = TestMapEnvironment.tileToScreenX(2);
         bp.position.y = TestMapEnvironment.tileToScreenY(4);
@@ -161,7 +161,7 @@ public class BuildingManagerTest {
      */
     @Test
     public void checkResourceBuildingNotPlaced() {
-        Entity resourceBuilding = ResourceBuildingFactory.stoneResourceBuilding(testEngine);
+        Entity resourceBuilding = ResourceBuildingFactory.stoneResourceBuilding(testEngine, 0, 0);
         PositionComponent bp = resourceBuilding.getComponent(PositionComponent.class);
         bp.position.x = TestMapEnvironment.tileToScreenX(4);
         bp.position.y = TestMapEnvironment.tileToScreenY(4);
