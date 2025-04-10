@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
@@ -132,6 +133,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
             sampleLayer.getTileHeight()
         );
 
+        engine.addSystem(new SoundSystem());
+
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         //set-up BuildingManager
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
@@ -237,6 +240,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
             resourceProductionSystem.endTurn();
         }
         //***********************************
+
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            SoundSystem soundSystem = engine.getSystem(SoundSystem.class);
+            if (soundSystem != null) {
+                soundSystem.playClick();
+            }
+        }
     }
 
     @Override
