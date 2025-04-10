@@ -72,7 +72,7 @@ public class ResourceProductionSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         // TODO: Replace with time-based or turn-based execution if needed.
-        //endTurn();
+        endTurn();
     }
 
     /**
