@@ -2,11 +2,13 @@ package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
@@ -15,12 +17,23 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.BuildingManagerSystem;
+import com.zhaw.frontier.systems.CameraControlSystem;
+import com.zhaw.frontier.systems.EnemyManagementSystem;
+import com.zhaw.frontier.systems.IdleBehaviourSystem;
+import com.zhaw.frontier.systems.MapLoader;
+import com.zhaw.frontier.systems.MovementSystem;
+import com.zhaw.frontier.systems.PatrolBehaviourSystem;
+import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.ui.BaseUI;
+import com.zhaw.frontier.ui.ResourceUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import java.util.Map;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -42,6 +55,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private OrthogonalTiledMapRenderer renderer;
 
     private TiledMapTileLayer sampleLayer;
+
+    // UI
+    private ResourceUI resourceUI;
+    private Skin skin;
+    private InventoryComponent inventory;
+    private ResourceProductionSystem resourceProductionSystem;
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -150,7 +169,11 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         // setup resource tracking system
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
-        ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
+
+        // TODO: remove this line, when the resource production system is implemented
+        //ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
+        resourceProductionSystem = new ResourceProductionSystem(engine);
+
         engine.addSystem(resourceProductionSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 
@@ -158,9 +181,19 @@ public class GameScreen implements Screen, ButtonClickObserver {
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
 
+        // create resource ui
+        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        resourceUI = new ResourceUI(skin, stage);
+
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
         engine.addSystem(new MovementSystem());
+
+        // create inventory ui
+        Entity inventoryEntity = engine
+            .getEntitiesFor(Family.all(InventoryComponent.class).get())
+            .first();
+        inventory = inventoryEntity.getComponent(InventoryComponent.class);
 
         var mx = new InputMultiplexer();
         mx.addProcessor(baseUI.getStage());
@@ -171,6 +204,17 @@ public class GameScreen implements Screen, ButtonClickObserver {
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
         mx.addProcessor(baseUI.createInputAdapter(engine));
         Gdx.input.setInputProcessor(mx);
+        //***********************************
+        // Test Inventory for testing resource production for wood
+        /*
+        Entity testLumberMill = engine.createEntity();
+        ResourceProductionComponent production = new ResourceProductionComponent();
+        production.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 2); // 2 Holz pro angrenzende Ressource
+        production.countOfAdjacentResources = 3; // simuliert 3 angrenzende Wald-Tiles
+        testLumberMill.add(production);
+        engine.addEntity(testLumberMill);
+        */
+        //***********************************
     }
 
     @Override
@@ -189,6 +233,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             frontierGame.switchScreen(new PauseScreen(frontierGame, this));
         }
+        //***********************************
+        // Simulate resource production -> Temporary for testing
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            // Simulate end of turn
+            resourceProductionSystem.endTurn();
+        }
+        //***********************************
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             SoundSystem soundSystem = engine.getSystem(SoundSystem.class);
@@ -225,6 +276,17 @@ public class GameScreen implements Screen, ButtonClickObserver {
         gameUi.apply();
         stage.act();
         stage.draw();
+
+        Map<ResourceTypeEnum, Integer> income = resourceProductionSystem.getProjectedIncome();
+
+        int wood = inventory.resources.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 0);
+        int woodIncome = income.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 0);
+        int stone = inventory.resources.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_STONE, 0);
+        int stoneIncome = income.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_STONE, 0);
+        int iron = inventory.resources.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_IRON, 0);
+        int ironIncome = income.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_IRON, 0);
+
+        resourceUI.updateResources(wood, woodIncome, stone, stoneIncome, iron, ironIncome);
     }
 
     @Override
