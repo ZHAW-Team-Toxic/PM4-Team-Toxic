@@ -30,6 +30,8 @@ import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.systems.ResourceProductionSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
+import com.zhaw.frontier.ui.ResourceUI;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -185,7 +187,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         buildingMenuUi.addObserver(this);
 
         // create resource ui
-        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
 
         engine.addSystem(new IdleBehaviourSystem());
