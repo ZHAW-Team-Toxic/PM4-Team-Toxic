@@ -1,4 +1,3 @@
-
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -57,7 +56,7 @@ run {
 
 jar {
     // sets the name of the .jar file this produces to the name of the game or app, with the version after.
-    archiveFileName.set("${appName}-${projectVersion}.jar")
+    archiveFileName.set("${appName}-${project.version}.jar")
     // the duplicatesStrategy matters starting in Gradle 7.0; this setting works.
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     dependsOn configurations.runtimeClasspath
@@ -87,7 +86,7 @@ construo {
     // human-readable name, used for example in the `.app` name for macOS
     humanName.set(appName)
     // Optional, defaults to project version property
-    version.set("$projectVersion")
+    version.set(project.version)
 
     targets.configure {
         create("linuxX64", Target.Linux) {
@@ -117,6 +116,53 @@ construo {
             //useConsole.set(true)
         }
     }
+}
+
+def flattenedZipTask = { targetName ->
+    def capitalized = targetName.capitalize()
+    tasks.register("flattenZip${capitalized}") {
+        dependsOn "package${capitalized}"
+
+        doLast {
+            def originalZip = file("$buildDir/construo/dist/Frontier-${targetName}.zip")
+            def tempUnzipDir = file("$buildDir/tmp/flatten/${targetName}")
+            def finalZip = file("$buildDir/construo/dist/Frontier-${project.version}-${targetName}.zip")
+
+            if (!originalZip.exists()) {
+                throw new GradleException("ZIP not found: $originalZip")
+            }
+
+            // Clean unzip folder
+            delete tempUnzipDir
+            copy {
+                from zipTree(originalZip)
+                into tempUnzipDir
+            }
+
+            // Expecting one folder inside
+            def innerFolders = tempUnzipDir.listFiles()
+            if (innerFolders == null || innerFolders.length != 1 || !innerFolders[0].isDirectory()) {
+                throw new GradleException("Expected one inner folder in ZIP, found: ${innerFolders*.name}")
+            }
+
+            // Re-zip the contents of that folder (flattened)
+            ant.zip(destfile: finalZip) {
+                fileset(dir: innerFolders[0])
+            }
+
+            println "Flattened zip created at: ${finalZip}"
+        }
+    }
+}
+
+// Define flattened zips for each target
+["winX64", "macM1", "macX64", "linuxX64"].each { target ->
+    flattenedZipTask(target)
+}
+
+// Optional: run all with one task
+tasks.register("flattenAllZips") {
+    dependsOn "flattenZipWinX64", "flattenZipMacM1", "flattenZipMacX64", "flattenZipLinuxX64"
 }
 
 // Equivalent to the jar task; here for compatibility with gdx-setup.

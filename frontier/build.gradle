@@ -122,8 +122,11 @@ configure(subprojects) {
   }
 }
 
+
+version = project.hasProperty('version') ? project.getProperty('version') : '1.0.0'
+
 subprojects {
-  version = "$projectVersion"
+  version = project.version
   ext.appName = 'Frontier'
   repositories {
     mavenCentral()
