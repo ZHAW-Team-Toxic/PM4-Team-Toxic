@@ -51,16 +51,16 @@ public class PatrolBehaviourSystem extends EntitySystem {
 
             // Lazy init
             if (!behavior.initialized) {
-                float originX = pos.position.x;
+                float originX = pos.basePosition.x;
                 float range = 50f; // Default patrol range
                 behavior.leftBound = originX;
                 behavior.rightBound = originX + range;
                 behavior.initialized = true;
             }
 
-            if (behavior.movingRight && pos.position.x >= behavior.rightBound) {
+            if (behavior.movingRight && pos.basePosition.x >= behavior.rightBound) {
                 behavior.movingRight = false;
-            } else if (!behavior.movingRight && pos.position.x <= behavior.leftBound) {
+            } else if (!behavior.movingRight && pos.basePosition.x <= behavior.leftBound) {
                 behavior.movingRight = true;
             }
 

@@ -237,7 +237,7 @@ public class BaseUI {
                     engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY);
                 } else if (getGameMode() == GameMode.BUILDING) {
                     Entity entity = WallFactory.createDefaultWall(engine);
-                    entity.getComponent(PositionComponent.class).position =
+                    entity.getComponent(PositionComponent.class).basePosition =
                     new Vector2(screenX, screenY);
                     engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
                 }
