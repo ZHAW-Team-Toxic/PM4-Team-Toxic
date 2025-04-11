@@ -1,0 +1,125 @@
+name: Build Frontier Projects
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'frontier/**'
+      - 'frontier-launcher/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'frontier/**'
+      - 'frontier-launcher/**'
+      - '.github/workflows/ci.yml'
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontier: ${{ steps.filter.outputs.frontier }}
+      launcher: ${{ steps.filter.outputs.launcher }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: filter
+        run: |
+          git fetch origin main
+          CHANGED=$(git diff --name-only origin/main...HEAD || echo "fallback")
+          if echo "$CHANGED" | grep '^frontier/'; then
+            echo "frontier=true" >> $GITHUB_OUTPUT
+          else
+            echo "frontier=false" >> $GITHUB_OUTPUT
+          fi
+          if echo "$CHANGED" | grep '^frontier-launcher/'; then
+            echo "launcher=true" >> $GITHUB_OUTPUT
+          else
+            echo "launcher=false" >> $GITHUB_OUTPUT
+          fi
+
+  build-frontier:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Skip if no frontier changes
+        if: needs.detect-changes.outputs.frontier != 'true'
+        run: echo "No changes in frontier/, skipping build."
+        
+      - uses: actions/checkout@v4
+        if: needs.detect-changes.outputs.frontier == 'true'
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        if: needs.detect-changes.outputs.frontier == 'true'
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v4
+        if: needs.detect-changes.outputs.frontier == 'true'
+      - uses: actions/cache@v4
+        if: needs.detect-changes.outputs.frontier == 'true'
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+      - uses: actions/cache@v4
+        if: needs.detect-changes.outputs.frontier == 'true'
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Test, build, and analyze
+        if: needs.detect-changes.outputs.frontier == 'true'
+        working-directory: ./frontier
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew test build jacocoTestReport sonar --info
+      - name: Publish Test Results
+        if: needs.detect-changes.outputs.frontier == 'true'
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: frontier/core/build/test-results/test/TEST-*.xml
+
+  build-launcher:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Skip if no frontier-launcher changes
+        if: needs.detect-changes.outputs.launcher != 'true'
+        run: echo "No changes in frontier-launcher/, skipping build."
+
+      - uses: actions/checkout@v4
+        if: needs.detect-changes.outputs.launcher == 'true'
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        if: needs.detect-changes.outputs.launcher == 'true'
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v4
+        if: needs.detect-changes.outputs.launcher == 'true'
+      - uses: actions/cache@v4
+        if: needs.detect-changes.outputs.launcher == 'true'
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-launcher-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-launcher
+      - name: Build Launcher
+        if: needs.detect-changes.outputs.launcher == 'true'
+        working-directory: ./frontier-launcher
+        run: ./gradlew build
