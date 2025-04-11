@@ -3,9 +3,9 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - "*-v*"
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -32,28 +32,40 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Extract version
-        id: extract_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Extract project and version
+        id: extract_info
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          PROJECT=${TAG%%-v*}
+          VERSION=${TAG#*-v}
+          echo "PROJECT=$PROJECT" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Tag: $TAG -> Project: $PROJECT, Version: $VERSION"
 
-      - name: build for all the platforms
+      - name: Build Frontier
+        if: env.PROJECT == 'frontier'
         working-directory: ./frontier
         run: ./gradlew packageAll -Pversion=${{ env.VERSION }}
 
+      - name: Build Frontier Launcher
+        if: env.PROJECT == 'frontier-launcher'
+        working-directory: ./frontier-launcher
+        run: ./gradlew packageAll -Pversion=${{ env.VERSION }}
+
       - name: Release (prerelease)
-        uses: softprops/action-gh-release@v2
         if: (contains(github.ref, '-alpha') || contains(github.ref, '-beta'))
+        uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           prerelease: true
           files: |
-            frontier/lwjgl3/build/construo/dist/Frontier-*.zip
+            ${{ env.PROJECT }}/**/build/**/dist/*
 
-      - name: Release
-        uses: softprops/action-gh-release@v2
+      - name: Release (final)
         if: (!contains(github.ref, '-alpha') && !contains(github.ref, '-beta'))
+        uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           make_latest: true
           files: |
-            frontier/lwjgl3/build/construo/dist/Frontier-*.zip
+            ${{ env.PROJECT }}/**/build/**/dist/*

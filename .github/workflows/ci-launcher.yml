@@ -1,0 +1,62 @@
+name: Build Frontier-Launcher
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'frontier-launcher/**'
+      - '.github/workflows/ci-launcher.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'frontier-launcher/**'
+      - '.github/workflows/ci-launcher.yml'
+
+jobs:
+  ci-build:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        issues: read
+        checks: write
+        pull-requests: write
+        id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for launcher changes
+        id: changes
+        run: |
+          git fetch origin main
+          CHANGED=$(git diff --name-only origin/main...HEAD || echo "fallback")
+          if echo "$CHANGED" | grep '^frontier-launcher/'; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Set up JDK 21
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        if: steps.changes.outputs.changed == 'true'
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Cache Gradle packages
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-launcher-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-launcher
+
+      - name: Build Launcher
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: ./frontier-launcher
+        run: ./gradlew build
