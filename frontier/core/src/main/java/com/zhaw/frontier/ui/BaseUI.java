@@ -10,21 +10,27 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.enums.GameMode;
+import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
+import com.zhaw.frontier.systems.EnemyManagementSystem;
+import com.zhaw.frontier.systems.ResourceProductionSystem;
+import com.zhaw.frontier.systems.TurnSystem;
 import com.zhaw.frontier.util.ButtonClickObserver;
-import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,34 +88,63 @@ public class BaseUI {
         float pauseButtonX = fireplaceButtonX;
         float pauseButtonY = fireplaceButtonY + buttonHeight + 10;
 
-        createButton(
+        Button demolishButton = createButton(
             "BrokenPickaxe",
             demolishButtonX,
             demolishButtonY,
             GameMode.DEMOLISH,
             "demolishButton",
-            () -> System.out.println("Demolish button was clicked!")
+            () -> System.out.println("Demolish button was clicked!"),
+            "build"
         );
 
-        createButton(
+        TextButton buildButton = createButton(
             "Pickaxe",
             buildButtonX,
             buildButtonY,
             GameMode.BUILDING,
             "buildButton",
-            () -> System.out.println("Build button was clicked!")
+            () -> System.out.println("Build button was clicked!"),
+            "demolish"
         );
 
-        createButton(
+        TextButton fireplaceButton = createButton(
             "Campfire",
             fireplaceButtonX,
             fireplaceButtonY,
-            null,
+            GameMode.NORMAL,
             "fireplaceButton",
-            () -> System.out.println("Skipping time")
+            () -> {
+                //TODO: Change button style when disabled
+                demolishButton.setDisabled(true);
+                buildButton.setDisabled(true);
+                TurnSystem
+                    .getInstance()
+                    .executeTurn(GamePhase.COLLECTION, ResourceProductionSystem.getInstance());
+                TurnSystem
+                    .getInstance()
+                    .executeTurn(GamePhase.BUILD_AND_PLAN, ResourceProductionSystem.getInstance());
+                if (TurnSystem.getInstance().isEnemyTurn()) {
+                    TurnSystem
+                        .getInstance()
+                        .executeTurn(GamePhase.ENEMY_TURN, EnemyManagementSystem.getInstance());
+                }
+                Timer.schedule(
+                    new Timer.Task() {
+                        @Override
+                        public void run() {
+                            demolishButton.setDisabled(false);
+                            buildButton.setDisabled(false);
+                        }
+                    },
+                    3
+                );
+                System.out.println("Skipping time");
+            },
+            null
         );
 
-        createButton(
+        TextButton pauseButton = createButton(
             "Gears",
             pauseButtonX,
             pauseButtonY,
@@ -118,7 +153,8 @@ public class BaseUI {
             () -> {
                 frontierGame.switchScreen(new PauseScreen(frontierGame, gameScreen));
                 System.out.println("Opening pause menu...");
-            }
+            },
+            null
         );
     }
 
@@ -196,16 +232,23 @@ public class BaseUI {
         float y,
         GameMode gameMode,
         String name,
-        Runnable onClick
+        Runnable onClick,
+        String styleName // Optional: Name of style in skin (can be null)
     ) {
-        SpriteDrawable drawable = new SpriteDrawable(atlas.createSprite(spriteName));
+        TextButton button;
 
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.up = drawable;
-        style.down = drawable;
-        style.font = skin.getFont("ArchivoBlack");
+        if (styleName != null && skin.has(styleName, TextButton.TextButtonStyle.class)) {
+            button = new TextButton("", skin, styleName);
+        } else {
+            // Fallback: use drawable from sprite
+            SpriteDrawable drawable = new SpriteDrawable(atlas.createSprite(spriteName));
+            TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+            style.up = drawable;
+            style.down = drawable;
+            style.font = skin.getFont("ArchivoBlack");
+            button = new TextButton("", style);
+        }
 
-        TextButton button = new TextButton("", style);
         button.setSize(uiViewport.getWorldWidth() * 0.03f, uiViewport.getWorldHeight() * 0.04f);
         button.setPosition(x, y);
         button.setName(name);

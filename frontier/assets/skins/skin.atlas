@@ -6,280 +6,294 @@ filter: Linear, Linear
 repeat: none
 BrokenPickaxe
   rotate: false
-  xy: 1029, 1066
+  xy: 1029, 1087
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+BrokenPickaxe_disabled
+  rotate: false
+  xy: 35, 53
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Bronze
   rotate: false
-  xy: 1063, 1131
+  xy: 1063, 1152
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Campfire
   rotate: false
-  xy: 1, 1
+  xy: 69, 90
   size: 26, 29
   orig: 26, 29
   offset: 0, 0
   index: -1
 Copper
   rotate: false
-  xy: 1, 32
+  xy: 1, 53
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Diamond
   rotate: false
-  xy: 35, 66
+  xy: 35, 87
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Dirt
   rotate: false
-  xy: 1029, 1048
+  xy: 1, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Emerald
   rotate: false
-  xy: 515, 556
+  xy: 515, 577
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Explosion
   rotate: false
-  xy: 1, 162
+  xy: 1, 183
   size: 352, 32
   orig: 352, 32
   offset: 0, 0
   index: -1
 Explosion_part1
   rotate: false
-  xy: 515, 682
+  xy: 515, 703
   size: 37, 26
   orig: 37, 26
   offset: 0, 0
   index: -1
 Explosion_part10
   rotate: false
-  xy: 554, 682
+  xy: 554, 703
   size: 33, 26
   orig: 33, 26
   offset: 0, 0
   index: -1
 Explosion_part11
   rotate: false
-  xy: 1099, 1196
+  xy: 1099, 1217
   size: 30, 26
   orig: 30, 26
   offset: 0, 0
   index: -1
 Explosion_part2
   rotate: false
-  xy: 1098, 1168
+  xy: 1098, 1189
   size: 29, 26
   orig: 29, 26
   offset: 0, 0
   index: -1
 Explosion_part3
   rotate: false
-  xy: 589, 682
+  xy: 589, 703
   size: 30, 26
   orig: 30, 26
   offset: 0, 0
   index: -1
 Explosion_part4
   rotate: false
-  xy: 390, 168
+  xy: 390, 189
   size: 31, 26
   orig: 31, 26
   offset: 0, 0
   index: -1
 Explosion_part5
   rotate: false
-  xy: 355, 168
+  xy: 355, 189
   size: 33, 26
   orig: 33, 26
   offset: 0, 0
   index: -1
 Explosion_part6
   rotate: false
-  xy: 1029, 1196
+  xy: 1029, 1217
   size: 34, 26
   orig: 34, 26
   offset: 0, 0
   index: -1
 Explosion_part7
   rotate: false
-  xy: 550, 654
+  xy: 550, 675
   size: 31, 26
   orig: 31, 26
   offset: 0, 0
   index: -1
 Explosion_part8
   rotate: false
-  xy: 1065, 1196
+  xy: 1065, 1217
   size: 32, 26
   orig: 32, 26
   offset: 0, 0
   index: -1
 Explosion_part9
   rotate: false
-  xy: 515, 654
+  xy: 515, 675
   size: 33, 26
   orig: 33, 26
   offset: 0, 0
   index: -1
 Gears
   rotate: false
-  xy: 1063, 1097
+  xy: 1063, 1118
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Grass1
   rotate: false
-  xy: 35, 48
+  xy: 515, 559
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Grass2
   rotate: false
-  xy: 69, 82
+  xy: 1029, 1069
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Iron
   rotate: false
-  xy: 515, 620
+  xy: 515, 641
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Pickaxe
   rotate: false
-  xy: 1029, 1131
+  xy: 1029, 1152
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Pickaxe_disabled
+  rotate: false
+  xy: 1, 19
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Platinum
   rotate: false
-  xy: 1, 66
+  xy: 1, 87
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Tree
   rotate: false
-  xy: 515, 538
+  xy: 1063, 1100
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 ailment_bleed
   rotate: false
-  xy: 37, 131
+  xy: 37, 152
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_confusion
   rotate: false
-  xy: 1064, 1165
+  xy: 1064, 1186
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_death
   rotate: false
-  xy: 36, 100
+  xy: 36, 121
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_frost
   rotate: false
-  xy: 1029, 1165
+  xy: 1029, 1186
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 ailment_health
   rotate: false
-  xy: 1, 100
+  xy: 1, 121
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 ailment_placeholder
   rotate: false
-  xy: 515, 590
+  xy: 515, 611
   size: 32, 28
   orig: 32, 28
   offset: 0, 0
   index: -1
 ailment_poison
   rotate: false
-  xy: 549, 624
+  xy: 549, 645
   size: 31, 28
   orig: 31, 28
   offset: 0, 0
   index: -1
 ailment_sleep
   rotate: false
-  xy: 1, 131
+  xy: 1, 152
   size: 34, 29
   orig: 34, 29
   offset: 0, 0
   index: -1
 ailment_slow
   rotate: false
-  xy: 1029, 1100
+  xy: 1029, 1121
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_stop
   rotate: false
-  xy: 71, 131
+  xy: 71, 152
   size: 31, 29
   orig: 31, 29
   offset: 0, 0
   index: -1
 ailment_time
   rotate: false
-  xy: 70, 100
+  xy: 70, 121
   size: 31, 29
   orig: 31, 29
   offset: 0, 0
   index: -1
 ArchivoBlack
   rotate: false
-  xy: 1, 710
+  xy: 1, 731
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 KingthingsCalligraphica
   rotate: false
-  xy: 1, 196
+  xy: 1, 217
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 MedievalSharp
   rotate: false
-  xy: 515, 710
+  xy: 515, 731
   size: 512, 512
   orig: 512, 512
   offset: 0, 0

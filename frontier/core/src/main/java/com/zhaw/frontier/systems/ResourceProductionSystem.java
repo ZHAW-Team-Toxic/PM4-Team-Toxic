@@ -35,17 +35,34 @@ import java.util.Map;
  */
 public class ResourceProductionSystem extends EntitySystem {
 
-    private final Engine engine;
+    private static ResourceProductionSystem instance;
+    private Engine engine;
     private ImmutableArray<Entity> productionBuildings;
 
-    /**
-     * Constructs a new {@code ResourceProductionSystem}.
-     *
-     * @param engine the Ashley engine that manages game entities
-     */
-    public ResourceProductionSystem(Engine engine) {
+    private ResourceProductionSystem() {
         super();
-        this.engine = engine;
+    }
+
+    /**
+     * Initializes the singleton instance of {@code ResourceProductionSystem}.
+     * @param engine    the engine to be used by the system
+     */
+    public static void init(Engine engine) {
+        if (instance == null) {
+            instance = new ResourceProductionSystem();
+        }
+        instance.engine = engine;
+    }
+
+    /**
+     * Returns the singleton instance of {@code ResourceProductionSystem}.
+     * @return  the singleton instance of ResourceProductionSystem
+     */
+    public static ResourceProductionSystem getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("ResourceProductionSystem not initialized");
+        }
+        return instance;
     }
 
     /**
