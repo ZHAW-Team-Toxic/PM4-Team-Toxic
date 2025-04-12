@@ -17,7 +17,7 @@ public class EnemyManagementSystem extends EntitySystem {
 
     private static EnemyManagementSystem instance;
     private TiledMapTileLayer sampleLayer;
-    private EnemySpawner enemeySpawner;
+    private EnemySpawner enemySpawner;
 
     private EnemyManagementSystem() {}
 
@@ -31,7 +31,7 @@ public class EnemyManagementSystem extends EntitySystem {
         if (instance == null) {
             instance = new EnemyManagementSystem();
             instance.sampleLayer = sampleLayer;
-            instance.enemeySpawner = new EnemySpawner(viewport, engine);
+            instance.enemySpawner = new EnemySpawner(viewport, engine);
         }
     }
 
@@ -64,6 +64,6 @@ public class EnemyManagementSystem extends EntitySystem {
      * @return {@code true} if the enemy was successfully spawned; {@code false} otherwise
      */
     public boolean spawnEnemy(Entity enemEntity) {
-        return enemeySpawner.spawnEnemy(enemEntity, sampleLayer);
+        return enemySpawner.spawnEnemy(enemEntity, sampleLayer);
     }
 }

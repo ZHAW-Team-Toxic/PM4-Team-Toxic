@@ -95,7 +95,7 @@ public class BaseUI {
             GameMode.DEMOLISH,
             "demolishButton",
             () -> System.out.println("Demolish button was clicked!"),
-            "build"
+            "demolish"
         );
 
         TextButton buildButton = createButton(
@@ -105,7 +105,7 @@ public class BaseUI {
             GameMode.BUILDING,
             "buildButton",
             () -> System.out.println("Build button was clicked!"),
-            "demolish"
+            "build"
         );
 
         TextButton fireplaceButton = createButton(
@@ -115,7 +115,6 @@ public class BaseUI {
             GameMode.NORMAL,
             "fireplaceButton",
             () -> {
-                //TODO: Change button style when disabled
                 demolishButton.setDisabled(true);
                 buildButton.setDisabled(true);
                 TurnSystem
