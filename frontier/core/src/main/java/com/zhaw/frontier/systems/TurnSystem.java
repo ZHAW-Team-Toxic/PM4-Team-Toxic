@@ -24,7 +24,7 @@ public class TurnSystem {
 
     private TurnSystem() {
         this.gamePhase = GamePhase.BUILD_AND_PLAN;
-        this.turnCounter = 0;
+        this.turnCounter = 1;
     }
 
     /**

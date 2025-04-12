@@ -48,9 +48,10 @@ public class ResourceProductionSystem extends EntitySystem {
      * @param engine    the engine to be used by the system
      */
     public static void init(Engine engine) {
-        if (instance == null) {
-            instance = new ResourceProductionSystem();
+        if (instance != null) {
+            throw new IllegalStateException("ResourceProductionSystem already initialized");
         }
+        instance = new ResourceProductionSystem();
         instance.engine = engine;
     }
 

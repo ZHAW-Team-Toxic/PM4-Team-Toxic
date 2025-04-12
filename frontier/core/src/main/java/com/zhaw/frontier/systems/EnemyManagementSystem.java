@@ -28,11 +28,12 @@ public class EnemyManagementSystem extends EntitySystem {
      * @param engine        the engine to be used for enemy spawning
      */
     public static void init(TiledMapTileLayer sampleLayer, Viewport viewport, Engine engine) {
-        if (instance == null) {
-            instance = new EnemyManagementSystem();
-            instance.sampleLayer = sampleLayer;
-            instance.enemySpawner = new EnemySpawner(viewport, engine);
+        if (instance != null) {
+            throw new IllegalStateException("EnemyManagementSystem already initialized");
         }
+        instance = new EnemyManagementSystem();
+        instance.sampleLayer = sampleLayer;
+        instance.enemySpawner = new EnemySpawner(viewport, engine);
     }
 
     /**
