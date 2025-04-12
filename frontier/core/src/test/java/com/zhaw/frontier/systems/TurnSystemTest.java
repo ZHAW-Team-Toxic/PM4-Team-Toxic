@@ -65,7 +65,7 @@ class TurnSystemTest {
     void testIsEnemyTurn_returnsTrueEveryFifthTurn_upTo50() {
         for (int turn = 1; turn <= 50; turn++) {
             turnSystem.executeTurn(GamePhase.BUILD_AND_PLAN, mock(EntitySystem.class));
-            boolean expected = turn % 5 == 0;
+            boolean expected = (turn + 1) % 5 == 0;
             boolean actual = turnSystem.isEnemyTurn();
 
             assertEquals(expected, actual);

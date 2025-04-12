@@ -93,9 +93,9 @@ public class TurnSystem {
     }
 
     /**
-     * Resets the turn counter to 0.
+     * Resets the turn counter to 1.
      */
     void resetTurnCounter() {
-        this.turnCounter = 0;
+        this.turnCounter = 1;
     }
 }
