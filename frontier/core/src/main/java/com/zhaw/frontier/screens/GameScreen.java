@@ -18,6 +18,7 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
@@ -31,7 +32,6 @@ import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.ResourceUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
-import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.util.Map;
 
@@ -61,6 +61,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private Skin skin;
     private InventoryComponent inventory;
     private ResourceProductionSystem resourceProductionSystem;
+    private EnemyManagementSystem enemyManagementSystem;
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -138,7 +139,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         //set-up BuildingManager
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
-        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
+        EnemyManagementSystem.init(sampleLayer, gameWorldView, engine);
+        enemyManagementSystem = EnemyManagementSystem.getInstance();
+        engine.addSystem(enemyManagementSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
@@ -172,7 +175,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         // TODO: remove this line, when the resource production system is implemented
         //ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
-        resourceProductionSystem = new ResourceProductionSystem(engine);
+        ResourceProductionSystem.init(engine);
+        resourceProductionSystem = ResourceProductionSystem.getInstance();
 
         engine.addSystem(resourceProductionSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");

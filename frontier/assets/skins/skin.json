@@ -156,6 +156,16 @@
 "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
 	"default": {
 		"font": "MedievalSharp"
+	},
+	"build": {
+		"parent": "default",
+		"up": "Pickaxe",
+		"disabled": "Pickaxe_disabled"
+	},
+	"demolish": {
+		"parent": "default",
+		"up": "BrokenPickaxe",
+		"disabled": "BrokenPickaxe_disabled"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
