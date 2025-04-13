@@ -36,6 +36,8 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void show() {
         // Add new assets here
+        assetManager.load("unpacked/Frontier Sky Background.png", Texture.class);
+        assetManager.load("unpacked/Frontier Ground Background.png", Texture.class);
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);
