@@ -5,26 +5,29 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
-import com.zhaw.frontier.components.AttackComponent;
-import com.zhaw.frontier.components.HealthComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.entityFactories.EnemyFactory;
+import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
+import com.zhaw.frontier.entityFactories.WallFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SaveGameManager {
 
     private final Engine engine;
+    private final AssetManager assetManager;
     private final Json json;
 
-    public SaveGameManager(Engine engine) {
+    public SaveGameManager(Engine engine, AssetManager assetManager) {
         this.engine = engine;
+        this.assetManager = assetManager;
 
         json = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
@@ -33,137 +36,130 @@ public class SaveGameManager {
         json.setIgnoreUnknownFields(true);
     }
 
+    public void saveGame(String filePath) {
+        GameState gameState = new GameState();
+        ImmutableArray<Entity> allEntities = engine.getEntitiesFor(Family.all().get());
+
+        for (Entity entity : allEntities) {
+            EntityData data = new EntityData();
+
+            EntityTypeComponent type = entity.getComponent(EntityTypeComponent.class);
+            if (type != null) {
+                data.entityType = type.type.name();
+            } else {
+                continue;
+            }
+
+            PositionComponent pos = entity.getComponent(PositionComponent.class);
+            if (pos != null) {
+                data.x = pos.position.x;
+                data.y = pos.position.y;
+            }
+
+            HealthComponent health = entity.getComponent(HealthComponent.class);
+            if (health != null) {
+                data.health = health.Health;
+            }
+
+            AttackComponent attack = entity.getComponent(AttackComponent.class);
+            if (attack != null) {
+                data.damage = attack.AttackDamage;
+                data.range = attack.AttackRange;
+                data.speed = attack.AttackSpeed;
+            }
+
+            InventoryComponent inventory = entity.getComponent(InventoryComponent.class);
+            if (inventory != null) {
+                data.inventory = new HashMap<>();
+                for (Map.Entry<ResourceTypeEnum, Integer> entry : inventory.resources.entrySet()) {
+                    data.inventory.put(entry.getKey().name(), entry.getValue());
+                }
+            }
+
+            gameState.entities.add(data);
+        }
+
+        FileHandle saveDir = Gdx.files.external("frontier/saves/");
+        if (!saveDir.exists()) {
+            saveDir.mkdirs();
+        }
+
+        FileHandle file = Gdx.files.external("frontier/saves/" + (filePath.endsWith(".json") ? filePath : filePath + ".json"));
+
+        file.writeString(json.toJson(gameState), false);
+
+        Gdx.app.log(this.getClass().getSimpleName(), "Saved " + gameState.entities.size() + " entities to " + file.file().getAbsolutePath());
+    }
+
     public void loadGame(String filePath) {
-        FileHandle file = Gdx.files.local(filePath.endsWith(".json") ? filePath : filePath + ".json");
+        FileHandle file = Gdx.files.external("frontier/saves/" + (filePath.endsWith(".json") ? filePath : filePath + ".json"));
 
         if (!file.exists()) {
-            Gdx.app.log("LoadGame", "No save file found at: " + file.file().getAbsolutePath());
+            Gdx.app.log(this.getClass().getSimpleName(), "No save file found at: " + file.file().getAbsolutePath());
             return;
         }
 
         GameState gameState = json.fromJson(GameState.class, file.readString());
 
-        for (Map<String, Object> data : gameState.entities) {
-            String type = (String) data.get("type");
-
+        for (EntityData data : gameState.entities) {
             Entity entity;
 
-            switch (type) {
-                case "TOWER":
-                case "BUILDING":
-                    entity = TowerFactory.createDefaultTower(engine);
-                    break;
-                case "ENEMY":
-                case "OBJECT":
-                case "UNKNOWN":
-                default:
-                    entity = engine.createEntity();
-                    entity.add(new PositionComponent());
-                    break;
+            EntityTypeComponent.EntityType entityType;
+            try {
+                entityType = EntityTypeComponent.EntityType.valueOf(data.entityType);
+            } catch (Exception exeException) {
+                Gdx.app.log(this.getClass().getSimpleName(), "Unknown entity type: " + data.entityType);
+                continue;
             }
 
-            if (data.containsKey("x") && data.containsKey("y")) {
+            entity = switch (entityType) {
+                case WALL -> WallFactory.createDefaultWall(engine);
+                case TOWER -> TowerFactory.createDefaultTower(engine);
+                case WOOD_RESOURCE_BUILDING -> ResourceBuildingFactory.woodResourceBuilding(engine);
+                case IDLE_ENEMY -> EnemyFactory.createIdleEnemy(data.x, data.y, assetManager);
+                case PATROL_ENEMY -> EnemyFactory.createPatrolEnemy(data.x, data.y, assetManager);
+                default -> engine.createEntity();
+            };
+
+            if (data.x != null && data.y != null) {
                 PositionComponent pos = entity.getComponent(PositionComponent.class);
                 if (pos != null) {
-                    pos.position.x = ((Number) data.get("x")).floatValue();
-                    pos.position.y = ((Number) data.get("y")).floatValue();
+                    pos.position.set(data.x, data.y);
                 }
             }
 
-            if (data.containsKey("health")) {
+            if (data.health != null) {
                 HealthComponent health = entity.getComponent(HealthComponent.class);
                 if (health != null) {
-                    health.Health = ((Number) data.get("health")).intValue();
+                    health.Health = data.health;
                 }
             }
 
-            if (data.containsKey("damage") || data.containsKey("range") || data.containsKey("speed")) {
+            if (data.damage != null || data.range != null || data.speed != null) {
                 AttackComponent attack = entity.getComponent(AttackComponent.class);
                 if (attack != null) {
-                    if (data.containsKey("damage")) {
-                        attack.AttackDamage = ((Number) data.get("damage")).floatValue();
-                    }
-                    if (data.containsKey("range")) {
-                        attack.AttackRange = ((Number) data.get("range")).floatValue();
-                    }
-                    if (data.containsKey("speed")) {
-                        attack.AttackSpeed = ((Number) data.get("speed")).floatValue();
-                    }
+                    if (data.damage != null) attack.AttackDamage = data.damage;
+                    if (data.range != null) attack.AttackRange = data.range;
+                    if (data.speed != null) attack.AttackSpeed = data.speed;
                 }
             }
 
-            if (data.containsKey("resource")) {
-                RenderComponent render = entity.getComponent(RenderComponent.class);
-                if (render != null) {
-                    Gdx.app.log("LoadGame", "Note: Resource info available, but reloading textures is not implemented.");
+            if (entityType == EntityTypeComponent.EntityType.INVENTORY && data.inventory != null) {
+                InventoryComponent inventory = new InventoryComponent();
+                for (Map.Entry<String, Integer> entry : data.inventory.entrySet()) {
+                    try {
+                        ResourceTypeEnum type = ResourceTypeEnum.valueOf(entry.getKey());
+                        inventory.resources.put(type, entry.getValue());
+                    } catch (IllegalArgumentException e) {
+                        Gdx.app.log(this.getClass().getSimpleName(), "Unknown resource type in inventory: " + entry.getKey());
+                    }
                 }
+                entity.add(inventory);
             }
 
             engine.addEntity(entity);
         }
 
-        Gdx.app.log("LoadGame", "Loaded " + gameState.entities.size() + " entities from " + file.file().getAbsolutePath());
-    }
-
-    public void saveGame(String filePath) {
-        GameState gameState = new GameState();
-
-        ImmutableArray<Entity> allEntities = engine.getEntitiesFor(Family.all().get());
-
-        for (Entity entity : allEntities) {
-            Map<String, Object> entityData = new HashMap<>();
-
-            PositionComponent pos = entity.getComponent(PositionComponent.class);
-            if (pos != null) {
-                entityData.put("x", pos.position.x);
-                entityData.put("y", pos.position.y);
-            }
-
-            HealthComponent health = entity.getComponent(HealthComponent.class);
-            if (health != null) {
-                entityData.put("health", health.Health);
-            }
-
-            AttackComponent attack = entity.getComponent(AttackComponent.class);
-            if (attack != null) {
-                entityData.put("damage", attack.AttackDamage);
-                entityData.put("range", attack.AttackRange);
-                entityData.put("speed", attack.AttackSpeed);
-            }
-
-            RenderComponent render = entity.getComponent(RenderComponent.class);
-            if (render != null) {
-                if (render.sprite != null && render.sprite.getTexture() != null) {
-                    entityData.put("resource", render.sprite.getTexture().toString());
-                }
-                if (render.renderType != null) {
-                    entityData.put("renderType", render.renderType.name());
-                }
-            }
-
-            entityData.put("type", inferEntityType(entity));
-
-            gameState.entities.add(entityData);
-        }
-
-        FileHandle file = Gdx.files.local(filePath.endsWith(".json") ? filePath : filePath + ".json");
-        file.writeString(json.toJson(gameState), false);
-
-        Gdx.app.log("SaveGame", "Saved " + gameState.entities.size() + " entities to " + file.file().getAbsolutePath());
-    }
-
-    private String inferEntityType(Entity entity) {
-        RenderComponent render = entity.getComponent(RenderComponent.class);
-        if (render != null && render.renderType != null) {
-            return render.renderType.name();
-        }
-        if (entity.getComponent(AttackComponent.class) != null) {
-            return "TOWER";
-        }
-        if (entity.getComponent(HealthComponent.class) != null && entity.getComponent(PositionComponent.class) != null) {
-            return "OBJECT";
-        }
-        return "UNKNOWN";
+        Gdx.app.log(this.getClass().getSimpleName(), "Loaded " + gameState.entities.size() + " entities from " + file.file().getAbsolutePath());
     }
 }
-

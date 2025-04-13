@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
@@ -20,6 +21,7 @@ import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.util.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import lombok.Getter;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -34,6 +36,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private ExtendViewport gameWorldView;
     private ScreenViewport gameUi;
     private Stage stage;
+    @Getter
     private Engine engine;
     private BaseUI baseUI;
     private CameraControlSystem cameraControlSystem;
@@ -143,6 +146,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // create stock entity
         Entity stock = engine.createEntity();
         stock.add(new InventoryComponent());
+        stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
         engine.addEntity(stock);
 
         // setup resource tracking system
@@ -225,4 +229,5 @@ public class GameScreen implements Screen, ButtonClickObserver {
             baseUI.setGameMode(gameMode);
         }
     }
+
 }

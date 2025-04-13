@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
@@ -37,6 +38,8 @@ public class WallFactory {
         Entity wall = engine.createEntity();
         wall.add(new PositionComponent());
         wall.add(new HealthComponent());
+
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.WALL));
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;

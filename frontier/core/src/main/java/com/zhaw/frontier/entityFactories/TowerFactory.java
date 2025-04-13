@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.zhaw.frontier.components.AttackComponent;
-import com.zhaw.frontier.components.HealthComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.components.*;
 
 /**
  * A factory class responsible for creating Tower entities.
@@ -43,6 +40,8 @@ public class TowerFactory {
         tower.add(new PositionComponent());
         tower.add(new HealthComponent());
         tower.add(new AttackComponent());
+
+        tower.add(new EntityTypeComponent(EntityTypeComponent.EntityType.TOWER));
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;

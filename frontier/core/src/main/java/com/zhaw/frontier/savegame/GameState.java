@@ -1,9 +1,13 @@
 package com.zhaw.frontier.savegame;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 
 public class GameState {
-    public List<Map<String, Object>> entities = new ArrayList<>();
+    // Entity data for ashley engine
+    public ArrayList<EntityData> entities = new ArrayList<>();
+
+    // Additional data
+    public HashMap<String, Object> metadata = new HashMap<>();
 }
+

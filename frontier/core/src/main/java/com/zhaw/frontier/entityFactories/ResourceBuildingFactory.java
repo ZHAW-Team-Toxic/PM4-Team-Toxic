@@ -56,6 +56,8 @@ public class ResourceBuildingFactory {
         resourceProductionComponent.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1);
         resourceBuilding.add(resourceProductionComponent);
 
+        resourceBuilding.add(new EntityTypeComponent(EntityTypeComponent.EntityType.WOOD_RESOURCE_BUILDING));
+
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
         Texture texture = createPlaceHolder();

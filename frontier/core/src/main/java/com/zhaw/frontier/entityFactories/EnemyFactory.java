@@ -4,10 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.zhaw.frontier.components.EnemyComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
-import com.zhaw.frontier.components.VelocityComponent;
+import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
 
@@ -34,6 +31,9 @@ public class EnemyFactory {
     public static Entity createPatrolEnemy(float x, float y, AssetManager assetManager) {
         Entity enemy = createBaseEnemy(x, y, assetManager);
         enemy.add(new PatrolBehaviourComponent(30f));
+
+        enemy.add(new EntityTypeComponent(EntityTypeComponent.EntityType.PATROL_ENEMY));
+
         return enemy;
     }
 
@@ -53,6 +53,9 @@ public class EnemyFactory {
     public static Entity createIdleEnemy(float x, float y, AssetManager assetManager) {
         Entity enemy = createBaseEnemy(x, y, assetManager);
         enemy.add(new IdleBehaviourComponent());
+
+        enemy.add(new EntityTypeComponent(EntityTypeComponent.EntityType.IDLE_ENEMY));
+
         return enemy;
     }
 
