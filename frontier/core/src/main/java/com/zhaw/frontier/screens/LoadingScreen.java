@@ -45,14 +45,14 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("unpacked/titlescreen/Frontier_Knights_4.png", Texture.class);
         assetManager.load("unpacked/titlescreen/Frontier_Knights_5.png", Texture.class);
         assetManager.load("unpacked/titlescreen/Frontier_Knights_6.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_1.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_2.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_3.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_4.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_5.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_6.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_7.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/fireball_8.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_1.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_2.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_3.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_4.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_5.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_6.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_7.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Fireball_8.png", Texture.class);
         assetManager.load("unpacked/titlescreen/Frontier_Enemies.png", Texture.class);
         assetManager.load("unpacked/titlescreen/Frontier_Logo.png", Texture.class);
 

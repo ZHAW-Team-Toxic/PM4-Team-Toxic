@@ -152,22 +152,22 @@ public class StartScreen extends ScreenAdapter {
         this.fireballAnimation =
         new Animation<>(
             0.2f,
-            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_1.png"),
-            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_2.png"),
-            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_3.png"),
+            frontierGame.getAssetManager().get("unpacked/titlescreen/Fireball_1.png"),
+            frontierGame.getAssetManager().get("unpacked/titlescreen/Fireball_2.png"),
+            frontierGame.getAssetManager().get("unpacked/titlescreen/Fireball_3.png"),
             frontierGame
                 .getAssetManager()
-                .get("unpacked/titlescreen/fireball_4.png", Texture.class),
+                .get("unpacked/titlescreen/Fireball_4.png", Texture.class),
             frontierGame
                 .getAssetManager()
-                .get("unpacked/titlescreen/fireball_5.png", Texture.class),
+                .get("unpacked/titlescreen/Fireball_5.png", Texture.class),
             frontierGame
                 .getAssetManager()
-                .get("unpacked/titlescreen/fireball_6.png", Texture.class),
+                .get("unpacked/titlescreen/Fireball_6.png", Texture.class),
             frontierGame
                 .getAssetManager()
-                .get("unpacked/titlescreen/fireball_7.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_8.png", Texture.class)
+                .get("unpacked/titlescreen/Fireball_7.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/titlescreen/Fireball_8.png", Texture.class)
         );
         this.fireballAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
