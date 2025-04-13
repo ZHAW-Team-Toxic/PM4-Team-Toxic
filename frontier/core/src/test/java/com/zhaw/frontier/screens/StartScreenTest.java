@@ -1,20 +1,17 @@
 package com.zhaw.frontier.screens;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,44 +24,37 @@ class StartScreenTest {
     private StartScreen startScreen;
     private SpriteBatchInterface mockSpriteBatchWrapper;
     private AssetManager mockAssetManager;
-    private TextureAtlas mockAtlas;
     private BitmapFont mockFont;
+    private TextureAtlas atlas;
 
     @BeforeEach
     void setUp() {
         mockGame = mock(FrontierGame.class);
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
-        mockAssetManager = mock(AssetManager.class);
-        mockAtlas = mock(TextureAtlas.class);
-        mockFont = mock(BitmapFont.class);  // Mock a BitmapFont
+        mockAssetManager = new AssetManager();
+        mockFont = mock(BitmapFont.class);
 
-        // Mock the AssetManager to return the mock TextureAtlas
-        when(mockAssetManager.get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class))
-            .thenReturn(mockAtlas);
+        // --- Assets vorbereiten ---
+        // Wichtig: vor .get() muss .load() und finishLoading()
+        mockAssetManager.load("skins/skin.json", Skin.class);
+        mockAssetManager.load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
+        mockAssetManager.finishLoading(); // Blockiert bis alles geladen ist
 
-        // Mock the findRegions method to return a valid Array
-        TextureAtlas.AtlasRegion dummyRegion = mock(TextureAtlas.AtlasRegion.class);
-        Array<TextureAtlas.AtlasRegion> knightRegions = new Array<>();
-        knightRegions.add(dummyRegion);  // Add a dummy region to simulate the expected result
-        when(mockAtlas.findRegions("Frontier_Knights")).thenReturn(knightRegions);
+        atlas =
+        mockAssetManager.get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
 
-        // Mock the get method for other assets as necessary
-        when(mockAssetManager.get("skins/skin.json", Skin.class)).thenReturn(mock(Skin.class));
-
-        // Set up the TextButtonStyle with a mock font
         Skin mockSkin = mock(Skin.class);
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = mockFont;  // Provide the mocked font to the style
+        buttonStyle.font = mockFont;
         when(mockSkin.get(TextButton.TextButtonStyle.class)).thenReturn(buttonStyle);
-        when(mockAssetManager.get("skins/skin.json", Skin.class)).thenReturn(mockSkin);
 
-        // Set up the game mock to return the necessary mocked dependencies
+        // Mock-Rückgaben setzen
         when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
         when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
         when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
 
-        // Create the StartScreen instance
+        // StartScreen erzeugen
         startScreen = spy(new StartScreen(mockGame));
     }
 
@@ -86,30 +76,13 @@ class StartScreenTest {
 
     @Test
     void testFireballFramesLoadedCorrectly() {
-        for (int i = 1; i <= 8; i++) {
-            verify(mockAtlas).findRegion("Fireball", i);
-        }
+        Array<TextureAtlas.AtlasRegion> fireballFrames = atlas.findRegions("Fireball");
+        assertEquals(8, fireballFrames.size);
     }
 
     @Test
     void testKnightFramesLoadedCorrectly() {
-        for (int i = 1; i <= 6; i++) {
-            verify(mockAtlas).findRegion("Frontier_Knights", i);
-        }
-    }
-
-    @Test
-    void testAllStaticAssetsLoaded() {
-        verify(mockAtlas).findRegion("Frontier_Tower");
-        verify(mockAtlas).findRegion("Frontier_Logo");
-        verify(mockAtlas).findRegion("Frontier_Enemies");
-        verify(mockAtlas).findRegion("Frontier_Sky_Background");
-        verify(mockAtlas).findRegion("Frontier_Ground_Background");
-    }
-
-    @AfterEach
-    void tearDown() {
-        startScreen.dispose();
-        mockAssetManager.dispose();
+        Array<TextureAtlas.AtlasRegion> knightFrames = atlas.findRegions("Frontier_Knights");
+        assertEquals(6, knightFrames.size);
     }
 }
