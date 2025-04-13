@@ -38,6 +38,24 @@ public class LoadingScreen extends ScreenAdapter {
         // Add new assets here
         assetManager.load("unpacked/Frontier Sky Background.png", Texture.class);
         assetManager.load("unpacked/Frontier Ground Background.png", Texture.class);
+        assetManager.load("unpacked/Frontier Tower.png", Texture.class);
+        assetManager.load("unpacked/Frontier Knights 1.png", Texture.class);
+        assetManager.load("unpacked/Frontier Knights 2.png", Texture.class);
+        assetManager.load("unpacked/Frontier Knights 3.png", Texture.class);
+        assetManager.load("unpacked/Frontier Knights 4.png", Texture.class);
+        assetManager.load("unpacked/Frontier Knights 5.png", Texture.class);
+        assetManager.load("unpacked/Frontier Knights 6.png", Texture.class);
+        assetManager.load("unpacked/fireball_1.png", Texture.class);
+        assetManager.load("unpacked/fireball_2.png", Texture.class);
+        assetManager.load("unpacked/fireball_3.png", Texture.class);
+        assetManager.load("unpacked/fireball_4.png", Texture.class);
+        assetManager.load("unpacked/fireball_5.png", Texture.class);
+        assetManager.load("unpacked/fireball_6.png", Texture.class);
+        assetManager.load("unpacked/fireball_7.png", Texture.class);
+        assetManager.load("unpacked/fireball_8.png", Texture.class);
+        assetManager.load("unpacked/Frontier Enemies.png", Texture.class);
+        assetManager.load("unpacked/Frontier Logo.png", Texture.class);
+
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);

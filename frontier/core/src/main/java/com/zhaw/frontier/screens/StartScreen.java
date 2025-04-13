@@ -4,13 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
@@ -26,10 +31,34 @@ public class StartScreen extends ScreenAdapter {
     private final Skin skin;
     private final Texture skyeBackground;
     private final Texture groundBackground;
+    private final Texture towerBackground;
+    private final Animation<Texture> knightAnimation;
+    private final Animation<Texture> fireballAnimation;
+    private final Texture enemyTexture;
+    private final Texture logoTexture;
 
-    // Scroll data
     private float scrollX = 0f;
     private final float scrollSpeed = 1f;
+    private float stateTimeKnights = 0f;
+    private float stateTimeFireball = 0f;
+    private float logoScaleTime = 0f;
+
+    private final Array<Fireball> flyingFireballs = new Array<>();
+
+    Timer timer = new Timer();
+
+
+    private static class Fireball {
+        float x, y;
+        float speedX, speedY;
+
+        public Fireball(float x, float y, float speedX, float speedY) {
+            this.x = x;
+            this.y = y;
+            this.speedX = speedX;
+            this.speedY = speedY;
+        }
+    }
 
     public StartScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -78,7 +107,44 @@ public class StartScreen extends ScreenAdapter {
 
         this.skyeBackground = frontierGame.getAssetManager().get("unpacked/Frontier Sky Background.png", Texture.class);
         this.groundBackground = frontierGame.getAssetManager().get("unpacked/Frontier Ground Background.png", Texture.class);
+        this.towerBackground = frontierGame.getAssetManager().get("unpacked/Frontier Tower.png", Texture.class);
 
+        this.knightAnimation = new Animation<>(0.2f,
+            frontierGame.getAssetManager().get("unpacked/Frontier Knights 1.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/Frontier Knights 2.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/Frontier Knights 3.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/Frontier Knights 4.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/Frontier Knights 5.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/Frontier Knights 6.png", Texture.class)
+        );
+
+        this.knightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        this.fireballAnimation = new Animation<>(0.2f,
+            frontierGame.getAssetManager().get("unpacked/fireball_1.png"),
+            frontierGame.getAssetManager().get("unpacked/fireball_2.png"),
+            frontierGame.getAssetManager().get("unpacked/fireball_3.png"),
+            frontierGame.getAssetManager().get("unpacked/fireball_4.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/fireball_5.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/fireball_6.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/fireball_7.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/fireball_8.png", Texture.class)
+        );
+        this.fireballAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        this.enemyTexture = frontierGame.getAssetManager().get("unpacked/Frontier Enemies.png", Texture.class);
+
+        this.logoTexture = frontierGame.getAssetManager().get("unpacked/Frontier Logo.png", Texture.class);
+
+        // Spawn 1–3 fireballs
+        int numFireballs = MathUtils.random(2, 4);
+        for (int i = 0; i < numFireballs; i++) {
+            float startX = -MathUtils.random(1f, 2.5f);
+            float startY = background.getWorldHeight() + MathUtils.random(1f, 3f);
+            float speedX = MathUtils.random(3f, 5f);
+            float speedY = -MathUtils.random(1f, 2f);
+            flyingFireballs.add(new Fireball(startX, startY, speedX, speedY));
+        }
     }
 
     @Override
@@ -89,9 +155,16 @@ public class StartScreen extends ScreenAdapter {
         spriteBatchWrapper.begin();
 
         renderScrollingBackground(delta, spriteBatchWrapper.getBatch());
+
         spriteBatchWrapper.draw(groundBackground, 0, 0, background.getWorldWidth(), background.getWorldHeight());
 
+        renderTowerAndKnights(delta);
 
+        renderFlyingFireball(delta, spriteBatchWrapper.getBatch());
+
+        renderEnemies();
+
+        renderLogo(delta);
 
         spriteBatchWrapper.end();
 
@@ -99,6 +172,50 @@ public class StartScreen extends ScreenAdapter {
         stage.draw();
     }
 
+    private void renderTowerAndKnights(float delta) {
+        float towerAspect = (float) towerBackground.getWidth() / towerBackground.getHeight();
+        float towerWidth = background.getWorldHeight() * towerAspect;
+        spriteBatchWrapper.draw(towerBackground, 3, 0, towerWidth, background.getWorldHeight());
+
+        spriteBatchWrapper.draw(knightAnimation.getKeyFrame(stateTimeKnights), 0, -2, towerWidth, background.getWorldHeight());
+        stateTimeKnights += delta;
+    }
+
+    private void renderEnemies() {
+        float enemyAspect = (float) enemyTexture.getWidth() / enemyTexture.getHeight();
+        float scale = 0.55f; // 25% of full height
+        float desiredHeight = background.getWorldHeight() * scale;
+        float enemyWidth = desiredHeight * enemyAspect;
+
+        spriteBatchWrapper.draw(enemyTexture, 8f, (-0.5f), enemyWidth, desiredHeight);
+    }
+
+    private void renderLogo(float delta) {
+        float logoAspect = (float) logoTexture.getWidth() / logoTexture.getHeight();
+        float scaleLogo = 0.2f;
+        float scalePulse = 1f + 0.05f * MathUtils.sin(logoScaleTime * 2f);
+        float desiredHeightLogo = background.getWorldHeight() * scaleLogo;
+        float logoWidth = desiredHeightLogo * logoAspect;
+        float logoHeight = desiredHeightLogo;
+
+        // Logo position (bottom-left of unscaled image)
+        float logoX = 3.5f;
+        float logoY = 6f;
+
+        SpriteBatch batch = spriteBatchWrapper.getBatch();
+        TextureRegion logoRegion = new TextureRegion(logoTexture);
+
+        batch.draw(
+            logoRegion,
+            logoX, logoY,
+            logoWidth / 2f, logoHeight / 2f,   // originX/Y → center of logo
+            logoWidth, logoHeight,            // size
+            scalePulse, scalePulse,           // scaleX/Y
+            0f                                // no rotation
+        );
+
+        logoScaleTime += delta;
+    }
 
     private void renderScrollingBackground(float delta, SpriteBatch renderer) {
         scrollX += scrollSpeed * delta;
@@ -106,7 +223,6 @@ public class StartScreen extends ScreenAdapter {
         float textureAspect = (float) skyeBackground.getWidth() / skyeBackground.getHeight();
         float textureWidth = background.getWorldHeight() * textureAspect;
 
-        // Manual float wrap to avoid black gap
         if (scrollX >= textureWidth) {
             scrollX -= textureWidth;
         } else if (scrollX < 0) {
@@ -118,11 +234,30 @@ public class StartScreen extends ScreenAdapter {
 
         float worldWidth = background.getWorldWidth();
 
-        // Always draw enough tiles to fill the screen
         for (float x = -scrollX; x < worldWidth; x += textureWidth) {
             renderer.draw(skyeBackground, x, 0, textureWidth, background.getWorldHeight());
         }
+    }
 
+    private void renderFlyingFireball(float delta, SpriteBatch renderer) {
+        stateTimeFireball += delta;
+
+        Texture currentFrame = fireballAnimation.getKeyFrame(stateTimeFireball);
+        float fireballAspect = (float) currentFrame.getWidth() / currentFrame.getHeight();
+        float fireballHeight = 1.2f;
+        float fireballWidth = fireballHeight * fireballAspect;
+
+        for (Fireball f : flyingFireballs) {
+            f.x += f.speedX * delta;
+            f.y += f.speedY * delta;
+
+            if (f.x > background.getWorldWidth() || f.y < -fireballHeight) {
+                f.x = -MathUtils.random(1f, 3f);
+                f.y = background.getWorldHeight() + MathUtils.random(1f, 3f);
+            }
+
+            renderer.draw(currentFrame, f.x, f.y, fireballWidth, fireballHeight);
+        }
     }
 
     @Override
