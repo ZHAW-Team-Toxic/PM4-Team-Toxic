@@ -2,6 +2,7 @@ package com.zhaw.frontier.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -119,27 +120,11 @@ public class StartScreen extends ScreenAdapter {
 
         this.towerBackground = atlas.findRegion("Frontier_Tower");
 
-        Array<TextureRegion> knightFrames = new Array<>();
-        knightFrames.add(atlas.findRegion("Frontier_Knights", 1));
-        knightFrames.add(atlas.findRegion("Frontier_Knights", 2));
-        knightFrames.add(atlas.findRegion("Frontier_Knights", 3));
-        knightFrames.add(atlas.findRegion("Frontier_Knights", 4));
-        knightFrames.add(atlas.findRegion("Frontier_Knights", 5));
-        knightFrames.add(atlas.findRegion("Frontier_Knights", 6));
-
+        Array<TextureAtlas.AtlasRegion> knightFrames = atlas.findRegions("Frontier_Knights");
         this.knightAnimation = new Animation<>(0.2f, knightFrames, Animation.PlayMode.LOOP);
 
-        Array<TextureRegion> fireballFrames = new Array<>();
-        fireballFrames.add(atlas.findRegion("Fireball", 1));
-        fireballFrames.add(atlas.findRegion("Fireball", 2));
-        fireballFrames.add(atlas.findRegion("Fireball", 3));
-        fireballFrames.add(atlas.findRegion("Fireball", 4));
-        fireballFrames.add(atlas.findRegion("Fireball", 5));
-        fireballFrames.add(atlas.findRegion("Fireball", 6));
-        fireballFrames.add(atlas.findRegion("Fireball", 7));
-        fireballFrames.add(atlas.findRegion("Fireball", 8));
-
-        fireballAnimation = new Animation<>(0.2f, fireballFrames, Animation.PlayMode.LOOP);
+        Array<TextureAtlas.AtlasRegion> fireballFrames = atlas.findRegions("Fireball");
+        this.fireballAnimation = new Animation<>(0.1f, fireballFrames);
 
         this.fireballAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
@@ -294,6 +279,15 @@ public class StartScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
+
+        AssetManager manager = frontierGame.getAssetManager();
+        if (manager.isLoaded("packed/titlescreen/titlescreenAtlas.atlas")) {
+            manager.unload("packed/titlescreen/titlescreenAtlas.atlas");
+        }
+
+        if (manager.isLoaded("skins/skin.json")) {
+            manager.unload("skins/skin.json"); // nur falls NUR StartScreen das Skin verwendet
+        }
     }
 
     public Stage getStage() {
