@@ -279,15 +279,6 @@ public class StartScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-
-        AssetManager manager = frontierGame.getAssetManager();
-        if (manager.isLoaded("packed/titlescreen/titlescreenAtlas.atlas")) {
-            manager.unload("packed/titlescreen/titlescreenAtlas.atlas");
-        }
-
-        if (manager.isLoaded("skins/skin.json")) {
-            manager.unload("skins/skin.json"); // nur falls NUR StartScreen das Skin verwendet
-        }
     }
 
     public Stage getStage() {

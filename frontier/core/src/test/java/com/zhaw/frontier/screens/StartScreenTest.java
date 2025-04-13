@@ -10,9 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +28,7 @@ class StartScreenTest {
     private SpriteBatchInterface mockSpriteBatchWrapper;
     private AssetManager mockAssetManager;
     private TextureAtlas mockAtlas;
+    private BitmapFont mockFont;
 
     @BeforeEach
     void setUp() {
@@ -34,37 +37,34 @@ class StartScreenTest {
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
         mockAssetManager = mock(AssetManager.class);
         mockAtlas = mock(TextureAtlas.class);
+        mockFont = mock(BitmapFont.class);  // Mock a BitmapFont
 
-        // Setup SpriteBatch & AssetManager
-        when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
-        when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
-        when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
-
-        // Dummy TextureRegion für alle Regionen
-        TextureAtlas.AtlasRegion dummyRegion = mock(TextureAtlas.AtlasRegion.class);
-        when(mockAtlas.findRegion(anyString())).thenReturn(dummyRegion);
-        when(mockAtlas.findRegion(anyString(), anyInt())).thenReturn(dummyRegion);
-
-        // Rückgabe des Atlas
+        // Mock the AssetManager to return the mock TextureAtlas
         when(mockAssetManager.get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class))
             .thenReturn(mockAtlas);
 
-        // Dummy Skin & Styles
-        Skin mockSkin = new Skin();
-        BitmapFont dummyFont = new BitmapFont();
-        BitmapFont archivoBlackFont = new BitmapFont();
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = dummyFont;
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = dummyFont;
+        // Mock the findRegions method to return a valid Array
+        TextureAtlas.AtlasRegion dummyRegion = mock(TextureAtlas.AtlasRegion.class);
+        Array<TextureAtlas.AtlasRegion> knightRegions = new Array<>();
+        knightRegions.add(dummyRegion);  // Add a dummy region to simulate the expected result
+        when(mockAtlas.findRegions("Frontier_Knights")).thenReturn(knightRegions);
 
-        mockSkin.add("default", buttonStyle);
-        mockSkin.add("default", labelStyle);
-        mockSkin.add("default-font", dummyFont);
-        mockSkin.add("ArchivoBlack", archivoBlackFont, BitmapFont.class);
+        // Mock the get method for other assets as necessary
+        when(mockAssetManager.get("skins/skin.json", Skin.class)).thenReturn(mock(Skin.class));
+
+        // Set up the TextButtonStyle with a mock font
+        Skin mockSkin = mock(Skin.class);
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = mockFont;  // Provide the mocked font to the style
+        when(mockSkin.get(TextButton.TextButtonStyle.class)).thenReturn(buttonStyle);
         when(mockAssetManager.get("skins/skin.json", Skin.class)).thenReturn(mockSkin);
 
-        // Starte Screen
+        // Set up the game mock to return the necessary mocked dependencies
+        when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
+        when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
+        when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
+
+        // Create the StartScreen instance
         startScreen = spy(new StartScreen(mockGame));
     }
 
@@ -105,5 +105,11 @@ class StartScreenTest {
         verify(mockAtlas).findRegion("Frontier_Enemies");
         verify(mockAtlas).findRegion("Frontier_Sky_Background");
         verify(mockAtlas).findRegion("Frontier_Ground_Background");
+    }
+
+    @AfterEach
+    void tearDown() {
+        startScreen.dispose();
+        mockAssetManager.dispose();
     }
 }
