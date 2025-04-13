@@ -117,7 +117,8 @@ public class ResourceTrackingSystemTest {
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
 
-        testEngine.update(0.1f);
+        ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
+        rps.endTurn();
 
         InventoryComponent inventory = testEngine
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
@@ -149,7 +150,8 @@ public class ResourceTrackingSystemTest {
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
 
-        testEngine.update(0.1f);
+        ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
+        rps.endTurn();
 
         InventoryComponent inventory = testEngine
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
@@ -181,7 +183,8 @@ public class ResourceTrackingSystemTest {
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
 
-        testEngine.update(0.1f);
+        ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
+        rps.endTurn();
 
         InventoryComponent inventory = testEngine
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
@@ -227,7 +230,8 @@ public class ResourceTrackingSystemTest {
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
 
-        testEngine.update(0.1f);
+        ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
+        rps.endTurn();
 
         ResourceProductionComponent resourceProductionComponent = building.getComponent(
             ResourceProductionComponent.class

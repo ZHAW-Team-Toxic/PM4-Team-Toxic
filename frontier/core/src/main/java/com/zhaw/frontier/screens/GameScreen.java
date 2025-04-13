@@ -185,7 +185,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
 
-
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
         //setup render system
         engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
@@ -196,7 +195,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
-
 
         // create inventory ui
         Entity inventoryEntity = engine
