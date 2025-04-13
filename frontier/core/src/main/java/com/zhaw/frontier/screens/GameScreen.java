@@ -143,7 +143,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Animation System.");
         engine.addSystem(new AnimationSystem());
         Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
-      
+
         engine.addSystem(new SoundSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
@@ -177,7 +177,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug("[DEBUG] - GameScreen", "Stock entity created.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
-        engine.addSystem(new ResourceProductionSystem(engine));
+        this.resourceProductionSystem = new ResourceProductionSystem(engine);
+        engine.addSystem(resourceProductionSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 
         // create game ui
@@ -195,7 +196,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
-     
+
 
         // create inventory ui
         Entity inventoryEntity = engine
