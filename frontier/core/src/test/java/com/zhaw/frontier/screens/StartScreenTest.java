@@ -3,6 +3,7 @@ package com.zhaw.frontier.screens;
 import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -30,6 +31,25 @@ class StartScreenTest {
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
         mockAssetManager = new AssetManager();
         mockAssetManager.load("skins/skin.json", Skin.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Sky_Background.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Ground_Background.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Tower.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_1.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_2.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_3.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_4.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_5.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_6.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Enemies.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_1.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_2.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_3.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_4.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_5.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_6.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_7.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/fireball_8.png", Texture.class);
+        mockAssetManager.load("unpacked/titlescreen/Frontier_Logo.png", Texture.class);
         mockAssetManager.finishLoading();
 
         when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);

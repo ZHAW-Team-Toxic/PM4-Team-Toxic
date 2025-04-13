@@ -47,8 +47,8 @@ public class StartScreen extends ScreenAdapter {
 
     Timer timer = new Timer();
 
-
     private static class Fireball {
+
         float x, y;
         float speedX, speedY;
 
@@ -80,61 +80,104 @@ public class StartScreen extends ScreenAdapter {
         TextButton loadButton = new TextButton("Load", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
-        startButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                frontierGame.switchScreen(new GameScreen(frontierGame));
+        startButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    frontierGame.switchScreen(new GameScreen(frontierGame));
+                }
             }
-        });
+        );
 
-        loadButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Loading...");
+        loadButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("Loading...");
+                }
             }
-        });
+        );
 
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+        exitButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.exit();
+                }
             }
-        });
+        );
 
         table.add(startButton).pad(10).row();
         table.add(loadButton).pad(10).row();
         table.add(exitButton).pad(10).row();
 
-        this.skyeBackground = frontierGame.getAssetManager().get("unpacked/Frontier Sky Background.png", Texture.class);
-        this.groundBackground = frontierGame.getAssetManager().get("unpacked/Frontier Ground Background.png", Texture.class);
-        this.towerBackground = frontierGame.getAssetManager().get("unpacked/Frontier Tower.png", Texture.class);
+        this.skyeBackground =
+        frontierGame
+            .getAssetManager()
+            .get("unpacked/titlescreen/Frontier_Sky_Background.png", Texture.class);
+        this.groundBackground =
+        frontierGame
+            .getAssetManager()
+            .get("unpacked/titlescreen/Frontier_Ground_Background.png", Texture.class);
+        this.towerBackground =
+        frontierGame
+            .getAssetManager()
+            .get("unpacked/titlescreen/Frontier_Tower.png", Texture.class);
 
-        this.knightAnimation = new Animation<>(0.2f,
-            frontierGame.getAssetManager().get("unpacked/Frontier Knights 1.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/Frontier Knights 2.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/Frontier Knights 3.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/Frontier Knights 4.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/Frontier Knights 5.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/Frontier Knights 6.png", Texture.class)
+        this.knightAnimation =
+        new Animation<>(
+            0.2f,
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/Frontier_Knights_1.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/Frontier_Knights_2.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/Frontier_Knights_3.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/Frontier_Knights_4.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/Frontier_Knights_5.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/Frontier_Knights_6.png", Texture.class)
         );
 
         this.knightAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        this.fireballAnimation = new Animation<>(0.2f,
-            frontierGame.getAssetManager().get("unpacked/fireball_1.png"),
-            frontierGame.getAssetManager().get("unpacked/fireball_2.png"),
-            frontierGame.getAssetManager().get("unpacked/fireball_3.png"),
-            frontierGame.getAssetManager().get("unpacked/fireball_4.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/fireball_5.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/fireball_6.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/fireball_7.png", Texture.class),
-            frontierGame.getAssetManager().get("unpacked/fireball_8.png", Texture.class)
+        this.fireballAnimation =
+        new Animation<>(
+            0.2f,
+            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_1.png"),
+            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_2.png"),
+            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_3.png"),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/fireball_4.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/fireball_5.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/fireball_6.png", Texture.class),
+            frontierGame
+                .getAssetManager()
+                .get("unpacked/titlescreen/fireball_7.png", Texture.class),
+            frontierGame.getAssetManager().get("unpacked/titlescreen/fireball_8.png", Texture.class)
         );
         this.fireballAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        this.enemyTexture = frontierGame.getAssetManager().get("unpacked/Frontier Enemies.png", Texture.class);
+        this.enemyTexture =
+        frontierGame
+            .getAssetManager()
+            .get("unpacked/titlescreen/Frontier_Enemies.png", Texture.class);
 
-        this.logoTexture = frontierGame.getAssetManager().get("unpacked/Frontier Logo.png", Texture.class);
+        this.logoTexture =
+        frontierGame.getAssetManager().get("unpacked/titlescreen/Frontier_Logo.png", Texture.class);
 
         // Spawn 1–3 fireballs
         int numFireballs = MathUtils.random(2, 4);
@@ -156,7 +199,13 @@ public class StartScreen extends ScreenAdapter {
 
         renderScrollingBackground(delta, spriteBatchWrapper.getBatch());
 
-        spriteBatchWrapper.draw(groundBackground, 0, 0, background.getWorldWidth(), background.getWorldHeight());
+        spriteBatchWrapper.draw(
+            groundBackground,
+            0,
+            0,
+            background.getWorldWidth(),
+            background.getWorldHeight()
+        );
 
         renderTowerAndKnights(delta);
 
@@ -177,7 +226,13 @@ public class StartScreen extends ScreenAdapter {
         float towerWidth = background.getWorldHeight() * towerAspect;
         spriteBatchWrapper.draw(towerBackground, 3, 0, towerWidth, background.getWorldHeight());
 
-        spriteBatchWrapper.draw(knightAnimation.getKeyFrame(stateTimeKnights), 0, -2, towerWidth, background.getWorldHeight());
+        spriteBatchWrapper.draw(
+            knightAnimation.getKeyFrame(stateTimeKnights),
+            0,
+            -2,
+            towerWidth,
+            background.getWorldHeight()
+        );
         stateTimeKnights += delta;
     }
 
@@ -207,11 +262,15 @@ public class StartScreen extends ScreenAdapter {
 
         batch.draw(
             logoRegion,
-            logoX, logoY,
-            logoWidth / 2f, logoHeight / 2f,   // originX/Y → center of logo
-            logoWidth, logoHeight,            // size
-            scalePulse, scalePulse,           // scaleX/Y
-            0f                                // no rotation
+            logoX,
+            logoY,
+            logoWidth / 2f,
+            logoHeight / 2f, // originX/Y → center of logo
+            logoWidth,
+            logoHeight, // size
+            scalePulse,
+            scalePulse, // scaleX/Y
+            0f // no rotation
         );
 
         logoScaleTime += delta;

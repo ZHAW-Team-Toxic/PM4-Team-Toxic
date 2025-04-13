@@ -36,25 +36,25 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void show() {
         // Add new assets here
-        assetManager.load("unpacked/Frontier Sky Background.png", Texture.class);
-        assetManager.load("unpacked/Frontier Ground Background.png", Texture.class);
-        assetManager.load("unpacked/Frontier Tower.png", Texture.class);
-        assetManager.load("unpacked/Frontier Knights 1.png", Texture.class);
-        assetManager.load("unpacked/Frontier Knights 2.png", Texture.class);
-        assetManager.load("unpacked/Frontier Knights 3.png", Texture.class);
-        assetManager.load("unpacked/Frontier Knights 4.png", Texture.class);
-        assetManager.load("unpacked/Frontier Knights 5.png", Texture.class);
-        assetManager.load("unpacked/Frontier Knights 6.png", Texture.class);
-        assetManager.load("unpacked/fireball_1.png", Texture.class);
-        assetManager.load("unpacked/fireball_2.png", Texture.class);
-        assetManager.load("unpacked/fireball_3.png", Texture.class);
-        assetManager.load("unpacked/fireball_4.png", Texture.class);
-        assetManager.load("unpacked/fireball_5.png", Texture.class);
-        assetManager.load("unpacked/fireball_6.png", Texture.class);
-        assetManager.load("unpacked/fireball_7.png", Texture.class);
-        assetManager.load("unpacked/fireball_8.png", Texture.class);
-        assetManager.load("unpacked/Frontier Enemies.png", Texture.class);
-        assetManager.load("unpacked/Frontier Logo.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Sky_Background.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Ground_Background.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Tower.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Knights_1.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Knights_2.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Knights_3.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Knights_4.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Knights_5.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Knights_6.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_1.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_2.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_3.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_4.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_5.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_6.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_7.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/fireball_8.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Enemies.png", Texture.class);
+        assetManager.load("unpacked/titlescreen/Frontier_Logo.png", Texture.class);
 
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
