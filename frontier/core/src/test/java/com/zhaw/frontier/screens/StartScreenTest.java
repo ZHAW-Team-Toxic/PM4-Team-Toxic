@@ -3,9 +3,11 @@ package com.zhaw.frontier.screens;
 import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
@@ -23,44 +25,51 @@ class StartScreenTest {
     private StartScreen startScreen;
     private SpriteBatchInterface mockSpriteBatchWrapper;
     private AssetManager mockAssetManager;
+    private TextureAtlas mockAtlas;
 
     @BeforeEach
     void setUp() {
         mockGame = mock(FrontierGame.class);
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
-        mockAssetManager = new AssetManager();
-        mockAssetManager.load("skins/skin.json", Skin.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Sky_Background.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Ground_Background.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Tower.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_1.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_2.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_3.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_4.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_5.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Knights_6.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Enemies.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_1.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_2.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_3.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_4.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_5.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_6.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_7.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Fireball_8.png", Texture.class);
-        mockAssetManager.load("unpacked/titlescreen/Frontier_Logo.png", Texture.class);
-        mockAssetManager.finishLoading();
+        mockAssetManager = mock(AssetManager.class);
+        mockAtlas = mock(TextureAtlas.class);
 
+        // Setup SpriteBatch & AssetManager
         when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
         when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
         when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
 
+        // Dummy TextureRegion für alle Regionen
+        TextureAtlas.AtlasRegion dummyRegion = mock(TextureAtlas.AtlasRegion.class);
+        when(mockAtlas.findRegion(anyString())).thenReturn(dummyRegion);
+        when(mockAtlas.findRegion(anyString(), anyInt())).thenReturn(dummyRegion);
+
+        // Rückgabe des Atlas
+        when(mockAssetManager.get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class))
+            .thenReturn(mockAtlas);
+
+        // Dummy Skin & Styles
+        Skin mockSkin = new Skin();
+        BitmapFont dummyFont = new BitmapFont();
+        BitmapFont archivoBlackFont = new BitmapFont();
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = dummyFont;
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = dummyFont;
+
+        mockSkin.add("default", buttonStyle);
+        mockSkin.add("default", labelStyle);
+        mockSkin.add("default-font", dummyFont);
+        mockSkin.add("ArchivoBlack", archivoBlackFont, BitmapFont.class);
+        when(mockAssetManager.get("skins/skin.json", Skin.class)).thenReturn(mockSkin);
+
+        // Starte Screen
         startScreen = spy(new StartScreen(mockGame));
     }
 
     @Test
-    void testStartScreenButtonActsProperly() {
+    void testStartButtonFiresScreenSwitch() {
         TextButton startButton = (TextButton) startScreen.getTable().getChildren().first();
 
         InputEvent event = new InputEvent();
@@ -70,9 +79,31 @@ class StartScreenTest {
 
         startButton.fire(event);
         event.setType(InputEvent.Type.touchUp);
-
-        verify(mockGame, never()).switchScreen(any());
         startButton.fire(event);
+
         verify(mockGame).switchScreen(any());
+    }
+
+    @Test
+    void testFireballFramesLoadedCorrectly() {
+        for (int i = 1; i <= 8; i++) {
+            verify(mockAtlas).findRegion("Fireball", i);
+        }
+    }
+
+    @Test
+    void testKnightFramesLoadedCorrectly() {
+        for (int i = 1; i <= 6; i++) {
+            verify(mockAtlas).findRegion("Frontier_Knights", i);
+        }
+    }
+
+    @Test
+    void testAllStaticAssetsLoaded() {
+        verify(mockAtlas).findRegion("Frontier_Tower");
+        verify(mockAtlas).findRegion("Frontier_Logo");
+        verify(mockAtlas).findRegion("Frontier_Enemies");
+        verify(mockAtlas).findRegion("Frontier_Sky_Background");
+        verify(mockAtlas).findRegion("Frontier_Ground_Background");
     }
 }

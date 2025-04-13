@@ -36,26 +36,7 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void show() {
         // Add new assets here
-        assetManager.load("unpacked/titlescreen/Frontier_Sky_Background.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Ground_Background.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Tower.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Knights_1.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Knights_2.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Knights_3.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Knights_4.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Knights_5.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Knights_6.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_1.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_2.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_3.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_4.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_5.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_6.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_7.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Fireball_8.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Enemies.png", Texture.class);
-        assetManager.load("unpacked/titlescreen/Frontier_Logo.png", Texture.class);
-
+        assetManager.load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);
