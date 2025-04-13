@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.*;
 
@@ -92,9 +91,8 @@ public class ResourceBuildingFactory {
         render.heightInTiles = 1;
 
         TextureRegion region = createPlaceholderRegion(placeholderColor, TILE_SIZE);
-        LayeredSprite sprite = new LayeredSprite(region, 0);
-        List<LayeredSprite> layers = new ArrayList<>(List.of(sprite));
-        render.sprites.put(new TileOffset(0, 0), layers);
+        render.sprites.put(new TileOffset(0, 0), new TextureRegion(region));
+        render.zIndex = 10;
 
         // Resource production logic
         ResourceProductionComponent resourceProduction = new ResourceProductionComponent();

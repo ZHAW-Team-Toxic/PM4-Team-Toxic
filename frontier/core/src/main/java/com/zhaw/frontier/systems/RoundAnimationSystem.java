@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.RoundAnimationComponent;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-import java.util.List;
 
 public class RoundAnimationSystem {
 
@@ -43,14 +41,9 @@ public class RoundAnimationSystem {
             int clampedIndex = Math.min(anim.currentFrameIndex, frames.size - 1);
             TextureRegion newFrame = frames.get(clampedIndex);
 
-            List<LayeredSprite> layers = render.sprites.get(offset);
-            if (layers == null) continue;
-
-            for (LayeredSprite layer : layers) {
-                if (layer.zIndex == 10) {
-                    layer.region.setRegion(newFrame);
-                    break;
-                }
+            if (newFrame != null) {
+                // Sprite aktualisieren
+                render.sprites.put(offset, newFrame);
             }
         }
     }

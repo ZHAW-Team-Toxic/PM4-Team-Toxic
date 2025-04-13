@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.QueueAnimation;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
@@ -157,12 +156,8 @@ public class QueueAnimationManager {
                 if (currentFrameIndex != anim.lastFrameIndex) {
                     TextureRegion frame = animation.getKeyFrame(anim.stateTime);
 
-                    render.sprites.forEach((offset, layers) -> {
-                        for (LayeredSprite layer : layers) {
-                            if (layer.zIndex == 0) {
-                                layer.region = frame;
-                            }
-                        }
+                    render.sprites.forEach((offset, region) -> {
+                        region.setRegion(frame);
                     });
                     anim.lastFrameIndex = currentFrameIndex;
                 }
@@ -193,12 +188,8 @@ public class QueueAnimationManager {
                         );
                         TextureRegion frame = animation.getKeyFrame(anim.stateTimes.get(type));
 
-                        render.sprites.forEach((offset, layers) -> {
-                            for (LayeredSprite layer : layers) {
-                                if (layer.zIndex == 0) {
-                                    layer.region = frame;
-                                }
-                            }
+                        render.sprites.forEach((offset, region) -> {
+                            region.setRegion(frame);
                         });
                         // optional add last frame for buildings
                     }

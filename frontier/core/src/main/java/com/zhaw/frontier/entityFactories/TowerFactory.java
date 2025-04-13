@@ -9,11 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,13 +67,13 @@ public class TowerFactory {
         // Placeholder texture
         Texture texture = createPlaceHolder();
         TextureRegion region = new TextureRegion(texture);
-        LayeredSprite baseSprite = new LayeredSprite(region, 0);
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
         renderComponent.heightInTiles = 1;
         renderComponent.widthInTiles = 1;
-        renderComponent.sprites.put(new TileOffset(0, 0), new ArrayList<>(List.of(baseSprite)));
+        renderComponent.sprites.put(new TileOffset(0, 0), region);
+        renderComponent.zIndex = 10;
 
         tower.add(renderComponent);
         tower.add(new BuildingAnimationComponent());

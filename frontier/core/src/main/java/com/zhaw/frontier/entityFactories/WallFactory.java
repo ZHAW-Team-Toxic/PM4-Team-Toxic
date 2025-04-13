@@ -11,11 +11,8 @@ import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,9 +81,9 @@ public class WallFactory {
         render.widthInTiles = 1;
 
         TextureRegion region = new TextureRegion(createPlaceHolder());
-        LayeredSprite sprite = new LayeredSprite(region, 0);
 
-        render.sprites.put(new TileOffset(0, 0), new ArrayList<>(List.of(sprite)));
+        render.sprites.put(new TileOffset(0, 0), region);
+        render.zIndex = 10;
 
         wall.add(render);
         return wall;

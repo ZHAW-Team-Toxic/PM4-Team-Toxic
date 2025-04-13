@@ -10,9 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.RoundAnimationComponent;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -237,14 +235,9 @@ public class HQFactory {
 
             // Layer 0: base frame (static or first frame)
             TextureRegion baseFrame = frames.first();
-            render.sprites
-                .computeIfAbsent(offset, k -> new ArrayList<>())
-                .add(new LayeredSprite(baseFrame, 0));
-
-            // Layer 10: overlay animation (same frame initially)
-            //for now we use layer 10
-            render.sprites.get(offset).add(new LayeredSprite(baseFrame, 10));
+            render.sprites.put(offset, new TextureRegion(baseFrame));
         }
+        render.zIndex = 10;
 
         Gdx.app.debug(
             "HQFactory",

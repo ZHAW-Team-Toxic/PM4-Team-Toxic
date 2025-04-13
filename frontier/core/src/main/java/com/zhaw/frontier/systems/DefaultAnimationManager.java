@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Objects;
@@ -62,13 +61,8 @@ public class DefaultAnimationManager {
                 if (currentFrameIndex != anim.lastFrameIndex) {
                     TextureRegion frame = animation.getKeyFrame(anim.stateTime);
 
-                    render.sprites.forEach((offset, layers) -> {
-                        for (LayeredSprite layer : layers) {
-                            //we use layer 0 as the base layer for all sprites at the moment
-                            if (layer.zIndex == BASE_SPRITE_LAYER) {
-                                layer.region = frame;
-                            }
-                        }
+                    render.sprites.forEach((offset, region) -> {
+                        region.setRegion(frame);
                     });
 
                     anim.lastFrameIndex = currentFrameIndex;
@@ -106,7 +100,6 @@ public class DefaultAnimationManager {
     }
 
     private void processBuilding(Entity entity, float deltaTime) {
-        int BASE_SPRITE_LAYER = 0;
         if (!buildingAnimM.has(entity)) return;
 
         BuildingAnimationComponent anim = buildingAnimM.get(entity);
@@ -121,13 +114,8 @@ public class DefaultAnimationManager {
             if (animationMap != null) {
                 Animation<TextureRegion> animation = animationMap.get(new TileOffset(0, 0));
                 if (animation != null) {
-                    render.sprites.forEach((offset, layers) -> {
-                        for (LayeredSprite layer : layers) {
-                            if (layer.zIndex == BASE_SPRITE_LAYER) {
-                                layer.region =
-                                animation.getKeyFrame(anim.stateTimes.get(type), false);
-                            }
-                        }
+                    render.sprites.forEach((offset, region) -> {
+                        region.setRegion(animation.getKeyFrame(anim.stateTimes.get(type)));
                     });
                 }
             }

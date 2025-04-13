@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.*;
 
@@ -188,18 +187,18 @@ public class EnemyFactory {
 
         // Initiales Frame setzen (z.B. WALK_DOWN → Frame 0)
         Animation<TextureRegion> initialAnimation = sharedAnimations.get(
-            EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN
+            EnemyAnimationComponent.EnemyAnimationType.IDLE_DOWN
         );
+
         TextureRegion firstFrame = initialAnimation.getKeyFrame(0f);
 
         if (firstFrame != null) {
-            TileOffset offset = new TileOffset(0, 0);
-            List<LayeredSprite> layers = new ArrayList<>();
-            layers.add(new LayeredSprite(firstFrame, 0)); // Basis-Layer
-            render.sprites.put(offset, layers);
+            TileOffset offset = new TileOffset(0, 0); // Basis-Layer
+            render.sprites.put(offset, new TextureRegion(firstFrame));
         } else {
             Gdx.app.error("EnemyFactory", "Kein erstes Frame gefunden für WALK_DOWN");
         }
+        render.zIndex = 10;
 
         AnimationQueueComponent queue = new AnimationQueueComponent();
         enemy.add(queue);

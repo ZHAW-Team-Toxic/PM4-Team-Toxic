@@ -1,10 +1,9 @@
 package com.zhaw.frontier.components;
 
 import com.badlogic.ashley.core.Component;
-import com.zhaw.frontier.utils.LayeredSprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * contains sprite data for rendering an {@link com.badlogic.ashley.core.Entity}
@@ -21,7 +20,12 @@ public class RenderComponent implements Component {
     /**
      * Sprites relativ zur Basis-Position
      */
-    public HashMap<TileOffset, List<LayeredSprite>> sprites = new HashMap<>();
+    public HashMap<TileOffset, TextureRegion> sprites = new HashMap<>();
+
+    /**
+     * Animationen relativ zur Basis-Position
+     */
+    public int zIndex = 0;
 
     /**
      * Gibt an, wie viele Tiles breit/hoch das Objekt ist

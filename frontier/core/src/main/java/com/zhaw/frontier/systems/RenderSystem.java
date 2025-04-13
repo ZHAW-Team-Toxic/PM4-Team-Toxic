@@ -19,13 +19,10 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.mappers.MapLayerMapper;
-import com.zhaw.frontier.utils.LayeredSprite;
 import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.TileOffset;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * System responsible for rendering the map and game entities.
@@ -65,9 +62,10 @@ public class RenderSystem extends EntitySystem {
     /**
      * Called when the system is added to an engine.
      * <p>
-     *     This method retrieves the map entity and all building entities from the engine.
-     *     It initializes the map layers and buildings so they can be rendered in the update method.
+     * This method retrieves the map entity and all building entities from the engine.
+     * It initializes the map layers and buildings so they can be rendered in the update method.
      * </p>
+     *
      * @param engine The {@link Engine} this system was added to.
      */
     @Override
@@ -114,19 +112,16 @@ public class RenderSystem extends EntitySystem {
         renderer.getBatch().begin();
 
         // Render the tiled map layers.
-        renderMapLayers();
+        renderMapLayers((SpriteBatch) renderer.getBatch());
 
         // Render all building entities.
-        renderMultiTiledBuildings((SpriteBatch) renderer.getBatch());
-
-        //Render all enemies
-        renderEnemies((SpriteBatch) renderer.getBatch());
+        renderAllEntities((SpriteBatch) renderer.getBatch());
 
         // End the sprite batch.
         renderer.getBatch().end();
     }
 
-    private void renderMapLayers() {
+    private void renderMapLayers(SpriteBatch renderer) {
         int BOTTOM_LAYER = 0;
         int DECORATION_LAYER = 1;
         int RESOURCE_LAYER = 2;
@@ -161,123 +156,88 @@ public class RenderSystem extends EntitySystem {
         // Render alle Layers
         for (MapLayerRenderEntry layer : layersToRender) {
             if (layer.layer != null) {
-                // TODO später hier intercepten
-                renderer.renderTileLayer(layer.layer);
+                for (int i = layer.layer.getWidth(); i > 0; i--) {
+                    for (int j = layer.layer.getHeight(); j > 0; j--) {
+                        // Get the tile at the current position
+                        if (layer.layer.getCell(i, j) == null) continue;
+
+                        // Render the tile at the specified position
+                        renderer.draw(
+                            layer.layer.getCell(i, j).getTile().getTextureRegion(),
+                            i * 16,
+                            j * 16,
+                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionWidth(),
+                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionHeight()
+                        );
+                    }
+                }
             } else {
                 Gdx.app.debug("RenderSystem", "Skipping null layer: " + layer.name);
             }
         }
     }
 
-    /**
-     * Renders building entities using the provided sprite batch.
-     * <p>
-     * This method iterates over all entities that have both a {@link PositionComponent} and a
-     * {@link RenderComponent}. Only entities whose {@code renderType} is set to
-     * {@link RenderComponent.RenderType#BUILDING} are rendered. The method calculates pixel coordinates
-     * for each building and draws its sprite at that position.
-     * </p>
-     *
-     * @param renderer the {@link SpriteBatch} used for drawing sprites.
-     */
-    private void renderMultiTiledBuildings(SpriteBatch renderer) {
-        //for now we use the layer 10 as the animation layer
-        int ANIMATION_LAYER = 10;
-        for (Entity building : buildings) {
-            if (
-                building.getComponent(RenderComponent.class).renderType ==
-                RenderComponent.RenderType.BUILDING
-            ) {
-                PositionComponent positionComponent = building.getComponent(
-                    PositionComponent.class
-                );
-                RenderComponent renderComponent = building.getComponent(RenderComponent.class);
-                RoundAnimationComponent roundAnimComponent = building.getComponent(
-                    RoundAnimationComponent.class
-                );
+    private void renderAllEntities(SpriteBatch batch) {
+        Array<Entity> combined = new Array<>();
 
-                Vector2 pixelCoordinate = WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
-                    positionComponent.basePosition.x,
-                    positionComponent.basePosition.y,
+        for (Entity b : buildings) {
+            combined.add(b);
+        }
+        for (Entity e : enemies) {
+            combined.add(e);
+        }
+
+        combined.sort(
+            Comparator
+                .comparingDouble(entity -> {
+                    PositionComponent pos = ((Entity) entity).getComponent(PositionComponent.class);
+                    float pixelCoord = WorldCoordinateUtils.calculateWorldCoordinate(
+                        viewport,
+                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer,
+                        pos.basePosition.x,
+                        pos.basePosition.y
+                    )
+                        .y;
+                    return pixelCoord + pos.heightInTiles;
+                })
+                .thenComparingInt(entity -> {
+                    RenderComponent render = ((Entity) entity).getComponent(RenderComponent.class);
+                    return render.zIndex;
+                })
+        );
+
+        for (Entity entity : combined) {
+            RenderComponent render = entity.getComponent(RenderComponent.class);
+            PositionComponent pos = entity.getComponent(PositionComponent.class);
+            Vector2 basePixel = new Vector2();
+            if (render.renderType == RenderComponent.RenderType.BUILDING) {
+                basePixel =
+                WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
+                    pos.basePosition.x,
+                    pos.basePosition.y,
                     mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
                 );
-
-                for (int i = 0; i < renderComponent.widthInTiles; i++) {
-                    for (int j = 0; j < renderComponent.heightInTiles; j++) {
-                        TileOffset offset = new TileOffset(i, j);
-                        List<LayeredSprite> layers = renderComponent.sprites.get(offset);
-
-                        if (layers == null) continue;
-
-                        // sort layers by z-index
-                        layers.sort(Comparator.comparingInt(ls -> ls.zIndex));
-
-                        for (LayeredSprite layer : layers) {
-                            TextureRegion region = layer.region;
-
-                            // If this is the animated layer, override with current animation frame
-                            if (roundAnimComponent != null && layer.zIndex == ANIMATION_LAYER) {
-                                Array<TextureRegion> animFrames = roundAnimComponent.frames.get(
-                                    offset
-                                );
-                                if (animFrames != null && !animFrames.isEmpty()) {
-                                    int clampedIndex = Math.min(
-                                        roundAnimComponent.currentFrameIndex,
-                                        animFrames.size - 1
-                                    );
-                                    region = animFrames.get(clampedIndex);
-                                }
-                            }
-
-                            renderer.draw(
-                                region,
-                                pixelCoordinate.x + i * 16,
-                                pixelCoordinate.y + j * 16,
-                                region.getRegionWidth(),
-                                region.getRegionHeight()
-                            );
-                        }
-                    }
-                }
             }
-        }
-    }
 
-    private void renderEnemies(SpriteBatch spriteBatch) {
-        for (Entity enemy : enemies) {
-            if (
-                enemy.getComponent(RenderComponent.class).renderType ==
-                RenderComponent.RenderType.ENEMY
-            ) {
-                PositionComponent positionComponent = enemy.getComponent(PositionComponent.class);
-                RenderComponent renderComponent = enemy.getComponent(RenderComponent.class);
-                Vector2 pixelCoordinate = new Vector2(
-                    positionComponent.basePosition.x,
-                    positionComponent.basePosition.y
-                );
+            if (render.renderType == RenderComponent.RenderType.ENEMY) {
+                basePixel = new Vector2(pos.basePosition.x * 16, pos.basePosition.y * 16);
+            }
 
-                for (int i = 0; i < renderComponent.widthInTiles; i++) {
-                    for (int j = 0; j < renderComponent.heightInTiles; j++) {
-                        TileOffset offset = new TileOffset(i, j);
-                        List<LayeredSprite> layers = renderComponent.sprites.get(offset);
+            for (int i = 0; i < render.widthInTiles; i++) {
+                for (int j = render.heightInTiles - 1; j >= 0; j--) {
+                    TileOffset offset = new TileOffset(i, j);
+                    TextureRegion region = render.sprites.get(offset);
 
-                        if (layers == null) continue;
+                    float drawX = basePixel.x + i * 16;
+                    float drawY = basePixel.y + j * 16;
 
-                        // sort layers by z-index
-                        layers.sort(Comparator.comparingInt(ls -> ls.zIndex));
-
-                        for (LayeredSprite layer : layers) {
-                            TextureRegion region = layer.region;
-                            //place sprite on tile map and also if its multi-tiled place it i or j further on the tile
-                            spriteBatch.draw(
-                                region,
-                                (pixelCoordinate.x * 16) + i * 16,
-                                (pixelCoordinate.y * 16) + j * 16,
-                                region.getRegionWidth(),
-                                region.getRegionHeight()
-                            );
-                        }
-                    }
+                    batch.draw(
+                        region,
+                        drawX,
+                        drawY,
+                        region.getRegionWidth(),
+                        region.getRegionHeight()
+                    );
                 }
             }
         }
