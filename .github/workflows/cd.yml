@@ -38,7 +38,7 @@ jobs:
 
       - name: build for all the platforms
         working-directory: ./frontier
-        run: ./gradlew flattenAllZips -Pversion=${{ env.VERSION }}
+        run: ./gradlew packageAll -Pversion=${{ env.VERSION }}
 
       - name: Release (prerelease)
         uses: softprops/action-gh-release@v2
