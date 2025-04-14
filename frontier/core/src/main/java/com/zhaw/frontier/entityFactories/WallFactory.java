@@ -36,7 +36,10 @@ public class WallFactory {
     public static Entity createDefaultWall(Engine engine) {
         Entity wall = engine.createEntity();
         wall.add(new PositionComponent());
-        wall.add(new HealthComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 99;
+        wall.add(healthComponent);
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;

@@ -4,10 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.zhaw.frontier.components.EnemyComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
-import com.zhaw.frontier.components.VelocityComponent;
+import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
 
@@ -77,6 +74,11 @@ public class EnemyFactory {
         enemy.add(position);
         enemy.add(velocity);
         enemy.add(new EnemyComponent());
+
+        HealthComponent health = new HealthComponent();
+        health.currentHealth = 100;
+        health.maxHealth = 60;
+        enemy.add(health);
 
         return enemy;
     }

@@ -41,7 +41,10 @@ public class TowerFactory {
     public static Entity createDefaultTower(Engine engine) {
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
-        tower.add(new HealthComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 10;
+        tower.add(healthComponent);
         tower.add(new AttackComponent());
 
         RenderComponent renderComponent = new RenderComponent();

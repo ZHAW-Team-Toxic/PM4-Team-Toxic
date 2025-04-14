@@ -33,6 +33,7 @@ public class RenderSystem extends EntitySystem {
     private final Viewport viewport;
     private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
+    private final HealthBarManager healthBarManager;
 
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
     private final HQMapper hqMapper = new HQMapper();
@@ -51,6 +52,7 @@ public class RenderSystem extends EntitySystem {
         this.viewport = viewport;
         this.engine = engine;
         this.renderer = renderer;
+        this.healthBarManager = new HealthBarManager(engine);
     }
 
     /**
@@ -126,6 +128,7 @@ public class RenderSystem extends EntitySystem {
                 );
                 renderComponent.sprite.setPosition(pixelCoordinate.x, pixelCoordinate.y);
                 renderComponent.sprite.draw(renderer);
+                healthBarManager.drawHealthBar(renderer, building);
             }
         }
     }

@@ -49,7 +49,10 @@ public class ResourceBuildingFactory {
     public static Entity woodResourceBuilding(Engine engine) {
         Entity resourceBuilding = engine.createEntity();
         resourceBuilding.add(new PositionComponent());
-        resourceBuilding.add(new HealthComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 60;
+        resourceBuilding.add(healthComponent);
         resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
