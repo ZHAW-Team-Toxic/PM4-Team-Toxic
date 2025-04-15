@@ -32,9 +32,13 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
+      - name: Extract version
+        id: extract_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
       - name: build for all the platforms
         working-directory: ./frontier
-        run: ./gradlew :lwjgl3:packageMacM1 :lwjgl3:packageMacX64 :lwjgl3:packageWinX64 :lwjgl3:packageLinuxX64
+        run: ./gradlew packageAll -Pversion=${{ env.VERSION }}
 
       - name: Release (prerelease)
         uses: softprops/action-gh-release@v2
@@ -50,5 +54,6 @@ jobs:
         if: (!contains(github.ref, '-alpha') && !contains(github.ref, '-beta'))
         with:
           generate_release_notes: true
+          make_latest: true
           files: |
             frontier/lwjgl3/build/construo/dist/Frontier-*.zip
