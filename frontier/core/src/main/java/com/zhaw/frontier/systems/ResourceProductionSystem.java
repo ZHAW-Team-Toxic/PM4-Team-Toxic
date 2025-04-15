@@ -39,8 +39,13 @@ public class ResourceProductionSystem extends EntitySystem {
     private Engine engine;
     private ImmutableArray<Entity> productionBuildings;
 
-    private ResourceProductionSystem() {
+    private ResourceProductionSystem(Engine engine) {
         super();
+        if (instance != null) {
+            throw new IllegalStateException("ResourceProductionSystem already initialized");
+        }
+        this.engine = engine;
+        instance = this;
     }
 
     /**
@@ -48,11 +53,9 @@ public class ResourceProductionSystem extends EntitySystem {
      * @param engine    the engine to be used by the system
      */
     public static void init(Engine engine) {
-        if (instance != null) {
-            throw new IllegalStateException("ResourceProductionSystem already initialized");
+        if (instance == null) {
+            new ResourceProductionSystem(engine);
         }
-        instance = new ResourceProductionSystem();
-        instance.engine = engine;
     }
 
     /**

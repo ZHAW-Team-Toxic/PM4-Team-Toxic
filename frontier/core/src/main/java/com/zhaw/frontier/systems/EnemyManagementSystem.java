@@ -19,7 +19,14 @@ public class EnemyManagementSystem extends EntitySystem {
     private TiledMapTileLayer sampleLayer;
     private EnemySpawner enemySpawner;
 
-    private EnemyManagementSystem() {}
+    private EnemyManagementSystem(TiledMapTileLayer sampleLayer, Viewport viewport, Engine engine) {
+        if (instance != null) {
+            throw new IllegalStateException("EnemyManagementSystem already initialized");
+        }
+        this.sampleLayer = sampleLayer;
+        this.enemySpawner = new EnemySpawner(viewport, engine);
+        instance = this;
+    }
 
     /**
      * Initializes the singleton instance of {@code EnemyManagementSystem}.
@@ -28,12 +35,9 @@ public class EnemyManagementSystem extends EntitySystem {
      * @param engine        the engine to be used for enemy spawning
      */
     public static void init(TiledMapTileLayer sampleLayer, Viewport viewport, Engine engine) {
-        if (instance != null) {
-            throw new IllegalStateException("EnemyManagementSystem already initialized");
+        if (instance == null) {
+            new EnemyManagementSystem(sampleLayer, viewport, engine);
         }
-        instance = new EnemyManagementSystem();
-        instance.sampleLayer = sampleLayer;
-        instance.enemySpawner = new EnemySpawner(viewport, engine);
     }
 
     /**
@@ -64,7 +68,7 @@ public class EnemyManagementSystem extends EntitySystem {
      * @param enemyEntity the enemy entity to spawn
      * @return {@code true} if the enemy was successfully spawned; {@code false} otherwise
      */
-    public boolean spawnEnemy(Entity enemEntity) {
-        return enemySpawner.spawnEnemy(enemEntity, sampleLayer);
+    public boolean spawnEnemy(Entity enemyEntity) {
+        return enemySpawner.spawnEnemy(enemyEntity, sampleLayer);
     }
 }
