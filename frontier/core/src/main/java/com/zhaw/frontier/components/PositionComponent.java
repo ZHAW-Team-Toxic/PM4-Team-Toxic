@@ -29,4 +29,18 @@ public class PositionComponent implements Component {
      * The tile offset of the entity.
      */
     public int heightInTiles;
+
+    public PositionComponent() {}
+
+    public PositionComponent(float x, float y) {
+        this.basePosition.x = x;
+        this.basePosition.y = y;
+    }
+
+    public PositionComponent(float x, float y, int widthInTiles, int heightInTiles) {
+        this.basePosition.x = x;
+        this.basePosition.y = y;
+        this.widthInTiles = widthInTiles;
+        this.heightInTiles = heightInTiles;
+    }
 }

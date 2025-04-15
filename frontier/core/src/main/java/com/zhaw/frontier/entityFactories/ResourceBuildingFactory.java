@@ -2,7 +2,6 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,74 +39,52 @@ public class ResourceBuildingFactory {
      * @param engine the Ashley engine instance.
      * @return the newly created building entity.
      */
-    public static Entity createWoodBuilding(Engine engine, AssetManager assetManager) {
-        return createBaseBuilding(engine, ResourceTypeEnum.RESOURCE_TYPE_WOOD, Color.FOREST);
+    public static Entity createDefaultResourceBuilding(Engine engine, float x, float y) {
+        Entity resourceBuilding = engine.createEntity();
+        resourceBuilding.add(new PositionComponent(x, y, 1, 1));
+        resourceBuilding.add(new HealthComponent());
+        resourceBuilding.add(new ResourceGeneratorComponent());
+        resourceBuilding.add(new ResourceProductionComponent());
+        resourceBuilding.add(new RenderComponent());
+        return resourceBuilding;
     }
 
-    /**
-     * Creates a stone-producing building.
-     *
-     * @param engine the Ashley engine instance.
-     * @return the newly created building entity.
-     */
-    public static Entity createStoneBuilding(Engine engine, AssetManager assetManager) {
-        return createBaseBuilding(engine, ResourceTypeEnum.RESOURCE_TYPE_STONE, Color.GRAY);
+    public static Entity woodResourceBuilding(Engine engine, float x, float y) {
+        return createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_WOOD);
     }
 
-    /**
-     * Creates an iron-producing building.
-     *
-     * @param engine the Ashley engine instance.
-     * @return the newly created building entity.
-     */
-    public static Entity createIronBuilding(Engine engine, AssetManager assetManager) {
-        return createBaseBuilding(engine, ResourceTypeEnum.RESOURCE_TYPE_IRON, Color.SCARLET);
+    public static Entity stoneResourceBuilding(Engine engine, float x, float y) {
+        return createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_STONE);
     }
 
-    /**
-     * Shared base logic for creating a 1x1 resource building.
-     *
-     * @param engine         the Ashley engine instance.
-     * @param resourceType   the type of resource it should produce.
-     * @param placeholderColor the color of the placeholder region.
-     * @return the fully assembled entity.
-     */
-    private static Entity createBaseBuilding(
+    public static Entity ironResourceBuilding(Engine engine, float x, float y) {
+        return createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_IRON);
+    }
+
+    private static Entity createResourceBuildingWithType(
         Engine engine,
-        ResourceTypeEnum resourceType,
-        Color placeholderColor
+        float x,
+        float y,
+        ResourceTypeEnum resourceType
     ) {
-        Entity entity = engine.createEntity();
+        Entity resourceBuilding = engine.createEntity();
 
-        // Position & dimensions
-        PositionComponent position = new PositionComponent();
-        position.widthInTiles = 1;
-        position.heightInTiles = 1;
+        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
+        resourceProductionComponent.productionRate.put(resourceType, 1);
 
-        // Occupation and rendering
-        RenderComponent render = new RenderComponent();
-        render.renderType = RenderComponent.RenderType.BUILDING;
-        render.widthInTiles = 1;
-        render.heightInTiles = 1;
-
-        TextureRegion region = createPlaceholderRegion(placeholderColor, TILE_SIZE);
+        RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
+        //TODO: Replace with asset
+        TextureRegion region = createPlaceholderRegion(Color.SCARLET, TILE_SIZE);
         render.sprites.put(new TileOffset(0, 0), new TextureRegion(region));
-        render.zIndex = 10;
 
-        // Resource production logic
-        ResourceProductionComponent resourceProduction = new ResourceProductionComponent();
-        resourceProduction.productionRate.put(resourceType, 1);
-
-        // Final assembly
-        entity.add(position);
-        entity.add(new OccupiesTilesComponent());
-        entity.add(new HealthComponent());
-        entity.add(new ResourceGeneratorComponent());
-        entity.add(resourceProduction);
-        entity.add(render);
-        entity.add(new BuildingAnimationComponent());
-
-        return entity;
+        resourceBuilding.add(new PositionComponent(x, y, 1, 1));
+        resourceBuilding.add(resourceProductionComponent);
+        resourceBuilding.add(render);
+        resourceBuilding.add(new OccupiesTilesComponent());
+        resourceBuilding.add(new HealthComponent());
+        resourceBuilding.add(new ResourceGeneratorComponent());
+        resourceBuilding.add(new BuildingAnimationComponent());
+        return resourceBuilding;
     }
 
     /**

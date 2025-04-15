@@ -2,11 +2,11 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.zhaw.frontier.components.BuildingAnimationComponent;
 import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
@@ -40,16 +40,16 @@ public class WallFactory {
         HashMap<TileOffset, Animation<TextureRegion>>
     > ironWallAnimationCache = new HashMap<>();
 
-    public Entity createWoodWall(Engine engine, AssetManager assetManager) {
-        return createDefaultWall(engine);
+    public Entity createWoodWall(Engine engine, float x, float y) {
+        return createDefaultWall(engine, x, y);
     }
 
-    public Entity createStoneWall(Engine engine, AssetManager assetManager) {
-        return createDefaultWall(engine);
+    public Entity createStoneWall(Engine engine, float x, float y) {
+        return createDefaultWall(engine, x, y);
     }
 
-    public Entity createIronWall(Engine engine, AssetManager assetManager) {
-        return createDefaultWall(engine);
+    public Entity createIronWall(Engine engine, float x, float y) {
+        return createDefaultWall(engine, x, y);
     }
 
     /**
@@ -64,28 +64,18 @@ public class WallFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created wall entity.
      */
-    public static Entity createDefaultWall(Engine engine) {
+    public static Entity createDefaultWall(Engine engine, float x, float y) {
         Entity wall = engine.createEntity();
 
-        PositionComponent position = new PositionComponent();
-        position.heightInTiles = 1;
-        position.widthInTiles = 1;
-
-        wall.add(position);
-        wall.add(new OccupiesTilesComponent());
-        wall.add(new HealthComponent());
-
-        RenderComponent render = new RenderComponent();
-        render.renderType = RenderComponent.RenderType.BUILDING;
-        render.heightInTiles = 1;
-        render.widthInTiles = 1;
-
+        RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
         TextureRegion region = new TextureRegion(createPlaceHolder());
-
         render.sprites.put(new TileOffset(0, 0), region);
-        render.zIndex = 10;
 
         wall.add(render);
+        wall.add(new PositionComponent(x, y, 1, 1));
+        wall.add(new OccupiesTilesComponent());
+        wall.add(new HealthComponent());
+        wall.add(new BuildingAnimationComponent());
         return wall;
     }
 

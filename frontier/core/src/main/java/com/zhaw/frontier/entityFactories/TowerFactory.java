@@ -2,7 +2,6 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,8 +37,8 @@ public class TowerFactory {
         HashMap<TileOffset, Animation<TextureRegion>>
     > cannonTowerAnimationCache = new HashMap<>();
 
-    public static Entity createBallistaTower(Engine engine, AssetManager assetManager) {
-        return createDefaultTower(engine, assetManager);
+    public static Entity createBallistaTower(Engine engine, float x, float y) {
+        return createDefaultTower(engine, x, y);
     }
 
     /**
@@ -53,31 +52,27 @@ public class TowerFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created Tower entity.
      */
-    public static Entity createDefaultTower(Engine engine, AssetManager assetManager) {
+    public static Entity createDefaultTower(Engine engine, float x, float y) {
         Entity tower = engine.createEntity();
-
-        PositionComponent positionComponent = new PositionComponent();
-        positionComponent.heightInTiles = 1;
-        positionComponent.widthInTiles = 1;
-        tower.add(positionComponent);
-        tower.add(new OccupiesTilesComponent());
-        tower.add(new HealthComponent());
-        tower.add(new AttackComponent());
 
         // Placeholder texture
         Texture texture = createPlaceHolder();
         TextureRegion region = new TextureRegion(texture);
 
-        RenderComponent renderComponent = new RenderComponent();
-        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
-        renderComponent.heightInTiles = 1;
-        renderComponent.widthInTiles = 1;
+        RenderComponent renderComponent = new RenderComponent(
+            RenderComponent.RenderType.BUILDING,
+            10,
+            1,
+            1
+        );
         renderComponent.sprites.put(new TileOffset(0, 0), region);
-        renderComponent.zIndex = 10;
 
         tower.add(renderComponent);
+        tower.add(new PositionComponent(x, y, 1, 1));
+        tower.add(new OccupiesTilesComponent());
+        tower.add(new HealthComponent());
+        tower.add(new AttackComponent());
         tower.add(new BuildingAnimationComponent());
-
         return tower;
     }
 

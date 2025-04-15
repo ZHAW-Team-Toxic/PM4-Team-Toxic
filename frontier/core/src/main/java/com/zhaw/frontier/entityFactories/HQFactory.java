@@ -3,13 +3,13 @@ package com.zhaw.frontier.entityFactories;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.RoundAnimationComponent;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,30 +33,31 @@ public class HQFactory {
      * @param assetManager the asset manager for loading assets
      * @return the created HQ entity
      */
-    public static Entity createSandClockHQ(Engine engine, AssetManager assetManager) {
-        Entity hq = createDefaultHQ(engine);
-        initAnimationCache(assetManager);
+    public static Entity createSandClockHQ(Engine engine, float x, float y) {
+        Entity hq = createDefaultHQ(engine, x, y);
+        initAnimationCache();
         applyComponents(hq);
         return hq;
     }
 
-    private static Entity createDefaultHQ(Engine engine) {
+    private static Entity createDefaultHQ(Engine engine, float x, float y) {
         Entity hq = engine.createEntity();
-        hq.add(new PositionComponent());
+        hq.add(new PositionComponent(x, y, HQ_TILE_SIZE, HQ_TILE_SIZE));
         hq.add(new OccupiesTilesComponent());
         hq.add(new BuildingAnimationComponent());
         hq.add(new RoundAnimationComponent());
         hq.add(new AnimationQueueComponent());
-        hq.add(new RenderComponent());
+        hq.add(
+            new RenderComponent(RenderComponent.RenderType.BUILDING, 10, HQ_TILE_SIZE, HQ_TILE_SIZE)
+        );
         return hq;
     }
 
-    private static void initAnimationCache(AssetManager assetManager) {
+    private static void initAnimationCache() {
         if (clockAnimationCache.isEmpty()) {
-            TextureAtlas atlas = assetManager.get(
-                "packed/buildings/buildingAtlas.atlas",
-                TextureAtlas.class
-            );
+            TextureAtlas atlas = AssetManagerInstance
+                .getManager()
+                .get("packed/buildings/buildingAtlas.atlas", TextureAtlas.class);
 
             HashMap<TileOffset, Animation<TextureRegion>> clockAnimation = new HashMap<>();
 
@@ -205,15 +206,7 @@ public class HQFactory {
     }
 
     private static void applyComponents(Entity hq) {
-        PositionComponent position = hq.getComponent(PositionComponent.class);
-        position.widthInTiles = HQ_TILE_SIZE;
-        position.heightInTiles = HQ_TILE_SIZE;
-
         RenderComponent render = hq.getComponent(RenderComponent.class);
-        render.renderType = RenderComponent.RenderType.BUILDING;
-        render.widthInTiles = HQ_TILE_SIZE;
-        render.heightInTiles = HQ_TILE_SIZE;
-
         RoundAnimationComponent roundAnimation = hq.getComponent(RoundAnimationComponent.class);
         roundAnimation.currentFrameIndex = 0;
 
@@ -237,7 +230,6 @@ public class HQFactory {
             TextureRegion baseFrame = frames.first();
             render.sprites.put(offset, new TextureRegion(baseFrame));
         }
-        render.zIndex = 10;
 
         Gdx.app.debug(
             "HQFactory",

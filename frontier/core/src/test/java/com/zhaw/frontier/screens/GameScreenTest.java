@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -19,6 +18,7 @@ import com.zhaw.frontier.GameScreenUtils;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.exceptions.MapLoadingException;
 import com.zhaw.frontier.systems.MapLoader;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,17 +40,14 @@ public class GameScreenTest {
         when(mockBatch.getBatch()).thenReturn(mockSpriteBatch);
         when(mockGame.getBatch()).thenReturn(mockBatch);
 
-        AssetManager assetManager = new AssetManager();
-        when(mockGame.getAssetManager()).thenReturn(assetManager);
-
-        assetManager.load("packed/textures.atlas", TextureAtlas.class);
-        assetManager.load("libgdx.png", Texture.class);
-        assetManager.load("skins/skin.json", Skin.class);
+        AssetManagerInstance.getManager().load("packed/textures.atlas", TextureAtlas.class);
+        AssetManagerInstance.getManager().load("libgdx.png", Texture.class);
+        AssetManagerInstance.getManager().load("skins/skin.json", Skin.class);
 
         Path mapPath = Path.of("TMX/frontier_testmap.tmx");
-        MapLoader.getInstance().loadMap(assetManager, mapPath);
+        MapLoader.getInstance().loadMap(AssetManagerInstance.getManager(), mapPath);
 
-        assetManager.finishLoading();
+        AssetManagerInstance.getManager().finishLoading();
 
         gameScreen = new GameScreen(mockGame);
 

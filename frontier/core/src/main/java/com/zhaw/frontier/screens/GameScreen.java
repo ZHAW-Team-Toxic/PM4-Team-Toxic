@@ -19,7 +19,7 @@ import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.input.GameInputProcessor;
-import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.AnimationSystem;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
@@ -28,10 +28,13 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.systems.ResourceProductionSystem;
 import com.zhaw.frontier.ui.BaseUI;
+import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
-import com.zhaw.frontier.util.ButtonClickObserver;
-import com.zhaw.frontier.util.GameMode;
+import com.zhaw.frontier.utils.AssetManagerInstance;
+import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.util.Map;
 
@@ -184,13 +187,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
+        BuildingMenuUi buildingMenuUi = new BuildingMenuUi(engine, stage);
+        baseUI.addObserver(buildingMenuUi);
+        buildingMenuUi.addObserver(this);
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
         //setup render system
         engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
         Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
         // create resource ui
-        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
 
         engine.addSystem(new IdleBehaviourSystem());
@@ -204,12 +210,14 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         var mx = new InputMultiplexer();
         mx.addProcessor(baseUI.getStage());
+        mx.addProcessor(stage);
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
-        mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
         mx.addProcessor(baseUI.createInputAdapter(engine));
+        mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
+
         Gdx.input.setInputProcessor(mx);
         //***********************************
         // Test Inventory for testing resource production for wood
