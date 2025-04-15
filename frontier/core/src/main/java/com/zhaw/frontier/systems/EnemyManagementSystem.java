@@ -15,19 +15,40 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class EnemyManagementSystem extends EntitySystem {
 
-    private final TiledMapTileLayer sampleLayer;
-    private final EnemySpawner enemeySpawner;
+    private static EnemyManagementSystem instance;
+    private TiledMapTileLayer sampleLayer;
+    private EnemySpawner enemySpawner;
+
+    private EnemyManagementSystem(TiledMapTileLayer sampleLayer, Viewport viewport, Engine engine) {
+        if (instance != null) {
+            throw new IllegalStateException("EnemyManagementSystem already initialized");
+        }
+        this.sampleLayer = sampleLayer;
+        this.enemySpawner = new EnemySpawner(viewport, engine);
+        instance = this;
+    }
 
     /**
-     * Constructs a new {@code EnemyManagementSystem}.
-     *
-     * @param sampleLayer the tile layer used for coordinate conversion and placement
-     * @param viewport    the viewport used for screen-to-world coordinate mapping
-     * @param engine      the Ashley engine for adding new entities
+     * Initializes the singleton instance of {@code EnemyManagementSystem}.
+     * @param sampleLayer   the sample layer to be used for enemy spawning
+     * @param viewport      the viewport to be used for enemy spawning
+     * @param engine        the engine to be used for enemy spawning
      */
-    public EnemyManagementSystem(TiledMapTileLayer sampleLayer, Viewport viewport, Engine engine) {
-        this.sampleLayer = sampleLayer;
-        this.enemeySpawner = new EnemySpawner(viewport, engine);
+    public static void init(TiledMapTileLayer sampleLayer, Viewport viewport, Engine engine) {
+        if (instance == null) {
+            new EnemyManagementSystem(sampleLayer, viewport, engine);
+        }
+    }
+
+    /**
+     * Returns the singleton instance of {@code EnemyManagementSystem}.
+     * @return  the singleton instance of EnemyManagementSystem
+     */
+    public static EnemyManagementSystem getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("EnemyManagementSystem not initialized");
+        }
+        return instance;
     }
 
     /**
@@ -47,7 +68,7 @@ public class EnemyManagementSystem extends EntitySystem {
      * @param enemyEntity the enemy entity to spawn
      * @return {@code true} if the enemy was successfully spawned; {@code false} otherwise
      */
-    public boolean spawnEnemy(Entity enemEntity) {
-        return enemeySpawner.spawnEnemy(enemEntity, sampleLayer);
+    public boolean spawnEnemy(Entity enemyEntity) {
+        return enemySpawner.spawnEnemy(enemyEntity, sampleLayer);
     }
 }
