@@ -2,12 +2,18 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.HealthComponent;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.utils.TileOffset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Factory class for creating wall entities.
@@ -20,6 +26,31 @@ import com.zhaw.frontier.components.RenderComponent;
  * </p>
  */
 public class WallFactory {
+
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > woodWallAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > stoneWallAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > ironWallAnimationCache = new HashMap<>();
+
+    public Entity createWoodWall(Engine engine, AssetManager assetManager) {
+        return createDefaultWall(engine);
+    }
+
+    public Entity createStoneWall(Engine engine, AssetManager assetManager) {
+        return createDefaultWall(engine);
+    }
+
+    public Entity createIronWall(Engine engine, AssetManager assetManager) {
+        return createDefaultWall(engine);
+    }
 
     /**
      * Creates a default wall entity with the necessary components.
@@ -35,17 +66,26 @@ public class WallFactory {
      */
     public static Entity createDefaultWall(Engine engine) {
         Entity wall = engine.createEntity();
-        wall.add(new PositionComponent());
+
+        PositionComponent position = new PositionComponent();
+        position.heightInTiles = 1;
+        position.widthInTiles = 1;
+
+        wall.add(position);
+        wall.add(new OccupiesTilesComponent());
         wall.add(new HealthComponent());
 
-        RenderComponent renderComponent = new RenderComponent();
-        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
+        RenderComponent render = new RenderComponent();
+        render.renderType = RenderComponent.RenderType.BUILDING;
+        render.heightInTiles = 1;
+        render.widthInTiles = 1;
 
-        // TODO: Replace placeholder texture with the actual wall texture.
-        Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        TextureRegion region = new TextureRegion(createPlaceHolder());
 
-        wall.add(renderComponent);
+        render.sprites.put(new TileOffset(0, 0), region);
+        render.zIndex = 10;
+
+        wall.add(render);
         return wall;
     }
 
@@ -60,15 +100,10 @@ public class WallFactory {
      * @return a {@link Texture} generated from the pixmap.
      */
     private static Texture createPlaceHolder() {
-        // Create a Pixmap with dimensions 12x12 using RGBA8888 format.
         Pixmap pixmap = new Pixmap(12, 12, Pixmap.Format.RGBA8888);
-        // Set the drawing color to red.
-        pixmap.setColor(64, 0, 0, 1);
-        // Fill the entire pixmap with the red color.
+        pixmap.setColor(64 / 255f, 0, 0, 1); // red tone
         pixmap.fill();
-        // Create a texture from the pixmap.
         Texture texture = new Texture(pixmap);
-        // Dispose of the pixmap since it's no longer needed.
         pixmap.dispose();
         return texture;
     }

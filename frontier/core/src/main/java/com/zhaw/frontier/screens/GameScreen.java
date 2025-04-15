@@ -133,22 +133,30 @@ public class GameScreen implements Screen, ButtonClickObserver {
             sampleLayer.getTileHeight()
         );
 
+        engine.addSystem(new IdleBehaviourSystem());
+        engine.addSystem(new PatrolBehaviourSystem());
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Movement System.");
+        engine.addSystem(new MovementSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Movement System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Animation System.");
+        engine.addSystem(new AnimationSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
+
         engine.addSystem(new SoundSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
-        //set-up BuildingManager
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
-        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
-        //setup render system
-        engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
-        Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Remover System.");
+        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Building Remover System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
-        // setup camera
-
         engine.addSystem(cameraControlSystem);
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
@@ -162,18 +170,14 @@ public class GameScreen implements Screen, ButtonClickObserver {
             ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
-        // create stock entity
+        Gdx.app.debug("[DEBUG] - GameScreen", "Creating stock entity.");
         Entity stock = engine.createEntity();
         stock.add(new InventoryComponent());
         engine.addEntity(stock);
+        Gdx.app.debug("[DEBUG] - GameScreen", "Stock entity created.");
 
-        // setup resource tracking system
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
-
-        // TODO: remove this line, when the resource production system is implemented
-        //ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
-        resourceProductionSystem = new ResourceProductionSystem(engine);
-
+        this.resourceProductionSystem = new ResourceProductionSystem(engine);
         engine.addSystem(resourceProductionSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 
@@ -181,13 +185,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
 
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
+        //setup render system
+        engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
         // create resource ui
         skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
-        engine.addSystem(new MovementSystem());
 
         // create inventory ui
         Entity inventoryEntity = engine
