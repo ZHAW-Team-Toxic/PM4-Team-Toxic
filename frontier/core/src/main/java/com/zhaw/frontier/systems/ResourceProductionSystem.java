@@ -9,6 +9,7 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -117,5 +118,35 @@ public class ResourceProductionSystem extends EntitySystem {
                 );
             }
         }
+    }
+
+    /**
+     * Returns the projected income from all production buildings.
+     * <p>
+     * This method calculates the total production rate for each resource type
+     * based on the number of adjacent resource tiles and returns a map of
+     * resource types to their projected income.
+     * </p>
+     *
+     * @return a map of resource types to their projected income
+     */
+    public Map<ResourceTypeEnum, Integer> getProjectedIncome() {
+        Map<ResourceTypeEnum, Integer> income = new HashMap<>();
+
+        for (Entity building : productionBuildings) {
+            ResourceProductionComponent production = building.getComponent(
+                ResourceProductionComponent.class
+            );
+
+            for (Map.Entry<
+                ResourceTypeEnum,
+                Integer
+            > entry : production.productionRate.entrySet()) {
+                int total = entry.getValue() * production.countOfAdjacentResources;
+                income.merge(entry.getKey(), total, Integer::sum);
+            }
+        }
+
+        return income;
     }
 }

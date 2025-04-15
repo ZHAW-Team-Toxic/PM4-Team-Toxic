@@ -38,6 +38,7 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void show() {
         // Add new assets here
+        assetManager.load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);
