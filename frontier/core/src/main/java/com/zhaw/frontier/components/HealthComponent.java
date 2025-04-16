@@ -16,4 +16,6 @@ public class HealthComponent implements Component {
      * $param Health The current health of the entity.
      */
     public int currentHealth = 100;
+
+    public boolean isDead = false;
 }

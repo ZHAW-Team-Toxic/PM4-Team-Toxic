@@ -22,6 +22,7 @@ import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;

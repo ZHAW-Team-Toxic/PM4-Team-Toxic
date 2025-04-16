@@ -163,14 +163,14 @@ hq_sandclock_D6
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 5
 hq_sandclock_D6
   rotate: false
   xy: 326, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 5
+  index: 4
 hq_sandclock_D6
   rotate: false
   xy: 326, 2
@@ -422,6 +422,82 @@ cursor/medivial_cursor_demolish
   index: -1
 
 textures6.png
+size: 256, 32
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+death/explosion
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+death/explosion
+  rotate: false
+  xy: 20, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+death/explosion
+  rotate: false
+  xy: 38, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 3
+death/explosion
+  rotate: false
+  xy: 56, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+death/explosion
+  rotate: false
+  xy: 74, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 5
+death/explosion
+  rotate: false
+  xy: 92, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 6
+death/explosion
+  rotate: false
+  xy: 110, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 7
+death/explosion
+  rotate: false
+  xy: 128, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 8
+death/explosion
+  rotate: false
+  xy: 146, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 9
+death/explosion
+  rotate: false
+  xy: 164, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 10
+
+textures7.png
 size: 512, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -441,7 +517,7 @@ demo/libgdx
   offset: 0, 0
   index: -1
 
-textures7.png
+textures8.png
 size: 2048, 1024
 format: RGBA8888
 filter: Nearest, Nearest
@@ -461,7 +537,7 @@ demo2/image
   offset: 0, 0
   index: -1
 
-textures8.png
+textures9.png
 size: 128, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -696,14 +772,14 @@ walk_left_demon
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_left_demon
   rotate: false
   xy: 74, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 idle_right_demon
   rotate: false
   xy: 92, 92
@@ -731,14 +807,14 @@ walk_right_demon
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_right_demon
   rotate: false
   xy: 110, 92
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 idle_up_demon
   rotate: false
   xy: 38, 20
@@ -754,6 +830,13 @@ walk_up_demon
   offset: 0, 0
   index: 1
 idle_up_demon
+  rotate: false
+  xy: 38, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+walk_up_demon
   rotate: false
   xy: 38, 2
   size: 16, 16
@@ -767,13 +850,6 @@ walk_up_demon
   orig: 16, 16
   offset: 0, 0
   index: 4
-walk_up_demon
-  rotate: false
-  xy: 38, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
 walk_down_demon
   rotate: false
   xy: 56, 38
@@ -831,7 +907,7 @@ walk_up_demon
   offset: 0, 0
   index: 5
 
-textures9.png
+textures10.png
 size: 512, 32
 format: RGBA8888
 filter: Nearest, Nearest
@@ -947,14 +1023,14 @@ walk_down_goblin
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_goblin
   rotate: false
   xy: 236, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 idle_left_goblin
   rotate: false
   xy: 254, 2
@@ -970,13 +1046,6 @@ walk_left_goblin
   offset: 0, 0
   index: 1
 idle_left_goblin
-  rotate: false
-  xy: 272, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-walk_left_goblin
   rotate: false
   xy: 272, 2
   size: 16, 16
@@ -990,6 +1059,13 @@ walk_left_goblin
   orig: 16, 16
   offset: 0, 0
   index: 4
+walk_left_goblin
+  rotate: false
+  xy: 272, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
 idle_right_goblin
   rotate: false
   xy: 290, 2
@@ -1052,14 +1128,14 @@ walk_up_goblin
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_up_goblin
   rotate: false
   xy: 344, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_goblin
   rotate: false
   xy: 362, 2
@@ -1117,7 +1193,7 @@ walk_up_goblin
   offset: 0, 0
   index: 5
 
-textures10.png
+textures11.png
 size: 128, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1394,14 +1470,14 @@ walk_up_orc
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_up_orc
   rotate: false
   xy: 74, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_orc
   rotate: false
   xy: 92, 92
@@ -1459,7 +1535,7 @@ walk_up_orc
   offset: 0, 0
   index: 5
 
-textures11.png
+textures12.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1498,14 +1574,14 @@ Fireball
   size: 124, 79
   orig: 124, 79
   offset: 0, 0
-  index: 7
+  index: 5
 Fireball
   rotate: false
   xy: 128, 2
   size: 124, 79
   orig: 124, 79
   offset: 0, 0
-  index: 5
+  index: 7
 Fireball
   rotate: false
   xy: 1654, 1849
@@ -1570,7 +1646,7 @@ Frontier_Knights
   offset: 0, 0
   index: 4
 
-textures12.png
+textures13.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1590,7 +1666,7 @@ Frontier_Tower
   offset: 0, 0
   index: -1
 
-textures13.png
+textures14.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1603,7 +1679,7 @@ Frontier_Ground_Background
   offset: 0, 0
   index: -1
 
-textures14.png
+textures15.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest

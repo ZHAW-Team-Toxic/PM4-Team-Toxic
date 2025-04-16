@@ -163,9 +163,10 @@ public class SaveGameManagerTest {
         health.currentHealth = 88;
 
         AttackComponent attack = tower.getComponent(AttackComponent.class);
-        attack.AttackDamage = 25;
-        attack.AttackRange = 6;
-        attack.AttackSpeed = 1.1f;
+        attack.damage = 25;
+        attack.attackRange = 6;
+        attack.attackInterval = 1.1f;
+        attack.attackCooldown = 1f;
 
         engine.addEntity(tower);
 
@@ -185,9 +186,10 @@ public class SaveGameManagerTest {
 
         AttackComponent loadedAttack = loaded.getComponent(AttackComponent.class);
         assertNotNull(loadedAttack);
-        assertEquals(25, loadedAttack.AttackDamage);
-        assertEquals(6, loadedAttack.AttackRange);
-        assertEquals(1.1f, loadedAttack.AttackSpeed, 0.001f);
+        assertEquals(25, loadedAttack.damage);
+        assertEquals(6, loadedAttack.attackRange);
+        assertEquals(1.1f, loadedAttack.attackInterval, 0.001f);
+        assertEquals(1f, loadedAttack.attackCooldown, 0.001f);
 
         EntityTypeComponent type = loaded.getComponent(EntityTypeComponent.class);
         assertNotNull(type);
