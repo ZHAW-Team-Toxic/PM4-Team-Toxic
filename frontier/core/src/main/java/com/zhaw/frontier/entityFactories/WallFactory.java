@@ -11,6 +11,7 @@ import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.components.WallComponent;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +77,7 @@ public class WallFactory {
         wall.add(new OccupiesTilesComponent());
         wall.add(new HealthComponent());
         wall.add(new BuildingAnimationComponent());
+        wall.add(new WallComponent());
         return wall;
     }
 

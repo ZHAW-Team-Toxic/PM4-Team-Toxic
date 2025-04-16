@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.algorithm.SimpleAStarPathfinder;
 import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
@@ -26,6 +27,8 @@ import com.zhaw.frontier.systems.EnemyManagementSystem;
 import com.zhaw.frontier.systems.IdleBehaviourSystem;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
+import com.zhaw.frontier.systems.PathFollowerSystem;
+import com.zhaw.frontier.systems.PathfindingSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.systems.ResourceProductionSystem;
@@ -140,6 +143,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new PatrolBehaviourSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Movement System.");
+        engine.addSystem(new PathFollowerSystem());
         engine.addSystem(new MovementSystem());
         Gdx.app.debug("[DEBUG] - GameScreen", "Movement System initialized.");
 
@@ -201,6 +205,15 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
+        TiledMapTileLayer layer = MapLoader
+            .getInstance()
+            .getMapEntity()
+            .getComponent(BottomLayerComponent.class)
+            .bottomLayer;
+
+        SimpleAStarPathfinder pathfinder = new SimpleAStarPathfinder(layer, engine);
+        PathfindingSystem pathfindingSystem = new PathfindingSystem(pathfinder);
+        engine.addSystem(pathfindingSystem);
 
         // create inventory ui
         Entity inventoryEntity = engine

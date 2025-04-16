@@ -134,6 +134,16 @@ public class GameInputProcessor extends InputAdapter {
             return true;
         }
 
+        if (keycode == Input.Keys.X) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyPath = EnemyFactory.createPathfindingEnemy(engine, mouseX, mouseY);
+            enemyManagementSystem.spawnEnemy(enemyPath);
+            return true;
+        }
+
         if (keycode == Input.Keys.I) {
             Gdx.app.debug(
                 "GameInputProcessor",

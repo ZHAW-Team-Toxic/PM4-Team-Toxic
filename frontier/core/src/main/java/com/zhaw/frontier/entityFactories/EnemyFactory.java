@@ -1,5 +1,6 @@
 package com.zhaw.frontier.entityFactories;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
+import com.zhaw.frontier.components.behaviours.PathfindingComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
@@ -54,6 +56,13 @@ public class EnemyFactory {
     public static Entity createIdleEnemy(float x, float y) {
         Entity enemy = createBaseEnemy(x, y);
         enemy.add(new IdleBehaviourComponent());
+        return enemy;
+    }
+
+    public static Entity createPathfindingEnemy(Engine engine, float x, float y) {
+        Entity enemy = createBaseEnemy(x, y);
+        enemy.add(new TargetTypeComponent(WallComponent.class));
+        enemy.add(new PathfindingComponent());
         return enemy;
     }
 
