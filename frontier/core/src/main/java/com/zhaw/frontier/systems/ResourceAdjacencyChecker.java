@@ -8,56 +8,37 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.MapLayerEnum;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * Utility class for checking if a building entity has adjacent resource tiles of the required type.
- * <p>
- * This class verifies whether any of the eight surrounding tiles (including diagonals) around a building
- * contain a resource tile matching the {@link ResourceTypeEnum} defined in the building's
- * {@link ResourceProductionComponent}.
- * <p>
- * If one or more matching resource tiles are found, the entity's production component is updated with the
- * count of adjacent resources.
- *
- * <p>Usage context:
- * <ul>
- *     <li>To validate building placement based on proximity to required resources</li>
- *     <li>To avoid running resource search logic in runtime systems like {@code ResourceBuildingRangeSystem}</li>
- * </ul>
- *
- * @see PositionComponent
- * @see ResourceProductionComponent
- * @see MapLayerEnum#RESOURCE_LAYER
+ * Utility class for checking if a multi-tile building has adjacent resource tiles.
  */
 public class ResourceAdjacencyChecker {
 
-    /**
-     * Checks whether the given entity has at least one adjacent resource tile of the required type.
-     * <p>
-     * The method examines all eight neighboring tiles around the entity's position
-     * and compares their {@code resourceType} property with the resource type defined
-     * in the entity's {@link ResourceProductionComponent}.
-     * <p>
-     * If matching tiles are found, their count is stored in the production component's
-     * {@code countOfAdjacentResources} field.
-     *
-     * @param entity        the building entity to check; must have a {@link PositionComponent} and {@link ResourceProductionComponent}
-     * @param resourceLayer the {@link TiledMapTileLayer} representing the resource layer; must be named {@code RESOURCE_LAYER}
-     * @return {@code true} if one or more matching resource tiles are adjacent; {@code false} otherwise
-     * @throws IllegalArgumentException if the layer is not the RESOURCE_LAYER or if the entity lacks required components
-     */
     public static boolean hasAdjacentResource(Entity entity, TiledMapTileLayer resourceLayer) {
         if (!Objects.equals(resourceLayer.getName(), MapLayerEnum.RESOURCE_LAYER.toString())) {
             throw new IllegalArgumentException("Invalid layer type. Expected RESOURCE_LAYER.");
         }
 
-        PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
-        if (positionComponent == null) {
-            throw new IllegalArgumentException("Entity does not have a PositionComponent.");
+        PositionComponent pos = entity.getComponent(PositionComponent.class);
+        ResourceProductionComponent prod = entity.getComponent(ResourceProductionComponent.class);
+
+        if (pos == null || prod == null) {
+            throw new IllegalArgumentException(
+                "Entity is missing PositionComponent or ResourceProductionComponent."
+            );
         }
 
-        Vector2 position = positionComponent.position;
+        ResourceTypeEnum requiredType = prod.productionRate.keySet().iterator().next();
+        int baseX = (int) pos.basePosition.x;
+        int baseY = (int) pos.basePosition.y;
+
+        int width = pos.widthInTiles;
+        int height = pos.heightInTiles;
+
+        // Directions to check around the whole building area
         Vector2[] directions = {
             new Vector2(-1, 0),
             new Vector2(1, 0),
@@ -69,46 +50,46 @@ public class ResourceAdjacencyChecker {
             new Vector2(1, 1),
         };
 
-        int amount = 0;
+        Set<Vector2> checked = new HashSet<>();
+        int adjacentCount = 0;
 
-        for (Vector2 dir : directions) {
-            Vector2 adjacent = new Vector2(position).add(dir);
-            TiledMapTileLayer.Cell cell = resourceLayer.getCell((int) adjacent.x, (int) adjacent.y);
-            if (cell != null && cell.getTile().getProperties().containsKey("resourceType")) {
-                ResourceTypeEnum resourceType = entity
-                    .getComponent(ResourceProductionComponent.class)
-                    .productionRate.keySet()
-                    .iterator()
-                    .next();
-                if (
-                    cell
-                        .getTile()
-                        .getProperties()
-                        .get("resourceType")
-                        .equals(resourceType.toString())
-                ) {
-                    amount++;
+        for (int x = baseX; x < baseX + width; x++) {
+            for (int y = baseY; y < baseY + height; y++) {
+                for (Vector2 dir : directions) {
+                    int checkX = x + (int) dir.x;
+                    int checkY = y + (int) dir.y;
+
+                    Vector2 checkPos = new Vector2(checkX, checkY);
+                    if (checked.contains(checkPos)) continue;
+                    checked.add(checkPos);
+
+                    TiledMapTileLayer.Cell cell = resourceLayer.getCell(checkX, checkY);
+                    if (
+                        cell != null &&
+                        cell.getTile() != null &&
+                        cell.getTile().getProperties().containsKey("resourceType")
+                    ) {
+                        String cellType = (String) cell
+                            .getTile()
+                            .getProperties()
+                            .get("resourceType");
+                        if (cellType.equals(requiredType.toString())) {
+                            adjacentCount++;
+                        }
+                    }
                 }
             }
         }
 
-        if (amount > 0) {
-            entity.getComponent(ResourceProductionComponent.class).countOfAdjacentResources =
-            amount;
+        if (adjacentCount > 0) {
+            prod.countOfAdjacentResources = adjacentCount;
             Gdx.app.debug(
                 "[DEBUG] - ResourceAdjacencyChecker",
-                "Found " +
-                amount +
-                " adjacent resources of type " +
-                entity
-                    .getComponent(ResourceProductionComponent.class)
-                    .productionRate.keySet()
-                    .iterator()
-                    .next()
+                "Found " + adjacentCount + " adjacent resources of type " + requiredType
             );
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

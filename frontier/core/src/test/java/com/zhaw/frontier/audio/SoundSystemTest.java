@@ -1,7 +1,6 @@
 package com.zhaw.frontier.audio;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import com.badlogic.ashley.core.Engine;
 import org.junit.jupiter.api.Test;

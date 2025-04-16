@@ -1,4 +1,3 @@
-
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -57,7 +56,7 @@ run {
 
 jar {
     // sets the name of the .jar file this produces to the name of the game or app, with the version after.
-    archiveFileName.set("${appName}-${projectVersion}.jar")
+    archiveFileName.set("${appName}-${project.version}.jar")
     // the duplicatesStrategy matters starting in Gradle 7.0; this setting works.
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     dependsOn configurations.runtimeClasspath
@@ -87,7 +86,7 @@ construo {
     // human-readable name, used for example in the `.app` name for macOS
     humanName.set(appName)
     // Optional, defaults to project version property
-    version.set("$projectVersion")
+    version.set(project.version)
 
     targets.configure {
         create("linuxX64", Target.Linux) {
@@ -117,6 +116,10 @@ construo {
             //useConsole.set(true)
         }
     }
+}
+
+tasks.register("packageAll") {
+    dependsOn "packageWinX64", "packageLinuxX64", "packageMacX64", "packageMacM1"
 }
 
 // Equivalent to the jar task; here for compatibility with gdx-setup.
