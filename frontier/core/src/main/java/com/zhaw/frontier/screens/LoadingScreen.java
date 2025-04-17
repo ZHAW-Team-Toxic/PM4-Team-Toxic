@@ -32,7 +32,6 @@ public class LoadingScreen extends ScreenAdapter {
         this.batch = game.getBatch();
         this.font = new BitmapFont();
         this.mapLoaderSystem = new MapLoader();
-        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
     }
 
     @Override
@@ -42,6 +41,8 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);
+
+        // Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(assetManager));
 
         try {
             mapLoaderSystem.loadMap(assetManager, Path.of("TMX/frontier_testmap.tmx"));

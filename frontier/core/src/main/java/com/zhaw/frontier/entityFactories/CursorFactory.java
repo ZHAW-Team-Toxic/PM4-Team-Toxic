@@ -1,30 +1,66 @@
 package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class CursorFactory {
 
-    public static Cursor createDefaultCursor() {
-        var pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0x181818FF);
-        pixmap.fill();
+    private static Cursor defaultCursor = null;
+    private static Cursor deleteCursor = null;
 
+    private static Pixmap spriteToPixmap(Sprite texture){
+        TextureData textureData = texture.getTexture().getTextureData();
+        if (!textureData.isPrepared()) {
+            textureData.prepare();
+        }
+        Pixmap pixmap = new Pixmap(
+            texture.getRegionWidth(),
+            texture.getRegionHeight(),
+            textureData.getFormat()
+        );
+        pixmap.drawPixmap(
+            textureData.consumePixmap(), // The other Pixmap
+            0, // The target x-coordinate (top left corner)
+            0, // The target y-coordinate (top left corner)
+            texture.getRegionX(), // The source x-coordinate (top left corner)
+            texture.getRegionY(), // The source y-coordinate (top left corner)
+            texture.getRegionWidth(), // The width of the area from the other Pixmap in pixels
+            texture.getRegionHeight() // The height of the area from the other Pixmap in pixels
+        );
+        return pixmap;
+    }
+
+    public static Cursor createDefaultCursor(AssetManager assetManager) {
+        if(defaultCursor != null){
+            return defaultCursor;
+        }
+        var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor"));
+        var pixmap = spriteToPixmap(texture);
         var cursor = Gdx.graphics.newCursor(pixmap, 8, 8);
 
         pixmap.dispose();
+        defaultCursor = cursor;
         return cursor;
     }
 
-    public static Cursor createDeleteCursor() {
-        var pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0xFF0000FF);
-        pixmap.fill();
-
+    public static Cursor createDeleteCursor(AssetManager assetManager) {
+        if(deleteCursor != null){
+            return deleteCursor;
+        }
+        var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        var texture = new Sprite(atlas.findRegion("demo/donkey"));
+        texture.setSize(32, 32);
+        var pixmap = spriteToPixmap(texture);
         var cursor = Gdx.graphics.newCursor(pixmap, 8, 8);
 
         pixmap.dispose();
+        deleteCursor = cursor;
         return cursor;
     }
 }

@@ -48,7 +48,7 @@ public class GameInputProcessor extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
-            Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
+            Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(frontierGame.getAssetManager()));
             return true;
         }
         return false;
@@ -57,7 +57,7 @@ public class GameInputProcessor extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
-            Gdx.graphics.setCursor(CursorFactory.createDeleteCursor());
+            Gdx.graphics.setCursor(CursorFactory.createDeleteCursor(frontierGame.getAssetManager()));
             return true;
         }
         return false;

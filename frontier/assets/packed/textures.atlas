@@ -20,6 +20,251 @@ demo/libgdx
   index: -1
 
 textures2.png
+size: 256, 64
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+buildings/Tower/Wood_Tower1
+  rotate: false
+  xy: 2, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+buildings/Tower/Wood_Tower2
+  rotate: false
+  xy: 20, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+buildings/Tower/Wood_Tower3
+  rotate: false
+  xy: 38, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+buildings/Tower/Wood_Tower4
+  rotate: false
+  xy: 56, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+buildings/Tower/Wood_Tower5
+  rotate: false
+  xy: 74, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+buildings/Tower/Wood_Tower6
+  rotate: false
+  xy: 92, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+buildings/Tower/Wood_Tower7
+  rotate: false
+  xy: 110, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+buildings/Tower/Wood_Tower8
+  rotate: false
+  xy: 128, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+
+textures3.png
+size: 32, 32
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+buildings/Arrow/Arrow
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+
+textures4.png
+size: 256, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+cursor/medivial_cursor
+  rotate: false
+  xy: 2, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+
+textures5.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+titlescreen/Fireball
+  rotate: false
+  xy: 2, 2
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 1
+titlescreen/Fireball
+  rotate: false
+  xy: 1654, 1930
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 2
+titlescreen/Fireball
+  rotate: false
+  xy: 1654, 1930
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 8
+titlescreen/Fireball
+  rotate: false
+  xy: 128, 2
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 3
+titlescreen/Fireball
+  rotate: false
+  xy: 128, 2
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 7
+titlescreen/Fireball
+  rotate: false
+  xy: 128, 2
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 5
+titlescreen/Fireball
+  rotate: false
+  xy: 1654, 1849
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 4
+titlescreen/Fireball
+  rotate: false
+  xy: 1780, 1930
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 6
+titlescreen/Frontier_Enemies
+  rotate: false
+  xy: 2, 985
+  size: 1650, 1024
+  orig: 1650, 1024
+  offset: 0, 0
+  index: -1
+titlescreen/Frontier_Knights
+  rotate: false
+  xy: 2, 83
+  size: 553, 900
+  orig: 553, 900
+  offset: 0, 0
+  index: 1
+titlescreen/Frontier_Knights
+  rotate: false
+  xy: 2, 83
+  size: 553, 900
+  orig: 553, 900
+  offset: 0, 0
+  index: 6
+titlescreen/Frontier_Knights
+  rotate: false
+  xy: 557, 83
+  size: 553, 900
+  orig: 553, 900
+  offset: 0, 0
+  index: 2
+titlescreen/Frontier_Knights
+  rotate: false
+  xy: 557, 83
+  size: 553, 900
+  orig: 553, 900
+  offset: 0, 0
+  index: 5
+titlescreen/Frontier_Knights
+  rotate: false
+  xy: 1112, 83
+  size: 553, 900
+  orig: 553, 900
+  offset: 0, 0
+  index: 3
+titlescreen/Frontier_Knights
+  rotate: false
+  xy: 1112, 83
+  size: 553, 900
+  orig: 553, 900
+  offset: 0, 0
+  index: 4
+
+textures6.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+titlescreen/Frontier_Logo
+  rotate: false
+  xy: 2, 2
+  size: 943, 187
+  orig: 943, 187
+  offset: 0, 0
+  index: -1
+titlescreen/Frontier_Tower
+  rotate: false
+  xy: 2, 191
+  size: 1024, 1600
+  orig: 1024, 1600
+  offset: 0, 0
+  index: -1
+
+textures7.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+titlescreen/Frontier_Ground_Background
+  rotate: false
+  xy: 2, 2
+  size: 1536, 1024
+  orig: 1536, 1024
+  offset: 0, 0
+  index: -1
+
+textures8.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+titlescreen/Frontier_Sky_Background
+  rotate: false
+  xy: 2, 2
+  size: 1536, 1024
+  orig: 1536, 1024
+  offset: 0, 0
+  index: -1
+
+textures9.png
 size: 2048, 1024
 format: RGBA8888
 filter: Nearest, Nearest

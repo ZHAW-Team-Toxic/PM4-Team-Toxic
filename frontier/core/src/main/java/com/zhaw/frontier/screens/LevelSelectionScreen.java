@@ -26,7 +26,7 @@ public class LevelSelectionScreen extends ScreenAdapter {
     public LevelSelectionScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
-        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
+        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(frontierGame.getAssetManager()));
         background = new ExtendViewport(16, 9);
         background.getCamera().position.set(8, 4.5f, 0);
 

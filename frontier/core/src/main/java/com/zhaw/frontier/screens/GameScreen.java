@@ -66,7 +66,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
-        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
+        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(frontierGame.getAssetManager()));
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
         baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
         baseUI.addObserver(this);
