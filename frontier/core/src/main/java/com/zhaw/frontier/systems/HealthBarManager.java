@@ -21,6 +21,7 @@ import com.zhaw.frontier.mappers.MapLayerMapper;
 public class HealthBarManager {
 
     private static MapLayerMapper mapLayerMapper = new MapLayerMapper();
+    private static final Sprite HEALTH_BAR_SPRITE = createHealthBarSprite();
 
     /**
      * Initializes the health bar sprite as a 1x1 white pixel, which will be resized and tinted dynamically.
@@ -67,7 +68,7 @@ public class HealthBarManager {
 
         if (health == null || position == null || render == null) return;
 
-        Sprite healthBar = createHealthBarSprite();
+        Sprite healthBar = new Sprite(HEALTH_BAR_SPRITE);
 
         float hpPercent = MathUtils.clamp((float) health.currentHealth / health.maxHealth, 0f, 1f);
         if (hpPercent >= 1f || hpPercent <= 0f) return;
@@ -75,19 +76,25 @@ public class HealthBarManager {
         Color barColor = getHealthColor(hpPercent);
         healthBar.setColor(barColor);
 
-        float scalarOffsetY = 1.3f;
-        float barWidth = render.sprite.getWidth() * hpPercent;
-        float barHeight = 3f;
-        float offsetY = render.sprite.getHeight() * scalarOffsetY;
+        int tileSize = 16;
 
-        Vector2 pixelCoordinate = calculatePixelCoordinate(
-            (int) position.position.x,
-            (int) position.position.y,
-            engine
-        );
+        float barWidth = render.widthInTiles * hpPercent * tileSize;
+        float barHeight = 3f;
+        float offsetY = render.heightInTiles * tileSize + 2f;
+
+        if(render.renderType == RenderComponent.RenderType.BUILDING) {
+            Vector2 pixelCoordinate = calculatePixelCoordinate(
+                (int) position.basePosition.x,
+                (int) position.basePosition.y,
+                engine
+            );
+            healthBar.setPosition(pixelCoordinate.x, pixelCoordinate.y + offsetY);
+        }else{
+            healthBar.setPosition(position.basePosition.x * tileSize, position.basePosition.y * tileSize + offsetY);
+        }
+
 
         healthBar.setSize(barWidth, barHeight);
-        healthBar.setPosition(pixelCoordinate.x, pixelCoordinate.y + offsetY);
         healthBar.draw(renderer);
 
         renderer.setColor(Color.WHITE); // Reset batch color

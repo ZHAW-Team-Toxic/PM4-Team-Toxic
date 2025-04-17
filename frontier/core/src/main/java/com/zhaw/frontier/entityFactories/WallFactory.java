@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.BuildingAnimationComponent;
 import com.zhaw.frontier.components.HealthComponent;
@@ -77,7 +78,9 @@ public class WallFactory {
 
         // TODO: Replace placeholder texture with the actual wall texture.
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        HashMap<TileOffset, TextureRegion> sprites = new HashMap<>();
+        sprites.put(new TileOffset(0, 0), new TextureRegion(texture));
+        renderComponent.sprites = sprites;
 
         wall.add(renderComponent);
 
