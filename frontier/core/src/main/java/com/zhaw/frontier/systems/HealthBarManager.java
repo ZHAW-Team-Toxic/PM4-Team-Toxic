@@ -20,26 +20,14 @@ import com.zhaw.frontier.mappers.MapLayerMapper;
  */
 public class HealthBarManager {
 
-    private final Engine engine;
-    private final Sprite healthBar;
-    private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
-
-    /**
-     * Creates a new HealthBarManager responsible for rendering health bars.
-     *
-     * @param engine the Ashley engine containing entities and systems.
-     */
-    public HealthBarManager(Engine engine) {
-        this.engine = engine;
-        this.healthBar = createHealthBarSprite();
-    }
+    private static MapLayerMapper mapLayerMapper = new MapLayerMapper();
 
     /**
      * Initializes the health bar sprite as a 1x1 white pixel, which will be resized and tinted dynamically.
      *
      * @return a reusable {@link Sprite} representing the health bar.
      */
-    private Sprite createHealthBarSprite() {
+    private static Sprite createHealthBarSprite() {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
@@ -61,8 +49,8 @@ public class HealthBarManager {
      * @param renderer the {@link SpriteBatch} used for drawing.
      * @param entity   the {@link Entity} to draw a health bar for.
      */
-    public void drawHealthBar(SpriteBatch renderer, Entity entity) {
-        renderHealthBar(renderer, entity);
+    public static void drawHealthBar(SpriteBatch renderer, Entity entity, Engine engine) {
+        renderHealthBar(renderer, entity, engine);
     }
 
     /**
@@ -72,12 +60,14 @@ public class HealthBarManager {
      * @param renderer the {@link SpriteBatch} for rendering.
      * @param entity   the entity to render a health bar for.
      */
-    private void renderHealthBar(SpriteBatch renderer, Entity entity) {
+    private static void renderHealthBar(SpriteBatch renderer, Entity entity, Engine engine) {
         HealthComponent health = entity.getComponent(HealthComponent.class);
         PositionComponent position = entity.getComponent(PositionComponent.class);
         RenderComponent render = entity.getComponent(RenderComponent.class);
 
         if (health == null || position == null || render == null) return;
+
+        Sprite healthBar = createHealthBarSprite();
 
         float hpPercent = MathUtils.clamp((float) health.currentHealth / health.maxHealth, 0f, 1f);
         if (hpPercent >= 1f || hpPercent <= 0f) return;
@@ -92,7 +82,8 @@ public class HealthBarManager {
 
         Vector2 pixelCoordinate = calculatePixelCoordinate(
             (int) position.position.x,
-            (int) position.position.y
+            (int) position.position.y,
+            engine
         );
 
         healthBar.setSize(barWidth, barHeight);
@@ -109,7 +100,7 @@ public class HealthBarManager {
      * @param healthPercent a float from 0 (dead) to 1 (full health)
      * @return the {@link Color} to use for the bar
      */
-    private Color getHealthColor(float healthPercent) {
+    private static Color getHealthColor(float healthPercent) {
         Color healthColor = new Color();
 
         if (healthPercent >= 0.7f) {
@@ -118,8 +109,8 @@ public class HealthBarManager {
         } else if (healthPercent >= 0.5f) {
             // 50%–69%: Green → Orange
             float t = (healthPercent - 0.5f) / 0.2f;
-            float r = MathUtils.lerp(1f, 0f, t);
-            float g = MathUtils.lerp(0.5f, 1f, t);
+            float r = MathUtils.lerp(1f, 1f, t);
+            float g = MathUtils.lerp(0.5f, 0.4f, t);
             healthColor.set(r, g, 0f, 1f);
         } else if (healthPercent >= 0.2f) {
             // 20%–49%: Orange → Red
@@ -141,7 +132,7 @@ public class HealthBarManager {
      * @param y the tile y-coordinate.
      * @return a {@link Vector2} representing the pixel position on screen.
      */
-    private Vector2 calculatePixelCoordinate(int x, int y) {
+    private static Vector2 calculatePixelCoordinate(int x, int y, Engine engine) {
         Entity map = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
         int tileX = x * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileWidth();
         int tileY = y * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileHeight();

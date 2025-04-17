@@ -43,7 +43,7 @@ public class TowerFactory {
         tower.add(new PositionComponent());
         HealthComponent healthComponent = new HealthComponent();
         healthComponent.maxHealth = 100;
-        healthComponent.currentHealth = 10;
+        healthComponent.currentHealth = 60;
         tower.add(healthComponent);
         tower.add(new AttackComponent());
 

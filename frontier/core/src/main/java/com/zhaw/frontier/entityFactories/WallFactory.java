@@ -38,7 +38,7 @@ public class WallFactory {
         wall.add(new PositionComponent());
         HealthComponent healthComponent = new HealthComponent();
         healthComponent.maxHealth = 100;
-        healthComponent.currentHealth = 99;
+        healthComponent.currentHealth = 40;
         wall.add(healthComponent);
 
         RenderComponent renderComponent = new RenderComponent();
