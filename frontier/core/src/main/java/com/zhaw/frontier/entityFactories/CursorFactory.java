@@ -14,7 +14,7 @@ public class CursorFactory {
     private static Cursor deleteCursor = null;
     private static Cursor buildingCursor = null;
 
-    private static Pixmap spriteToPixmap(Sprite texture){
+    private static Pixmap spriteToPixmap(Sprite texture) {
         TextureData textureData = texture.getTexture().getTextureData();
         if (!textureData.isPrepared()) {
             textureData.prepare();
@@ -37,7 +37,7 @@ public class CursorFactory {
     }
 
     public static Cursor createDefaultCursor(AssetManager assetManager) {
-        if(defaultCursor != null){
+        if (defaultCursor != null) {
             return defaultCursor;
         }
         var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
@@ -51,7 +51,7 @@ public class CursorFactory {
     }
 
     public static Cursor createDeleteCursor(AssetManager assetManager) {
-        if(deleteCursor != null){
+        if (deleteCursor != null) {
             return deleteCursor;
         }
         var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
@@ -66,7 +66,7 @@ public class CursorFactory {
     }
 
     public static Cursor createBuildingCursor(AssetManager assetManager) {
-        if(buildingCursor != null){
+        if (buildingCursor != null) {
             return buildingCursor;
         }
         var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);

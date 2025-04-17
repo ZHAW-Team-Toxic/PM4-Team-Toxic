@@ -19,8 +19,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.entityFactories.CursorFactory;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class StartScreen extends ScreenAdapter {
@@ -67,7 +67,9 @@ public class StartScreen extends ScreenAdapter {
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.background = new ExtendViewport(16, 9);
         this.background.getCamera().position.set(8, 4.5f, 0);
-        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(AssetManagerInstance.getManager()));
+        Gdx.graphics.setCursor(
+            CursorFactory.createDefaultCursor(AssetManagerInstance.getManager())
+        );
 
         this.menu = new ScreenViewport();
         this.stage = new Stage(menu, spriteBatchWrapper.getBatch());
