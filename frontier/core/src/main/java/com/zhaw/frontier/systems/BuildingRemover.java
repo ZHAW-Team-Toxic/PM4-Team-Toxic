@@ -7,6 +7,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
@@ -38,13 +39,13 @@ public class BuildingRemover {
      * Attempts to remove a building entity from the map at the specified coordinates.
      * <p>
      * The method converts the given coordinates into world coordinates using the provided tile layer,
-     * then iterates over all entities that have a {@link PositionComponent}. If an entity is found
-     * at the calculated position, it is removed from the engine.
+     * then iterates over all entities that have a {@link PositionComponent} and {@link OccupiesTilesComponent}.
+     * If an entity is found occupying the calculated tile position, it is removed from the engine.
      * </p>
      *
      * @param sampleLayer the {@link TiledMapTileLayer} used for coordinate conversion.
-     * @param x           the x-coordinate (in screen or world space) where removal is attempted.
-     * @param y           the y-coordinate (in screen or world space) where removal is attempted.
+     * @param x           the x-coordinate (in screen space) where removal is attempted.
+     * @param y           the y-coordinate (in screen space) where removal is attempted.
      * @return {@code true} if a building entity was found and removed; {@code false} otherwise.
      */
     public boolean removeBuilding(TiledMapTileLayer sampleLayer, float x, float y) {
@@ -58,16 +59,20 @@ public class BuildingRemover {
         int worldCoordinateY = (int) worldCoordinate.y;
 
         ImmutableArray<Entity> entitiesWithPosition = engine.getEntitiesFor(
-            Family.all(PositionComponent.class).get()
+            Family.all(PositionComponent.class, OccupiesTilesComponent.class).get()
         );
         for (Entity entity : entitiesWithPosition) {
-            PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
-            if (
-                positionComponent.position.x == worldCoordinateX &&
-                positionComponent.position.y == worldCoordinateY
-            ) {
-                engine.removeEntity(entity);
-                return true;
+            OccupiesTilesComponent occupiesTilesComponent = entity.getComponent(
+                OccupiesTilesComponent.class
+            );
+
+            if (occupiesTilesComponent != null) {
+                for (Vector2 tile : occupiesTilesComponent.occupiedTiles) {
+                    if (tile.x == worldCoordinateX && tile.y == worldCoordinateY) {
+                        engine.removeEntity(entity);
+                        return true;
+                    }
+                }
             }
         }
         return false;

@@ -1,13 +1,11 @@
 package com.zhaw.frontier.ui;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -18,13 +16,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.entityFactories.WallFactory;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
-import com.zhaw.frontier.util.ButtonClickObserver;
-import com.zhaw.frontier.util.GameMode;
+import com.zhaw.frontier.utils.AssetManagerInstance;
+import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,7 +58,7 @@ public class BaseUI {
         uiViewport = new ScreenViewport(new OrthographicCamera());
         uiStage = new Stage(uiViewport, spriteBatch.getBatch());
 
-        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         atlas = new TextureAtlas(Gdx.files.internal("skins/skin.atlas"));
 
         float buttonWidth = uiViewport.getWorldWidth() * 0.03f;
@@ -239,13 +236,9 @@ public class BaseUI {
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 if (getGameMode() == GameMode.DEMOLISH) {
                     engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY);
-                } else if (getGameMode() == GameMode.BUILDING) {
-                    Entity entity = WallFactory.createDefaultWall(engine);
-                    entity.getComponent(PositionComponent.class).position =
-                    new Vector2(screenX, screenY);
-                    engine.getSystem(BuildingManagerSystem.class).placeBuilding(entity);
+                    return true;
                 }
-                return true;
+                return false;
             }
         };
     }

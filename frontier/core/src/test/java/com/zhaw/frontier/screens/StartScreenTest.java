@@ -1,9 +1,9 @@
 package com.zhaw.frontier.screens;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,6 @@ class StartScreenTest {
     private SpriteBatch mockBatch;
     private StartScreen startScreen;
     private SpriteBatchInterface mockSpriteBatchWrapper;
-    private AssetManager mockAssetManager;
     private BitmapFont mockFont;
     private TextureAtlas atlas;
 
@@ -32,17 +32,20 @@ class StartScreenTest {
         mockGame = mock(FrontierGame.class);
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
-        mockAssetManager = new AssetManager();
         mockFont = mock(BitmapFont.class);
 
         // --- Assets vorbereiten ---
         // Wichtig: vor .get() muss .load() und finishLoading()
-        mockAssetManager.load("skins/skin.json", Skin.class);
-        mockAssetManager.load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
-        mockAssetManager.finishLoading(); // Blockiert bis alles geladen ist
+        AssetManagerInstance.getManager().load("skins/skin.json", Skin.class);
+        AssetManagerInstance
+            .getManager()
+            .load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
+        AssetManagerInstance.getManager().finishLoading(); // Blockiert bis alles geladen ist
 
         atlas =
-        mockAssetManager.get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
+        AssetManagerInstance
+            .getManager()
+            .get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
 
         Skin mockSkin = mock(Skin.class);
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
@@ -50,7 +53,6 @@ class StartScreenTest {
         when(mockSkin.get(TextButton.TextButtonStyle.class)).thenReturn(buttonStyle);
 
         // Mock-Rückgaben setzen
-        when(mockGame.getAssetManager()).thenReturn(mockAssetManager);
         when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
         when(mockSpriteBatchWrapper.getBatch()).thenReturn(mockBatch);
 
