@@ -42,6 +42,7 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("libgdx.png", Texture.class);
         assetManager.load("skins/skin.json", Skin.class);
         assetManager.load("packed/buildings/buildingAtlas.atlas", TextureAtlas.class);
+        assetManager.load("packed/buildings/walls/wood/woodAtlas.atlas", TextureAtlas.class);
         assetManager.load("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
 
         assetManager.load("packed/textures.atlas", TextureAtlas.class);

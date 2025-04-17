@@ -1,0 +1,19 @@
+{
+  "format": "RGBA8888",
+  "useIndexes": false,
+  "filterMin": "Linear",
+  "filterMag": "Linear",
+  "wrapX": "ClampToEdge",
+  "wrapY": "ClampToEdge",
+  "edgePadding": true,
+  "duplicatePadding": true,
+  "rotation": false,
+  "stripWhitespaceX": true,
+  "stripWhitespaceY": true,
+  "alphaThreshold": 0,
+  "paddingX": 2,
+  "paddingY": 2,
+  "maxWidth": 1024,
+  "maxHeight": 1024,
+  "debug": false
+}

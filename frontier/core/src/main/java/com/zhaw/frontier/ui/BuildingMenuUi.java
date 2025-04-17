@@ -178,8 +178,8 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private void createWallButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
-        ImageButton wall1 = createImageButton(WallFactory::createDefaultWall);
-        ImageButton wall2 = createImageButton(WallFactory::createDefaultWall);
+        ImageButton wall1 = createImageButton(WallFactory::createWoodWall);
+        ImageButton wall2 = createImageButton(WallFactory::createStoneWall);
         allButtons.add(wall1, wall2);
         groupTable.add(toContainer(wall1)).pad(2);
         groupTable.add(toContainer(wall2)).pad(2);
