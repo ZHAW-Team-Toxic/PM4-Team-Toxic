@@ -15,6 +15,10 @@ import com.zhaw.frontier.entityFactories.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles saving and loading of the game state to and from JSON files.
+ * Uses the Ashley engine to serialize and recreate entities with their components.
+ */
 public class SaveGameManager {
 
     private final Engine engine;
@@ -30,6 +34,11 @@ public class SaveGameManager {
         json.setIgnoreUnknownFields(true);
     }
 
+    /***
+     * Saves the current game state, including all entities and their relevant components,
+     * to a JSON file at the specified file path.
+     * @param filePath Name of the file to which the data is saved.
+     */
     public void saveGame(String filePath) {
         GameState gameState = new GameState();
         ImmutableArray<Entity> allEntities = engine.getEntitiesFor(Family.all().get());
@@ -76,16 +85,16 @@ public class SaveGameManager {
             }
 
             // Saves the production information
-            /*
             ResourceProductionComponent prodComponent = entity.getComponent(ResourceProductionComponent.class);
             if (prodComponent != null) {
-                data.productionRate = new HashMap<>();
-                for (Map.Entry<ResourceTypeEnum, Integer> entry : prodComponent.productionRate.entrySet()) {
-                    data.productionRate.put(entry.getKey().name(), entry.getValue());
-                }
                 data.countOfAdjacentResources = prodComponent.countOfAdjacentResources;
+                if (prodComponent.productionRate != null && !prodComponent.productionRate.isEmpty()) {
+                    ResourceTypeEnum resourceType = prodComponent.productionRate.keySet().iterator().next();
+                    if (resourceType != null) {
+                        data.resourceType = resourceType.name();
+                    }
+                }
             }
-             */
 
             gameState.entities.add(data);
         }
@@ -102,6 +111,12 @@ public class SaveGameManager {
         Gdx.app.log(this.getClass().getSimpleName(), "Saved " + gameState.entities.size() + " entities to " + file.file().getAbsolutePath());
     }
 
+    /**
+     * Loads the game state from a JSON file at the specified file path.
+     * Entities are recreated with their components if the data is valid.
+     *
+     * @param filePath Name of the file from which the data is loaded.
+     */
     public void loadGame(String filePath) {
         FileHandle file = Gdx.files.external("frontier/saves/" + (filePath.endsWith(".json") ? filePath : filePath + ".json"));
 
@@ -126,27 +141,41 @@ public class SaveGameManager {
             switch (entityType) {
                 case HQ -> {
                     if (data.x == null || data.y == null) continue;
-                    entity = HQFactory.createSandClockHQ(engine, 1, 1);
+                    entity = HQFactory.createSandClockHQ(engine, data.x, data.y);
                 }
                 case BALLISTA_TOWER -> {
                     if (data.x == null || data.y == null) continue;
-                    entity = TowerFactory.createBallistaTower(engine, 1, 1);
+                    entity = TowerFactory.createBallistaTower(engine, data.x, data.y);
                 }
                 case WOOD_WALL -> {
                     if (data.x == null || data.y == null) continue;
-                    entity = WallFactory.createWoodWall(engine, 1, 1);
+                    entity = WallFactory.createWoodWall(engine, data.x, data.y);
                 }
                 case STONE_WALL -> {
                     if (data.x == null || data.y == null) continue;
-                    entity = WallFactory.createStoneWall(engine, 1, 1);
+                    entity = WallFactory.createStoneWall(engine, data.x, data.y);
                 }
                 case IRON_WALL -> {
                     if (data.x == null || data.y == null) continue;
-                    entity = WallFactory.createIronWall(engine, 1, 1);
+                    entity = WallFactory.createIronWall(engine, data.x, data.y);
                 }
                 case RESOURCE_BUILDING -> {
                     if (data.x == null || data.y == null) continue;
-                    entity = ResourceBuildingFactory.woodResourceBuilding(engine, 1, 1);
+                    if (data.resourceType == null) continue;
+
+                    ResourceTypeEnum resourceType;
+                    try {
+                        resourceType = ResourceTypeEnum.valueOf(data.resourceType);
+                    } catch (Exception exeException) {
+                        Gdx.app.log(this.getClass().getSimpleName(), "Unknown resource type: " + data.resourceType);
+                        continue;
+                    }
+
+                    entity = switch (resourceType) {
+                        case RESOURCE_TYPE_WOOD -> ResourceBuildingFactory.woodResourceBuilding(engine, data.x, data.y);
+                        case RESOURCE_TYPE_STONE -> ResourceBuildingFactory.stoneResourceBuilding(engine, data.x, data.y);
+                        case RESOURCE_TYPE_IRON -> ResourceBuildingFactory.ironResourceBuilding(engine, data.x, data.y);
+                    };
                 }
                 default -> entity = engine.createEntity();
             }
@@ -185,6 +214,11 @@ public class SaveGameManager {
                     }
                 }
                 entity.add(inventory);
+            }
+
+            ResourceProductionComponent prodComponent = entity.getComponent(ResourceProductionComponent.class);
+            if (prodComponent != null && data.countOfAdjacentResources != null) {
+                prodComponent.countOfAdjacentResources = data.countOfAdjacentResources;
             }
 
             engine.addEntity(entity);
