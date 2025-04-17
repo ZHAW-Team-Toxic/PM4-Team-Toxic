@@ -1,5 +1,7 @@
 package com.zhaw.frontier.systems;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
@@ -44,7 +46,7 @@ public class PathfindingSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         ImmutableArray<Entity> pathingEntities = engine.getEntitiesFor(pathingFamily);
-
+        
         for (Entity entity : pathingEntities) {
             PathfindingComponent path = pathm.get(entity);
             PositionComponent pos = pm.get(entity);

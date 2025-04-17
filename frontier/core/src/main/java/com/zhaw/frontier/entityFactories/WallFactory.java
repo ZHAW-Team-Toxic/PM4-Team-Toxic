@@ -12,6 +12,7 @@ import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.WallComponent;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +93,7 @@ public class WallFactory {
      * @return a {@link Texture} generated from the pixmap.
      */
     private static Texture createPlaceHolder() {
-        Pixmap pixmap = new Pixmap(12, 12, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(AppProperties.TILE_SIZE, AppProperties.TILE_SIZE, Pixmap.Format.RGBA8888);
         pixmap.setColor(64 / 255f, 0, 0, 1); // red tone
         pixmap.fill();
         Texture texture = new Texture(pixmap);

@@ -9,15 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
 public class SimpleAStarPathfinder {
 
@@ -44,17 +36,28 @@ public class SimpleAStarPathfinder {
         startNode.fCost = heuristic(startNode, goalNode);
         openSet.add(startNode);
 
+        Node closestReachable = null;
+        int closestDistance = Integer.MAX_VALUE;
+
         while (!openSet.isEmpty()) {
             Node current = openSet.poll();
+            closedSet.add(current);
 
-            if (current.equals(goalNode)) {
+            int distanceToGoal = heuristic(current, goalNode);
+            if (distanceToGoal < closestDistance && isWalkable(current.x, current.y)) {
+                closestReachable = current;
+                closestDistance = distanceToGoal;
+            }
+
+            if (current.equals(goalNode) && isWalkable(current.x, current.y)) {
                 return reconstructPath(cameFrom, current);
             }
 
-            closedSet.add(current);
-
             for (Node neighbor : getNeighbors(current, width, height)) {
-                if (!isWalkable(neighbor.x, neighbor.y) || closedSet.contains(neighbor)) continue;
+                if (closedSet.contains(neighbor)) continue;
+
+                boolean walkable = isWalkable(neighbor.x, neighbor.y);
+                if (!walkable && !neighbor.equals(goalNode)) continue;
 
                 int tentativeG = current.gCost + 1;
 
@@ -62,7 +65,6 @@ public class SimpleAStarPathfinder {
                     neighbor.gCost = tentativeG;
                     neighbor.fCost = tentativeG + heuristic(neighbor, goalNode);
                     cameFrom.put(neighbor, current);
-
                     if (!openSet.contains(neighbor)) {
                         openSet.add(neighbor);
                     }
@@ -70,7 +72,12 @@ public class SimpleAStarPathfinder {
             }
         }
 
-        return new Array<>(); // no path found
+        // Could not reach the goal, return path to closest reachable point
+        if (closestReachable != null) {
+            return reconstructPath(cameFrom, closestReachable);
+        }
+
+        return new Array<>(); // No path found at all
     }
 
     private Array<Vector2> reconstructPath(Map<Node, Node> cameFrom, Node current) {
@@ -84,7 +91,7 @@ public class SimpleAStarPathfinder {
     }
 
     private int heuristic(Node a, Node b) {
-        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y); // Manhattan distance
+        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
 
     private boolean isWalkable(int x, int y) {
@@ -95,8 +102,7 @@ public class SimpleAStarPathfinder {
             .getTile()
             .getProperties()
             .get(TiledPropertiesEnum.IS_TRAVERSABLE.toString(), Boolean.class);
-        return true;
-        //return Boolean.TRUE.equals(traversable) && !isTileOccupied(x, y);
+        return Boolean.TRUE.equals(traversable) && !isTileOccupied(x, y);
     }
 
     private boolean isTileOccupied(int x, int y) {
@@ -120,10 +126,10 @@ public class SimpleAStarPathfinder {
         List<Node> neighbors = new ArrayList<>();
 
         int[][] directions = {
-            { 1, 0 },
-            { -1, 0 },
-            { 0, 1 },
-            { 0, -1 }, // no diagonals
+            {1, 0},
+            {-1, 0},
+            {0, 1},
+            {0, -1},
         };
 
         for (int[] dir : directions) {
@@ -139,7 +145,6 @@ public class SimpleAStarPathfinder {
     }
 
     private static class Node {
-
         int x, y;
         int gCost = Integer.MAX_VALUE;
         int fCost = Integer.MAX_VALUE;

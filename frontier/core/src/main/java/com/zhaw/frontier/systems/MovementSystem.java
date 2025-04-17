@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
@@ -84,7 +83,7 @@ public class MovementSystem extends EntitySystem {
             pos.lookingDirection.set(vel.velocity).nor();
             return;
         }
-        Gdx.app.debug("[test]", "" + (path != null));
+
         // 3. Fallback to intent (next waypoint)
         if (path != null && path.hasPath()) {
             Vector2 dir = new Vector2(path.getNextWaypoint()).sub(pos.basePosition);

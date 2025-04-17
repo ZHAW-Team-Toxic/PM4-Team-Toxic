@@ -6,9 +6,14 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -18,7 +23,10 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
+import com.zhaw.frontier.configs.AppConfig;
+import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.mappers.MapLayerMapper;
+import com.zhaw.frontier.utils.AppConfigLoader;
 import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.TileOffset;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
@@ -27,9 +35,12 @@ import java.util.*;
 /**
  * System responsible for rendering the map and game entities.
  * <p>
- * This system renders the tiled map layers (bottom, decoration, and resource layers)
- * using an {@link OrthogonalTiledMapRenderer} and draws game entities (currently buildings)
- * with a {@link SpriteBatch}. Building entities are rendered based on their {@link PositionComponent}
+ * This system renders the tiled map layers (bottom, decoration, and resource
+ * layers)
+ * using an {@link OrthogonalTiledMapRenderer} and draws game entities
+ * (currently buildings)
+ * with a {@link SpriteBatch}. Building entities are rendered based on their
+ * {@link PositionComponent}
  * and {@link RenderComponent} data.
  * </p>
  */
@@ -38,6 +49,7 @@ public class RenderSystem extends EntitySystem {
     private final Viewport viewport;
     private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
+    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     private ImmutableArray<Entity> buildings;
     private ImmutableArray<Entity> enemies;
@@ -50,7 +62,8 @@ public class RenderSystem extends EntitySystem {
      *
      * @param viewport the {@link Viewport} used for rendering.
      * @param engine   the {@link Engine} that manages game entities.
-     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering the tiled map.
+     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering the
+     *                 tiled map.
      */
     public RenderSystem(Viewport viewport, Engine engine, OrthogonalTiledMapRenderer renderer) {
         super(1);
@@ -62,8 +75,10 @@ public class RenderSystem extends EntitySystem {
     /**
      * Called when the system is added to an engine.
      * <p>
-     * This method retrieves the map entity and all building entities from the engine.
-     * It initializes the map layers and buildings so they can be rendered in the update method.
+     * This method retrieves the map entity and all building entities from the
+     * engine.
+     * It initializes the map layers and buildings so they can be rendered in the
+     * update method.
      * </p>
      *
      * @param engine The {@link Engine} this system was added to.
@@ -72,22 +87,17 @@ public class RenderSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         this.mapEntity = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
-        this.buildings =
-        engine.getEntitiesFor(
-            Family
-                .all(
-                    PositionComponent.class,
-                    RenderComponent.class,
-                    BuildingAnimationComponent.class
-                )
-                .get()
-        );
-        this.enemies =
-        engine.getEntitiesFor(
-            Family
-                .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
-                .get()
-        );
+        this.buildings = engine.getEntitiesFor(
+                Family
+                        .all(
+                                PositionComponent.class,
+                                RenderComponent.class,
+                                BuildingAnimationComponent.class)
+                        .get());
+        this.enemies = engine.getEntitiesFor(
+                Family
+                        .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
+                        .get());
     }
 
     /**
@@ -117,6 +127,12 @@ public class RenderSystem extends EntitySystem {
         // Render all building entities.
         renderAllEntities((SpriteBatch) renderer.getBatch());
 
+        if (AppConfigLoader.ReadAppConfig().getEnvironment() == AppEnvironment.DEV) {
+            drawGridWithTempPixel((SpriteBatch) renderer.getBatch(),
+                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getWidth(),
+                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getHeight(), 16, Color.WHITE);
+        }
+
         // End the sprite batch.
         renderer.getBatch().end();
     }
@@ -129,26 +145,20 @@ public class RenderSystem extends EntitySystem {
         List<MapLayerRenderEntry> layersToRender = new ArrayList<>();
 
         layersToRender.add(
-            new MapLayerRenderEntry(
-                "bottomLayer",
-                BOTTOM_LAYER,
-                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
-            )
-        );
+                new MapLayerRenderEntry(
+                        "bottomLayer",
+                        BOTTOM_LAYER,
+                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer));
         layersToRender.add(
-            new MapLayerRenderEntry(
-                "decorationLayer",
-                DECORATION_LAYER,
-                mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer
-            )
-        );
+                new MapLayerRenderEntry(
+                        "decorationLayer",
+                        DECORATION_LAYER,
+                        mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer));
         layersToRender.add(
-            new MapLayerRenderEntry(
-                "resourceLayer",
-                RESOURCE_LAYER,
-                mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer
-            )
-        );
+                new MapLayerRenderEntry(
+                        "resourceLayer",
+                        RESOURCE_LAYER,
+                        mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer));
 
         // sort with z-index
         layersToRender.sort(Comparator.comparingInt(l -> l.zIndex));
@@ -159,16 +169,16 @@ public class RenderSystem extends EntitySystem {
                 for (int i = layer.layer.getWidth(); i > 0; i--) {
                     for (int j = layer.layer.getHeight(); j > 0; j--) {
                         // Get the tile at the current position
-                        if (layer.layer.getCell(i, j) == null) continue;
+                        if (layer.layer.getCell(i, j) == null)
+                            continue;
 
                         // Render the tile at the specified position
                         renderer.draw(
-                            layer.layer.getCell(i, j).getTile().getTextureRegion(),
-                            i * 16,
-                            j * 16,
-                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionWidth(),
-                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionHeight()
-                        );
+                                layer.layer.getCell(i, j).getTile().getTextureRegion(),
+                                i * 16,
+                                j * 16,
+                                layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionWidth(),
+                                layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionHeight());
                     }
                 }
             } else {
@@ -188,35 +198,30 @@ public class RenderSystem extends EntitySystem {
         }
 
         combined.sort(
-            Comparator
-                .comparingDouble(entity -> {
-                    PositionComponent pos = ((Entity) entity).getComponent(PositionComponent.class);
-                    float pixelCoord = WorldCoordinateUtils.calculateWorldCoordinate(
-                        viewport,
-                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer,
-                        pos.basePosition.x,
-                        pos.basePosition.y
-                    )
-                        .y;
-                    return pixelCoord + pos.heightInTiles;
-                })
-                .thenComparingInt(entity -> {
-                    RenderComponent render = ((Entity) entity).getComponent(RenderComponent.class);
-                    return render.zIndex;
-                })
-        );
+                Comparator
+                        .comparingDouble(entity -> {
+                            PositionComponent pos = ((Entity) entity).getComponent(PositionComponent.class);
+                            float pixelCoord = WorldCoordinateUtils.calculateWorldCoordinate(
+                                    viewport,
+                                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer,
+                                    pos.basePosition.x,
+                                    pos.basePosition.y).y;
+                            return pixelCoord + pos.heightInTiles;
+                        })
+                        .thenComparingInt(entity -> {
+                            RenderComponent render = ((Entity) entity).getComponent(RenderComponent.class);
+                            return render.zIndex;
+                        }));
 
         for (Entity entity : combined) {
             RenderComponent render = entity.getComponent(RenderComponent.class);
             PositionComponent pos = entity.getComponent(PositionComponent.class);
             Vector2 basePixel = new Vector2();
             if (render.renderType == RenderComponent.RenderType.BUILDING) {
-                basePixel =
-                WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
-                    pos.basePosition.x,
-                    pos.basePosition.y,
-                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
-                );
+                basePixel = WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
+                        pos.basePosition.x,
+                        pos.basePosition.y,
+                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer);
             }
 
             if (render.renderType == RenderComponent.RenderType.ENEMY) {
@@ -232,14 +237,36 @@ public class RenderSystem extends EntitySystem {
                     float drawY = basePixel.y + j * 16;
 
                     batch.draw(
-                        region,
-                        drawX,
-                        drawY,
-                        region.getRegionWidth(),
-                        region.getRegionHeight()
-                    );
+                            region,
+                            drawX,
+                            drawY,
+                            region.getRegionWidth(),
+                            region.getRegionHeight());
                 }
             }
         }
+    }
+
+    public void drawGridWithTempPixel(SpriteBatch batch, int mapWidthInTiles, int mapHeightInTiles, int tileSize,
+            Color color) {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(1, 1, 1, 1); // volle Deckkraft
+        pixmap.fill();
+        Texture tempPixel = new Texture(pixmap);
+        pixmap.dispose(); // Blending aktivieren, falls nicht bereits an
+        batch.enableBlending();
+        Color oldColor = batch.getColor();
+        batch.setColor(color); // z. B. new Color(0, 0, 0, 0.3f)
+        float thickness = 1f;
+        for (int x = 0; x <= mapWidthInTiles; x++) {
+            float drawX = x * tileSize;
+            batch.draw(tempPixel, drawX, 0, thickness, mapHeightInTiles * tileSize);
+        }
+        for (int y = 0; y <= mapHeightInTiles; y++) {
+            float drawY = y * tileSize;
+            batch.draw(tempPixel, 0, drawY, mapWidthInTiles * tileSize, thickness);
+        }
+        batch.setColor(oldColor);
+        tempPixel.dispose();
     }
 }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,7 +87,7 @@ public class TowerFactory {
      * @return the generated {@link Texture} placeholder.
      */
     private static Texture createPlaceHolder() {
-        Pixmap pixmap = new Pixmap(12, 12, Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(AppProperties.TILE_SIZE, AppProperties.TILE_SIZE, Format.RGBA8888);
         pixmap.setColor(0, 0, 0, 1); // black
         pixmap.fill();
         Texture texture = new Texture(pixmap);
