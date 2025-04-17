@@ -5,11 +5,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.*;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +38,9 @@ public class TowerFactory {
     > cannonTowerAnimationCache = new HashMap<>();
 
     public static Entity createBallistaTower(Engine engine, float x, float y) {
-        return createDefaultTower(engine, x, y);
+        Entity tower = createDefaultTower(engine, x, y);
+        tower.add(new EntityTypeComponent(EntityTypeComponent.EntityType.BALLISTA_TOWER));
+        return tower;
     }
 
     /**
@@ -56,8 +56,6 @@ public class TowerFactory {
      */
     public static Entity createDefaultTower(Engine engine, float x, float y) {
         Entity tower = engine.createEntity();
-      
-        tower.add(new EntityTypeComponent(EntityTypeComponent.EntityType.TOWER));
 
         // Placeholder texture
         Texture texture = createPlaceHolder();

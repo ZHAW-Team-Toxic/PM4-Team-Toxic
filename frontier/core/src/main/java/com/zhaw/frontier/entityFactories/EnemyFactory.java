@@ -41,8 +41,7 @@ public class EnemyFactory {
     public static Entity createPatrolEnemy(float x, float y) {
         Entity enemy = createBaseEnemy(x, y);
         enemy.add(new PatrolBehaviourComponent(10f));
-  
-        enemy.add(new EntityTypeComponent(EntityTypeComponent.EntityType.PATROL_ENEMY));
+
         return enemy;
     }
 
@@ -56,8 +55,6 @@ public class EnemyFactory {
     public static Entity createIdleEnemy(float x, float y) {
         Entity enemy = createBaseEnemy(x, y);
         enemy.add(new IdleBehaviourComponent());
-
-        enemy.add(new EntityTypeComponent(EntityTypeComponent.EntityType.IDLE_ENEMY));
 
         return enemy;
     }

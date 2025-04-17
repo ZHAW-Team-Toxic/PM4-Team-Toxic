@@ -98,7 +98,7 @@ public class StartScreen extends ScreenAdapter {
                     System.out.println("Loading...");
                     GameScreen gameScreen = new GameScreen(frontierGame);
                     frontierGame.switchScreen(gameScreen);
-                    new SaveGameManager(gameScreen.getEngine(), frontierGame.getAssetManager()).loadGame("saveFile.json");
+                    new SaveGameManager(gameScreen.getEngine()).loadGame("saveFile.json");
                 }
             }
         );

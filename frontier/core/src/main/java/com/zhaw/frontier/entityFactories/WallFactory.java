@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.zhaw.frontier.components.EntityTypeComponent;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -42,16 +41,22 @@ public class WallFactory {
         HashMap<TileOffset, Animation<TextureRegion>>
     > ironWallAnimationCache = new HashMap<>();
 
-    public Entity createWoodWall(Engine engine, float x, float y) {
-        return createDefaultWall(engine, x, y);
+    public static Entity createWoodWall(Engine engine, float x, float y) {
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.WOOD_WALL));
+        return wall;
     }
 
-    public Entity createStoneWall(Engine engine, float x, float y) {
-        return createDefaultWall(engine, x, y);
+    public static Entity createStoneWall(Engine engine, float x, float y) {
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.STONE_WALL));
+        return wall;
     }
 
-    public Entity createIronWall(Engine engine, float x, float y) {
-        return createDefaultWall(engine, x, y);
+    public static Entity createIronWall(Engine engine, float x, float y) {
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.IRON_WALL));
+        return wall;
     }
 
     /**
@@ -68,8 +73,6 @@ public class WallFactory {
      */
     public static Entity createDefaultWall(Engine engine, float x, float y) {
         Entity wall = engine.createEntity();
-
-        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.WALL));
 
         RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
         TextureRegion region = new TextureRegion(createPlaceHolder());

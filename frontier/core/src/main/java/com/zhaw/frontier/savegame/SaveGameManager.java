@@ -5,16 +5,12 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
-import com.zhaw.frontier.entityFactories.EnemyFactory;
-import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
-import com.zhaw.frontier.entityFactories.TowerFactory;
-import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.entityFactories.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +18,10 @@ import java.util.Map;
 public class SaveGameManager {
 
     private final Engine engine;
-    private final AssetManager assetManager;
     private final Json json;
 
-    public SaveGameManager(Engine engine, AssetManager assetManager) {
+    public SaveGameManager(Engine engine) {
         this.engine = engine;
-        this.assetManager = assetManager;
 
         json = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
@@ -43,38 +37,55 @@ public class SaveGameManager {
         for (Entity entity : allEntities) {
             EntityData data = new EntityData();
 
-            EntityTypeComponent type = entity.getComponent(EntityTypeComponent.class);
-            if (type != null) {
-                data.entityType = type.type.name();
+            // Saves the entity type. Entities without EntityTypeComponent or EntityType will be discarded.
+            EntityTypeComponent entityComponent = entity.getComponent(EntityTypeComponent.class);
+            if (entityComponent != null && entityComponent.type != null) {
+                data.entityType = entityComponent.type.name();
             } else {
                 continue;
             }
 
-            PositionComponent pos = entity.getComponent(PositionComponent.class);
-            if (pos != null) {
-                data.x = pos.position.x;
-                data.y = pos.position.y;
+            // Saves the position.
+            PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
+            if (positionComponent != null) {
+                data.x = positionComponent.basePosition.x;
+                data.y = positionComponent.basePosition.y;
             }
 
-            HealthComponent health = entity.getComponent(HealthComponent.class);
-            if (health != null) {
-                data.health = health.Health;
+            // Saves the health information.
+            HealthComponent healthComponent = entity.getComponent(HealthComponent.class);
+            if (healthComponent != null) {
+                data.health = healthComponent.Health;
             }
 
-            AttackComponent attack = entity.getComponent(AttackComponent.class);
-            if (attack != null) {
-                data.damage = attack.AttackDamage;
-                data.range = attack.AttackRange;
-                data.speed = attack.AttackSpeed;
+            // Saves the attack information.
+            AttackComponent attackComponent = entity.getComponent(AttackComponent.class);
+            if (attackComponent != null) {
+                data.damage = attackComponent.AttackDamage;
+                data.range = attackComponent.AttackRange;
+                data.speed = attackComponent.AttackSpeed;
             }
 
-            InventoryComponent inventory = entity.getComponent(InventoryComponent.class);
-            if (inventory != null) {
+            // Saves the inventory
+            InventoryComponent inventoryComponent = entity.getComponent(InventoryComponent.class);
+            if (inventoryComponent != null) {
                 data.inventory = new HashMap<>();
-                for (Map.Entry<ResourceTypeEnum, Integer> entry : inventory.resources.entrySet()) {
+                for (Map.Entry<ResourceTypeEnum, Integer> entry : inventoryComponent.resources.entrySet()) {
                     data.inventory.put(entry.getKey().name(), entry.getValue());
                 }
             }
+
+            // Saves the production information
+            /*
+            ResourceProductionComponent prodComponent = entity.getComponent(ResourceProductionComponent.class);
+            if (prodComponent != null) {
+                data.productionRate = new HashMap<>();
+                for (Map.Entry<ResourceTypeEnum, Integer> entry : prodComponent.productionRate.entrySet()) {
+                    data.productionRate.put(entry.getKey().name(), entry.getValue());
+                }
+                data.countOfAdjacentResources = prodComponent.countOfAdjacentResources;
+            }
+             */
 
             gameState.entities.add(data);
         }
@@ -102,7 +113,6 @@ public class SaveGameManager {
         GameState gameState = json.fromJson(GameState.class, file.readString());
 
         for (EntityData data : gameState.entities) {
-            Entity entity;
 
             EntityTypeComponent.EntityType entityType;
             try {
@@ -112,19 +122,39 @@ public class SaveGameManager {
                 continue;
             }
 
-            entity = switch (entityType) {
-                case WALL -> WallFactory.createDefaultWall(engine);
-                case TOWER -> TowerFactory.createDefaultTower(engine);
-                case WOOD_RESOURCE_BUILDING -> ResourceBuildingFactory.woodResourceBuilding(engine);
-                case IDLE_ENEMY -> EnemyFactory.createIdleEnemy(data.x, data.y, assetManager);
-                case PATROL_ENEMY -> EnemyFactory.createPatrolEnemy(data.x, data.y, assetManager);
-                default -> engine.createEntity();
-            };
+            Entity entity;
+            switch (entityType) {
+                case HQ -> {
+                    if (data.x == null || data.y == null) continue;
+                    entity = HQFactory.createSandClockHQ(engine, 1, 1);
+                }
+                case BALLISTA_TOWER -> {
+                    if (data.x == null || data.y == null) continue;
+                    entity = TowerFactory.createBallistaTower(engine, 1, 1);
+                }
+                case WOOD_WALL -> {
+                    if (data.x == null || data.y == null) continue;
+                    entity = WallFactory.createWoodWall(engine, 1, 1);
+                }
+                case STONE_WALL -> {
+                    if (data.x == null || data.y == null) continue;
+                    entity = WallFactory.createStoneWall(engine, 1, 1);
+                }
+                case IRON_WALL -> {
+                    if (data.x == null || data.y == null) continue;
+                    entity = WallFactory.createIronWall(engine, 1, 1);
+                }
+                case RESOURCE_BUILDING -> {
+                    if (data.x == null || data.y == null) continue;
+                    entity = ResourceBuildingFactory.woodResourceBuilding(engine, 1, 1);
+                }
+                default -> entity = engine.createEntity();
+            }
 
             if (data.x != null && data.y != null) {
                 PositionComponent pos = entity.getComponent(PositionComponent.class);
                 if (pos != null) {
-                    pos.position.set(data.x, data.y);
+                    pos.basePosition.set(data.x, data.y);
                 }
             }
 

@@ -26,7 +26,7 @@ public class PauseScreen extends ScreenAdapter {
         this.frontierGame = frontierGame;
         this.gameScreen = gameScreen;
 
-        this.saveGameManager = new SaveGameManager(gameScreen.getEngine(), frontierGame.getAssetManager());
+        this.saveGameManager = new SaveGameManager(gameScreen.getEngine());
     }
 
     @Override

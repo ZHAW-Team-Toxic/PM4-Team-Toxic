@@ -8,4 +8,7 @@ public class EntityData {
     public Integer health;
     public Float damage, range, speed;
     public HashMap<String, Integer> inventory = new HashMap<>();
+    public HashMap<String, Integer> productionRate = new HashMap<>();
+    public Integer countOfAdjacentResources;
+
 }
