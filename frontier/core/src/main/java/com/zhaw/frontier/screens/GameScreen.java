@@ -18,6 +18,7 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.AnimationSystem;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
@@ -68,6 +69,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
+        Gdx.graphics.setCursor(
+            CursorFactory.createDefaultCursor(AssetManagerInstance.getManager())
+        );
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
         baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
         baseUI.addObserver(this);
@@ -307,9 +311,17 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void buttonClicked(GameMode gameMode) {
         if (baseUI.getGameMode() == gameMode) {
-            baseUI.setGameMode(GameMode.NORMAL);
-        } else {
-            baseUI.setGameMode(gameMode);
+            Gdx.graphics.setCursor(
+                CursorFactory.createDefaultCursor(AssetManagerInstance.getManager())
+            );
+        } else if (gameMode == GameMode.DEMOLISH) {
+            Gdx.graphics.setCursor(
+                CursorFactory.createDeleteCursor(AssetManagerInstance.getManager())
+            );
+        } else if (gameMode == GameMode.BUILDING) {
+            Gdx.graphics.setCursor(
+                CursorFactory.createBuildingCursor(AssetManagerInstance.getManager())
+            );
         }
     }
 }
