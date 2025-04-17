@@ -30,7 +30,6 @@ public class HQFactory {
     /**
      * Creates a new Headquarters (HQ) entity with a sand clock animation.
      * @param engine the engine to which the entity will be added
-     * @param assetManager the asset manager for loading assets
      * @return the created HQ entity
      */
     public static Entity createSandClockHQ(Engine engine, float x, float y) {
@@ -43,6 +42,10 @@ public class HQFactory {
     private static Entity createDefaultHQ(Engine engine, float x, float y) {
         Entity hq = engine.createEntity();
         hq.add(new PositionComponent(x, y, HQ_TILE_SIZE, HQ_TILE_SIZE));
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 50;
+        hq.add(healthComponent);
         hq.add(new OccupiesTilesComponent());
         hq.add(new BuildingAnimationComponent());
         hq.add(new RoundAnimationComponent());

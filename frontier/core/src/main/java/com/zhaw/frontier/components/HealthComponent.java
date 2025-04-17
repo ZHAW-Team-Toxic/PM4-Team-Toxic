@@ -10,5 +10,10 @@ public class HealthComponent implements Component {
     /**
      * $param Health The health of the entity.
      */
-    public int Health = 0;
+    public int maxHealth = 100;
+
+    /**
+     * $param Health The current health of the entity.
+     */
+    public int currentHealth = 0;
 }
