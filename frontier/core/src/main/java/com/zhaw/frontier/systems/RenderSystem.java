@@ -22,7 +22,6 @@ import com.zhaw.frontier.mappers.MapLayerMapper;
 import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.TileOffset;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
-
 import java.util.*;
 
 /**
@@ -74,21 +73,21 @@ public class RenderSystem extends EntitySystem {
         super.addedToEngine(engine);
         this.mapEntity = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
         this.buildings =
-            engine.getEntitiesFor(
-                Family
-                    .all(
-                        PositionComponent.class,
-                        RenderComponent.class,
-                        BuildingAnimationComponent.class
-                    )
-                    .get()
-            );
+        engine.getEntitiesFor(
+            Family
+                .all(
+                    PositionComponent.class,
+                    RenderComponent.class,
+                    BuildingAnimationComponent.class
+                )
+                .get()
+        );
         this.enemies =
-            engine.getEntitiesFor(
-                Family
-                    .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
-                    .get()
-            );
+        engine.getEntitiesFor(
+            Family
+                .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
+                .get()
+        );
     }
 
     /**
@@ -213,11 +212,11 @@ public class RenderSystem extends EntitySystem {
             Vector2 basePixel = new Vector2();
             if (render.renderType == RenderComponent.RenderType.BUILDING) {
                 basePixel =
-                    WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
-                        pos.basePosition.x,
-                        pos.basePosition.y,
-                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
-                    );
+                WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
+                    pos.basePosition.x,
+                    pos.basePosition.y,
+                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
+                );
             }
 
             if (render.renderType == RenderComponent.RenderType.ENEMY) {
@@ -242,11 +241,7 @@ public class RenderSystem extends EntitySystem {
                 }
             }
 
-            HealthBarManager.drawHealthBar(
-                batch,
-                entity,
-                engine
-            );
+            HealthBarManager.drawHealthBar(batch, entity, engine);
         }
     }
 }

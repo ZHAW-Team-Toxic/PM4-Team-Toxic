@@ -82,17 +82,19 @@ public class HealthBarManager {
         float barHeight = 3f;
         float offsetY = render.heightInTiles * tileSize + 2f;
 
-        if(render.renderType == RenderComponent.RenderType.BUILDING) {
+        if (render.renderType == RenderComponent.RenderType.BUILDING) {
             Vector2 pixelCoordinate = calculatePixelCoordinate(
                 (int) position.basePosition.x,
                 (int) position.basePosition.y,
                 engine
             );
             healthBar.setPosition(pixelCoordinate.x, pixelCoordinate.y + offsetY);
-        }else{
-            healthBar.setPosition(position.basePosition.x * tileSize, position.basePosition.y * tileSize + offsetY);
+        } else {
+            healthBar.setPosition(
+                position.basePosition.x * tileSize,
+                position.basePosition.y * tileSize + offsetY
+            );
         }
-
 
         healthBar.setSize(barWidth, barHeight);
         healthBar.draw(renderer);
