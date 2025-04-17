@@ -294,9 +294,11 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void buttonClicked(GameMode gameMode) {
         if (baseUI.getGameMode() == gameMode) {
-            baseUI.setGameMode(GameMode.NORMAL);
-        } else {
-            baseUI.setGameMode(gameMode);
-        }
+            Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(frontierGame.getAssetManager()));
+        } else if(gameMode == GameMode.DEMOLISH) {
+            Gdx.graphics.setCursor(CursorFactory.createDeleteCursor(frontierGame.getAssetManager()));
+        } else if(gameMode == GameMode.BUILDING) {
+        Gdx.graphics.setCursor(CursorFactory.createBuildingCursor(frontierGame.getAssetManager()));
+    }
     }
 }

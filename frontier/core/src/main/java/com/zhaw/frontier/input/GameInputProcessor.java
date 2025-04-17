@@ -9,7 +9,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
@@ -43,24 +42,6 @@ public class GameInputProcessor extends InputAdapter {
         this.engine = engine;
         this.frontierGame = frontierGame;
         this.appConfig = frontierGame.getAppConfig();
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.RIGHT) {
-            Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(frontierGame.getAssetManager()));
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.RIGHT) {
-            Gdx.graphics.setCursor(CursorFactory.createDeleteCursor(frontierGame.getAssetManager()));
-            return true;
-        }
-        return false;
     }
 
     /**

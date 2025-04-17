@@ -95,13 +95,27 @@ buildings/Arrow/Arrow
   index: -1
 
 textures4.png
-size: 256, 256
+size: 512, 256
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 cursor/medivial_cursor
   rotate: false
   xy: 2, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+cursor/medivial_cursor_building
+  rotate: false
+  xy: 132, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+cursor/medivial_cursor_demolish
+  rotate: false
+  xy: 262, 2
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -146,14 +160,14 @@ titlescreen/Fireball
   size: 124, 79
   orig: 124, 79
   offset: 0, 0
-  index: 7
+  index: 5
 titlescreen/Fireball
   rotate: false
   xy: 128, 2
   size: 124, 79
   orig: 124, 79
   offset: 0, 0
-  index: 5
+  index: 7
 titlescreen/Fireball
   rotate: false
   xy: 1654, 1849

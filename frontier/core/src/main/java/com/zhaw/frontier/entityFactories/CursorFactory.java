@@ -12,6 +12,7 @@ public class CursorFactory {
 
     private static Cursor defaultCursor = null;
     private static Cursor deleteCursor = null;
+    private static Cursor buildingCursor = null;
 
     private static Pixmap spriteToPixmap(Sprite texture){
         TextureData textureData = texture.getTexture().getTextureData();
@@ -54,13 +55,28 @@ public class CursorFactory {
             return deleteCursor;
         }
         var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
-        var texture = new Sprite(atlas.findRegion("demo/donkey"));
+        var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor_demolish"));
         texture.setSize(32, 32);
         var pixmap = spriteToPixmap(texture);
         var cursor = Gdx.graphics.newCursor(pixmap, 8, 8);
 
         pixmap.dispose();
         deleteCursor = cursor;
+        return cursor;
+    }
+
+    public static Cursor createBuildingCursor(AssetManager assetManager) {
+        if(buildingCursor != null){
+            return buildingCursor;
+        }
+        var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor_building"));
+        texture.setSize(32, 32);
+        var pixmap = spriteToPixmap(texture);
+        var cursor = Gdx.graphics.newCursor(pixmap, 8, 8);
+
+        pixmap.dispose();
+        buildingCursor = cursor;
         return cursor;
     }
 }
