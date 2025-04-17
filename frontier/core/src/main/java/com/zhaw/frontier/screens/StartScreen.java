@@ -67,7 +67,7 @@ public class StartScreen extends ScreenAdapter {
         this.spriteBatchWrapper = frontierGame.getBatch();
         this.background = new ExtendViewport(16, 9);
         this.background.getCamera().position.set(8, 4.5f, 0);
-        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(frontierGame.getAssetManager()));
+        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor(AssetManagerInstance.getManager()));
 
         this.menu = new ScreenViewport();
         this.stage = new Stage(menu, spriteBatchWrapper.getBatch());
