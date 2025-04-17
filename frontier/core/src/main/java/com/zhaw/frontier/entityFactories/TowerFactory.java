@@ -5,11 +5,12 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.zhaw.frontier.components.AttackComponent;
-import com.zhaw.frontier.components.HealthComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.utils.TileOffset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A factory class responsible for creating Tower entities.
@@ -27,6 +28,19 @@ import com.zhaw.frontier.components.RenderComponent;
  */
 public class TowerFactory {
 
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > ballistaTowerAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > cannonTowerAnimationCache = new HashMap<>();
+
+    public static Entity createBallistaTower(Engine engine, float x, float y) {
+        return createDefaultTower(engine, x, y);
+    }
+
     /**
      * Creates a default Tower entity with the required components.
      * <p>
@@ -38,7 +52,7 @@ public class TowerFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created Tower entity.
      */
-    public static Entity createDefaultTower(Engine engine) {
+    public static Entity createDefaultTower(Engine engine, float x, float y) {
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
         HealthComponent healthComponent = new HealthComponent();
@@ -47,27 +61,41 @@ public class TowerFactory {
         tower.add(healthComponent);
         tower.add(new AttackComponent());
 
-        RenderComponent renderComponent = new RenderComponent();
-        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
-
-        // TODO: Replace placeholder texture with the actual tower texture.
+        // Placeholder texture
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        TextureRegion region = new TextureRegion(texture);
+
+        RenderComponent renderComponent = new RenderComponent(
+            RenderComponent.RenderType.BUILDING,
+            10,
+            1,
+            1
+        );
+        renderComponent.sprites.put(new TileOffset(0, 0), region);
 
         tower.add(renderComponent);
+        tower.add(new PositionComponent(x, y, 1, 1));
+        tower.add(new OccupiesTilesComponent());
+        tower.add(new HealthComponent());
+        tower.add(new AttackComponent());
+        tower.add(new BuildingAnimationComponent());
         return tower;
     }
 
+    /**
+     * Creates a placeholder texture used as a visual representation for the tower.
+     * <p>
+     * The placeholder is a 12x12 black square and can easily be swapped
+     * with a real texture or sprite later.
+     * </p>
+     *
+     * @return the generated {@link Texture} placeholder.
+     */
     private static Texture createPlaceHolder() {
-        // Create a Pixmap with dimensions 12x12 using RGBA8888 format.
         Pixmap pixmap = new Pixmap(12, 12, Format.RGBA8888);
-        // Set the drawing color to black.
-        pixmap.setColor(0, 0, 0, 1);
-        // Fill the entire pixmap with the black color.
+        pixmap.setColor(0, 0, 0, 1); // black
         pixmap.fill();
-        // Create a texture from the pixmap.
         Texture texture = new Texture(pixmap);
-        // Dispose of the pixmap since it's no longer needed.
         pixmap.dispose();
         return texture;
     }

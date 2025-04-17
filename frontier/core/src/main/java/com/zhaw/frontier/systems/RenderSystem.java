@@ -4,20 +4,25 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.RenderComponent;
-import com.zhaw.frontier.mappers.HQMapper;
+import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.map.BottomLayerComponent;
+import com.zhaw.frontier.components.map.DecorationLayerComponent;
+import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.mappers.MapLayerMapper;
-import com.zhaw.frontier.mappers.ResourceBuildingMapper;
-import com.zhaw.frontier.mappers.TowerMapper;
-import com.zhaw.frontier.mappers.WallMapper;
+import com.zhaw.frontier.utils.MapLayerRenderEntry;
+import com.zhaw.frontier.utils.TileOffset;
+import com.zhaw.frontier.utils.WorldCoordinateUtils;
+import java.util.*;
 
 /**
  * System responsible for rendering the map and game entities.
@@ -34,11 +39,11 @@ public class RenderSystem extends EntitySystem {
     private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
 
+    private ImmutableArray<Entity> buildings;
+    private ImmutableArray<Entity> enemies;
+    private Entity mapEntity;
+
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
-    private final HQMapper hqMapper = new HQMapper();
-    private final TowerMapper towerMapper = new TowerMapper();
-    private final WallMapper wallMapper = new WallMapper();
-    private final ResourceBuildingMapper resourceBuildingMapper = new ResourceBuildingMapper();
 
     /**
      * Constructs a new RenderSystem.
@@ -48,9 +53,41 @@ public class RenderSystem extends EntitySystem {
      * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering the tiled map.
      */
     public RenderSystem(Viewport viewport, Engine engine, OrthogonalTiledMapRenderer renderer) {
+        super(1);
         this.viewport = viewport;
         this.engine = engine;
         this.renderer = renderer;
+    }
+
+    /**
+     * Called when the system is added to an engine.
+     * <p>
+     * This method retrieves the map entity and all building entities from the engine.
+     * It initializes the map layers and buildings so they can be rendered in the update method.
+     * </p>
+     *
+     * @param engine The {@link Engine} this system was added to.
+     */
+    @Override
+    public void addedToEngine(Engine engine) {
+        super.addedToEngine(engine);
+        this.mapEntity = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
+        this.buildings =
+        engine.getEntitiesFor(
+            Family
+                .all(
+                    PositionComponent.class,
+                    RenderComponent.class,
+                    BuildingAnimationComponent.class
+                )
+                .get()
+        );
+        this.enemies =
+        engine.getEntitiesFor(
+            Family
+                .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
+                .get()
+        );
     }
 
     /**
@@ -74,82 +111,135 @@ public class RenderSystem extends EntitySystem {
         // Begin the sprite batch.
         renderer.getBatch().begin();
 
-        // Retrieve the map entity and extract its layers.
-        Entity mapEntity = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
-        TiledMapTileLayer bottomLayer = mapLayerMapper.bottomLayerMapper.get(mapEntity).bottomLayer;
-        TiledMapTileLayer decorationLayer = mapLayerMapper.decorationLayerMapper.get(mapEntity)
-            .decorationLayer;
-        TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(mapEntity)
-            .resourceLayer;
-
         // Render the tiled map layers.
-        renderer.renderTileLayer(bottomLayer);
-        renderer.renderTileLayer(decorationLayer);
-        renderer.renderTileLayer(resourceLayer);
+        renderMapLayers((SpriteBatch) renderer.getBatch());
 
         // Render all building entities.
-        renderBuilding((SpriteBatch) renderer.getBatch());
-
-        // TODO: Implement rendering for enemies and other entities.
+        renderAllEntities((SpriteBatch) renderer.getBatch());
 
         // End the sprite batch.
         renderer.getBatch().end();
     }
 
-    /**
-     * Renders building entities using the provided sprite batch.
-     * <p>
-     * This method iterates over all entities that have both a {@link PositionComponent} and a
-     * {@link RenderComponent}. Only entities whose {@code renderType} is set to
-     * {@link RenderComponent.RenderType#BUILDING} are rendered. The method calculates pixel coordinates
-     * for each building and draws its sprite at that position.
-     * </p>
-     *
-     * @param renderer the {@link SpriteBatch} used for drawing sprites.
-     */
-    private void renderBuilding(SpriteBatch renderer) {
-        Family buildingFamily = Family.all(PositionComponent.class, RenderComponent.class).get();
-        for (Entity building : engine.getEntitiesFor(buildingFamily)) {
-            if (
-                building.getComponent(RenderComponent.class).renderType ==
-                    RenderComponent.RenderType.BUILDING ||
-                building.getComponent(RenderComponent.class).renderType ==
-                    RenderComponent.RenderType.ENEMY
-            ) {
-                PositionComponent positionComponent = building.getComponent(
-                    PositionComponent.class
-                );
-                RenderComponent renderComponent = building.getComponent(RenderComponent.class);
-                Vector2 pixelCoordinate = calculatePixelCoordinate(
-                    (int) positionComponent.position.x,
-                    (int) positionComponent.position.y
-                );
-                renderComponent.sprite.setPosition(pixelCoordinate.x, pixelCoordinate.y);
-                renderComponent.sprite.draw(renderer);
-                HealthBarManager.drawHealthBar(
-                    renderer,
-                    building,
-                    engine
-                ); // Draw health bar for the building
+    private void renderMapLayers(SpriteBatch renderer) {
+        int BOTTOM_LAYER = 0;
+        int DECORATION_LAYER = 1;
+        int RESOURCE_LAYER = 2;
+
+        List<MapLayerRenderEntry> layersToRender = new ArrayList<>();
+
+        layersToRender.add(
+            new MapLayerRenderEntry(
+                "bottomLayer",
+                BOTTOM_LAYER,
+                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
+            )
+        );
+        layersToRender.add(
+            new MapLayerRenderEntry(
+                "decorationLayer",
+                DECORATION_LAYER,
+                mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer
+            )
+        );
+        layersToRender.add(
+            new MapLayerRenderEntry(
+                "resourceLayer",
+                RESOURCE_LAYER,
+                mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer
+            )
+        );
+
+        // sort with z-index
+        layersToRender.sort(Comparator.comparingInt(l -> l.zIndex));
+
+        // Render alle Layers
+        for (MapLayerRenderEntry layer : layersToRender) {
+            if (layer.layer != null) {
+                for (int i = layer.layer.getWidth(); i > 0; i--) {
+                    for (int j = layer.layer.getHeight(); j > 0; j--) {
+                        // Get the tile at the current position
+                        if (layer.layer.getCell(i, j) == null) continue;
+
+                        // Render the tile at the specified position
+                        renderer.draw(
+                            layer.layer.getCell(i, j).getTile().getTextureRegion(),
+                            i * 16,
+                            j * 16,
+                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionWidth(),
+                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionHeight()
+                        );
+                    }
+                }
+            } else {
+                Gdx.app.debug("RenderSystem", "Skipping null layer: " + layer.name);
             }
         }
     }
 
-    /**
-     * Calculates the pixel coordinate corresponding to a given tile coordinate.
-     * <p>
-     * This method converts tile indices (x, y) to pixel coordinates by multiplying them with the tile width and height
-     * from the bottom layer of the map.
-     * </p>
-     *
-     * @param x the tile x-coordinate.
-     * @param y the tile y-coordinate.
-     * @return a {@link Vector2} representing the pixel coordinates.
-     */
-    private Vector2 calculatePixelCoordinate(int x, int y) {
-        Entity map = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
-        int tileX = x * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileWidth();
-        int tileY = y * mapLayerMapper.bottomLayerMapper.get(map).bottomLayer.getTileHeight();
-        return new Vector2(tileX, tileY);
+    private void renderAllEntities(SpriteBatch batch) {
+        Array<Entity> combined = new Array<>();
+
+        for (Entity b : buildings) {
+            combined.add(b);
+        }
+        for (Entity e : enemies) {
+            combined.add(e);
+        }
+
+        combined.sort(
+            Comparator
+                .comparingDouble(entity -> {
+                    PositionComponent pos = ((Entity) entity).getComponent(PositionComponent.class);
+                    float pixelCoord = WorldCoordinateUtils.calculateWorldCoordinate(
+                        viewport,
+                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer,
+                        pos.basePosition.x,
+                        pos.basePosition.y
+                    )
+                        .y;
+                    return pixelCoord + pos.heightInTiles;
+                })
+                .thenComparingInt(entity -> {
+                    RenderComponent render = ((Entity) entity).getComponent(RenderComponent.class);
+                    return render.zIndex;
+                })
+        );
+
+        for (Entity entity : combined) {
+            RenderComponent render = entity.getComponent(RenderComponent.class);
+            PositionComponent pos = entity.getComponent(PositionComponent.class);
+            Vector2 basePixel = new Vector2();
+            if (render.renderType == RenderComponent.RenderType.BUILDING) {
+                basePixel =
+                WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
+                    pos.basePosition.x,
+                    pos.basePosition.y,
+                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
+                );
+            }
+
+            if (render.renderType == RenderComponent.RenderType.ENEMY) {
+                basePixel = new Vector2(pos.basePosition.x * 16, pos.basePosition.y * 16);
+            }
+
+            for (int i = 0; i < render.widthInTiles; i++) {
+                for (int j = render.heightInTiles - 1; j >= 0; j--) {
+                    TileOffset offset = new TileOffset(i, j);
+                    TextureRegion region = render.sprites.get(offset);
+
+                    float drawX = basePixel.x + i * 16;
+                    float drawY = basePixel.y + j * 16;
+
+                    batch.draw(
+                        region,
+                        drawX,
+                        drawY,
+                        region.getRegionWidth(),
+                        region.getRegionHeight()
+                    );
+                }
+            }
+        }
     }
 }
