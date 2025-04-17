@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,27 +17,23 @@ import java.util.Map;
 /**
  * A factory class responsible for creating Tower entities.
  * <p>
- * This factory provides a method to create a default Tower entity which is initialized with
+ * This factory provides a method to create a default Tower entity which is
+ * initialized with
  * the necessary components:
  * <ul>
- *   <li>{@link PositionComponent} for position data,</li>
- *   <li>{@link HealthComponent} for health data,</li>
- *   <li>{@link AttackComponent} for attack capabilities, and</li>
- *   <li>{@link RenderComponent} for rendering. The {@code renderType} is set to
- *       {@link RenderComponent.RenderType#BUILDING} and a placeholder texture is used.</li>
+ * <li>{@link PositionComponent} for position data,</li>
+ * <li>{@link HealthComponent} for health data,</li>
+ * <li>{@link AttackComponent} for attack capabilities, and</li>
+ * <li>{@link RenderComponent} for rendering. The {@code renderType} is set to
+ * {@link RenderComponent.RenderType#BUILDING} and a placeholder texture is
+ * used.</li>
  * </ul>
  * </p>
  */
 public class TowerFactory {
 
-    private static final Map<
-        Enum<?>,
-        HashMap<TileOffset, Animation<TextureRegion>>
-    > ballistaTowerAnimationCache = new HashMap<>();
-    private static final Map<
-        Enum<?>,
-        HashMap<TileOffset, Animation<TextureRegion>>
-    > cannonTowerAnimationCache = new HashMap<>();
+    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> ballistaTowerAnimationCache = new HashMap<>();
+    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> cannonTowerAnimationCache = new HashMap<>();
 
     public static Entity createBallistaTower(Engine engine, float x, float y) {
         Entity tower = createDefaultTower(engine, x, y);
@@ -46,15 +44,21 @@ public class TowerFactory {
     /**
      * Creates a default Tower entity with the required components.
      * <p>
-     * The tower entity is initialized with a {@link PositionComponent}, {@link HealthComponent},
-     * {@link AttackComponent}, and a {@link RenderComponent}. The {@code RenderComponent} is set up
-     * with a placeholder texture. This texture should be replaced with the actual tower texture in the future.
+     * The tower entity is initialized with a {@link PositionComponent},
+     * {@link HealthComponent},
+     * {@link AttackComponent}, and a {@link RenderComponent}. The
+     * {@code RenderComponent} is set up
+     * with a placeholder texture. This texture should be replaced with the actual
+     * tower texture in the future.
      * </p>
      *
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created Tower entity.
      */
     public static Entity createDefaultTower(Engine engine, float x, float y) {
+        TextureAtlas atlas = AssetManagerInstance
+                .getManager()
+                .get("packed/textures.atlas", TextureAtlas.class);
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
         HealthComponent healthComponent = new HealthComponent();
@@ -64,15 +68,13 @@ public class TowerFactory {
         tower.add(new AttackComponent());
 
         // Placeholder texture
-        Texture texture = createPlaceHolder();
-        TextureRegion region = new TextureRegion(texture);
+        TextureRegion region = atlas.findRegion("buildings/Tower/Wood_Tower1");
 
         RenderComponent renderComponent = new RenderComponent(
-            RenderComponent.RenderType.BUILDING,
-            10,
-            1,
-            1
-        );
+                RenderComponent.RenderType.BUILDING,
+                10,
+                1,
+                1);
         renderComponent.sprites.put(new TileOffset(0, 0), region);
 
         tower.add(renderComponent);
