@@ -83,7 +83,7 @@ public class SimpleAStarPathfinder {
     private Array<Vector2> reconstructPath(Map<Node, Node> cameFrom, Node current) {
         Array<Vector2> path = new Array<>();
         while (cameFrom.containsKey(current)) {
-            path.add(new Vector2(current.x + 0.5f, current.y + 0.5f));
+            path.add(new Vector2(current.x, current.y));
             current = cameFrom.get(current);
         }
         path.reverse();
