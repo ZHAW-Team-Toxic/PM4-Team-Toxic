@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,17 +78,27 @@ public class SaveGameManager {
             InventoryComponent inventoryComponent = entity.getComponent(InventoryComponent.class);
             if (inventoryComponent != null) {
                 data.inventory = new HashMap<>();
-                for (Map.Entry<ResourceTypeEnum, Integer> entry : inventoryComponent.resources.entrySet()) {
+                for (Map.Entry<
+                    ResourceTypeEnum,
+                    Integer
+                > entry : inventoryComponent.resources.entrySet()) {
                     data.inventory.put(entry.getKey().name(), entry.getValue());
                 }
             }
 
             // Saves the production information
-            ResourceProductionComponent prodComponent = entity.getComponent(ResourceProductionComponent.class);
+            ResourceProductionComponent prodComponent = entity.getComponent(
+                ResourceProductionComponent.class
+            );
             if (prodComponent != null) {
                 data.countOfAdjacentResources = prodComponent.countOfAdjacentResources;
-                if (prodComponent.productionRate != null && !prodComponent.productionRate.isEmpty()) {
-                    ResourceTypeEnum resourceType = prodComponent.productionRate.keySet().iterator().next();
+                if (
+                    prodComponent.productionRate != null && !prodComponent.productionRate.isEmpty()
+                ) {
+                    ResourceTypeEnum resourceType = prodComponent.productionRate
+                        .keySet()
+                        .iterator()
+                        .next();
                     if (resourceType != null) {
                         data.resourceType = resourceType.name();
                     }
@@ -104,11 +113,16 @@ public class SaveGameManager {
             saveDir.mkdirs();
         }
 
-        FileHandle file = Gdx.files.external("frontier/saves/" + (filePath.endsWith(".json") ? filePath : filePath + ".json"));
+        FileHandle file = Gdx.files.external(
+            "frontier/saves/" + (filePath.endsWith(".json") ? filePath : filePath + ".json")
+        );
 
         file.writeString(json.toJson(gameState), false);
 
-        Gdx.app.log(this.getClass().getSimpleName(), "Saved " + gameState.entities.size() + " entities to " + file.file().getAbsolutePath());
+        Gdx.app.log(
+            this.getClass().getSimpleName(),
+            "Saved " + gameState.entities.size() + " entities to " + file.file().getAbsolutePath()
+        );
     }
 
     /**
@@ -118,22 +132,29 @@ public class SaveGameManager {
      * @param filePath Name of the file from which the data is loaded.
      */
     public void loadGame(String filePath) {
-        FileHandle file = Gdx.files.external("frontier/saves/" + (filePath.endsWith(".json") ? filePath : filePath + ".json"));
+        FileHandle file = Gdx.files.external(
+            "frontier/saves/" + (filePath.endsWith(".json") ? filePath : filePath + ".json")
+        );
 
         if (!file.exists()) {
-            Gdx.app.log(this.getClass().getSimpleName(), "No save file found at: " + file.file().getAbsolutePath());
+            Gdx.app.log(
+                this.getClass().getSimpleName(),
+                "No save file found at: " + file.file().getAbsolutePath()
+            );
             return;
         }
 
         GameState gameState = json.fromJson(GameState.class, file.readString());
 
         for (EntityData data : gameState.entities) {
-
             EntityTypeComponent.EntityType entityType;
             try {
                 entityType = EntityTypeComponent.EntityType.valueOf(data.entityType);
             } catch (Exception exeException) {
-                Gdx.app.log(this.getClass().getSimpleName(), "Unknown entity type: " + data.entityType);
+                Gdx.app.log(
+                    this.getClass().getSimpleName(),
+                    "Unknown entity type: " + data.entityType
+                );
                 continue;
             }
 
@@ -167,14 +188,30 @@ public class SaveGameManager {
                     try {
                         resourceType = ResourceTypeEnum.valueOf(data.resourceType);
                     } catch (Exception exeException) {
-                        Gdx.app.log(this.getClass().getSimpleName(), "Unknown resource type: " + data.resourceType);
+                        Gdx.app.log(
+                            this.getClass().getSimpleName(),
+                            "Unknown resource type: " + data.resourceType
+                        );
                         continue;
                     }
 
-                    entity = switch (resourceType) {
-                        case RESOURCE_TYPE_WOOD -> ResourceBuildingFactory.woodResourceBuilding(engine, data.x, data.y);
-                        case RESOURCE_TYPE_STONE -> ResourceBuildingFactory.stoneResourceBuilding(engine, data.x, data.y);
-                        case RESOURCE_TYPE_IRON -> ResourceBuildingFactory.ironResourceBuilding(engine, data.x, data.y);
+                    entity =
+                    switch (resourceType) {
+                        case RESOURCE_TYPE_WOOD -> ResourceBuildingFactory.woodResourceBuilding(
+                            engine,
+                            data.x,
+                            data.y
+                        );
+                        case RESOURCE_TYPE_STONE -> ResourceBuildingFactory.stoneResourceBuilding(
+                            engine,
+                            data.x,
+                            data.y
+                        );
+                        case RESOURCE_TYPE_IRON -> ResourceBuildingFactory.ironResourceBuilding(
+                            engine,
+                            data.x,
+                            data.y
+                        );
                     };
                 }
                 default -> entity = engine.createEntity();
@@ -210,13 +247,18 @@ public class SaveGameManager {
                         ResourceTypeEnum type = ResourceTypeEnum.valueOf(entry.getKey());
                         inventory.resources.put(type, entry.getValue());
                     } catch (IllegalArgumentException e) {
-                        Gdx.app.log(this.getClass().getSimpleName(), "Unknown resource type in inventory: " + entry.getKey());
+                        Gdx.app.log(
+                            this.getClass().getSimpleName(),
+                            "Unknown resource type in inventory: " + entry.getKey()
+                        );
                     }
                 }
                 entity.add(inventory);
             }
 
-            ResourceProductionComponent prodComponent = entity.getComponent(ResourceProductionComponent.class);
+            ResourceProductionComponent prodComponent = entity.getComponent(
+                ResourceProductionComponent.class
+            );
             if (prodComponent != null && data.countOfAdjacentResources != null) {
                 prodComponent.countOfAdjacentResources = data.countOfAdjacentResources;
             }
@@ -224,6 +266,12 @@ public class SaveGameManager {
             engine.addEntity(entity);
         }
 
-        Gdx.app.log(this.getClass().getSimpleName(), "Loaded " + gameState.entities.size() + " entities from " + file.file().getAbsolutePath());
+        Gdx.app.log(
+            this.getClass().getSimpleName(),
+            "Loaded " +
+            gameState.entities.size() +
+            " entities from " +
+            file.file().getAbsolutePath()
+        );
     }
 }

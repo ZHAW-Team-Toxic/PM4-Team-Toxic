@@ -3,6 +3,7 @@ package com.zhaw.frontier.savegame;
 import java.util.HashMap;
 
 public class EntityData {
+
     public String entityType;
     public Float x, y;
     public Integer health;

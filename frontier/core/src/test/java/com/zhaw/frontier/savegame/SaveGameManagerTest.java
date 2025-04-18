@@ -1,5 +1,9 @@
 package com.zhaw.frontier.savegame;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -7,15 +11,10 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
@@ -28,10 +27,6 @@ import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SaveGameManagerTest {
 
@@ -41,14 +36,28 @@ public class SaveGameManagerTest {
     @BeforeAll
     public void initGdx() {
         // Start dummy application context
-        new HeadlessApplication(new ApplicationListener() {
-            @Override public void create() {}
-            @Override public void resize(int width, int height) {}
-            @Override public void render() {}
-            @Override public void pause() {}
-            @Override public void resume() {}
-            @Override public void dispose() {}
-        }, new HeadlessApplicationConfiguration());
+        new HeadlessApplication(
+            new ApplicationListener() {
+                @Override
+                public void create() {}
+
+                @Override
+                public void resize(int width, int height) {}
+
+                @Override
+                public void render() {}
+
+                @Override
+                public void pause() {}
+
+                @Override
+                public void resume() {}
+
+                @Override
+                public void dispose() {}
+            },
+            new HeadlessApplicationConfiguration()
+        );
 
         // Mock GL20 (used internally by Texture)
         Gdx.gl = mock(GL20.class);
@@ -96,7 +105,6 @@ public class SaveGameManagerTest {
         assertEquals(0, entities.size());
     }
 
-
     @Test
     public void testInventoryComponents() {
         Entity e = engine.createEntity();
@@ -122,17 +130,18 @@ public class SaveGameManagerTest {
 
     @Test
     public void testUnknownEntityTypeIsIgnored() {
-        String brokenJson = """
-        {
-          "entities": [
+        String brokenJson =
+            """
             {
-              "entityType": "UNKNOWN_THING",
-              "x": 0,
-              "y": 0
+              "entities": [
+                {
+                  "entityType": "UNKNOWN_THING",
+                  "x": 0,
+                  "y": 0
+                }
+              ]
             }
-          ]
-        }
-        """;
+            """;
 
         FileHandle file = Gdx.files.external("frontier/saves/broken-entity.json");
         file.writeString(brokenJson, false);
@@ -142,7 +151,6 @@ public class SaveGameManagerTest {
         ImmutableArray<Entity> entities = engine.getEntities();
         assertEquals(0, entities.size(), "Entity with unknown type should be skipped");
     }
-
 
     @Test
     public void testTowerComponents() {
@@ -189,7 +197,10 @@ public class SaveGameManagerTest {
         saveAndReload("ballista-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.BALLISTA_TOWER, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.BALLISTA_TOWER,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
     }
 
     @Test
@@ -199,7 +210,10 @@ public class SaveGameManagerTest {
         saveAndReload("hq-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.HQ, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.HQ,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
     }
 
     @Test
@@ -209,7 +223,10 @@ public class SaveGameManagerTest {
         saveAndReload("wood-wall-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.WOOD_WALL, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.WOOD_WALL,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
     }
 
     @Test
@@ -219,7 +236,10 @@ public class SaveGameManagerTest {
         saveAndReload("stone-wall-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.STONE_WALL, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.STONE_WALL,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
     }
 
     @Test
@@ -229,7 +249,10 @@ public class SaveGameManagerTest {
         saveAndReload("iron-wall-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.IRON_WALL, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.IRON_WALL,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
     }
 
     @Test
@@ -239,7 +262,10 @@ public class SaveGameManagerTest {
         saveAndReload("wood-resource-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.RESOURCE_BUILDING, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.RESOURCE_BUILDING,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
         ResourceProductionComponent prod = loaded.getComponent(ResourceProductionComponent.class);
         assertNotNull(prod);
         assertTrue(prod.productionRate.containsKey(ResourceTypeEnum.RESOURCE_TYPE_WOOD));
@@ -252,7 +278,10 @@ public class SaveGameManagerTest {
         saveAndReload("stone-resource-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.RESOURCE_BUILDING, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.RESOURCE_BUILDING,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
         ResourceProductionComponent prod = loaded.getComponent(ResourceProductionComponent.class);
         assertNotNull(prod);
         assertTrue(prod.productionRate.containsKey(ResourceTypeEnum.RESOURCE_TYPE_STONE));
@@ -265,7 +294,10 @@ public class SaveGameManagerTest {
         saveAndReload("iron-resource-test");
 
         Entity loaded = getOnlyEntity();
-        assertEquals(EntityTypeComponent.EntityType.RESOURCE_BUILDING, loaded.getComponent(EntityTypeComponent.class).type);
+        assertEquals(
+            EntityTypeComponent.EntityType.RESOURCE_BUILDING,
+            loaded.getComponent(EntityTypeComponent.class).type
+        );
         ResourceProductionComponent prod = loaded.getComponent(ResourceProductionComponent.class);
         assertNotNull(prod);
         assertTrue(prod.productionRate.containsKey(ResourceTypeEnum.RESOURCE_TYPE_IRON));
@@ -283,4 +315,3 @@ public class SaveGameManagerTest {
         return entities.first();
     }
 }
-

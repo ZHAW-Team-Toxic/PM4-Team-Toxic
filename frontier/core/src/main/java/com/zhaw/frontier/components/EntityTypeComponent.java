@@ -15,9 +15,8 @@ public class EntityTypeComponent implements Component {
         WOOD_WALL,
         IRON_WALL,
         STONE_WALL,
-        RESOURCE_BUILDING
+        RESOURCE_BUILDING,
     }
 
     public EntityType type;
 }
-
