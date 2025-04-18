@@ -38,7 +38,9 @@ public class TowerFactory {
     > cannonTowerAnimationCache = new HashMap<>();
 
     public static Entity createBallistaTower(Engine engine, float x, float y) {
-        return createDefaultTower(engine, x, y);
+        Entity tower = createDefaultTower(engine, x, y);
+        tower.add(new EntityTypeComponent(EntityTypeComponent.EntityType.BALLISTA_TOWER));
+        return tower;
     }
 
     /**

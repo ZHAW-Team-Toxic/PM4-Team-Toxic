@@ -47,6 +47,7 @@ public class HQFactory {
         hq.add(new BuildingAnimationComponent());
         hq.add(new RoundAnimationComponent());
         hq.add(new AnimationQueueComponent());
+        hq.add(new EntityTypeComponent(EntityTypeComponent.EntityType.HQ));
         hq.add(
             new RenderComponent(RenderComponent.RenderType.BUILDING, 10, HQ_TILE_SIZE, HQ_TILE_SIZE)
         );

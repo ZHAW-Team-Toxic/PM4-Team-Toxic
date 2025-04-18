@@ -84,6 +84,9 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
         resourceBuilding.add(new BuildingAnimationComponent());
+        resourceBuilding.add(
+            new EntityTypeComponent(EntityTypeComponent.EntityType.RESOURCE_BUILDING)
+        );
         return resourceBuilding;
     }
 

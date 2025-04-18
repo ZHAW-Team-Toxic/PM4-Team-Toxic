@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.savegame.SaveGameManager;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
@@ -95,6 +96,9 @@ public class StartScreen extends ScreenAdapter {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.println("Loading...");
+                    GameScreen gameScreen = new GameScreen(frontierGame);
+                    frontierGame.switchScreen(gameScreen);
+                    new SaveGameManager(gameScreen.getEngine()).loadGame("saveFile.json");
                 }
             }
         );
