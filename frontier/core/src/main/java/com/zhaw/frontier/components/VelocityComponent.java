@@ -12,4 +12,9 @@ public class VelocityComponent implements Component {
      * The velocity of the entity.
      */
     public Vector2 velocity = new Vector2();
+
+    /**
+     * The desired velocity of the entity.
+     */
+    public Vector2 desiredVelocity = new Vector2();
 }

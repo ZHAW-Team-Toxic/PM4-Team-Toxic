@@ -1,4 +1,4 @@
-package com.zhaw.frontier.systems;
+package com.zhaw.frontier.systems.movement;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
@@ -9,7 +9,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
-import com.zhaw.frontier.components.behaviours.PathfindingComponent;
+import com.zhaw.frontier.components.behaviours.PathfindingBehaviourComponent;
 
 public class PathFollowerSystem extends EntitySystem {
 
@@ -22,8 +22,8 @@ public class PathFollowerSystem extends EntitySystem {
     private final ComponentMapper<VelocityComponent> vm = ComponentMapper.getFor(
         VelocityComponent.class
     );
-    private final ComponentMapper<PathfindingComponent> pathm = ComponentMapper.getFor(
-        PathfindingComponent.class
+    private final ComponentMapper<PathfindingBehaviourComponent> pathm = ComponentMapper.getFor(
+        PathfindingBehaviourComponent.class
     );
 
     private ImmutableArray<Entity> entities;
@@ -33,7 +33,11 @@ public class PathFollowerSystem extends EntitySystem {
         entities =
         engine.getEntitiesFor(
             Family
-                .all(PositionComponent.class, VelocityComponent.class, PathfindingComponent.class)
+                .all(
+                    PositionComponent.class,
+                    VelocityComponent.class,
+                    PathfindingBehaviourComponent.class
+                )
                 .get()
         );
     }
@@ -43,7 +47,7 @@ public class PathFollowerSystem extends EntitySystem {
         for (Entity entity : entities) {
             PositionComponent pos = pm.get(entity);
             VelocityComponent vel = vm.get(entity);
-            PathfindingComponent path = pathm.get(entity);
+            PathfindingBehaviourComponent path = pathm.get(entity);
 
             if (path.hasPath()) {
                 Vector2 target = path.getNextWaypoint();
@@ -51,13 +55,13 @@ public class PathFollowerSystem extends EntitySystem {
 
                 if (direction.len2() < THRESHOLD * THRESHOLD) {
                     path.advanceToNextWaypoint();
-                    vel.velocity.setZero(); // pause when snapping to tile
+                    vel.desiredVelocity.setZero(); // pause when snapping to tile
                 } else {
                     direction.nor().scl(SPEED);
-                    vel.velocity.set(direction);
+                    vel.desiredVelocity.set(direction);
                 }
             } else {
-                vel.velocity.setZero(); // stop when path is done
+                vel.desiredVelocity.setZero(); // stop when path is done
             }
         }
     }

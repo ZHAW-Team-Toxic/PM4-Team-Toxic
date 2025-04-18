@@ -21,17 +21,20 @@ import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.AnimationSystem;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
+import com.zhaw.frontier.systems.AttackSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
+import com.zhaw.frontier.systems.DeathSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
-import com.zhaw.frontier.systems.IdleBehaviourSystem;
 import com.zhaw.frontier.systems.MapLoader;
-import com.zhaw.frontier.systems.MovementSystem;
-import com.zhaw.frontier.systems.PathFollowerSystem;
-import com.zhaw.frontier.systems.PathfindingSystem;
-import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
 import com.zhaw.frontier.systems.ResourceProductionSystem;
+import com.zhaw.frontier.systems.behaviour.IdleBehaviourSystem;
+import com.zhaw.frontier.systems.behaviour.PatrolBehaviourSystem;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
+import com.zhaw.frontier.systems.movement.MovementSystem;
+import com.zhaw.frontier.systems.movement.PathFollowerSystem;
+import com.zhaw.frontier.systems.movement.PathfindingSystem;
+import com.zhaw.frontier.systems.movement.SteeringMovementSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
@@ -141,9 +144,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
+        engine.addSystem(new AttackSystem());
+        engine.addSystem(new DeathSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Movement System.");
         engine.addSystem(new PathFollowerSystem());
+        engine.addSystem(new SteeringMovementSystem());
         engine.addSystem(new MovementSystem());
         Gdx.app.debug("[DEBUG] - GameScreen", "Movement System initialized.");
 

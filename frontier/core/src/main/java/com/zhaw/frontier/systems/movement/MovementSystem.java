@@ -1,4 +1,4 @@
-package com.zhaw.frontier.systems;
+package com.zhaw.frontier.systems.movement;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
@@ -9,7 +9,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
-import com.zhaw.frontier.components.behaviours.PathfindingComponent;
+import com.zhaw.frontier.components.behaviours.PathfindingBehaviourComponent;
 
 /**
  * A system that updates the position of all entities with both {@link PositionComponent}
@@ -22,8 +22,8 @@ public class MovementSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<VelocityComponent> vm = ComponentMapper.getFor(VelocityComponent.class);
-    private ComponentMapper<PathfindingComponent> pfm = ComponentMapper.getFor(
-        PathfindingComponent.class
+    private ComponentMapper<PathfindingBehaviourComponent> pfm = ComponentMapper.getFor(
+        PathfindingBehaviourComponent.class
     );
 
     private ImmutableArray<Entity> movables;
@@ -39,7 +39,11 @@ public class MovementSystem extends EntitySystem {
         movables =
         engine.getEntitiesFor(
             Family
-                .all(PositionComponent.class, VelocityComponent.class, PathfindingComponent.class)
+                .all(
+                    PositionComponent.class,
+                    VelocityComponent.class,
+                    PathfindingBehaviourComponent.class
+                )
                 .get()
         );
     }
@@ -67,7 +71,7 @@ public class MovementSystem extends EntitySystem {
         final float DIRECTION_EPSILON = 0.05f;
         PositionComponent pos = pm.get(entity);
         VelocityComponent vel = vm.get(entity);
-        PathfindingComponent path = pfm.get(entity);
+        PathfindingBehaviourComponent path = pfm.get(entity);
 
         // 1. Prefer actual movement (most accurate)
         float dx = pos.basePosition.x - pos.previousPosition.x;

@@ -125,12 +125,7 @@ public class SimpleAStarPathfinder {
     private List<Node> getNeighbors(Node node, int width, int height) {
         List<Node> neighbors = new ArrayList<>();
 
-        int[][] directions = {
-            {1, 0},
-            {-1, 0},
-            {0, 1},
-            {0, -1},
-        };
+        int[][] directions = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
         for (int[] dir : directions) {
             int nx = node.x + dir[0];
@@ -145,6 +140,7 @@ public class SimpleAStarPathfinder {
     }
 
     private static class Node {
+
         int x, y;
         int gCost = Integer.MAX_VALUE;
         int fCost = Integer.MAX_VALUE;

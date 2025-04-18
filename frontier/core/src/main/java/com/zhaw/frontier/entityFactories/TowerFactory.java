@@ -87,7 +87,11 @@ public class TowerFactory {
      * @return the generated {@link Texture} placeholder.
      */
     private static Texture createPlaceHolder() {
-        Pixmap pixmap = new Pixmap(AppProperties.TILE_SIZE, AppProperties.TILE_SIZE, Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(
+            AppProperties.TILE_SIZE,
+            AppProperties.TILE_SIZE,
+            Format.RGBA8888
+        );
         pixmap.setColor(0, 0, 0, 1); // black
         pixmap.fill();
         Texture texture = new Texture(pixmap);

@@ -1,6 +1,4 @@
-package com.zhaw.frontier.systems;
-
-import javax.swing.plaf.synth.SynthSpinnerUI;
+package com.zhaw.frontier.systems.movement;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
@@ -13,15 +11,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.algorithm.SimpleAStarPathfinder;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.TargetTypeComponent;
-import com.zhaw.frontier.components.behaviours.PathfindingComponent;
+import com.zhaw.frontier.components.behaviours.PathfindingBehaviourComponent;
 
 public class PathfindingSystem extends EntitySystem {
 
     private final ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(
         PositionComponent.class
     );
-    private final ComponentMapper<PathfindingComponent> pathm = ComponentMapper.getFor(
-        PathfindingComponent.class
+    private final ComponentMapper<PathfindingBehaviourComponent> pathm = ComponentMapper.getFor(
+        PathfindingBehaviourComponent.class
     );
     private final ComponentMapper<TargetTypeComponent> ttm = ComponentMapper.getFor(
         TargetTypeComponent.class
@@ -31,7 +29,11 @@ public class PathfindingSystem extends EntitySystem {
     private Engine engine;
 
     private final Family pathingFamily = Family
-        .all(PositionComponent.class, PathfindingComponent.class, TargetTypeComponent.class)
+        .all(
+            PositionComponent.class,
+            PathfindingBehaviourComponent.class,
+            TargetTypeComponent.class
+        )
         .get();
 
     public PathfindingSystem(SimpleAStarPathfinder pathfinder) {
@@ -46,13 +48,22 @@ public class PathfindingSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         ImmutableArray<Entity> pathingEntities = engine.getEntitiesFor(pathingFamily);
-        
+
         for (Entity entity : pathingEntities) {
-            PathfindingComponent path = pathm.get(entity);
+            PathfindingBehaviourComponent path = pathm.get(entity);
             PositionComponent pos = pm.get(entity);
             TargetTypeComponent targetType = ttm.get(entity);
 
-            if (path.hasPath() || path.pathCompleted) continue;
+            if (
+                path.targetEntity != null && !engine.getEntities().contains(path.targetEntity, true)
+            ) {
+                path.destination = null;
+                path.targetEntity = null;
+                path.pathCompleted = false;
+                path.needsRepath = true;
+            }
+
+            if ((path.hasPath() || path.pathCompleted) && !path.needsRepath) continue;
 
             if (path.destination == null) {
                 // Try to find nearest entity with the target component type
@@ -64,6 +75,7 @@ public class PathfindingSystem extends EntitySystem {
                 if (closest != null) {
                     Vector2 targetPos = pm.get(closest).basePosition;
                     path.destination = new Vector2((int) targetPos.x, (int) targetPos.y);
+                    path.targetEntity = closest;
                     path.needsRepath = true;
                 }
             }

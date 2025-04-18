@@ -14,8 +14,8 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.enums.AppEnvironment;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.QueueAnimation;
 
 /**
@@ -158,6 +158,13 @@ public class GameInputProcessor extends InputAdapter {
             enemyAnim.loop = false;
             AnimationQueueComponent queue = enemyIdle.getComponent(AnimationQueueComponent.class);
             queue.queue.add(enemyAnim);
+
+            // QueueAnimation enemyAnim = new QueueAnimation();
+            // enemyAnim.animationType = EnemyAnimationComponent.EnemyAnimationType.DEATH;
+            // enemyAnim.timeLeft = 1f;
+            // enemyAnim.loop = false;
+            // AnimationQueueComponent queue = enemyIdle.getComponent(AnimationQueueComponent.class);
+            // queue.queue.add(enemyAnim);
             enemyManagementSystem.spawnEnemy(enemyIdle);
             return true;
         }

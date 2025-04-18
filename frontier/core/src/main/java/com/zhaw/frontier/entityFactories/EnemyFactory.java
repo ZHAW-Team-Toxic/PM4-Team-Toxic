@@ -7,9 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.EnemyAnimationComponent.EnemyAnimationType;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
-import com.zhaw.frontier.components.behaviours.PathfindingComponent;
+import com.zhaw.frontier.components.behaviours.PathfindingBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
+import com.zhaw.frontier.configs.AppProperties;
+import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.EnumMap;
@@ -23,10 +26,6 @@ import java.util.EnumMap;
  *   - Idle
  */
 public class EnemyFactory {
-
-    private static final float ORC_ATTACK_DURATION = 0.1f;
-    private static final float ORC_IDLE_DURATION = 0.1f;
-    private static final float ORC_WALK_DURATION = 0.1f;
 
     private static final EnumMap<
         EnemyAnimationComponent.EnemyAnimationType,
@@ -62,112 +61,124 @@ public class EnemyFactory {
     public static Entity createPathfindingEnemy(Engine engine, float x, float y) {
         Entity enemy = createBaseEnemy(x, y);
         enemy.add(new TargetTypeComponent(WallComponent.class));
-        enemy.add(new PathfindingComponent());
+        enemy.add(new PathfindingBehaviourComponent());
         return enemy;
     }
 
     private static void initializeOrcAnimations() {
         if (sharedAnimations.isEmpty()) {
-            TextureAtlas atlas = AssetManagerInstance
+            TextureAtlas enemyAtlas = AssetManagerInstance
                 .getManager()
                 .get("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
+            TextureAtlas deathAtlas = AssetManagerInstance
+                .getManager()
+                .get("packed/textures.atlas", TextureAtlas.class);
 
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN,
+                EnemyAnimationType.WALK_DOWN,
                 new Animation<>(
-                    ORC_WALK_DURATION,
-                    atlas.findRegions("walk_down_orc"),
+                    AppProperties.ORC_WALK_DURATION,
+                    enemyAtlas.findRegions("walk_down_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.WALK_LEFT,
+                EnemyAnimationType.WALK_LEFT,
                 new Animation<>(
-                    ORC_WALK_DURATION,
-                    atlas.findRegions("walk_left_orc"),
+                    AppProperties.ORC_WALK_DURATION,
+                    enemyAtlas.findRegions("walk_left_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.WALK_RIGHT,
+                EnemyAnimationType.WALK_RIGHT,
                 new Animation<>(
-                    ORC_WALK_DURATION,
-                    atlas.findRegions("walk_right_orc"),
+                    AppProperties.ORC_WALK_DURATION,
+                    enemyAtlas.findRegions("walk_right_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.WALK_UP,
+                EnemyAnimationType.WALK_UP,
                 new Animation<>(
-                    ORC_WALK_DURATION,
-                    atlas.findRegions("walk_up_orc"),
+                    AppProperties.ORC_WALK_DURATION,
+                    enemyAtlas.findRegions("walk_up_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.IDLE_DOWN,
+                EnemyAnimationType.IDLE_DOWN,
                 new Animation<>(
-                    ORC_IDLE_DURATION,
-                    atlas.findRegions("idle_down_orc"),
+                    AppProperties.ORC_IDLE_DURATION,
+                    enemyAtlas.findRegions("idle_down_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.IDLE_LEFT,
+                EnemyAnimationType.IDLE_LEFT,
                 new Animation<>(
-                    ORC_IDLE_DURATION,
-                    atlas.findRegions("idle_left_orc"),
+                    AppProperties.ORC_IDLE_DURATION,
+                    enemyAtlas.findRegions("idle_left_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.IDLE_RIGHT,
+                EnemyAnimationType.IDLE_RIGHT,
                 new Animation<>(
-                    ORC_IDLE_DURATION,
-                    atlas.findRegions("idle_right_orc"),
+                    AppProperties.ORC_IDLE_DURATION,
+                    enemyAtlas.findRegions("idle_right_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.IDLE_UP,
+                EnemyAnimationType.IDLE_UP,
                 new Animation<>(
-                    ORC_IDLE_DURATION,
-                    atlas.findRegions("idle_up_orc"),
+                    AppProperties.ORC_IDLE_DURATION,
+                    enemyAtlas.findRegions("idle_up_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN,
+                EnemyAnimationType.ATTACK_DOWN,
                 new Animation<>(
-                    ORC_ATTACK_DURATION,
-                    atlas.findRegions("attack_down_orc"),
+                    AppProperties.ORC_ATTACK_DURATION,
+                    enemyAtlas.findRegions("attack_down_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.ATTACK_LEFT,
+                EnemyAnimationType.ATTACK_LEFT,
                 new Animation<>(
-                    ORC_ATTACK_DURATION,
-                    atlas.findRegions("attack_left_orc"),
+                    AppProperties.ORC_ATTACK_DURATION,
+                    enemyAtlas.findRegions("attack_left_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.ATTACK_RIGHT,
+                EnemyAnimationType.ATTACK_RIGHT,
                 new Animation<>(
-                    ORC_ATTACK_DURATION,
-                    atlas.findRegions("attack_right_orc"),
+                    AppProperties.ORC_ATTACK_DURATION,
+                    enemyAtlas.findRegions("attack_right_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
             sharedAnimations.put(
-                EnemyAnimationComponent.EnemyAnimationType.ATTACK_UP,
+                EnemyAnimationType.ATTACK_UP,
                 new Animation<>(
-                    ORC_ATTACK_DURATION,
-                    atlas.findRegions("attack_up_orc"),
+                    AppProperties.ORC_ATTACK_DURATION,
+                    enemyAtlas.findRegions("attack_up_orc"),
                     Animation.PlayMode.LOOP
                 )
             );
+            sharedAnimations.put(
+                EnemyAnimationType.DEATH,
+                new Animation<>(
+                    AppProperties.DEATH_FRAME_DURATION,
+                    deathAtlas.findRegions("death/explosion"),
+                    Animation.PlayMode.LOOP
+                )
+            );
+            System.out.println(deathAtlas.findRegions("death/explosion").size);
         }
     }
 
@@ -210,7 +221,9 @@ public class EnemyFactory {
         enemy.add(render);
         enemy.add(enemyAnimation);
         enemy.add(new EnemyComponent());
-
+        enemy.add(new TeamComponent(Team.ENEMY));
+        enemy.add(new AttackComponent());
+        enemy.add(new HealthComponent());
         return enemy;
     }
 }

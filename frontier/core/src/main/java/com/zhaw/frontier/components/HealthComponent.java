@@ -7,8 +7,7 @@ import com.badlogic.ashley.core.Component;
  */
 public class HealthComponent implements Component {
 
-    /**
-     * $param Health The health of the entity.
-     */
-    public int Health = 0;
+    public int currentHealth = 100;
+    public int maxHealth = 100;
+    public boolean isDead = false;
 }

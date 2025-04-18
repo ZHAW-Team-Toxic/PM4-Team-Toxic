@@ -22,7 +22,7 @@ import com.zhaw.frontier.entityFactories.BuildableFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.WallFactory;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.GameMode;
