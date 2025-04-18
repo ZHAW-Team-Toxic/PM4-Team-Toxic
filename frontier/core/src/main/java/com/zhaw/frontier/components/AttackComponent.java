@@ -8,18 +8,17 @@ import com.badlogic.ashley.core.Component;
  */
 public class AttackComponent implements Component {
 
-    /**
-     * The attack damage of the entity.
-     */
-    public float AttackDamage = 0;
+    public float damage = 10f;
+    public float attackRange = 1.5f; // in tiles
+    public float attackInterval = 1f; // Seconds between attacks
+    public float attackCooldown = 0f; // Internal timer
 
-    /**
-     * The attack speed of the entity.
-     */
-    public float AttackSpeed = 0;
+    public AttackComponent() {}
 
-    /**
-     * The attack range of the entity.
-     */
-    public float AttackRange = 0;
+    public AttackComponent(float damage, float attackRange, float attackInterval) {
+        this.damage = damage;
+        this.attackRange = attackRange;
+        this.attackInterval = attackInterval;
+        this.attackCooldown = 0f;
+    }
 }

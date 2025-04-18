@@ -6,9 +6,13 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -18,7 +22,9 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
+import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.mappers.MapLayerMapper;
+import com.zhaw.frontier.utils.AppConfigLoader;
 import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.TileOffset;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
@@ -27,9 +33,12 @@ import java.util.*;
 /**
  * System responsible for rendering the map and game entities.
  * <p>
- * This system renders the tiled map layers (bottom, decoration, and resource layers)
- * using an {@link OrthogonalTiledMapRenderer} and draws game entities (currently buildings)
- * with a {@link SpriteBatch}. Building entities are rendered based on their {@link PositionComponent}
+ * This system renders the tiled map layers (bottom, decoration, and resource
+ * layers)
+ * using an {@link OrthogonalTiledMapRenderer} and draws game entities
+ * (currently buildings)
+ * with a {@link SpriteBatch}. Building entities are rendered based on their
+ * {@link PositionComponent}
  * and {@link RenderComponent} data.
  * </p>
  */
@@ -38,6 +47,7 @@ public class RenderSystem extends EntitySystem {
     private final Viewport viewport;
     private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
+    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     private ImmutableArray<Entity> buildings;
     private ImmutableArray<Entity> enemies;
@@ -50,7 +60,8 @@ public class RenderSystem extends EntitySystem {
      *
      * @param viewport the {@link Viewport} used for rendering.
      * @param engine   the {@link Engine} that manages game entities.
-     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering the tiled map.
+     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering the
+     *                 tiled map.
      */
     public RenderSystem(Viewport viewport, Engine engine, OrthogonalTiledMapRenderer renderer) {
         super(1);
@@ -62,8 +73,10 @@ public class RenderSystem extends EntitySystem {
     /**
      * Called when the system is added to an engine.
      * <p>
-     * This method retrieves the map entity and all building entities from the engine.
-     * It initializes the map layers and buildings so they can be rendered in the update method.
+     * This method retrieves the map entity and all building entities from the
+     * engine.
+     * It initializes the map layers and buildings so they can be rendered in the
+     * update method.
      * </p>
      *
      * @param engine The {@link Engine} this system was added to.
@@ -116,6 +129,16 @@ public class RenderSystem extends EntitySystem {
 
         // Render all building entities.
         renderAllEntities((SpriteBatch) renderer.getBatch());
+
+        if (AppConfigLoader.ReadAppConfig().getEnvironment() == AppEnvironment.DEV) {
+            drawGridWithTempPixel(
+                (SpriteBatch) renderer.getBatch(),
+                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getWidth(),
+                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getHeight(),
+                16,
+                Color.WHITE
+            );
+        }
 
         // End the sprite batch.
         renderer.getBatch().end();
@@ -241,5 +264,33 @@ public class RenderSystem extends EntitySystem {
                 }
             }
         }
+    }
+
+    public void drawGridWithTempPixel(
+        SpriteBatch batch,
+        int mapWidthInTiles,
+        int mapHeightInTiles,
+        int tileSize,
+        Color color
+    ) {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(1, 1, 1, 1); // volle Deckkraft
+        pixmap.fill();
+        Texture tempPixel = new Texture(pixmap);
+        pixmap.dispose(); // Blending aktivieren, falls nicht bereits an
+        batch.enableBlending();
+        Color oldColor = batch.getColor();
+        batch.setColor(color); // z. B. new Color(0, 0, 0, 0.3f)
+        float thickness = 1f;
+        for (int x = 0; x <= mapWidthInTiles; x++) {
+            float drawX = x * tileSize;
+            batch.draw(tempPixel, drawX, 0, thickness, mapHeightInTiles * tileSize);
+        }
+        for (int y = 0; y <= mapHeightInTiles; y++) {
+            float drawY = y * tileSize;
+            batch.draw(tempPixel, 0, drawY, mapWidthInTiles * tileSize, thickness);
+        }
+        batch.setColor(oldColor);
+        tempPixel.dispose();
     }
 }

@@ -1,4 +1,4 @@
-package com.zhaw.frontier.systems;
+package com.zhaw.frontier.systems.building;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -14,6 +14,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.mappers.MapLayerMapper;
+import com.zhaw.frontier.systems.ResourceAdjacencyChecker;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 import java.util.ArrayList;
 import java.util.List;

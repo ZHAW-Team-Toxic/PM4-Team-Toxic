@@ -1,4 +1,4 @@
-package com.zhaw.frontier.systems;
+package com.zhaw.frontier.systems.movement;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
@@ -6,8 +6,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.VelocityComponent;
+import com.zhaw.frontier.components.behaviours.PathfindingBehaviourComponent;
 
 /**
  * A system that updates the position of all entities with both {@link PositionComponent}
@@ -20,6 +22,9 @@ public class MovementSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<VelocityComponent> vm = ComponentMapper.getFor(VelocityComponent.class);
+    private ComponentMapper<PathfindingBehaviourComponent> pfm = ComponentMapper.getFor(
+        PathfindingBehaviourComponent.class
+    );
 
     private ImmutableArray<Entity> movables;
 
@@ -32,7 +37,15 @@ public class MovementSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
         movables =
-        engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
+        engine.getEntitiesFor(
+            Family
+                .all(
+                    PositionComponent.class,
+                    VelocityComponent.class,
+                    PathfindingBehaviourComponent.class
+                )
+                .get()
+        );
     }
 
     /**
@@ -57,12 +70,30 @@ public class MovementSystem extends EntitySystem {
     private void calculateLookingDirection(Entity entity) {
         final float DIRECTION_EPSILON = 0.05f;
         PositionComponent pos = pm.get(entity);
+        VelocityComponent vel = vm.get(entity);
+        PathfindingBehaviourComponent path = pfm.get(entity);
 
-        float deltaX = pos.basePosition.x - pos.previousPosition.x;
-        float deltaY = pos.basePosition.y - pos.previousPosition.y;
+        // 1. Prefer actual movement (most accurate)
+        float dx = pos.basePosition.x - pos.previousPosition.x;
+        float dy = pos.basePosition.y - pos.previousPosition.y;
 
-        if (Math.abs(deltaX) > DIRECTION_EPSILON || Math.abs(deltaY) > DIRECTION_EPSILON) {
-            pos.lookingDirection.set(deltaX, deltaY).nor();
+        if (Math.abs(dx) > DIRECTION_EPSILON || Math.abs(dy) > DIRECTION_EPSILON) {
+            pos.lookingDirection.set(dx, dy).nor();
+            return;
+        }
+
+        // 2. Otherwise, fallback to velocity
+        if (vel != null && vel.velocity.len2() > DIRECTION_EPSILON * DIRECTION_EPSILON) {
+            pos.lookingDirection.set(vel.velocity).nor();
+            return;
+        }
+
+        // 3. Fallback to intent (next waypoint)
+        if (path != null && path.hasPath()) {
+            Vector2 dir = new Vector2(path.getNextWaypoint()).sub(pos.basePosition);
+            if (dir.len2() > DIRECTION_EPSILON * DIRECTION_EPSILON) {
+                pos.lookingDirection.set(dir).nor();
+            }
         }
     }
 }

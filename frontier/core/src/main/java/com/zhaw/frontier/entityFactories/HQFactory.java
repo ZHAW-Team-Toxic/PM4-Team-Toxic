@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.*;
-import com.zhaw.frontier.components.RoundAnimationComponent;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
@@ -47,6 +46,7 @@ public class HQFactory {
         hq.add(new BuildingAnimationComponent());
         hq.add(new RoundAnimationComponent());
         hq.add(new AnimationQueueComponent());
+        hq.add(new HQComponent());
         hq.add(
             new RenderComponent(RenderComponent.RenderType.BUILDING, 10, HQ_TILE_SIZE, HQ_TILE_SIZE)
         );

@@ -27,6 +27,7 @@ public class AssetManagerTest {
         assetManager.load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
         assetManager.load("packed/buildings/buildingAtlas.atlas", TextureAtlas.class);
         assetManager.load("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
+        assetManager.load("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
         assetManager.finishLoading(); // Make sure everything is loaded
     }
 
