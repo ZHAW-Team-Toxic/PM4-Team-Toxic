@@ -3,7 +3,6 @@ package com.zhaw.frontier.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.utils.TileOffset;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,12 +24,10 @@ public class WallPieceComponent implements Component {
         STRAIGHT_VERTICAL_MIDDLE,
         STRAIGHT_VERTICAL_UP,
         STRAIGHT_VERTICAL_DOWN,
-        SINGLE
+        SINGLE,
     }
 
     public WallPiece currentWallPiece = WallPiece.SINGLE;
 
-    public Map<WallPiece, HashMap<TileOffset, TextureRegion>> wallPieceTextures =
-        new HashMap<>();
-
+    public Map<WallPiece, HashMap<TileOffset, TextureRegion>> wallPieceTextures = new HashMap<>();
 }

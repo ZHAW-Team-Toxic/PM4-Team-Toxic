@@ -5,19 +5,26 @@ import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.WallPieceComponent;
-
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Dieses System analysiert angrenzende Wände in N/S/O/W
- * und weist einer (multi-tile-fähigen) Wand-Entity
- * das passende WallPiece zu.
+ * Utility class responsible for analyzing wall adjacency.
  * <p>
- * Diagonale Verbindungen werden ignoriert.
+ * Determines the correct {@link WallPieceComponent.WallPiece} type for a wall entity
+ * based on its immediate neighbors in the four cardinal directions (north, south, east, west).
+ * Diagonal connections are ignored.
+ * </p>
  */
 public class WallAdjacencyChecker {
 
+    /**
+     * Updates the {@link WallPieceComponent} and {@link RenderComponent} of the given wall entity
+     * based on its adjacency to other wall entities.
+     *
+     * @param entity    the wall entity to update
+     * @param allWalls  a list of all current wall entities in the world
+     */
     public static void pickWallPiece(Entity entity, List<Entity> allWalls) {
         if (entity == null || entity.getComponent(WallPieceComponent.class) == null) {
             return;
@@ -26,10 +33,14 @@ public class WallAdjacencyChecker {
         WallPieceComponent wallPiece = entity.getComponent(WallPieceComponent.class);
         wallPiece.currentWallPiece = determineWallPiece(entity, allWalls);
         RenderComponent renderComponent = entity.getComponent(RenderComponent.class);
-        renderComponent.sprites = new HashMap<>(wallPiece.wallPieceTextures.get(wallPiece.currentWallPiece));
+        renderComponent.sprites =
+        new HashMap<>(wallPiece.wallPieceTextures.get(wallPiece.currentWallPiece));
     }
 
-    private static WallPieceComponent.WallPiece determineWallPiece(Entity entity, List<Entity> allWalls) {
+    private static WallPieceComponent.WallPiece determineWallPiece(
+        Entity entity,
+        List<Entity> allWalls
+    ) {
         PositionComponent pos = entity.getComponent(PositionComponent.class);
         if (pos == null) return WallPieceComponent.WallPiece.SINGLE;
 
@@ -60,33 +71,46 @@ public class WallAdjacencyChecker {
         return WallPieceComponent.WallPiece.SINGLE;
     }
 
-    private static boolean hasWallOnLeft(PositionComponent self, List<Entity> allWalls, Entity selfEntity) {
-            Vector2 check = new Vector2(self.basePosition.x - self.widthInTiles, self.basePosition.y);
-            if (hasWallAt(check, allWalls, selfEntity)) return true;
+    private static boolean hasWallOnLeft(
+        PositionComponent self,
+        List<Entity> allWalls,
+        Entity selfEntity
+    ) {
+        Vector2 check = new Vector2(self.basePosition.x - self.widthInTiles, self.basePosition.y);
+        if (hasWallAt(check, allWalls, selfEntity)) return true;
 
         return false;
     }
 
-    private static boolean hasWallOnRight(PositionComponent self, List<Entity> allWalls, Entity selfEntity) {
-
-            Vector2 check = new Vector2(self.basePosition.x + self.widthInTiles, self.basePosition.y);
-            if (hasWallAt(check, allWalls, selfEntity)) return true;
-
-        return false;
-    }
-
-    private static boolean hasWallOnTop(PositionComponent self, List<Entity> allWalls, Entity selfEntity) {
-
-            Vector2 check = new Vector2(self.basePosition.x, self.basePosition.y + self.heightInTiles);
-            if (hasWallAt(check, allWalls, selfEntity)) return true;
+    private static boolean hasWallOnRight(
+        PositionComponent self,
+        List<Entity> allWalls,
+        Entity selfEntity
+    ) {
+        Vector2 check = new Vector2(self.basePosition.x + self.widthInTiles, self.basePosition.y);
+        if (hasWallAt(check, allWalls, selfEntity)) return true;
 
         return false;
     }
 
-    private static boolean hasWallOnBottom(PositionComponent self, List<Entity> allWalls, Entity selfEntity) {
+    private static boolean hasWallOnTop(
+        PositionComponent self,
+        List<Entity> allWalls,
+        Entity selfEntity
+    ) {
+        Vector2 check = new Vector2(self.basePosition.x, self.basePosition.y + self.heightInTiles);
+        if (hasWallAt(check, allWalls, selfEntity)) return true;
 
-            Vector2 check = new Vector2(self.basePosition.x, self.basePosition.y - self.heightInTiles);
-            if (hasWallAt(check, allWalls, selfEntity)) return true;
+        return false;
+    }
+
+    private static boolean hasWallOnBottom(
+        PositionComponent self,
+        List<Entity> allWalls,
+        Entity selfEntity
+    ) {
+        Vector2 check = new Vector2(self.basePosition.x, self.basePosition.y - self.heightInTiles);
+        if (hasWallAt(check, allWalls, selfEntity)) return true;
 
         return false;
     }
@@ -102,6 +126,4 @@ public class WallAdjacencyChecker {
         }
         return false;
     }
-
-
 }

@@ -81,9 +81,8 @@ public class BuildingRemover {
     }
 
     private void updateWalls(Entity entity) {
-        if(entity.getComponent(WallPieceComponent.class) != null) {
+        if (entity.getComponent(WallPieceComponent.class) != null) {
             WallManager.update(engine);
         }
     }
-
 }

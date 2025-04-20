@@ -6,10 +6,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -119,14 +116,6 @@ public class RenderSystem extends EntitySystem {
 
         // Render all building entities.
         renderAllEntities((SpriteBatch) renderer.getBatch());
-
-        drawGridWithTempPixel(
-            (SpriteBatch) renderer.getBatch(),
-            mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getWidth(),
-            mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getHeight(),
-            16,
-            Color.WHITE
-        );
 
         // End the sprite batch.
         renderer.getBatch().end();
@@ -253,35 +242,4 @@ public class RenderSystem extends EntitySystem {
             }
         }
     }
-
-    public void drawGridWithTempPixel(SpriteBatch batch, int mapWidthInTiles, int mapHeightInTiles, int tileSize, Color color) {
-        // 1x1 weißes Pixel erzeugen mit vollem Alpha
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(1, 1, 1, 1); // volle Deckkraft
-        pixmap.fill();
-        Texture tempPixel = new Texture(pixmap);
-        pixmap.dispose();
-
-        // Blending aktivieren, falls nicht bereits an
-        batch.enableBlending();
-
-        Color oldColor = batch.getColor();
-        batch.setColor(color); // z. B. new Color(0, 0, 0, 0.3f)
-
-        float thickness = 0.5f;
-
-        for (int x = 0; x <= mapWidthInTiles; x++) {
-            float drawX = x * tileSize;
-            batch.draw(tempPixel, drawX, 0, thickness, mapHeightInTiles * tileSize);
-        }
-
-        for (int y = 0; y <= mapHeightInTiles; y++) {
-            float drawY = y * tileSize;
-            batch.draw(tempPixel, 0, drawY, mapWidthInTiles * tileSize, thickness);
-        }
-
-        batch.setColor(oldColor);
-        tempPixel.dispose();
-    }
-
 }
