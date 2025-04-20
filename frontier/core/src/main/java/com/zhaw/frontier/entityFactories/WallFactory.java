@@ -199,7 +199,7 @@ public class WallFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/buildings/buildingAtlas.atlas", TextureAtlas.class);
+            .get("packed/textures.atlas", TextureAtlas.class);
     }
 
     private static void initIronWallPiecesSprites() {
@@ -207,6 +207,6 @@ public class WallFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/buildings/buildingAtlas.atlas", TextureAtlas.class);
+            .get("packed/textures.atlas", TextureAtlas.class);
     }
 }

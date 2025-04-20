@@ -1,15 +1,15 @@
 {
   "format": "RGBA8888",
   "useIndexes": true,
-  "filterMin": "Linear",
-  "filterMag": "Linear",
+  "filterMin": "Nearest",
+  "filterMag": "Nearest",
   "wrapX": "ClampToEdge",
   "wrapY": "ClampToEdge",
   "edgePadding": true,
-  "duplicatePadding": true,
+  "duplicatePadding": false,
   "rotation": false,
-  "stripWhitespaceX": true,
-  "stripWhitespaceY": true,
+  "stripWhitespaceX": false,
+  "stripWhitespaceY": false,
   "alphaThreshold": 0,
   "paddingX": 2,
   "paddingY": 2,
@@ -17,5 +17,7 @@
   "maxHeight": 2048,
   "debug": false,
   "flattenPaths": true,
-  "combineSubdirectories": true
+  "combineSubdirectories": true,
+  "bleed": true,
+  "alias": true
 }
