@@ -13,8 +13,8 @@
   "alphaThreshold": 0,
   "paddingX": 2,
   "paddingY": 2,
-  "maxWidth": 1024,
-  "maxHeight": 1024,
+  "maxWidth": 2048,
+  "maxHeight": 2048,
   "debug": false,
   "flattenPaths": true,
   "combineSubdirectories": true

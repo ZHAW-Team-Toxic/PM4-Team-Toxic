@@ -76,7 +76,7 @@ public class WallFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/buildings/walls/wood/woodAtlas.atlas", TextureAtlas.class);
+            .get("packed/textures.atlas", TextureAtlas.class);
 
         HashMap<TileOffset, TextureRegion> singlePiece = new HashMap<>();
         singlePiece.put(new TileOffset(0, 0), atlas.findRegion("wall_wood_single"));

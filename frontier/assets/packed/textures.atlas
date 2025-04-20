@@ -1,397 +1,397 @@
 
 textures.png
-size: 32, 32
+size: 16, 16
 format: RGBA8888
-filter: Nearest, Nearest
+filter: Linear, Linear
 repeat: none
-buildings/Arrow/Arrow
+Arrow
   rotate: false
-  xy: 2, 2
-  size: 16, 16
+  xy: 1, 1
+  size: 5, 13
   orig: 16, 16
-  offset: 0, 0
+  offset: 5, 2
   index: -1
 
 textures2.png
 size: 512, 32
 format: RGBA8888
-filter: Nearest, Nearest
+filter: Linear, Linear
 repeat: none
-buildings/hqBuildings/hq_sandclock_00_S
+hq_sandclock_00_S
   rotate: false
-  xy: 2, 2
-  size: 16, 16
+  xy: 253, 15
+  size: 15, 16
   orig: 16, 16
-  offset: 0, 0
+  offset: 1, 0
   index: 0
-buildings/hqBuildings/hq_sandclock_01_S
+hq_sandclock_01_S
   rotate: false
-  xy: 20, 2
-  size: 16, 16
+  xy: 270, 15
+  size: 15, 16
   orig: 16, 16
-  offset: 0, 0
+  offset: 1, 0
   index: 4
-buildings/hqBuildings/hq_sandclock_02_S
+hq_sandclock_02_S
   rotate: false
-  xy: 38, 2
+  xy: 1, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 6
-buildings/hqBuildings/hq_sandclock_03_S
+hq_sandclock_03_S
   rotate: false
-  xy: 56, 2
-  size: 16, 16
+  xy: 287, 16
+  size: 16, 15
   orig: 16, 16
   offset: 0, 0
   index: 9
-buildings/hqBuildings/hq_sandclock_10_S
+hq_sandclock_10_S
   rotate: false
-  xy: 74, 2
-  size: 16, 16
+  xy: 305, 16
+  size: 16, 15
+  orig: 16, 16
+  offset: 0, 1
+  index: 1
+hq_sandclock_13_S
+  rotate: false
+  xy: 287, 1
+  size: 16, 13
   orig: 16, 16
   offset: 0, 0
   index: 1
-buildings/hqBuildings/hq_sandclock_13_S
+hq_sandclock_20_S
   rotate: false
-  xy: 92, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-buildings/hqBuildings/hq_sandclock_20_S
-  rotate: false
-  xy: 110, 2
+  xy: 19, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
-buildings/hqBuildings/hq_sandclock_22_S
+hq_sandclock_22_S
   rotate: false
-  xy: 128, 2
+  xy: 37, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 7
-buildings/hqBuildings/hq_sandclock_23_S
+hq_sandclock_23_S
   rotate: false
-  xy: 146, 2
-  size: 16, 16
+  xy: 323, 16
+  size: 16, 15
   orig: 16, 16
   offset: 0, 0
   index: 11
-buildings/hqBuildings/hq_sandclock_30_S
+hq_sandclock_30_S
   rotate: false
-  xy: 164, 2
-  size: 16, 16
+  xy: 341, 15
+  size: 15, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-buildings/hqBuildings/hq_sandclock_31_S
+hq_sandclock_31_S
   rotate: false
-  xy: 182, 2
+  xy: 55, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
-buildings/hqBuildings/hq_sandclock_32_S
+hq_sandclock_32_S
   rotate: false
-  xy: 200, 2
-  size: 16, 16
+  xy: 358, 15
+  size: 15, 16
   orig: 16, 16
   offset: 0, 0
   index: 8
-buildings/hqBuildings/hq_sandclock_33_S
+hq_sandclock_33_S
   rotate: false
-  xy: 218, 2
-  size: 16, 16
+  xy: 375, 16
+  size: 9, 15
   orig: 16, 16
   offset: 0, 0
   index: 12
-buildings/hqBuildings/hq_sandclock_D5
+hq_sandclock_D5
   rotate: false
-  xy: 236, 2
+  xy: 73, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-buildings/hqBuildings/hq_sandclock_D5
+hq_sandclock_D5
   rotate: false
-  xy: 254, 2
+  xy: 91, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
-buildings/hqBuildings/hq_sandclock_D5
+hq_sandclock_D5
   rotate: false
-  xy: 272, 2
+  xy: 109, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-buildings/hqBuildings/hq_sandclock_D5
+hq_sandclock_D5
   rotate: false
-  xy: 290, 2
+  xy: 127, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 4
-buildings/hqBuildings/hq_sandclock_D5
+hq_sandclock_D5
   rotate: false
-  xy: 290, 2
+  xy: 127, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
-buildings/hqBuildings/hq_sandclock_D6
+hq_sandclock_D6
   rotate: false
-  xy: 308, 2
+  xy: 145, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-buildings/hqBuildings/hq_sandclock_D6
+hq_sandclock_D6
   rotate: false
-  xy: 326, 2
+  xy: 163, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
-buildings/hqBuildings/hq_sandclock_D6
+hq_sandclock_D6
   rotate: false
-  xy: 326, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 4
-buildings/hqBuildings/hq_sandclock_D6
-  rotate: false
-  xy: 326, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 3
-buildings/hqBuildings/hq_sandclock_D6
-  rotate: false
-  xy: 326, 2
+  xy: 163, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
-buildings/hqBuildings/hq_sandclock_D9
+hq_sandclock_D6
   rotate: false
-  xy: 344, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-buildings/hqBuildings/hq_sandclock_D9
-  rotate: false
-  xy: 344, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-buildings/hqBuildings/hq_sandclock_D9
-  rotate: false
-  xy: 362, 2
+  xy: 163, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-buildings/hqBuildings/hq_sandclock_D9
+hq_sandclock_D6
   rotate: false
-  xy: 380, 2
+  xy: 163, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 4
-buildings/hqBuildings/hq_sandclock_D9
+hq_sandclock_D9
   rotate: false
-  xy: 398, 2
+  xy: 181, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+hq_sandclock_D9
+  rotate: false
+  xy: 181, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+hq_sandclock_D9
+  rotate: false
+  xy: 199, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 3
+hq_sandclock_D9
+  rotate: false
+  xy: 217, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+hq_sandclock_D9
+  rotate: false
+  xy: 235, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
 
 textures3.png
-size: 64, 128
+size: 256, 32
 format: RGBA8888
-filter: Nearest, Nearest
+filter: Linear, Linear
 repeat: none
-buildings/Tower/Wood_Tower1
+Wood_Tower1
   rotate: false
-  xy: 2, 70
-  size: 16, 32
+  xy: 19, 2
+  size: 16, 28
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
-buildings/Tower/Wood_Tower2
+Wood_Tower2
   rotate: false
-  xy: 2, 36
-  size: 16, 32
+  xy: 55, 3
+  size: 16, 27
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
-buildings/Tower/Wood_Tower3
+Wood_Tower3
   rotate: false
-  xy: 20, 70
-  size: 16, 32
+  xy: 91, 5
+  size: 16, 25
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
-buildings/Tower/Wood_Tower4
+Wood_Tower4
   rotate: false
-  xy: 2, 2
-  size: 16, 32
+  xy: 109, 5
+  size: 16, 25
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
-buildings/Tower/Wood_Tower5
+Wood_Tower5
   rotate: false
-  xy: 20, 36
-  size: 16, 32
+  xy: 127, 5
+  size: 16, 25
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
-buildings/Tower/Wood_Tower6
+Wood_Tower6
   rotate: false
-  xy: 38, 70
-  size: 16, 32
+  xy: 73, 4
+  size: 16, 26
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
-buildings/Tower/Wood_Tower7
+Wood_Tower7
   rotate: false
-  xy: 20, 2
-  size: 16, 32
+  xy: 37, 2
+  size: 16, 28
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
-buildings/Tower/Wood_Tower8
+Wood_Tower8
   rotate: false
-  xy: 38, 36
-  size: 16, 32
+  xy: 1, 1
+  size: 16, 29
   orig: 16, 32
-  offset: 0, 0
+  offset: 0, 1
   index: -1
 
 textures4.png
-size: 64, 128
+size: 128, 32
 format: RGBA8888
-filter: Nearest, Nearest
+filter: Linear, Linear
 repeat: none
-buildings/walls/wood/wall_wood_T_bottom
+wall_wood_T_bottom
   rotate: false
-  xy: 2, 110
+  xy: 19, 17
+  size: 16, 14
+  orig: 16, 16
+  offset: 0, 2
+  index: -1
+wall_wood_T_left
+  rotate: false
+  xy: 37, 15
+  size: 12, 16
+  orig: 16, 16
+  offset: 4, 0
+  index: -1
+wall_wood_T_right
+  rotate: false
+  xy: 51, 15
+  size: 12, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_wood_T_top
+  rotate: false
+  xy: 19, 1
+  size: 16, 14
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_wood_corner_bottomleft
+  rotate: false
+  xy: 65, 17
+  size: 12, 14
+  orig: 16, 16
+  offset: 4, 2
+  index: -1
+wall_wood_corner_bottomright
+  rotate: false
+  xy: 65, 1
+  size: 12, 14
+  orig: 16, 16
+  offset: 0, 2
+  index: -1
+wall_wood_corner_topleft
+  rotate: false
+  xy: 79, 17
+  size: 12, 14
+  orig: 16, 16
+  offset: 4, 0
+  index: -1
+wall_wood_corner_topright
+  rotate: false
+  xy: 79, 1
+  size: 12, 14
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_wood_cross
+  rotate: false
+  xy: 1, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-buildings/walls/wood/wall_wood_T_left
+wall_wood_horizontal_left
   rotate: false
-  xy: 2, 92
-  size: 16, 16
+  xy: 37, 1
+  size: 12, 12
   orig: 16, 16
-  offset: 0, 0
+  offset: 4, 2
   index: -1
-buildings/walls/wood/wall_wood_T_right
+wall_wood_horizontal_middle
   rotate: false
-  xy: 20, 110
-  size: 16, 16
+  xy: 1, 1
+  size: 16, 12
   orig: 16, 16
-  offset: 0, 0
+  offset: 0, 2
   index: -1
-buildings/walls/wood/wall_wood_T_top
+wall_wood_horizontal_right
   rotate: false
-  xy: 2, 74
-  size: 16, 16
+  xy: 51, 1
+  size: 12, 12
   orig: 16, 16
-  offset: 0, 0
+  offset: 0, 2
   index: -1
-buildings/walls/wood/wall_wood_corner_bottomleft
+wall_wood_single
   rotate: false
-  xy: 20, 92
-  size: 16, 16
+  xy: 93, 1
+  size: 8, 12
   orig: 16, 16
-  offset: 0, 0
+  offset: 4, 2
   index: -1
-buildings/walls/wood/wall_wood_corner_bottomright
+wall_wood_vertical_bottom
   rotate: false
-  xy: 38, 110
-  size: 16, 16
+  xy: 103, 17
+  size: 8, 14
   orig: 16, 16
-  offset: 0, 0
+  offset: 4, 2
   index: -1
-buildings/walls/wood/wall_wood_corner_topleft
+wall_wood_vertical_middle
   rotate: false
-  xy: 2, 56
-  size: 16, 16
+  xy: 93, 15
+  size: 8, 16
   orig: 16, 16
-  offset: 0, 0
+  offset: 4, 0
   index: -1
-buildings/walls/wood/wall_wood_corner_topright
+wall_wood_vertical_top
   rotate: false
-  xy: 20, 74
-  size: 16, 16
+  xy: 103, 1
+  size: 8, 14
   orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_cross
-  rotate: false
-  xy: 38, 92
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_horizontal_left
-  rotate: false
-  xy: 2, 38
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_horizontal_middle
-  rotate: false
-  xy: 20, 56
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_horizontal_right
-  rotate: false
-  xy: 38, 74
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_single
-  rotate: false
-  xy: 2, 20
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_vertical_bottom
-  rotate: false
-  xy: 2, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_vertical_middle
-  rotate: false
-  xy: 20, 38
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-buildings/walls/wood/wall_wood_vertical_top
-  rotate: false
-  xy: 38, 56
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
+  offset: 4, 0
   index: -1
 
 textures5.png
@@ -435,343 +435,494 @@ demo2/image
   index: -1
 
 textures7.png
-size: 128, 128
+size: 512, 32
 format: RGBA8888
-filter: Nearest, Nearest
+filter: Linear, Linear
 repeat: none
-enemies/orc/attack_down_orc
+attack_down_orc
   rotate: false
-  xy: 2, 110
+  xy: 1, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-enemies/orc/attack_down_orc
+attack_down_orc
   rotate: false
-  xy: 2, 92
+  xy: 19, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
-enemies/orc/attack_down_orc
+attack_down_orc
   rotate: false
-  xy: 20, 110
+  xy: 37, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-enemies/orc/attack_down_orc
+attack_down_orc
   rotate: false
-  xy: 2, 74
-  size: 16, 16
+  xy: 253, 17
+  size: 16, 14
   orig: 16, 16
   offset: 0, 0
   index: 4
-enemies/orc/attack_down_orc
+attack_down_orc
   rotate: false
-  xy: 20, 92
-  size: 16, 16
+  xy: 271, 17
+  size: 14, 14
+  orig: 16, 16
+  offset: 1, 0
+  index: 5
+attack_left_orc
+  rotate: false
+  xy: 315, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 1
+attack_left_orc
+  rotate: false
+  xy: 328, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 2
+attack_left_orc
+  rotate: false
+  xy: 341, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 3
+attack_left_orc
+  rotate: false
+  xy: 354, 17
+  size: 13, 14
   orig: 16, 16
   offset: 0, 0
-  index: 5
-enemies/orc/attack_left_orc
+  index: 4
+attack_left_orc
   rotate: false
-  xy: 38, 110
+  xy: 486, 17
+  size: 12, 14
+  orig: 16, 16
+  offset: 1, 0
+  index: 5
+attack_right_orc
+  rotate: false
+  xy: 354, 1
+  size: 13, 14
+  orig: 16, 16
+  offset: 3, 0
+  index: 4
+attack_right_orc
+  rotate: false
+  xy: 369, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 1
+attack_right_orc
+  rotate: false
+  xy: 382, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 2
+attack_right_orc
+  rotate: false
+  xy: 395, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 3
+attack_right_orc
+  rotate: false
+  xy: 486, 1
+  size: 12, 14
+  orig: 16, 16
+  offset: 3, 0
+  index: 5
+attack_up_orc
+  rotate: false
+  xy: 55, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-enemies/orc/attack_left_orc
+attack_up_orc
   rotate: false
-  xy: 2, 56
+  xy: 73, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
-enemies/orc/attack_left_orc
+attack_up_orc
   rotate: false
-  xy: 20, 74
+  xy: 91, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-enemies/orc/attack_left_orc
+attack_up_orc
   rotate: false
-  xy: 38, 92
-  size: 16, 16
+  xy: 253, 1
+  size: 16, 14
   orig: 16, 16
   offset: 0, 0
   index: 4
-enemies/orc/attack_left_orc
+attack_up_orc
   rotate: false
-  xy: 56, 110
-  size: 16, 16
+  xy: 271, 1
+  size: 14, 14
   orig: 16, 16
-  offset: 0, 0
+  offset: 1, 0
   index: 5
-enemies/orc/attack_right_orc
+idle_down_orc
   rotate: false
-  xy: 2, 38
+  xy: 109, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-enemies/orc/attack_right_orc
+walk_down_orc
   rotate: false
-  xy: 20, 56
+  xy: 109, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+idle_down_orc
+  rotate: false
+  xy: 127, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
-enemies/orc/attack_right_orc
+walk_down_orc
   rotate: false
-  xy: 38, 74
+  xy: 127, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+walk_down_orc
+  rotate: false
+  xy: 127, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+idle_left_orc
+  rotate: false
+  xy: 408, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 1
+walk_left_orc
+  rotate: false
+  xy: 408, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 1
+idle_left_orc
+  rotate: false
+  xy: 421, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 2
+walk_left_orc
+  rotate: false
+  xy: 421, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 2
+walk_left_orc
+  rotate: false
+  xy: 421, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 4
+idle_right_orc
+  rotate: false
+  xy: 434, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 1
+walk_right_orc
+  rotate: false
+  xy: 434, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 1
+idle_right_orc
+  rotate: false
+  xy: 447, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 2
+walk_right_orc
+  rotate: false
+  xy: 447, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 2
+walk_right_orc
+  rotate: false
+  xy: 447, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 4
+idle_up_orc
+  rotate: false
+  xy: 145, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+walk_up_orc
+  rotate: false
+  xy: 145, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+idle_up_orc
+  rotate: false
+  xy: 163, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+walk_up_orc
+  rotate: false
+  xy: 163, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+walk_up_orc
+  rotate: false
+  xy: 163, 15
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+walk_down_orc
+  rotate: false
+  xy: 181, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-enemies/orc/attack_right_orc
+walk_down_orc
   rotate: false
-  xy: 56, 92
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 4
-enemies/orc/attack_right_orc
-  rotate: false
-  xy: 74, 110
+  xy: 199, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
-enemies/orc/attack_up_orc
+walk_left_orc
   rotate: false
-  xy: 2, 20
-  size: 16, 16
+  xy: 287, 15
+  size: 12, 16
   orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/attack_up_orc
+  offset: 2, 0
+  index: 3
+walk_left_orc
   rotate: false
-  xy: 2, 2
-  size: 16, 16
+  xy: 460, 15
+  size: 11, 16
   orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/attack_up_orc
+  offset: 2, 0
+  index: 5
+walk_right_orc
   rotate: false
-  xy: 20, 38
+  xy: 301, 15
+  size: 12, 16
+  orig: 16, 16
+  offset: 2, 0
+  index: 3
+walk_right_orc
+  rotate: false
+  xy: 473, 15
+  size: 11, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 5
+walk_up_orc
+  rotate: false
+  xy: 217, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-enemies/orc/attack_up_orc
+walk_up_orc
   rotate: false
-  xy: 38, 56
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 4
-enemies/orc/attack_up_orc
-  rotate: false
-  xy: 56, 74
+  xy: 235, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
-enemies/orc/idle_down_orc
+
+textures8.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Fireball
   rotate: false
-  xy: 74, 92
-  size: 16, 16
-  orig: 16, 16
+  xy: 1, 72
+  size: 124, 79
+  orig: 124, 79
   offset: 0, 0
   index: 1
-enemies/orc/walk_down_orc
+Fireball
   rotate: false
-  xy: 74, 92
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/idle_down_orc
-  rotate: false
-  xy: 92, 110
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/walk_down_orc
-  rotate: false
-  xy: 92, 110
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/walk_down_orc
-  rotate: false
-  xy: 92, 110
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 4
-enemies/orc/idle_left_orc
-  rotate: false
-  xy: 110, 110
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/walk_left_orc
-  rotate: false
-  xy: 110, 110
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/idle_left_orc
-  rotate: false
-  xy: 20, 20
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/walk_left_orc
-  rotate: false
-  xy: 20, 20
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 4
-enemies/orc/walk_left_orc
-  rotate: false
-  xy: 20, 20
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/idle_right_orc
-  rotate: false
-  xy: 20, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/walk_right_orc
-  rotate: false
-  xy: 20, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/idle_right_orc
-  rotate: false
-  xy: 38, 38
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/walk_right_orc
-  rotate: false
-  xy: 38, 38
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 4
-enemies/orc/walk_right_orc
-  rotate: false
-  xy: 38, 38
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/idle_up_orc
-  rotate: false
-  xy: 56, 56
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/walk_up_orc
-  rotate: false
-  xy: 56, 56
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-enemies/orc/idle_up_orc
-  rotate: false
-  xy: 74, 74
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/walk_up_orc
-  rotate: false
-  xy: 74, 74
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-enemies/orc/walk_up_orc
-  rotate: false
-  xy: 74, 74
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 4
-enemies/orc/walk_down_orc
-  rotate: false
-  xy: 92, 92
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
+  xy: 1, 1
+  size: 103, 69
+  orig: 124, 79
+  offset: 21, 0
   index: 3
-enemies/orc/walk_down_orc
+Fireball
   rotate: false
-  xy: 110, 92
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
+  xy: 1, 1
+  size: 103, 69
+  orig: 124, 79
+  offset: 21, 0
+  index: 7
+Fireball
+  rotate: false
+  xy: 1, 1
+  size: 103, 69
+  orig: 124, 79
+  offset: 21, 0
   index: 5
-enemies/orc/walk_left_orc
+Fireball
   rotate: false
-  xy: 38, 20
-  size: 16, 16
-  orig: 16, 16
+  xy: 1539, 1968
+  size: 124, 79
+  orig: 124, 79
   offset: 0, 0
+  index: 2
+Fireball
+  rotate: false
+  xy: 1539, 1968
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: 8
+Fireball
+  rotate: false
+  xy: 106, 1
+  size: 103, 69
+  orig: 124, 79
+  offset: 21, 0
+  index: 4
+Fireball
+  rotate: false
+  xy: 1539, 1897
+  size: 103, 69
+  orig: 124, 79
+  offset: 21, 0
+  index: 6
+Frontier_Enemies
+  rotate: false
+  xy: 1, 153
+  size: 1568, 868
+  orig: 1650, 1024
+  offset: 62, 64
+  index: -1
+Frontier_Sky_Background
+  rotate: false
+  xy: 1, 1023
+  size: 1536, 1024
+  orig: 1536, 1024
+  offset: 0, 0
+  index: -1
+
+textures9.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Frontier_Knights
+  rotate: false
+  xy: 1003, 1292
+  size: 539, 644
+  orig: 553, 900
+  offset: 0, 123
+  index: 1
+Frontier_Knights
+  rotate: false
+  xy: 1003, 1292
+  size: 539, 644
+  orig: 553, 900
+  offset: 0, 123
+  index: 6
+Frontier_Knights
+  rotate: false
+  xy: 1003, 646
+  size: 539, 644
+  orig: 553, 900
+  offset: 0, 123
+  index: 2
+Frontier_Knights
+  rotate: false
+  xy: 1003, 646
+  size: 539, 644
+  orig: 553, 900
+  offset: 0, 123
+  index: 5
+Frontier_Knights
+  rotate: false
+  xy: 1003, 1
+  size: 539, 643
+  orig: 553, 900
+  offset: 0, 123
   index: 3
-enemies/orc/walk_left_orc
+Frontier_Knights
   rotate: false
-  xy: 38, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 5
-enemies/orc/walk_right_orc
+  xy: 1003, 1
+  size: 539, 643
+  orig: 553, 900
+  offset: 0, 123
+  index: 4
+Frontier_Logo
   rotate: false
-  xy: 56, 38
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 3
-enemies/orc/walk_right_orc
+  xy: 1, 203
+  size: 922, 173
+  orig: 943, 187
+  offset: 10, 14
+  index: -1
+Frontier_Tower
   rotate: false
-  xy: 74, 56
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 5
-enemies/orc/walk_up_orc
+  xy: 1, 378
+  size: 1000, 1558
+  orig: 1024, 1600
+  offset: 24, 0
+  index: -1
+
+textures10.png
+size: 2048, 1024
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Frontier_Ground_Background
   rotate: false
-  xy: 92, 74
-  size: 16, 16
-  orig: 16, 16
+  xy: 1, 1
+  size: 1536, 526
+  orig: 1536, 1024
   offset: 0, 0
-  index: 3
-enemies/orc/walk_up_orc
-  rotate: false
-  xy: 110, 74
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 5
+  index: -1

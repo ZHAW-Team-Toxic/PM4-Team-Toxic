@@ -113,7 +113,8 @@ public class StartScreen extends ScreenAdapter {
         table.add(exitButton).pad(10).row();
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
+            .get("packed/textures.atlas", TextureAtlas.class);
+
         this.skyeBackground = atlas.findRegion("Frontier_Sky_Background");
 
         this.groundBackground = atlas.findRegion("Frontier_Ground_Background");
