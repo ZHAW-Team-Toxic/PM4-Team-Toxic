@@ -73,6 +73,22 @@ public class WallFactory {
      */
     public static Entity createDefaultWall(Engine engine, float x, float y) {
         Entity wall = engine.createEntity();
+        wall.add(new PositionComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 40;
+        wall.add(healthComponent);
+
+        RenderComponent renderComponent = new RenderComponent();
+        renderComponent.renderType = RenderComponent.RenderType.BUILDING;
+
+        // TODO: Replace placeholder texture with the actual wall texture.
+        Texture texture = createPlaceHolder();
+        HashMap<TileOffset, TextureRegion> sprites = new HashMap<>();
+        sprites.put(new TileOffset(0, 0), new TextureRegion(texture));
+        renderComponent.sprites = sprites;
+
+        wall.add(renderComponent);
 
         RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
         TextureRegion region = new TextureRegion(createPlaceHolder());

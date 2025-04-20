@@ -240,6 +240,8 @@ public class RenderSystem extends EntitySystem {
                     );
                 }
             }
+
+            HealthBarManager.drawHealthBar(batch, entity, engine);
         }
     }
 }

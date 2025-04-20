@@ -63,7 +63,8 @@ public class SaveGameManager {
             // Saves the health information.
             HealthComponent healthComponent = entity.getComponent(HealthComponent.class);
             if (healthComponent != null) {
-                data.health = healthComponent.Health;
+                data.currentHealth = healthComponent.currentHealth;
+                data.maxHealth = healthComponent.maxHealth;
             }
 
             // Saves the attack information.
@@ -224,10 +225,18 @@ public class SaveGameManager {
                 }
             }
 
-            if (data.health != null) {
+            if (data.maxHealth != null) {
                 HealthComponent health = entity.getComponent(HealthComponent.class);
                 if (health != null) {
-                    health.Health = data.health;
+                    health.maxHealth = data.maxHealth;
+                    health.currentHealth = data.maxHealth;
+                }
+            }
+
+            if (data.currentHealth != null) {
+                HealthComponent health = entity.getComponent(HealthComponent.class);
+                if (health != null) {
+                    health.currentHealth = data.currentHealth;
                 }
             }
 
