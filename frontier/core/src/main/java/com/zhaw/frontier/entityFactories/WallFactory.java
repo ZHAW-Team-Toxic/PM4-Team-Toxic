@@ -10,6 +10,16 @@ import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Factory class for creating wall entities.
+ * <p>
+ * This class is responsible for generating default wall entities.
+ * A default wall entity is composed of a {@link PositionComponent},
+ * a {@link HealthComponent}, and a {@link RenderComponent}. The render component is set
+ * to render the wall as a building using a placeholder texture that should be replaced
+ * with the actual wall texture in the future.
+ * </p>
+ */
 public class WallFactory {
 
     private static final Map<
@@ -26,15 +36,21 @@ public class WallFactory {
     > ironWallPiecesCache = new HashMap<>();
 
     public static Entity createWoodWall(Engine engine, float x, float y) {
-        return createDefaultWall(engine, x, y);
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.WOOD_WALL));
+        return wall;
     }
 
     public static Entity createStoneWall(Engine engine, float x, float y) {
-        return createDefaultWall(engine, x, y);
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.STONE_WALL));
+        return wall;
     }
 
     public static Entity createIronWall(Engine engine, float x, float y) {
-        return createDefaultWall(engine, x, y);
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.IRON_WALL));
+        return wall;
     }
 
     private static Entity createDefaultWall(Engine engine, float x, float y) {

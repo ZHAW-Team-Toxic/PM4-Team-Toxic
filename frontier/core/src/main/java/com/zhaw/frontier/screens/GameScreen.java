@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.audio.SoundSystem;
+import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
@@ -28,6 +29,7 @@ import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.util.Map;
+import lombok.Getter;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -42,7 +44,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private ExtendViewport gameWorldView;
     private ScreenViewport gameUi;
     private Stage stage;
+
+    @Getter
     private Engine engine;
+
     private BaseUI baseUI;
     private CameraControlSystem cameraControlSystem;
 
@@ -167,6 +172,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug("[DEBUG] - GameScreen", "Creating stock entity.");
         Entity stock = engine.createEntity();
         stock.add(new InventoryComponent());
+        stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
         engine.addEntity(stock);
         Gdx.app.debug("[DEBUG] - GameScreen", "Stock entity created.");
 

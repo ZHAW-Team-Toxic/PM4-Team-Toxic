@@ -93,7 +93,7 @@ public class GameInputProcessor extends InputAdapter {
                 "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity tower = TowerFactory.createDefaultTower(engine, mouseX, mouseY);
+                Entity tower = TowerFactory.createBallistaTower(engine, mouseX, mouseY);
                 if (buildingManagerSystem.placeBuilding(tower)) {
                     Gdx.app.debug("GameInputProcessor", "Tower placed successfully");
                 } else {
