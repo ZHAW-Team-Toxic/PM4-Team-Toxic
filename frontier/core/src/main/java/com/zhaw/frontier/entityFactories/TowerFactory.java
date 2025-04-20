@@ -56,6 +56,12 @@ public class TowerFactory {
      */
     public static Entity createDefaultTower(Engine engine, float x, float y) {
         Entity tower = engine.createEntity();
+        tower.add(new PositionComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 60;
+        tower.add(healthComponent);
+        tower.add(new AttackComponent());
 
         // Placeholder texture
         Texture texture = createPlaceHolder();
