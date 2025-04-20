@@ -157,7 +157,8 @@ public class SaveGameManagerTest {
         Entity tower = TowerFactory.createBallistaTower(engine, 12, 34);
 
         HealthComponent health = tower.getComponent(HealthComponent.class);
-        health.Health = 88;
+        health.maxHealth = 100;
+        health.currentHealth = 88;
 
         AttackComponent attack = tower.getComponent(AttackComponent.class);
         attack.AttackDamage = 25;
@@ -177,7 +178,8 @@ public class SaveGameManagerTest {
 
         HealthComponent loadedHealth = loaded.getComponent(HealthComponent.class);
         assertNotNull(loadedHealth);
-        assertEquals(88, loadedHealth.Health);
+        assertEquals(100, loadedHealth.maxHealth);
+        assertEquals(88, loadedHealth.currentHealth);
 
         AttackComponent loadedAttack = loaded.getComponent(AttackComponent.class);
         assertNotNull(loadedAttack);
