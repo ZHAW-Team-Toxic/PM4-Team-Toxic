@@ -67,9 +67,7 @@ public class WallFactory {
 
         HealthComponent health = new HealthComponent();
         health.Health = 100;
-        //todo current heatlh
         BuildingAnimationComponent buildingAnimation = new BuildingAnimationComponent();
-        //todo probably not needed
         WallPieceComponent wallPiece = new WallPieceComponent();
         wallPiece.wallPieceTextures = woodWallPiecesCache;
         wallPiece.currentWallPiece = WallPieceComponent.WallPiece.SINGLE;
