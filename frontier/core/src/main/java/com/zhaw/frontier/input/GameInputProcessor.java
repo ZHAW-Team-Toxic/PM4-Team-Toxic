@@ -93,7 +93,7 @@ public class GameInputProcessor extends InputAdapter {
                 "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity tower = TowerFactory.createDefaultTower(engine, mouseX, mouseY);
+                Entity tower = TowerFactory.createBallistaTower(engine, mouseX, mouseY);
                 if (buildingManagerSystem.placeBuilding(tower)) {
                     Gdx.app.debug("GameInputProcessor", "Tower placed successfully");
                 } else {
@@ -159,7 +159,7 @@ public class GameInputProcessor extends InputAdapter {
                 "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity wall = WallFactory.createDefaultWall(engine, mouseX, mouseY);
+                Entity wall = WallFactory.createWoodWall(engine, mouseX, mouseY);
                 if (buildingManagerSystem.placeBuilding(wall)) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
