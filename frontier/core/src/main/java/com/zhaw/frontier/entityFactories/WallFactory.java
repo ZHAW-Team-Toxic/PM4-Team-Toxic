@@ -66,7 +66,8 @@ public class WallFactory {
         new HashMap<>(woodWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
 
         HealthComponent health = new HealthComponent();
-        health.Health = 100;
+        health.maxHealth = 100;
+        health.currentHealth = 50;
         BuildingAnimationComponent buildingAnimation = new BuildingAnimationComponent();
         WallPieceComponent wallPiece = new WallPieceComponent();
         wallPiece.wallPieceTextures = woodWallPiecesCache;
