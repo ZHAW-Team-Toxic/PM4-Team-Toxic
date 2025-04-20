@@ -37,15 +37,10 @@ class StartScreenTest {
         // --- Assets vorbereiten ---
         // Wichtig: vor .get() muss .load() und finishLoading()
         AssetManagerInstance.getManager().load("skins/skin.json", Skin.class);
-        AssetManagerInstance
-            .getManager()
-            .load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
+        AssetManagerInstance.getManager().load("packed/textures.atlas", TextureAtlas.class);
         AssetManagerInstance.getManager().finishLoading(); // Blockiert bis alles geladen ist
 
-        atlas =
-        AssetManagerInstance
-            .getManager()
-            .get("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
+        atlas = AssetManagerInstance.getManager().get("packed/textures.atlas", TextureAtlas.class);
 
         Skin mockSkin = mock(Skin.class);
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
