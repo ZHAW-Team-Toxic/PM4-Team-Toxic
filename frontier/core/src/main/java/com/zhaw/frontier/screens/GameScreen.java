@@ -34,10 +34,8 @@ import com.zhaw.frontier.systems.ResourceProductionSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
-import com.zhaw.frontier.util.ButtonClickObserver;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
-import com.zhaw.frontier.utils.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.util.Map;
 import lombok.Getter;
@@ -161,11 +159,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
         EnemyManagementSystem.init(sampleLayer, gameWorldView, engine);
         enemyManagementSystem = EnemyManagementSystem.getInstance();
-        engine.addSystem(enemyManagementSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Remover System.");
-        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
+        engine.addSystem(enemyManagementSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Remover System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
