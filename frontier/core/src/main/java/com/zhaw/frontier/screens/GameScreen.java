@@ -91,19 +91,17 @@ public class GameScreen implements Screen, ButtonClickObserver {
         MapLoader.getInstance().initMapLayerEntities(engine);
         Gdx.app.debug("GameScreen", "Initializing sample layer.");
         // init sample layer as base for the map width / map height
-        sampleLayer =
-        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+        sampleLayer = MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
-            "GameScreen",
-            "Sample Layer loaded. Map width: " +
-            sampleLayer.getWidth() +
-            " Map height: " +
-            sampleLayer.getHeight() +
-            " Tile width: " +
-            sampleLayer.getTileWidth() +
-            " Tile height: " +
-            sampleLayer.getTileHeight()
-        );
+                "GameScreen",
+                "Sample Layer loaded. Map width: " +
+                        sampleLayer.getWidth() +
+                        " Map height: " +
+                        sampleLayer.getHeight() +
+                        " Tile width: " +
+                        sampleLayer.getTileWidth() +
+                        " Tile height: " +
+                        sampleLayer.getTileHeight());
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
@@ -112,6 +110,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new TowerDirectionTextureSystem());
         engine.addSystem(new ProjectileCollisionSystem());
         engine.addSystem(new SoundSystem());
+        engine.addSystem(new HealthSystem());
 
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
         engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
@@ -155,8 +154,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         // create inventory ui
         Entity inventoryEntity = engine
-            .getEntitiesFor(Family.all(InventoryComponent.class).get())
-            .first();
+                .getEntitiesFor(Family.all(InventoryComponent.class).get())
+                .first();
         inventory = inventoryEntity.getComponent(InventoryComponent.class);
 
         var mx = new InputMultiplexer();
@@ -212,11 +211,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
         if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             // Simulate end of turn
             var a = ArrowFactory.createArrow(
-                engine,
-                tower.getComponent(PositionComponent.class).basePosition,
-                enemy.getComponent(PositionComponent.class).basePosition,
-                enemy.getComponent(VelocityComponent.class).velocity
-            );
+                    engine,
+                    tower.getComponent(PositionComponent.class).basePosition,
+                    enemy.getComponent(PositionComponent.class).basePosition,
+                    enemy.getComponent(VelocityComponent.class).velocity);
             if (a != null) {
                 engine.addEntity(a);
             }
@@ -247,10 +245,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
     public void hide() {
