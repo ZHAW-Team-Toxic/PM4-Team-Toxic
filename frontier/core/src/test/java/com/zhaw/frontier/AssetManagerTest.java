@@ -24,15 +24,7 @@ public class AssetManagerTest {
         assetManager.load("skins/skin.json", Skin.class);
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
         assetManager.load("skins/skin.atlas", TextureAtlas.class);
-        assetManager.load("packed/titlescreen/titlescreenAtlas.atlas", TextureAtlas.class);
-        assetManager.load("packed/buildings/buildingAtlas.atlas", TextureAtlas.class);
-        assetManager.load("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
         assetManager.finishLoading(); // Make sure everything is loaded
-    }
-
-    @Test
-    void enemyAtlasLoaded() {
-        assertTrue(assetManager.isLoaded("packed/enemies/enemyAtlas.atlas"));
     }
 
     @Test

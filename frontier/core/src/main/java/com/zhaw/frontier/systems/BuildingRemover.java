@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.WallPieceComponent;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
 /**
@@ -70,11 +71,18 @@ public class BuildingRemover {
                 for (Vector2 tile : occupiesTilesComponent.occupiedTiles) {
                     if (tile.x == worldCoordinateX && tile.y == worldCoordinateY) {
                         engine.removeEntity(entity);
+                        updateWalls(entity);
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+
+    private void updateWalls(Entity entity) {
+        if (entity.getComponent(WallPieceComponent.class) != null) {
+            WallManager.update(engine);
+        }
     }
 }

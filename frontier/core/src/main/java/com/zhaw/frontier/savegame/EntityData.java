@@ -1,5 +1,6 @@
 package com.zhaw.frontier.savegame;
 
+import com.zhaw.frontier.components.WallPieceComponent.WallPiece;
 import java.util.HashMap;
 
 public class EntityData {
@@ -12,4 +13,5 @@ public class EntityData {
     public HashMap<String, Integer> inventory = new HashMap<>();
     public String resourceType;
     public Integer countOfAdjacentResources;
+    public WallPiece wallPieceType;
 }

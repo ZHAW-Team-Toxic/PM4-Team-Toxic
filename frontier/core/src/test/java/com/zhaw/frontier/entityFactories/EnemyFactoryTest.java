@@ -23,7 +23,6 @@ public class EnemyFactoryTest {
     void setUp() {
         assetManager = AssetManagerInstance.getManager();
         assetManager.load("packed/textures.atlas", TextureAtlas.class);
-        assetManager.load("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
         assetManager.finishLoading();
     }
 
