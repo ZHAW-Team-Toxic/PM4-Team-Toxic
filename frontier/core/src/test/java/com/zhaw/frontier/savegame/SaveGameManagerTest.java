@@ -246,7 +246,8 @@ public class SaveGameManagerTest {
         assertEquals(
             EntityTypeComponent.EntityType.STONE_WALL,
             loaded.getComponent(EntityTypeComponent.class).type
-        );}
+        );
+    }
 
     @Test
     public void testIronWall() {
