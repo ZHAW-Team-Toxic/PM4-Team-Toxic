@@ -40,8 +40,7 @@ public class MovementSystem extends EntitySystem {
      */
     @Override
     public void addedToEngine(Engine engine) {
-        movables =
-        engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
+        movables = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.Set;
 public class TowerDirectionTextureSystem extends IteratingSystem {
 
     public TowerDirectionTextureSystem() {
-        super(Family.all(RenderComponent.class).all(TowerAnimationComponent.class).get());
+        super(Family.all(RenderComponent.class,TowerAnimationComponent.class).get());
         Gdx.app.debug("TowerDirectionTextureSystem", "Initialized Tower Direction System.");
     }
 

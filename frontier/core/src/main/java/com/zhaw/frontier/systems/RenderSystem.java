@@ -1,5 +1,6 @@
 package com.zhaw.frontier.systems;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -46,6 +47,8 @@ public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> towers;
     private ImmutableArray<Entity> normal;
     private Entity mapEntity;
+    private ComponentMapper<TextureRotationComponent> textureRotationComponentMapper = ComponentMapper
+            .getFor(TextureRotationComponent.class);
 
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
 
@@ -78,41 +81,31 @@ public class RenderSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         this.mapEntity = engine.getEntitiesFor(mapLayerMapper.mapLayerFamily).first();
-        this.buildings =
-        engine.getEntitiesFor(
-            Family
-                .all(
-                    PositionComponent.class,
-                    RenderComponent.class,
-                    BuildingAnimationComponent.class
-                )
-                .get()
-        );
-        this.enemies =
-        engine.getEntitiesFor(
-            Family
-                .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
-                .get()
-        );
+        this.buildings = engine.getEntitiesFor(
+                Family
+                        .all(
+                                PositionComponent.class,
+                                RenderComponent.class,
+                                BuildingAnimationComponent.class)
+                        .get());
+        this.enemies = engine.getEntitiesFor(
+                Family
+                        .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
+                        .get());
 
-        this.towers =
-        engine.getEntitiesFor(
-            Family
-                .all(PositionComponent.class, RenderComponent.class, TowerAnimationComponent.class)
-                .get()
-        );
+        this.towers = engine.getEntitiesFor(
+                Family
+                        .all(PositionComponent.class, RenderComponent.class, TowerAnimationComponent.class)
+                        .get());
 
-        this.normal =
-        engine.getEntitiesFor(
-            Family
-                .all(PositionComponent.class, RenderComponent.class)
-                .exclude(
-                    TowerAnimationComponent.class,
-                    EnemyAnimationComponent.class,
-                    BuildingAnimationComponent.class
-                )
-                .get()
-        );
+        this.normal = engine.getEntitiesFor(
+                Family
+                        .all(PositionComponent.class, RenderComponent.class)
+                        .exclude(
+                                TowerAnimationComponent.class,
+                                EnemyAnimationComponent.class,
+                                BuildingAnimationComponent.class)
+                        .get());
     }
 
     /**
@@ -154,26 +147,20 @@ public class RenderSystem extends EntitySystem {
         List<MapLayerRenderEntry> layersToRender = new ArrayList<>();
 
         layersToRender.add(
-            new MapLayerRenderEntry(
-                "bottomLayer",
-                BOTTOM_LAYER,
-                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
-            )
-        );
+                new MapLayerRenderEntry(
+                        "bottomLayer",
+                        BOTTOM_LAYER,
+                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer));
         layersToRender.add(
-            new MapLayerRenderEntry(
-                "decorationLayer",
-                DECORATION_LAYER,
-                mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer
-            )
-        );
+                new MapLayerRenderEntry(
+                        "decorationLayer",
+                        DECORATION_LAYER,
+                        mapEntity.getComponent(DecorationLayerComponent.class).decorationLayer));
         layersToRender.add(
-            new MapLayerRenderEntry(
-                "resourceLayer",
-                RESOURCE_LAYER,
-                mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer
-            )
-        );
+                new MapLayerRenderEntry(
+                        "resourceLayer",
+                        RESOURCE_LAYER,
+                        mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer));
 
         // sort with z-index
         layersToRender.sort(Comparator.comparingInt(l -> l.zIndex));
@@ -184,16 +171,16 @@ public class RenderSystem extends EntitySystem {
                 for (int i = layer.layer.getWidth(); i >= 0; i--) {
                     for (int j = layer.layer.getHeight(); j >= 0; j--) {
                         // Get the tile at the current position
-                        if (layer.layer.getCell(i, j) == null) continue;
+                        if (layer.layer.getCell(i, j) == null)
+                            continue;
 
                         // Render the tile at the specified position
                         renderer.draw(
-                            layer.layer.getCell(i, j).getTile().getTextureRegion(),
-                            i * 16,
-                            j * 16,
-                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionWidth(),
-                            layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionHeight()
-                        );
+                                layer.layer.getCell(i, j).getTile().getTextureRegion(),
+                                i * 16,
+                                j * 16,
+                                layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionWidth(),
+                                layer.layer.getCell(i, j).getTile().getTextureRegion().getRegionHeight());
                     }
                 }
             } else {
@@ -211,38 +198,31 @@ public class RenderSystem extends EntitySystem {
         normal.forEach(e -> combined.add(e));
 
         combined.sort(
-            Comparator
-                .comparingDouble(entity -> {
-                    PositionComponent pos = ((Entity) entity).getComponent(PositionComponent.class);
-                    float pixelCoord = WorldCoordinateUtils.calculateWorldCoordinate(
-                        viewport,
-                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer,
-                        pos.basePosition.x,
-                        pos.basePosition.y
-                    )
-                        .y;
-                    return pixelCoord + pos.heightInTiles;
-                })
-                .thenComparingInt(entity -> {
-                    RenderComponent render = ((Entity) entity).getComponent(RenderComponent.class);
-                    return render.zIndex;
-                })
-        );
+                Comparator
+                        .comparingDouble(entity -> {
+                            PositionComponent pos = ((Entity) entity).getComponent(PositionComponent.class);
+                            float pixelCoord = WorldCoordinateUtils.calculateWorldCoordinate(
+                                    viewport,
+                                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer,
+                                    pos.basePosition.x,
+                                    pos.basePosition.y).y;
+                            return pixelCoord + pos.heightInTiles;
+                        })
+                        .thenComparingInt(entity -> {
+                            RenderComponent render = ((Entity) entity).getComponent(RenderComponent.class);
+                            return render.zIndex;
+                        }));
 
         for (Entity entity : combined) {
             RenderComponent render = entity.getComponent(RenderComponent.class);
             PositionComponent pos = entity.getComponent(PositionComponent.class);
             Vector2 basePixel = new Vector2();
-            if (
-                render.renderType == RenderComponent.RenderType.BUILDING ||
-                render.renderType == RenderComponent.RenderType.TOWER
-            ) {
-                basePixel =
-                WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
-                    pos.basePosition.x,
-                    pos.basePosition.y,
-                    mapEntity.getComponent(BottomLayerComponent.class).bottomLayer
-                );
+            if (render.renderType == RenderComponent.RenderType.BUILDING ||
+                    render.renderType == RenderComponent.RenderType.TOWER) {
+                basePixel = WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
+                        pos.basePosition.x,
+                        pos.basePosition.y,
+                        mapEntity.getComponent(BottomLayerComponent.class).bottomLayer);
             }
 
             if (render.renderType == RenderComponent.RenderType.ENEMY) {
@@ -251,6 +231,12 @@ public class RenderSystem extends EntitySystem {
 
             if (render.renderType == RenderComponent.RenderType.NORMAL) {
                 basePixel = new Vector2(pos.basePosition.x * 16, pos.basePosition.y * 16);
+            }
+
+            float rotation = 0;
+            var rotationComponent = textureRotationComponentMapper.get(entity);
+            if (rotationComponent != null) {
+                rotation = rotationComponent.rotation;
             }
 
             for (int i = 0; i < render.widthInTiles; i++) {
@@ -262,12 +248,14 @@ public class RenderSystem extends EntitySystem {
                     float drawY = basePixel.y + j * 16;
 
                     batch.draw(
-                        region,
-                        drawX,
-                        drawY,
-                        region.getRegionWidth(),
-                        region.getRegionHeight()
-                    );
+                            region,
+                            drawX,
+                            drawY,
+                            0,
+                            0,
+                            region.getRegionWidth(),
+                            region.getRegionHeight(),
+                            1, 1, rotation);
                 }
             }
 

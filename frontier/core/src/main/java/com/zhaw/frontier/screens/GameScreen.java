@@ -110,6 +110,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new MovementSystem());
         engine.addSystem(new AnimationSystem());
         engine.addSystem(new TowerDirectionTextureSystem());
+        engine.addSystem(new ProjectileCollisionSystem());
         engine.addSystem(new SoundSystem());
 
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
