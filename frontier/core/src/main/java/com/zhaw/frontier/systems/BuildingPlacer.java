@@ -8,10 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zhaw.frontier.components.EnemyComponent;
-import com.zhaw.frontier.components.OccupiesTilesComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.ResourceProductionComponent;
+import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.mappers.MapLayerMapper;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
@@ -137,13 +134,22 @@ public class BuildingPlacer {
         }
 
         occupyTile(entityType);
-        Gdx.app.debug(
-            "[DEBUG] - BuildingPlacer",
-            "Tile is buildable on resource layer and has adjacent resource."
-        );
 
         engine.addEntity(entityType);
+
+        if (checkIfBuildingIsWallBuilding(entityType)) {
+            Gdx.app.debug(
+                "[DEBUG] - BuildingPlacer",
+                "Building is a wall building. No adjacency check needed."
+            );
+            WallManager.update(engine);
+        }
+
         return true;
+    }
+
+    private boolean checkIfBuildingIsWallBuilding(Entity entityType) {
+        return entityType.getComponent(WallPieceComponent.class) != null;
     }
 
     /**

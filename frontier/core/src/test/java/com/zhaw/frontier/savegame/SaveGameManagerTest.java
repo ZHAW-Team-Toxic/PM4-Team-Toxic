@@ -229,6 +229,10 @@ public class SaveGameManagerTest {
             EntityTypeComponent.EntityType.WOOD_WALL,
             loaded.getComponent(EntityTypeComponent.class).type
         );
+        assertEquals(
+            WallPieceComponent.WallPiece.SINGLE,
+            loaded.getComponent(WallPieceComponent.class).currentWallPiece
+        );
     }
 
     @Test
@@ -238,6 +242,7 @@ public class SaveGameManagerTest {
         saveAndReload("stone-wall-test");
 
         Entity loaded = getOnlyEntity();
+
         assertEquals(
             EntityTypeComponent.EntityType.STONE_WALL,
             loaded.getComponent(EntityTypeComponent.class).type
@@ -254,6 +259,10 @@ public class SaveGameManagerTest {
         assertEquals(
             EntityTypeComponent.EntityType.IRON_WALL,
             loaded.getComponent(EntityTypeComponent.class).type
+        );
+        assertEquals(
+            WallPieceComponent.WallPiece.SINGLE,
+            loaded.getComponent(WallPieceComponent.class).currentWallPiece
         );
     }
 
@@ -303,6 +312,31 @@ public class SaveGameManagerTest {
         ResourceProductionComponent prod = loaded.getComponent(ResourceProductionComponent.class);
         assertNotNull(prod);
         assertTrue(prod.productionRate.containsKey(ResourceTypeEnum.RESOURCE_TYPE_IRON));
+    }
+
+    @Test
+    public void testWoodWallPieceConnection() {
+        Entity e = WallFactory.createWoodWall(engine, 1, 1);
+        WallPieceComponent wallPiece1 = e.getComponent(WallPieceComponent.class);
+        wallPiece1.currentWallPiece = WallPieceComponent.WallPiece.STRAIGHT_HORIZONTAL_LEFT;
+        engine.addEntity(e);
+        Entity e2 = WallFactory.createWoodWall(engine, 1, 2);
+        WallPieceComponent wallPiece2 = e2.getComponent(WallPieceComponent.class);
+        wallPiece2.currentWallPiece = WallPieceComponent.WallPiece.STRAIGHT_HORIZONTAL_RIGHT;
+
+        saveAndReload("wood-wall-piece-connection-test");
+
+        Entity loaded = getOnlyEntity();
+        WallPieceComponent loadedWallPiece = loaded.getComponent(WallPieceComponent.class);
+        assertNotNull(loadedWallPiece);
+        assertEquals(
+            WallPieceComponent.WallPiece.STRAIGHT_HORIZONTAL_LEFT,
+            loadedWallPiece.currentWallPiece
+        );
+        assertEquals(
+            WallPieceComponent.WallPiece.STRAIGHT_HORIZONTAL_RIGHT,
+            wallPiece2.currentWallPiece
+        );
     }
 
     private void saveAndReload(String fileName) {

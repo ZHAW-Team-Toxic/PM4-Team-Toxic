@@ -106,6 +106,15 @@ public class SaveGameManager {
                 }
             }
 
+            WallPieceComponent wallPieceType = entity.getComponent(WallPieceComponent.class);
+            if (wallPieceType != null) {
+                data.wallPieceType = wallPieceType.currentWallPiece;
+                Gdx.app.log(
+                    this.getClass().getSimpleName(),
+                    "Wall piece type: " + wallPieceType.currentWallPiece
+                );
+            }
+
             gameState.entities.add(data);
         }
 
@@ -270,6 +279,15 @@ public class SaveGameManager {
             );
             if (prodComponent != null && data.countOfAdjacentResources != null) {
                 prodComponent.countOfAdjacentResources = data.countOfAdjacentResources;
+            }
+
+            WallPieceComponent wallPieceType = entity.getComponent(WallPieceComponent.class);
+            RenderComponent renderComponent = entity.getComponent(RenderComponent.class);
+
+            if (wallPieceType != null && data.wallPieceType != null) {
+                wallPieceType.currentWallPiece = data.wallPieceType;
+                renderComponent.sprites =
+                wallPieceType.wallPieceTextures.get(wallPieceType.currentWallPiece);
             }
 
             engine.addEntity(entity);

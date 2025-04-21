@@ -61,7 +61,7 @@ public class EnemyFactory {
         if (sharedAnimations.isEmpty()) {
             TextureAtlas atlas = AssetManagerInstance
                 .getManager()
-                .get("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
+                .get("packed/textures.atlas", TextureAtlas.class);
 
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN,
