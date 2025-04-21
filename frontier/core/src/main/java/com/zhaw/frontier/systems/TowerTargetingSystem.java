@@ -21,22 +21,28 @@ import com.zhaw.frontier.entityFactories.ArrowFactory;
 public class TowerTargetingSystem extends IntervalIteratingSystem {
 
     private ImmutableArray<Entity> enemies;
-    private final ComponentMapper<PositionComponent> positionComponentMapper = ComponentMapper.getFor(
-            PositionComponent.class);
+    private final ComponentMapper<PositionComponent> positionComponentMapper =
+        ComponentMapper.getFor(PositionComponent.class);
 
-    private final ComponentMapper<VelocityComponent> velocityComponentMapper = ComponentMapper.getFor(
-            VelocityComponent.class);
+    private final ComponentMapper<VelocityComponent> velocityComponentMapper =
+        ComponentMapper.getFor(VelocityComponent.class);
     private final ComponentMapper<AttackComponent> attackComponentMapper = ComponentMapper.getFor(
-            AttackComponent.class);
+        AttackComponent.class
+    );
 
-    private final ComponentMapper<CurrentTargetComponent> targetComponentMapper = ComponentMapper.getFor(
-            CurrentTargetComponent.class);
+    private final ComponentMapper<CurrentTargetComponent> targetComponentMapper =
+        ComponentMapper.getFor(CurrentTargetComponent.class);
 
-    private final ComponentMapper<TowerAnimationComponent  > towerAnimationComponentComponentMapper= ComponentMapper.getFor(
-        TowerAnimationComponent.class);
+    private final ComponentMapper<TowerAnimationComponent> towerAnimationComponentComponentMapper =
+        ComponentMapper.getFor(TowerAnimationComponent.class);
+
     public TowerTargetingSystem() {
-        super(Family.all(TowerAnimationComponent.class, TowerComponent.class, AttackComponent.class).get(),
-                0.5f);
+        super(
+            Family
+                .all(TowerAnimationComponent.class, TowerComponent.class, AttackComponent.class)
+                .get(),
+            0.5f
+        );
         Gdx.app.debug("TowerTargetingSystem", "initialized");
     }
 
@@ -47,11 +53,15 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
         Gdx.app.debug("TowerTargetingSystem", "adding listener to engine");
 
         // Setup the family
-        Family enemyFamily = Family.all(
+        Family enemyFamily = Family
+            .all(
                 CircleCollisionComponent.class,
                 PositionComponent.class,
                 VelocityComponent.class,
-                HealthComponent.class, EnemyComponent.class).get();
+                HealthComponent.class,
+                EnemyComponent.class
+            )
+            .get();
 
         this.enemies = engine.getEntitiesFor(enemyFamily);
     }
@@ -81,8 +91,13 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
             // todo add stats from attackcomponent
             // todo set direction
             var animation = towerAnimationComponentComponentMapper.get(tower);
-            var arrow = ArrowFactory.createArrow(getEngine(), towerPosition, enemyPosition, enemyVelocity);
-            if(arrow != null) {
+            var arrow = ArrowFactory.createArrow(
+                getEngine(),
+                towerPosition,
+                enemyPosition,
+                enemyVelocity
+            );
+            if (arrow != null) {
                 var arrowVelocity = velocityComponentMapper.get(arrow).velocity;
                 animation.degrees = (int) arrowVelocity.angleDeg();
                 getEngine().addEntity(arrow);
@@ -90,7 +105,6 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
         } else {
             tower.remove(CurrentTargetComponent.class);
         }
-
     }
 
     private void findNewTarget(Entity tower) {
@@ -109,6 +123,9 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
         var towerPosition = positionComponentMapper.get(tower);
         var towerAttackComponent = attackComponentMapper.get(tower);
 
-        return enemyPosition.basePosition.dst(towerPosition.basePosition) <= towerAttackComponent.AttackRange;
+        return (
+            enemyPosition.basePosition.dst(towerPosition.basePosition) <=
+            towerAttackComponent.AttackRange
+        );
     }
 }

@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ProjectileComponent;
 import com.zhaw.frontier.components.RenderComponent;
-import com.zhaw.frontier.components.TextureRotationComponent;
 import com.zhaw.frontier.components.RenderComponent.RenderType;
+import com.zhaw.frontier.components.TextureRotationComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
@@ -20,10 +20,11 @@ public class ArrowFactory {
     private static final float MAX_RANGE = 40f;
 
     public static Entity createArrow(
-            Engine engine,
-            Vector2 tower,
-            Vector2 target,
-            Vector2 targetVelocity) {
+        Engine engine,
+        Vector2 tower,
+        Vector2 target,
+        Vector2 targetVelocity
+    ) {
         Entity arrow = engine.createEntity();
 
         if (tower.dst(target) > MAX_RANGE) {
@@ -31,8 +32,8 @@ public class ArrowFactory {
         }
 
         TextureAtlas atlas = AssetManagerInstance
-                .getManager()
-                .get("packed/textures.atlas", TextureAtlas.class);
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         var render = new RenderComponent();
         render.renderType = RenderType.NORMAL;
         render.sprites.put(new TileOffset(0, 0), atlas.findRegion("buildings/Arrow/Arrow"));
@@ -41,10 +42,11 @@ public class ArrowFactory {
 
         var velocity = new VelocityComponent();
         Vector2 calcVelocity = calculateInterceptVelocity(
-                tower,
-                ARROW_SPEED,
-                target,
-                targetVelocity);
+            tower,
+            ARROW_SPEED,
+            target,
+            targetVelocity
+        );
         if (calcVelocity == null) {
             Gdx.app.debug("[ArrowFactory]", "Velocity is null");
             return null;
@@ -75,10 +77,11 @@ public class ArrowFactory {
      *         exists
      */
     public static Vector2 calculateInterceptVelocity(
-            Vector2 shooterPosition,
-            float bulletSpeed,
-            Vector2 targetPosition,
-            Vector2 targetVelocity) {
+        Vector2 shooterPosition,
+        float bulletSpeed,
+        Vector2 targetPosition,
+        Vector2 targetVelocity
+    ) {
         // Convert to relative coordinates (shooter at origin)
         Vector2 relativePosition = new Vector2(targetPosition).sub(shooterPosition);
 
@@ -128,8 +131,9 @@ public class ArrowFactory {
 
         // Calculate the interception point
         Vector2 interceptPosition = new Vector2(
-                relativePosition.x + targetVelocity.x * interceptTime,
-                relativePosition.y + targetVelocity.y * interceptTime);
+            relativePosition.x + targetVelocity.x * interceptTime,
+            relativePosition.y + targetVelocity.y * interceptTime
+        );
 
         // Calculate and return the required bullet velocity vector
         return interceptPosition.scl(1.0f / interceptTime);

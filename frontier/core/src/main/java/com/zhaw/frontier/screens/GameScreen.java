@@ -14,8 +14,6 @@ import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.InventoryComponent;
-import com.zhaw.frontier.components.PositionComponent;
-import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.ArrowFactory;
@@ -92,17 +90,19 @@ public class GameScreen implements Screen, ButtonClickObserver {
         MapLoader.getInstance().initMapLayerEntities(engine);
         Gdx.app.debug("GameScreen", "Initializing sample layer.");
         // init sample layer as base for the map width / map height
-        sampleLayer = MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
+        sampleLayer =
+        MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
-                "GameScreen",
-                "Sample Layer loaded. Map width: " +
-                        sampleLayer.getWidth() +
-                        " Map height: " +
-                        sampleLayer.getHeight() +
-                        " Tile width: " +
-                        sampleLayer.getTileWidth() +
-                        " Tile height: " +
-                        sampleLayer.getTileHeight());
+            "GameScreen",
+            "Sample Layer loaded. Map width: " +
+            sampleLayer.getWidth() +
+            " Map height: " +
+            sampleLayer.getHeight() +
+            " Tile width: " +
+            sampleLayer.getTileWidth() +
+            " Tile height: " +
+            sampleLayer.getTileHeight()
+        );
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
@@ -156,8 +156,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         // create inventory ui
         Entity inventoryEntity = engine
-                .getEntitiesFor(Family.all(InventoryComponent.class).get())
-                .first();
+            .getEntitiesFor(Family.all(InventoryComponent.class).get())
+            .first();
         inventory = inventoryEntity.getComponent(InventoryComponent.class);
 
         var mx = new InputMultiplexer();
@@ -229,12 +229,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
     }
 
     @Override
-    public void pause() {
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-    }
+    public void resume() {}
 
     @Override
     public void hide() {

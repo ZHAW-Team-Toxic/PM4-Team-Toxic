@@ -9,7 +9,9 @@ import com.zhaw.frontier.components.HealthComponent;
 
 public class HealthSystem extends IntervalIteratingSystem {
 
-    private final ComponentMapper<HealthComponent> hm = ComponentMapper.getFor(HealthComponent.class);
+    private final ComponentMapper<HealthComponent> hm = ComponentMapper.getFor(
+        HealthComponent.class
+    );
 
     public HealthSystem() {
         super(Family.all(HealthComponent.class).get(), 0.5f);
@@ -24,5 +26,4 @@ public class HealthSystem extends IntervalIteratingSystem {
             getEngine().removeEntity(entity);
         }
     }
-
 }

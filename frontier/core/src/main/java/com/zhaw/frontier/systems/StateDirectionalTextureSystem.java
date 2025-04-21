@@ -33,7 +33,8 @@ public class StateDirectionalTextureSystem extends IteratingSystem {
     public static int clampToNearest(int degrees, Set<Integer> allowedDegrees) {
         if (allowedDegrees == null || allowedDegrees.isEmpty()) {
             throw new IllegalArgumentException(
-                    "The set of allowed degrees cannot be null or empty.");
+                "The set of allowed degrees cannot be null or empty."
+            );
         }
 
         int nearest = allowedDegrees.iterator().next();

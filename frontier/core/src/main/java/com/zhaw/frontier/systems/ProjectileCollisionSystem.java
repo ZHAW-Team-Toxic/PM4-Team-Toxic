@@ -12,14 +12,15 @@ import com.zhaw.frontier.components.*;
 public class ProjectileCollisionSystem extends IntervalIteratingSystem {
 
     private ImmutableArray<Entity> collisionObjects;
-    private final ComponentMapper<PositionComponent> positionComponentMapper = ComponentMapper.getFor(
-            PositionComponent.class);
-    private final ComponentMapper<ProjectileComponent> projectileComponentMapper = ComponentMapper.getFor(
-            ProjectileComponent.class);
-    private final ComponentMapper<CircleCollisionComponent> collisionComponentMapper = ComponentMapper.getFor(
-            CircleCollisionComponent.class);
+    private final ComponentMapper<PositionComponent> positionComponentMapper =
+        ComponentMapper.getFor(PositionComponent.class);
+    private final ComponentMapper<ProjectileComponent> projectileComponentMapper =
+        ComponentMapper.getFor(ProjectileComponent.class);
+    private final ComponentMapper<CircleCollisionComponent> collisionComponentMapper =
+        ComponentMapper.getFor(CircleCollisionComponent.class);
     private final ComponentMapper<HealthComponent> healthComponentMapper = ComponentMapper.getFor(
-            HealthComponent.class);
+        HealthComponent.class
+    );
 
     public ProjectileCollisionSystem() {
         super(Family.all(ProjectileComponent.class, PositionComponent.class).get(), 0.1f);
@@ -33,18 +34,15 @@ public class ProjectileCollisionSystem extends IntervalIteratingSystem {
         Gdx.app.debug("ProjectileCollisionSystem", "adding listener to engine");
 
         // Setup the family
-        Family collisionFamily = Family.all(
-            CircleCollisionComponent.class,
-            PositionComponent.class,
-            HealthComponent.class
-        ).get();
+        Family collisionFamily = Family
+            .all(CircleCollisionComponent.class, PositionComponent.class, HealthComponent.class)
+            .get();
 
         this.collisionObjects = engine.getEntitiesFor(collisionFamily);
     }
 
     @Override
     protected void processEntity(Entity arrowEntity) {
-
         var arrowPosition = positionComponentMapper.get(arrowEntity).basePosition;
         var arrowDamage = projectileComponentMapper.get(arrowEntity).damage;
 
