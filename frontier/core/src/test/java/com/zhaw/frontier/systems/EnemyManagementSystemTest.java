@@ -48,7 +48,8 @@ public class EnemyManagementSystemTest {
                 );
             });
 
-        managementSystem = new EnemyManagementSystem(sampleLayer, viewport, engine);
+        EnemyManagementSystem.init(sampleLayer, viewport, engine);
+        managementSystem = EnemyManagementSystem.getInstance();
     }
 
     @Test

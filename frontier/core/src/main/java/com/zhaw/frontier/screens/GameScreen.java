@@ -19,6 +19,7 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.ui.BaseUI;
@@ -26,7 +27,6 @@ import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
-import com.zhaw.frontier.utils.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.util.Map;
 import lombok.Getter;
@@ -60,6 +60,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private Skin skin;
     private InventoryComponent inventory;
     private ResourceProductionSystem resourceProductionSystem;
+    private EnemyManagementSystem enemyManagementSystem;
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -147,10 +148,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
+        EnemyManagementSystem.init(sampleLayer, gameWorldView, engine);
+        enemyManagementSystem = EnemyManagementSystem.getInstance();
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Remover System.");
-        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
+        engine.addSystem(enemyManagementSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Remover System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
@@ -177,7 +180,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug("[DEBUG] - GameScreen", "Stock entity created.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
-        this.resourceProductionSystem = new ResourceProductionSystem(engine);
+
+        // TODO: remove this line, when the resource production system is implemented
+        //ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
+        ResourceProductionSystem.init(engine);
+        resourceProductionSystem = ResourceProductionSystem.getInstance();
+
         engine.addSystem(resourceProductionSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 
