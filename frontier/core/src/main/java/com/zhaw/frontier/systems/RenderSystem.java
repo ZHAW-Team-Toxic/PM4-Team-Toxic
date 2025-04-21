@@ -251,8 +251,8 @@ public class RenderSystem extends EntitySystem {
                             region,
                             drawX,
                             drawY,
-                            0,
-                            0,
+                            8,
+                            8,
                             region.getRegionWidth(),
                             region.getRegionHeight(),
                             1, 1, rotation);

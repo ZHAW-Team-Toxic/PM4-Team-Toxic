@@ -90,8 +90,8 @@ public class TowerFactory {
 
         var attack = new AttackComponent();
         attack.AttackSpeed = 1;
-        attack.AttackDamage = 10;
-        attack.AttackRange = 50;
+        attack.AttackDamage = 20;
+        attack.AttackRange = 10;
 
         tower.add(renderComponent);
         tower.add(directionTextures);

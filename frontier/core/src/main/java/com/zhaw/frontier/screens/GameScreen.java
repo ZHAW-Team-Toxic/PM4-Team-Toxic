@@ -26,6 +26,7 @@ import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.StateDirectionalTextureSystem;
+import com.zhaw.frontier.systems.TowerTargetingSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
@@ -111,6 +112,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new ProjectileCollisionSystem());
         engine.addSystem(new SoundSystem());
         engine.addSystem(new HealthSystem());
+        engine.addSystem(new TowerTargetingSystem());
 
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
         engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
@@ -208,24 +210,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         }
         // ***********************************
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            // Simulate end of turn
-            var a = ArrowFactory.createArrow(
-                    engine,
-                    tower.getComponent(PositionComponent.class).basePosition,
-                    enemy.getComponent(PositionComponent.class).basePosition,
-                    enemy.getComponent(VelocityComponent.class).velocity);
-            if (a != null) {
-                engine.addEntity(a);
-            }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-            // Simulate end of turn
-            enemy = EnemyFactory.createPatrolEnemy(10, 10);
-            engine.addEntity(enemy);
-            tower = TowerFactory.createDefaultTower(engine, 20, 20);
-            engine.addEntity(tower);
-        }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             SoundSystem soundSystem = engine.getSystem(SoundSystem.class);
             if (soundSystem != null) {

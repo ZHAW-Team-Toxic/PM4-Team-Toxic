@@ -32,9 +32,10 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
     private final ComponentMapper<CurrentTargetComponent> targetComponentMapper = ComponentMapper.getFor(
             CurrentTargetComponent.class);
 
+    private final ComponentMapper<TowerAnimationComponent  > towerAnimationComponentComponentMapper= ComponentMapper.getFor(
+        TowerAnimationComponent.class);
     public TowerTargetingSystem() {
-        super(Family.all(TowerAnimationComponent.class, TowerComponent.class, AttackComponent.class,
-                CurrentTargetComponent.class).get(),
+        super(Family.all(TowerAnimationComponent.class, TowerComponent.class, AttackComponent.class).get(),
                 0.5f);
         Gdx.app.debug("TowerTargetingSystem", "initialized");
     }
@@ -60,7 +61,7 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
         var currentTarget = targetComponentMapper.get(tower);
 
         // remove already killed enemies
-        if (!enemies.contains(currentTarget.target, false)) {
+        if (currentTarget != null && !enemies.contains(currentTarget.target, false)) {
             tower.remove(CurrentTargetComponent.class);
             currentTarget = null;
         }
@@ -78,8 +79,14 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
             var enemyVelocity = velocityComponentMapper.get(enemy).velocity;
             var towerPosition = positionComponentMapper.get(tower).basePosition;
             // todo add stats from attackcomponent
+            // todo set direction
+            var animation = towerAnimationComponentComponentMapper.get(tower);
             var arrow = ArrowFactory.createArrow(getEngine(), towerPosition, enemyPosition, enemyVelocity);
-            getEngine().addEntity(arrow);
+            if(arrow != null) {
+                var arrowVelocity = velocityComponentMapper.get(arrow).velocity;
+                animation.degrees = (int) arrowVelocity.angleDeg();
+                getEngine().addEntity(arrow);
+            }
         } else {
             tower.remove(CurrentTargetComponent.class);
         }
