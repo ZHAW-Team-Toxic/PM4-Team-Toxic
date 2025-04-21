@@ -22,11 +22,12 @@ import java.util.List;
  * <p>
  * The {@code BuildingPlacer} coordinates the following logic:
  * <ul>
- *     <li>Converts screen coordinates to world/tile coordinates</li>
- *     <li>Checks if tiles are buildable on both bottom and resource layers</li>
- *     <li>Checks for existing building collisions</li>
- *     <li>If the building is a resource producer, checks for adjacent resources</li>
- *     <li>Marks the tile area as occupied and adds the entity to the engine</li>
+ * <li>Converts screen coordinates to world/tile coordinates</li>
+ * <li>Checks if tiles are buildable on both bottom and resource layers</li>
+ * <li>Checks for existing building collisions</li>
+ * <li>If the building is a resource producer, checks for adjacent
+ * resources</li>
+ * <li>Marks the tile area as occupied and adds the entity to the engine</li>
  * </ul>
  * </p>
  */
@@ -37,7 +38,8 @@ public class BuildingPlacer {
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
 
     /**
-     * Constructs a new {@code BuildingPlacer} with the specified viewport and engine.
+     * Constructs a new {@code BuildingPlacer} with the specified viewport and
+     * engine.
      *
      * @param viewport the {@link Viewport} used for coordinate conversion.
      * @param engine   the {@link Engine} used to manage entities.
@@ -50,12 +52,14 @@ public class BuildingPlacer {
     /**
      * Attempts to place a building entity on the map based on its current position.
      *
-     * <p>This method performs multiple checks to ensure valid placement:</p>
+     * <p>
+     * This method performs multiple checks to ensure valid placement:
+     * </p>
      * <ul>
-     *     <li>Convert screen to world coordinates using {@link Viewport}</li>
-     *     <li>Check for buildable tiles on both bottom and resource layers</li>
-     *     <li>Check for collisions with existing entities</li>
-     *     <li>If applicable, validate adjacency to matching resource tiles</li>
+     * <li>Convert screen to world coordinates using {@link Viewport}</li>
+     * <li>Check for buildable tiles on both bottom and resource layers</li>
+     * <li>Check for collisions with existing entities</li>
+     * <li>If applicable, validate adjacency to matching resource tiles</li>
      * </ul>
      *
      * @param entityType  the building entity to attempt placement for
@@ -72,7 +76,7 @@ public class BuildingPlacer {
             entityType
         );
         Gdx.app.debug(
-            "[DEBUG] - BuildingPlacer",
+            "BuildingPlacer",
             "World coordinates for building placement: " +
             worldCoordinate.x +
             " x " +
@@ -85,7 +89,7 @@ public class BuildingPlacer {
         positionComponent.basePosition.x = worldCoordinateX;
         positionComponent.basePosition.y = worldCoordinateY;
         Gdx.app.debug(
-            "[DEBUG] - BuildingPlacer",
+            "BuildingPlacer",
             "Checking if tile is buildable on coordinates: " +
             worldCoordinateX +
             " x " +
@@ -94,18 +98,18 @@ public class BuildingPlacer {
         );
 
         if (!checkIfTileIsBuildableOnBottomLayer(engine, entityType)) {
-            Gdx.app.debug("[DEBUG] - BuildingPlacer", "Tile is not buildable on bottom layer.");
+            Gdx.app.debug("BuildingPlacer", "Tile is not buildable on bottom layer.");
             return false;
         }
 
         if (!checkIfTileIsBuildableOnResourceLayer(engine, entityType)) {
-            Gdx.app.debug("[DEBUG] - BuildingPlacer", "Tile is not buildable on resource layer.");
+            Gdx.app.debug("BuildingPlacer", "Tile is not buildable on resource layer.");
             return false;
         }
 
         if (checkIfPlaceIsOccupiedByBuilding(engine, entityType)) {
             Gdx.app.debug(
-                "[DEBUG] - BuildingPlacer",
+                "BuildingPlacer",
                 "Tile is occupied by another building at coordinates: " +
                 worldCoordinateY +
                 " x " +
@@ -117,7 +121,7 @@ public class BuildingPlacer {
 
         if (checkIfBuildingIsResourceBuilding(entityType)) {
             Gdx.app.debug(
-                "[DEBUG] - BuildingPlacer",
+                "BuildingPlacer",
                 "Building is a resource building. Checking for adjacent resources."
             );
             TiledMapTileLayer resourceLayer = mapLayerMapper.resourceLayerMapper.get(
@@ -126,7 +130,7 @@ public class BuildingPlacer {
                 .resourceLayer;
             if (!checkIfResourceBuildingIsPlaceable(entityType, resourceLayer)) {
                 Gdx.app.debug(
-                    "[DEBUG] - BuildingPlacer",
+                    "BuildingPlacer",
                     "Tile is buildable on resource layer but has no adjacent resource."
                 );
                 return false;
@@ -134,6 +138,10 @@ public class BuildingPlacer {
         }
 
         occupyTile(entityType);
+        Gdx.app.debug(
+            "BuildingPlacer",
+            "Tile is buildable on resource layer and has adjacent resource."
+        );
 
         engine.addEntity(entityType);
 
@@ -153,7 +161,8 @@ public class BuildingPlacer {
     }
 
     /**
-     * Checks whether the tiles required by the building are already occupied by another building.
+     * Checks whether the tiles required by the building are already occupied by
+     * another building.
      *
      * @param engine         the ECS engine
      * @param entityBuilding the building being placed
@@ -203,7 +212,8 @@ public class BuildingPlacer {
     }
 
     /**
-     * Validates whether the tiles the building wants to occupy are marked as buildable
+     * Validates whether the tiles the building wants to occupy are marked as
+     * buildable
      * on the bottom layer.
      *
      * @param engine         the ECS engine
@@ -247,12 +257,15 @@ public class BuildingPlacer {
      * Validates whether the tiles the building wants to occupy are buildable on the
      * resource layer, if applicable.
      *
-     * <p>If no cell is present on the resource layer, it's considered buildable.
-     * If a cell exists and is marked as not buildable, the tile is rejected.</p>
+     * <p>
+     * If no cell is present on the resource layer, it's considered buildable.
+     * If a cell exists and is marked as not buildable, the tile is rejected.
+     * </p>
      *
      * @param engine         the ECS engine
      * @param entityBuilding the building being placed
-     * @return true if all resource layer tiles are buildable or empty, false otherwise
+     * @return true if all resource layer tiles are buildable or empty, false
+     *         otherwise
      */
     private boolean checkIfTileIsBuildableOnResourceLayer(Engine engine, Entity entityBuilding) {
         PositionComponent position = entityBuilding.getComponent(PositionComponent.class);
@@ -288,7 +301,8 @@ public class BuildingPlacer {
     }
 
     /**
-     * Checks whether the entity has a {@link ResourceProductionComponent}, identifying
+     * Checks whether the entity has a {@link ResourceProductionComponent},
+     * identifying
      * it as a resource-generating building.
      *
      * @param entityType the building to check
@@ -299,7 +313,8 @@ public class BuildingPlacer {
     }
 
     /**
-     * Validates that a resource-producing building has at least one adjacent matching
+     * Validates that a resource-producing building has at least one adjacent
+     * matching
      * resource tile, using the {@link ResourceAdjacencyChecker}.
      *
      * @param entityType  the building to validate
@@ -314,9 +329,12 @@ public class BuildingPlacer {
     }
 
     /**
-     * Registers the tiles a building occupies into its {@link OccupiesTilesComponent}.
+     * Registers the tiles a building occupies into its
+     * {@link OccupiesTilesComponent}.
      *
-     * <p>Populates all covered tile coordinates based on its position and size.</p>
+     * <p>
+     * Populates all covered tile coordinates based on its position and size.
+     * </p>
      *
      * @param entity the building to register
      */

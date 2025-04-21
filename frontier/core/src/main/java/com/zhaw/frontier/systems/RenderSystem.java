@@ -27,20 +27,24 @@ import java.util.*;
 /**
  * System responsible for rendering the map and game entities.
  * <p>
- * This system renders the tiled map layers (bottom, decoration, and resource layers)
- * using an {@link OrthogonalTiledMapRenderer} and draws game entities (currently buildings)
- * with a {@link SpriteBatch}. Building entities are rendered based on their {@link PositionComponent}
+ * This system renders the tiled map layers (bottom, decoration, and resource
+ * layers)
+ * using an {@link OrthogonalTiledMapRenderer} and draws game entities
+ * (currently buildings)
+ * with a {@link SpriteBatch}. Building entities are rendered based on their
+ * {@link PositionComponent}
  * and {@link RenderComponent} data.
  * </p>
  */
 public class RenderSystem extends EntitySystem {
 
     private final Viewport viewport;
-    private final Engine engine;
     private final OrthogonalTiledMapRenderer renderer;
 
     private ImmutableArray<Entity> buildings;
     private ImmutableArray<Entity> enemies;
+    private ImmutableArray<Entity> towers;
+    private ImmutableArray<Entity> normal;
     private Entity mapEntity;
 
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
@@ -50,20 +54,22 @@ public class RenderSystem extends EntitySystem {
      *
      * @param viewport the {@link Viewport} used for rendering.
      * @param engine   the {@link Engine} that manages game entities.
-     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering the tiled map.
+     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering the
+     *                 tiled map.
      */
     public RenderSystem(Viewport viewport, Engine engine, OrthogonalTiledMapRenderer renderer) {
         super(1);
         this.viewport = viewport;
-        this.engine = engine;
         this.renderer = renderer;
     }
 
     /**
      * Called when the system is added to an engine.
      * <p>
-     * This method retrieves the map entity and all building entities from the engine.
-     * It initializes the map layers and buildings so they can be rendered in the update method.
+     * This method retrieves the map entity and all building entities from the
+     * engine.
+     * It initializes the map layers and buildings so they can be rendered in the
+     * update method.
      * </p>
      *
      * @param engine The {@link Engine} this system was added to.
@@ -86,6 +92,25 @@ public class RenderSystem extends EntitySystem {
         engine.getEntitiesFor(
             Family
                 .all(PositionComponent.class, RenderComponent.class, EnemyAnimationComponent.class)
+                .get()
+        );
+
+        this.towers =
+        engine.getEntitiesFor(
+            Family
+                .all(PositionComponent.class, RenderComponent.class, TowerAnimationComponent.class)
+                .get()
+        );
+
+        this.normal =
+        engine.getEntitiesFor(
+            Family
+                .all(PositionComponent.class, RenderComponent.class)
+                .exclude(
+                    TowerAnimationComponent.class,
+                    EnemyAnimationComponent.class,
+                    BuildingAnimationComponent.class
+                )
                 .get()
         );
     }
@@ -180,12 +205,10 @@ public class RenderSystem extends EntitySystem {
     private void renderAllEntities(SpriteBatch batch) {
         Array<Entity> combined = new Array<>();
 
-        for (Entity b : buildings) {
-            combined.add(b);
-        }
-        for (Entity e : enemies) {
-            combined.add(e);
-        }
+        towers.forEach(e -> combined.add(e));
+        buildings.forEach(e -> combined.add(e));
+        enemies.forEach(e -> combined.add(e));
+        normal.forEach(e -> combined.add(e));
 
         combined.sort(
             Comparator
@@ -210,7 +233,10 @@ public class RenderSystem extends EntitySystem {
             RenderComponent render = entity.getComponent(RenderComponent.class);
             PositionComponent pos = entity.getComponent(PositionComponent.class);
             Vector2 basePixel = new Vector2();
-            if (render.renderType == RenderComponent.RenderType.BUILDING) {
+            if (
+                render.renderType == RenderComponent.RenderType.BUILDING ||
+                render.renderType == RenderComponent.RenderType.TOWER
+            ) {
                 basePixel =
                 WorldCoordinateUtils.calculatePixelCoordinateForBuildings(
                     pos.basePosition.x,
@@ -220,6 +246,10 @@ public class RenderSystem extends EntitySystem {
             }
 
             if (render.renderType == RenderComponent.RenderType.ENEMY) {
+                basePixel = new Vector2(pos.basePosition.x * 16, pos.basePosition.y * 16);
+            }
+
+            if (render.renderType == RenderComponent.RenderType.NORMAL) {
                 basePixel = new Vector2(pos.basePosition.x * 16, pos.basePosition.y * 16);
             }
 

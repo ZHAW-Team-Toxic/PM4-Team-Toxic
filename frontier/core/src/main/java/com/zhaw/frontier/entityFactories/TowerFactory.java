@@ -2,17 +2,10 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A factory class responsible for creating Tower entities.
@@ -31,9 +24,6 @@ import java.util.Map;
  * </p>
  */
 public class TowerFactory {
-
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> ballistaTowerAnimationCache = new HashMap<>();
-    private static final Map<Enum<?>, HashMap<TileOffset, Animation<TextureRegion>>> cannonTowerAnimationCache = new HashMap<>();
 
     public static Entity createBallistaTower(Engine engine, float x, float y) {
         Entity tower = createDefaultTower(engine, x, y);
@@ -57,8 +47,8 @@ public class TowerFactory {
      */
     public static Entity createDefaultTower(Engine engine, float x, float y) {
         TextureAtlas atlas = AssetManagerInstance
-                .getManager()
-                .get("packed/textures.atlas", TextureAtlas.class);
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
         HealthComponent healthComponent = new HealthComponent();
@@ -68,39 +58,51 @@ public class TowerFactory {
         tower.add(new AttackComponent());
 
         // Placeholder texture
-        TextureRegion region = atlas.findRegion("buildings/Tower/Wood_Tower1");
 
-        RenderComponent renderComponent = new RenderComponent(
-                RenderComponent.RenderType.BUILDING,
-                10,
-                1,
-                1);
-        renderComponent.sprites.put(new TileOffset(0, 0), region);
+        var renderComponent = new RenderComponent(RenderComponent.RenderType.TOWER, 10, 1, 1);
+
+        TowerAnimationComponent directionTextures = new TowerAnimationComponent();
+        directionTextures.animationTextures.put(
+            45,
+            atlas.findRegion("buildings/Tower/Wood_Tower1")
+        );
+        directionTextures.animationTextures.put(0, atlas.findRegion("buildings/Tower/Wood_Tower2"));
+        directionTextures.animationTextures.put(
+            315,
+            atlas.findRegion("buildings/Tower/Wood_Tower3")
+        );
+        directionTextures.animationTextures.put(
+            270,
+            atlas.findRegion("buildings/Tower/Wood_Tower4")
+        );
+        directionTextures.animationTextures.put(
+            225,
+            atlas.findRegion("buildings/Tower/Wood_Tower5")
+        );
+        directionTextures.animationTextures.put(
+            180,
+            atlas.findRegion("buildings/Tower/Wood_Tower6")
+        );
+        directionTextures.animationTextures.put(
+            135,
+            atlas.findRegion("buildings/Tower/Wood_Tower7")
+        );
+        directionTextures.animationTextures.put(
+            90,
+            atlas.findRegion("buildings/Tower/Wood_Tower8")
+        );
+        renderComponent.sprites.put(
+            new TileOffset(0, 0),
+            directionTextures.animationTextures.get(0)
+        );
 
         tower.add(renderComponent);
+        tower.add(directionTextures);
         tower.add(new PositionComponent(x, y, 1, 1));
         tower.add(new OccupiesTilesComponent());
         tower.add(new HealthComponent());
         tower.add(new AttackComponent());
         tower.add(new BuildingAnimationComponent());
         return tower;
-    }
-
-    /**
-     * Creates a placeholder texture used as a visual representation for the tower.
-     * <p>
-     * The placeholder is a 12x12 black square and can easily be swapped
-     * with a real texture or sprite later.
-     * </p>
-     *
-     * @return the generated {@link Texture} placeholder.
-     */
-    private static Texture createPlaceHolder() {
-        Pixmap pixmap = new Pixmap(12, 12, Format.RGBA8888);
-        pixmap.setColor(0, 0, 0, 1); // black
-        pixmap.fill();
-        Texture texture = new Texture(pixmap);
-        pixmap.dispose();
-        return texture;
     }
 }

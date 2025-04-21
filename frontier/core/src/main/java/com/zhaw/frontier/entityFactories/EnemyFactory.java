@@ -14,11 +14,12 @@ import java.util.EnumMap;
 
 /**
  * Factory class for creating enemy entities in the game.
- * This class provides methods to create different types of enemies with specific behaviors.
+ * This class provides methods to create different types of enemies with
+ * specific behaviors.
  * Current enemies are:
  * - Orcs:
- *   - Patrol
- *   - Idle
+ * - Patrol
+ * - Idle
  */
 public class EnemyFactory {
 
@@ -35,6 +36,7 @@ public class EnemyFactory {
      * Creates a new enemy entity with patrol behavior.
      * @param x The x-coordinate of the enemy's position.
      * @param y The y-coordinate of the enemy's position.
+     * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
     public static Entity createPatrolEnemy(float x, float y) {
@@ -46,8 +48,10 @@ public class EnemyFactory {
 
     /**
      * Creates a new enemy entity with idle behavior.
-     * @param x The x-coordinate of the enemy's position.
-     * @param y The y-coordinate of the enemy's position.
+     *
+     * @param x            The x-coordinate of the enemy's position.
+     * @param y            The y-coordinate of the enemy's position.
+     * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
     public static Entity createIdleEnemy(float x, float y) {
