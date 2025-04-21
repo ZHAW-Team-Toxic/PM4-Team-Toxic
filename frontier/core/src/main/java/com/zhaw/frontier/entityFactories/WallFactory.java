@@ -4,10 +4,17 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.zhaw.frontier.components.BuildingAnimationComponent;
+import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.HealthComponent;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.utils.TileOffset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Factory class for creating wall entities.
@@ -21,6 +28,37 @@ import com.zhaw.frontier.components.RenderComponent;
  */
 public class WallFactory {
 
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > woodWallAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > stoneWallAnimationCache = new HashMap<>();
+    private static final Map<
+        Enum<?>,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > ironWallAnimationCache = new HashMap<>();
+
+    public static Entity createWoodWall(Engine engine, float x, float y) {
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.WOOD_WALL));
+        return wall;
+    }
+
+    public static Entity createStoneWall(Engine engine, float x, float y) {
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.STONE_WALL));
+        return wall;
+    }
+
+    public static Entity createIronWall(Engine engine, float x, float y) {
+        Entity wall = createDefaultWall(engine, x, y);
+        wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.IRON_WALL));
+        return wall;
+    }
+
     /**
      * Creates a default wall entity with the necessary components.
      * <p>
@@ -33,19 +71,34 @@ public class WallFactory {
      * @param engine the {@link Engine} used to create and manage the entity.
      * @return the newly created wall entity.
      */
-    public static Entity createDefaultWall(Engine engine) {
+    public static Entity createDefaultWall(Engine engine, float x, float y) {
         Entity wall = engine.createEntity();
         wall.add(new PositionComponent());
-        wall.add(new HealthComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 40;
+        wall.add(healthComponent);
 
         RenderComponent renderComponent = new RenderComponent();
         renderComponent.renderType = RenderComponent.RenderType.BUILDING;
 
         // TODO: Replace placeholder texture with the actual wall texture.
         Texture texture = createPlaceHolder();
-        renderComponent.sprite = new Sprite(texture);
+        HashMap<TileOffset, TextureRegion> sprites = new HashMap<>();
+        sprites.put(new TileOffset(0, 0), new TextureRegion(texture));
+        renderComponent.sprites = sprites;
 
         wall.add(renderComponent);
+
+        RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
+        TextureRegion region = new TextureRegion(createPlaceHolder());
+        render.sprites.put(new TileOffset(0, 0), region);
+
+        wall.add(render);
+        wall.add(new PositionComponent(x, y, 1, 1));
+        wall.add(new OccupiesTilesComponent());
+        wall.add(new HealthComponent());
+        wall.add(new BuildingAnimationComponent());
         return wall;
     }
 
@@ -60,15 +113,10 @@ public class WallFactory {
      * @return a {@link Texture} generated from the pixmap.
      */
     private static Texture createPlaceHolder() {
-        // Create a Pixmap with dimensions 12x12 using RGBA8888 format.
         Pixmap pixmap = new Pixmap(12, 12, Pixmap.Format.RGBA8888);
-        // Set the drawing color to red.
-        pixmap.setColor(64, 0, 0, 1);
-        // Fill the entire pixmap with the red color.
+        pixmap.setColor(64 / 255f, 0, 0, 1); // red tone
         pixmap.fill();
-        // Create a texture from the pixmap.
         Texture texture = new Texture(pixmap);
-        // Dispose of the pixmap since it's no longer needed.
         pixmap.dispose();
         return texture;
     }

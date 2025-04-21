@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.audio.SoundSystem;
+import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
@@ -20,7 +21,7 @@ import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
-import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.AnimationSystem;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.CameraControlSystem;
 import com.zhaw.frontier.systems.EnemyManagementSystem;
@@ -29,11 +30,17 @@ import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.systems.MovementSystem;
 import com.zhaw.frontier.systems.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.RenderSystem;
+import com.zhaw.frontier.systems.ResourceProductionSystem;
 import com.zhaw.frontier.ui.BaseUI;
+import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
 import com.zhaw.frontier.util.ButtonClickObserver;
+import com.zhaw.frontier.utils.AssetManagerInstance;
+import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.GameMode;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.util.Map;
+import lombok.Getter;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -48,7 +55,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private ExtendViewport gameWorldView;
     private ScreenViewport gameUi;
     private Stage stage;
+
+    @Getter
     private Engine engine;
+
     private BaseUI baseUI;
     private CameraControlSystem cameraControlSystem;
 
@@ -134,24 +144,33 @@ public class GameScreen implements Screen, ButtonClickObserver {
             sampleLayer.getTileHeight()
         );
 
+        engine.addSystem(new IdleBehaviourSystem());
+        engine.addSystem(new PatrolBehaviourSystem());
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Movement System.");
+        engine.addSystem(new MovementSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Movement System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Animation System.");
+        engine.addSystem(new AnimationSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
+
         engine.addSystem(new SoundSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
-        //set-up BuildingManager
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
         EnemyManagementSystem.init(sampleLayer, gameWorldView, engine);
         enemyManagementSystem = EnemyManagementSystem.getInstance();
         engine.addSystem(enemyManagementSystem);
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
-        //setup render system
-        engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
-        Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Remover System.");
+        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Building Remover System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
-        // setup camera
-
         engine.addSystem(cameraControlSystem);
         Gdx.app.debug(
             "[DEBUG] - GameScreen",
@@ -165,12 +184,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
             ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
         );
 
-        // create stock entity
+        Gdx.app.debug("[DEBUG] - GameScreen", "Creating stock entity.");
         Entity stock = engine.createEntity();
         stock.add(new InventoryComponent());
+        stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
         engine.addEntity(stock);
+        Gdx.app.debug("[DEBUG] - GameScreen", "Stock entity created.");
 
-        // setup resource tracking system
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
 
         // TODO: remove this line, when the resource production system is implemented
@@ -184,14 +204,20 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
+        BuildingMenuUi buildingMenuUi = new BuildingMenuUi(engine, stage);
+        baseUI.addObserver(buildingMenuUi);
+        buildingMenuUi.addObserver(this);
 
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
+        //setup render system
+        engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
         // create resource ui
-        skin = frontierGame.getAssetManager().get("skins/skin.json", Skin.class);
+        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
-        engine.addSystem(new MovementSystem());
 
         // create inventory ui
         Entity inventoryEntity = engine
@@ -201,12 +227,14 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         var mx = new InputMultiplexer();
         mx.addProcessor(baseUI.getStage());
+        mx.addProcessor(stage);
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
-        mx.addProcessor(stage);
         mx.addProcessor(new GameInputProcessor(engine, frontierGame));
         mx.addProcessor(baseUI.createInputAdapter(engine));
+        mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
+
         Gdx.input.setInputProcessor(mx);
         //***********************************
         // Test Inventory for testing resource production for wood
