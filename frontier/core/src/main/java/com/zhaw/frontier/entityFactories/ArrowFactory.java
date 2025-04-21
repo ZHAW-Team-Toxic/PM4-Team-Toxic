@@ -50,6 +50,8 @@ public class ArrowFactory {
             return null;
         }
         velocity.velocity = calcVelocity;
+        // todo add lifetime for arrows so they can be removed after they should hit the
+        // target
 
         var rotation = new TextureRotationComponent();
         rotation.rotation = calcVelocity.angleDeg();
