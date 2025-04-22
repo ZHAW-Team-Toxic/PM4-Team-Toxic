@@ -254,7 +254,11 @@ public class BaseUI {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     if (onClick != null) onClick.run();
-                    if (gameMode != null) notifyObservers(gameMode);
+
+                    if (gameMode != null) {
+                        notifyObservers(gameMode);
+                        setGameMode(gameMode);
+                    }
                 }
             }
         );
