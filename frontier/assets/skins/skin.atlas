@@ -4,300 +4,335 @@ size: 2048, 2048
 format: RGBA8888
 filter: Linear, Linear
 repeat: none
+BrokenPickaxe_disabled
+  rotate: false
+  xy: 1029, 1217
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Pickaxe_disabled
+  rotate: false
+  xy: 515, 697
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 ArchivoBlack
   rotate: false
-  xy: 1, 771
+  xy: 1, 793
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
-BrokenPickaxe
+ArchivoBlack
   rotate: false
-  xy: 515, 675
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Bronze
-  rotate: false
-  xy: 1029, 1195
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Campfire
-  rotate: false
-  xy: 1, 1
-  size: 26, 29
-  orig: 26, 29
-  offset: 0, 0
-  index: -1
-Copper
-  rotate: false
-  xy: 1, 130
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Diamond
-  rotate: false
-  xy: 515, 641
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Dirt
-  rotate: false
-  xy: 1102, 1267
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-Emerald
-  rotate: false
-  xy: 1029, 1161
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Explosion
-  rotate: false
-  xy: 1, 223
-  size: 352, 32
-  orig: 352, 32
-  offset: 0, 0
-  index: -1
-Explosion_part1
-  rotate: false
-  xy: 1029, 1257
-  size: 37, 26
-  orig: 37, 26
-  offset: 0, 0
-  index: -1
-Explosion_part10
-  rotate: false
-  xy: 515, 709
-  size: 33, 26
-  orig: 33, 26
-  offset: 0, 0
-  index: -1
-Explosion_part11
-  rotate: false
-  xy: 648, 743
-  size: 30, 26
-  orig: 30, 26
-  offset: 0, 0
-  index: -1
-Explosion_part2
-  rotate: false
-  xy: 1063, 1201
-  size: 29, 26
-  orig: 29, 26
-  offset: 0, 0
-  index: -1
-Explosion_part3
-  rotate: false
-  xy: 1064, 1229
-  size: 30, 26
-  orig: 30, 26
-  offset: 0, 0
-  index: -1
-Explosion_part4
-  rotate: false
-  xy: 37, 195
-  size: 31, 26
-  orig: 31, 26
-  offset: 0, 0
-  index: -1
-Explosion_part5
-  rotate: false
-  xy: 613, 743
-  size: 33, 26
-  orig: 33, 26
-  offset: 0, 0
-  index: -1
-Explosion_part6
-  rotate: false
-  xy: 1, 195
-  size: 34, 26
-  orig: 34, 26
-  offset: 0, 0
-  index: -1
-Explosion_part7
-  rotate: false
-  xy: 550, 709
-  size: 31, 26
-  orig: 31, 26
-  offset: 0, 0
-  index: -1
-Explosion_part8
-  rotate: false
-  xy: 1068, 1257
-  size: 32, 26
-  orig: 32, 26
-  offset: 0, 0
-  index: -1
-Explosion_part9
-  rotate: false
-  xy: 1029, 1229
-  size: 33, 26
-  orig: 33, 26
-  offset: 0, 0
-  index: -1
-Gears
-  rotate: false
-  xy: 1, 96
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Grass1
-  rotate: false
-  xy: 494, 239
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-Grass2
-  rotate: false
-  xy: 515, 524
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-Iron
-  rotate: false
-  xy: 515, 607
-  size: 32, 32
-  orig: 32, 32
+  xy: 1, 793
+  size: 512, 512
+  orig: 512, 512
   offset: 0, 0
   index: -1
 KingthingsCalligraphica
   rotate: false
-  xy: 1, 257
+  xy: 1, 279
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+KingthingsCalligraphica
+  rotate: false
+  xy: 1, 279
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 MedievalSharp
   rotate: false
-  xy: 515, 771
+  xy: 515, 793
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
+MedievalSharp
+  rotate: false
+  xy: 515, 793
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+BrokenPickaxe
+  rotate: false
+  xy: 1, 152
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Bronze
+  rotate: false
+  xy: 515, 663
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Campfire
+  rotate: false
+  xy: 1029, 1054
+  size: 26, 29
+  orig: 26, 29
+  offset: 0, 0
+  index: -1
+Copper
+  rotate: false
+  xy: 1029, 1183
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Diamond
+  rotate: false
+  xy: 1, 118
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Dirt
+  rotate: false
+  xy: 1102, 1289
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Emerald
+  rotate: false
+  xy: 515, 629
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Explosion
+  rotate: false
+  xy: 1, 245
+  size: 352, 32
+  orig: 352, 32
+  offset: 0, 0
+  index: -1
+Explosion_part1
+  rotate: false
+  xy: 1029, 1279
+  size: 37, 26
+  orig: 37, 26
+  offset: 0, 0
+  index: -1
+Explosion_part10
+  rotate: false
+  xy: 515, 731
+  size: 33, 26
+  orig: 33, 26
+  offset: 0, 0
+  index: -1
+Explosion_part11
+  rotate: false
+  xy: 648, 765
+  size: 30, 26
+  orig: 30, 26
+  offset: 0, 0
+  index: -1
+Explosion_part2
+  rotate: false
+  xy: 1063, 1223
+  size: 29, 26
+  orig: 29, 26
+  offset: 0, 0
+  index: -1
+Explosion_part3
+  rotate: false
+  xy: 1064, 1251
+  size: 30, 26
+  orig: 30, 26
+  offset: 0, 0
+  index: -1
+Explosion_part4
+  rotate: false
+  xy: 37, 217
+  size: 31, 26
+  orig: 31, 26
+  offset: 0, 0
+  index: -1
+Explosion_part5
+  rotate: false
+  xy: 613, 765
+  size: 33, 26
+  orig: 33, 26
+  offset: 0, 0
+  index: -1
+Explosion_part6
+  rotate: false
+  xy: 1, 217
+  size: 34, 26
+  orig: 34, 26
+  offset: 0, 0
+  index: -1
+Explosion_part7
+  rotate: false
+  xy: 550, 731
+  size: 31, 26
+  orig: 31, 26
+  offset: 0, 0
+  index: -1
+Explosion_part8
+  rotate: false
+  xy: 1068, 1279
+  size: 32, 26
+  orig: 32, 26
+  offset: 0, 0
+  index: -1
+Explosion_part9
+  rotate: false
+  xy: 1029, 1251
+  size: 33, 26
+  orig: 33, 26
+  offset: 0, 0
+  index: -1
+Gears
+  rotate: false
+  xy: 1029, 1149
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Grass1
+  rotate: false
+  xy: 494, 261
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Grass2
+  rotate: false
+  xy: 1, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Iron
+  rotate: false
+  xy: 1, 84
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 Pickaxe
   rotate: false
-  xy: 1029, 1127
+  xy: 515, 595
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Platinum
   rotate: false
-  xy: 1, 62
+  xy: 1029, 1115
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Tree
   rotate: false
-  xy: 70, 205
+  xy: 70, 227
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 ailment_bleed
   rotate: false
-  xy: 426, 226
+  xy: 426, 248
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_confusion
   rotate: false
-  xy: 515, 576
+  xy: 1, 53
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_death
   rotate: false
-  xy: 1029, 1096
+  xy: 515, 564
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_frost
   rotate: false
-  xy: 1, 164
+  xy: 1, 186
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 ailment_health
   rotate: false
-  xy: 391, 226
+  xy: 391, 248
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 ailment_placeholder
   rotate: false
-  xy: 1, 32
+  xy: 1029, 1085
   size: 32, 28
   orig: 32, 28
   offset: 0, 0
   index: -1
 ailment_poison
   rotate: false
-  xy: 36, 165
+  xy: 36, 187
   size: 31, 28
   orig: 31, 28
   offset: 0, 0
   index: -1
 ailment_sleep
   rotate: false
-  xy: 355, 226
+  xy: 355, 248
   size: 34, 29
   orig: 34, 29
   offset: 0, 0
   index: -1
 ailment_slow
   rotate: false
-  xy: 460, 226
+  xy: 460, 248
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_stop
   rotate: false
-  xy: 549, 678
+  xy: 549, 700
   size: 31, 29
   orig: 31, 29
   offset: 0, 0
   index: -1
 ailment_time
   rotate: false
-  xy: 1029, 1065
+  xy: 515, 533
   size: 31, 29
   orig: 31, 29
   offset: 0, 0
   index: -1
-selected
-  rotate: false
-  xy: 515, 542
-  size: 32, 32
-  split: 0, 0, 0, 0
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
 build_menu_96_32
   rotate: false
-  xy: 515, 737
+  xy: 515, 759
   size: 96, 32
   split: 4, 5, 4, 5
   pad: 0, 0, 0, 0
   orig: 96, 32
+  offset: 0, 0
+  index: -1
+selected
+  rotate: false
+  xy: 1, 19
+  size: 32, 32
+  split: 0, 0, 0, 0
+  orig: 32, 32
   offset: 0, 0
   index: -1

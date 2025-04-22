@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.savegame.SaveGameManager;
 import com.zhaw.frontier.ui.PauseScreenUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 
@@ -15,14 +16,17 @@ import com.zhaw.frontier.utils.AssetManagerInstance;
  */
 public class PauseScreen extends ScreenAdapter {
 
-    private final Screen gameScreen;
-    private FrontierGame frontierGame;
+    private final GameScreen gameScreen;
+    private final FrontierGame frontierGame;
+    private final SaveGameManager saveGameManager;
     private Stage stage;
     private Skin skin;
 
-    public PauseScreen(FrontierGame frontierGame, Screen gameScreen) {
+    public PauseScreen(FrontierGame frontierGame, GameScreen gameScreen) {
         this.frontierGame = frontierGame;
         this.gameScreen = gameScreen;
+
+        this.saveGameManager = new SaveGameManager(gameScreen.getEngine());
     }
 
     @Override
@@ -70,6 +74,8 @@ public class PauseScreen extends ScreenAdapter {
 
     private void saveGame() {
         Gdx.app.log("Save", "Saving...");
+
+        saveGameManager.saveGame("saveFile.json");
     }
 
     private void exitGame() {

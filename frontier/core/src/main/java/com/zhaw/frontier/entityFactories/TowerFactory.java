@@ -38,7 +38,9 @@ public class TowerFactory {
     > cannonTowerAnimationCache = new HashMap<>();
 
     public static Entity createBallistaTower(Engine engine, float x, float y) {
-        return createDefaultTower(engine, x, y);
+        Entity tower = createDefaultTower(engine, x, y);
+        tower.add(new EntityTypeComponent(EntityTypeComponent.EntityType.BALLISTA_TOWER));
+        return tower;
     }
 
     /**
@@ -54,6 +56,12 @@ public class TowerFactory {
      */
     public static Entity createDefaultTower(Engine engine, float x, float y) {
         Entity tower = engine.createEntity();
+        tower.add(new PositionComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 60;
+        tower.add(healthComponent);
+        tower.add(new AttackComponent());
 
         // Placeholder texture
         Texture texture = createPlaceHolder();

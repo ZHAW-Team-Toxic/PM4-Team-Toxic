@@ -68,6 +68,12 @@ public class ResourceBuildingFactory {
         ResourceTypeEnum resourceType
     ) {
         Entity resourceBuilding = engine.createEntity();
+        resourceBuilding.add(new PositionComponent());
+        HealthComponent healthComponent = new HealthComponent();
+        healthComponent.maxHealth = 100;
+        healthComponent.currentHealth = 60;
+        resourceBuilding.add(healthComponent);
+        resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
         resourceProductionComponent.productionRate.put(resourceType, 1);
@@ -84,6 +90,9 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
         resourceBuilding.add(new BuildingAnimationComponent());
+        resourceBuilding.add(
+            new EntityTypeComponent(EntityTypeComponent.EntityType.RESOURCE_BUILDING)
+        );
         return resourceBuilding;
     }
 

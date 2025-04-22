@@ -71,7 +71,8 @@ public class ResourceTrackingSystemTest {
                 testEngine
             )
         );
-        testEngine.addSystem(new ResourceProductionSystem(testEngine));
+        ResourceProductionSystem.init(testEngine);
+        testEngine.addSystem(ResourceProductionSystem.getInstance());
 
         Entity stock = testEngine.createEntity();
         stock.add(new InventoryComponent());

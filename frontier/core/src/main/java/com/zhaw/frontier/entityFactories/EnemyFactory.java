@@ -35,12 +35,12 @@ public class EnemyFactory {
      * Creates a new enemy entity with patrol behavior.
      * @param x The x-coordinate of the enemy's position.
      * @param y The y-coordinate of the enemy's position.
-     * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
     public static Entity createPatrolEnemy(float x, float y) {
         Entity enemy = createBaseEnemy(x, y);
         enemy.add(new PatrolBehaviourComponent(10f));
+
         return enemy;
     }
 
@@ -48,12 +48,12 @@ public class EnemyFactory {
      * Creates a new enemy entity with idle behavior.
      * @param x The x-coordinate of the enemy's position.
      * @param y The y-coordinate of the enemy's position.
-     * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
     public static Entity createIdleEnemy(float x, float y) {
         Entity enemy = createBaseEnemy(x, y);
         enemy.add(new IdleBehaviourComponent());
+
         return enemy;
     }
 
@@ -61,7 +61,7 @@ public class EnemyFactory {
         if (sharedAnimations.isEmpty()) {
             TextureAtlas atlas = AssetManagerInstance
                 .getManager()
-                .get("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
+                .get("packed/textures.atlas", TextureAtlas.class);
 
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN,
@@ -169,6 +169,11 @@ public class EnemyFactory {
         PositionComponent position = new PositionComponent(x, y, 1, 1);
 
         VelocityComponent velocity = new VelocityComponent();
+
+        HealthComponent health = new HealthComponent();
+        health.maxHealth = 100;
+        health.currentHealth = 99;
+        enemy.add(health);
 
         // Render-Komponente mit LayeredSprites
         RenderComponent render = new RenderComponent(RenderComponent.RenderType.ENEMY, 10, 1, 1);

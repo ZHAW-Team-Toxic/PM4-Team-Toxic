@@ -22,10 +22,10 @@ import com.zhaw.frontier.entityFactories.BuildableFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
-import com.zhaw.frontier.utils.GameMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -178,8 +178,8 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private void createWallButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
-        ImageButton wall1 = createImageButton(WallFactory::createDefaultWall);
-        ImageButton wall2 = createImageButton(WallFactory::createDefaultWall);
+        ImageButton wall1 = createImageButton(WallFactory::createWoodWall);
+        ImageButton wall2 = createImageButton(WallFactory::createStoneWall);
         allButtons.add(wall1, wall2);
         groupTable.add(toContainer(wall1)).pad(2);
         groupTable.add(toContainer(wall2)).pad(2);
