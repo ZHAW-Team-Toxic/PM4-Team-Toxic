@@ -1,12 +1,12 @@
 package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.zhaw.frontier.utils.AssetManagerInstance;
 
 public class CursorFactory {
 
@@ -36,11 +36,13 @@ public class CursorFactory {
         return pixmap;
     }
 
-    public static Cursor createDefaultCursor(AssetManager assetManager) {
+    public static Cursor createDefaultCursor() {
         if (defaultCursor != null) {
             return defaultCursor;
         }
-        var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        var atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor"));
         var pixmap = spriteToPixmap(texture);
         var cursor = Gdx.graphics.newCursor(pixmap, 8, 8);
@@ -50,11 +52,13 @@ public class CursorFactory {
         return cursor;
     }
 
-    public static Cursor createDeleteCursor(AssetManager assetManager) {
+    public static Cursor createDeleteCursor() {
         if (deleteCursor != null) {
             return deleteCursor;
         }
-        var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        var atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor_demolish"));
         texture.setSize(32, 32);
         var pixmap = spriteToPixmap(texture);
@@ -65,11 +69,13 @@ public class CursorFactory {
         return cursor;
     }
 
-    public static Cursor createBuildingCursor(AssetManager assetManager) {
+    public static Cursor createBuildingCursor() {
         if (buildingCursor != null) {
             return buildingCursor;
         }
-        var atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        var atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor_building"));
         texture.setSize(32, 32);
         var pixmap = spriteToPixmap(texture);

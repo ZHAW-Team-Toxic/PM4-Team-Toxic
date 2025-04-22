@@ -69,9 +69,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
         this.spriteBatchWrapper = frontierGame.getBatch();
-        Gdx.graphics.setCursor(
-            CursorFactory.createDefaultCursor(AssetManagerInstance.getManager())
-        );
+        Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
         baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
         baseUI.addObserver(this);
@@ -311,17 +309,11 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void buttonClicked(GameMode gameMode) {
         if (baseUI.getGameMode() == gameMode) {
-            Gdx.graphics.setCursor(
-                CursorFactory.createDefaultCursor(AssetManagerInstance.getManager())
-            );
+            Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
         } else if (gameMode == GameMode.DEMOLISH) {
-            Gdx.graphics.setCursor(
-                CursorFactory.createDeleteCursor(AssetManagerInstance.getManager())
-            );
+            Gdx.graphics.setCursor(CursorFactory.createDeleteCursor());
         } else if (gameMode == GameMode.BUILDING) {
-            Gdx.graphics.setCursor(
-                CursorFactory.createBuildingCursor(AssetManagerInstance.getManager())
-            );
+            Gdx.graphics.setCursor(CursorFactory.createBuildingCursor());
         }
     }
 }
