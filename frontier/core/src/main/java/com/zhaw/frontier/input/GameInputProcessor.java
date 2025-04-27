@@ -186,7 +186,7 @@ public class GameInputProcessor extends InputAdapter {
                     "GameInputProcessor",
                     "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             try {
-                Entity wall = WallFactory.createDefaultWall(engine, mouseX, mouseY);
+                Entity wall = WallFactory.createWoodWall(engine, mouseX, mouseY);
                 if (buildingManagerSystem.placeBuilding(wall, getInventoryComponent())) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
@@ -208,7 +208,7 @@ public class GameInputProcessor extends InputAdapter {
                         engine,
                         mouseX,
                         mouseY);
-                if (buildingManagerSystem.placeBuilding(resourceBuilding)) {
+                if (buildingManagerSystem.placeBuilding(resourceBuilding, getInventoryComponent())) {
                     Gdx.app.debug("GameInputProcessor", "Resource building placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Resource building could not be placed");

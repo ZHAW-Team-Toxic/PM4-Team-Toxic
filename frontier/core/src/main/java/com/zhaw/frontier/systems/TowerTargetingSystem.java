@@ -9,6 +9,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.zhaw.frontier.components.AttackComponent;
 import com.zhaw.frontier.components.CircleCollisionComponent;
+import com.zhaw.frontier.components.CooldownComponent;
 import com.zhaw.frontier.components.CurrentTargetComponent;
 import com.zhaw.frontier.components.EnemyComponent;
 import com.zhaw.frontier.components.HealthComponent;
@@ -21,6 +22,8 @@ import com.zhaw.frontier.entityFactories.ArrowFactory;
 public class TowerTargetingSystem extends IntervalIteratingSystem {
 
     private ImmutableArray<Entity> enemies;
+    private final ComponentMapper<TowerComponent> towerComponentMapper = ComponentMapper
+            .getFor(TowerComponent.class);
     private final ComponentMapper<PositionComponent> positionComponentMapper = ComponentMapper
             .getFor(PositionComponent.class);
     private final ComponentMapper<VelocityComponent> velocityComponentMapper = ComponentMapper
@@ -59,6 +62,8 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
 
     @Override
     protected void processEntity(Entity tower) {
+        // todo update timer
+        // TODO check timer
         var currentTarget = targetComponentMapper.get(tower);
 
         // remove already killed enemies
@@ -75,7 +80,7 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
     }
 
     private void shootAtTarget(Entity tower, Entity enemy) {
-        if (inRange(tower, enemy)) {
+        if (inRange(tower, enemy) && tower.getComponent(CooldownComponent.class) == null) {
             var enemyPosition = positionComponentMapper.get(enemy).basePosition;
             var enemyVelocity = velocityComponentMapper.get(enemy).velocity;
             var towerPosition = positionComponentMapper.get(tower).basePosition;
@@ -92,6 +97,12 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
                 animation.degrees = (int) arrowVelocity.angleDeg();
 
                 getEngine().addEntity(arrow);
+                var cooldown = attackComponentMapper.get(tower);
+                // add cooldown component
+                var cooldownComponent = new CooldownComponent();
+                cooldownComponent.start = System.currentTimeMillis();
+                cooldownComponent.duration =(long) cooldown.AttackSpeed;
+                tower.add(cooldownComponent);
             }
         } else {
             tower.remove(CurrentTargetComponent.class);

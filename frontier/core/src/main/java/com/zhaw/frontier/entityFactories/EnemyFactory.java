@@ -37,7 +37,6 @@ public class EnemyFactory {
      * Creates a new enemy entity with patrol behavior.
      * @param x The x-coordinate of the enemy's position.
      * @param y The y-coordinate of the enemy's position.
-     * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
     public static Entity createPatrolEnemy(float x, float y) {
@@ -52,7 +51,6 @@ public class EnemyFactory {
      *
      * @param x            The x-coordinate of the enemy's position.
      * @param y            The y-coordinate of the enemy's position.
-     * @param assetManager The asset manager for loading assets.
      * @return The created enemy entity.
      */
     public static Entity createIdleEnemy(float x, float y) {
@@ -177,7 +175,7 @@ public class EnemyFactory {
 
         HealthComponent health = new HealthComponent();
         health.maxHealth = 100;
-        health.currentHealth = 99;
+        health.currentHealth = 100;
         enemy.add(health);
 
         // Render-Komponente mit LayeredSprites
@@ -209,9 +207,6 @@ public class EnemyFactory {
         var collision = new CircleCollisionComponent();
         collision.collisionObject = new Circle(x, y, 1);
 
-        //health
-        var health = new HealthComponent();
-        health.Health = 100;
 
         // Komponenten hinzufügen
         enemy.add(position);

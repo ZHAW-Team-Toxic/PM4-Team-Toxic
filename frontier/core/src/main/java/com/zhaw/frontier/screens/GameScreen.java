@@ -21,6 +21,8 @@ import com.zhaw.frontier.entityFactories.EnemyFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.enums.GameMode;
+import com.zhaw.frontier.entityFactories.CursorFactory;
+import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.StateDirectionalTextureSystem;
@@ -113,6 +115,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new SoundSystem());
         engine.addSystem(new HealthSystem());
         engine.addSystem(new TowerTargetingSystem());
+        engine.addSystem(new CooldownSystem());
 
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
         engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));

@@ -22,7 +22,7 @@ public class HealthSystem extends IntervalIteratingSystem {
     protected void processEntity(Entity entity) {
         var entityHealth = hm.get(entity);
 
-        if (entityHealth.Health <= 0) {
+        if (entityHealth.currentHealth<= 0) {
             getEngine().removeEntity(entity);
         }
     }

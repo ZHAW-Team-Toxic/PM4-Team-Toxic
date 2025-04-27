@@ -285,7 +285,7 @@ public class RenderSystem extends EntitySystem {
                 }
             }
 
-            HealthBarManager.drawHealthBar(batch, entity, engine);
+            HealthBarManager.drawHealthBar(batch, entity, getEngine());
         }
     }
 }

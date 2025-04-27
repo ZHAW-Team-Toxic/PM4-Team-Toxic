@@ -54,7 +54,7 @@ public class ProjectileCollisionSystem extends IntervalIteratingSystem {
             if (enemyCollider.contains(arrowPosition)) {
                 Gdx.app.debug("PrjectileCollisionSystem", "Collision detected");
                 var enemyHealthComponent = healthComponentMapper.get(enemyEntity);
-                enemyHealthComponent.Health -= arrowDamage;
+                enemyHealthComponent.currentHealth -= arrowDamage;
                 getEngine().removeEntity(arrowEntity);
             }
         }
