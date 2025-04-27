@@ -15,7 +15,9 @@ public class CooldownSystem extends IteratingSystem {
         super(Family.all(CooldownComponent.class).get());
     }
 
-    private final ComponentMapper<CooldownComponent> cm = ComponentMapper.getFor(CooldownComponent.class);
+    private final ComponentMapper<CooldownComponent> cm = ComponentMapper.getFor(
+        CooldownComponent.class
+    );
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {

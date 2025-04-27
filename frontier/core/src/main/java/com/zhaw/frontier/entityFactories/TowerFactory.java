@@ -63,35 +63,14 @@ public class TowerFactory {
         var renderComponent = new RenderComponent(RenderComponent.RenderType.TOWER, 10, 1, 1);
 
         TowerAnimationComponent directionTextures = new TowerAnimationComponent();
-        directionTextures.animationTextures.put(
-            45,
-            atlas.findRegion("Wood_Tower1")
-        );
+        directionTextures.animationTextures.put(45, atlas.findRegion("Wood_Tower1"));
         directionTextures.animationTextures.put(0, atlas.findRegion("Wood_Tower2"));
-        directionTextures.animationTextures.put(
-            315,
-            atlas.findRegion("Wood_Tower3")
-        );
-        directionTextures.animationTextures.put(
-            270,
-            atlas.findRegion("Wood_Tower4")
-        );
-        directionTextures.animationTextures.put(
-            225,
-            atlas.findRegion("Wood_Tower5")
-        );
-        directionTextures.animationTextures.put(
-            180,
-            atlas.findRegion("Wood_Tower6")
-        );
-        directionTextures.animationTextures.put(
-            135,
-            atlas.findRegion("Wood_Tower7")
-        );
-        directionTextures.animationTextures.put(
-            90,
-            atlas.findRegion("Wood_Tower8")
-        );
+        directionTextures.animationTextures.put(315, atlas.findRegion("Wood_Tower3"));
+        directionTextures.animationTextures.put(270, atlas.findRegion("Wood_Tower4"));
+        directionTextures.animationTextures.put(225, atlas.findRegion("Wood_Tower5"));
+        directionTextures.animationTextures.put(180, atlas.findRegion("Wood_Tower6"));
+        directionTextures.animationTextures.put(135, atlas.findRegion("Wood_Tower7"));
+        directionTextures.animationTextures.put(90, atlas.findRegion("Wood_Tower8"));
         renderComponent.sprites.put(
             new TileOffset(0, 0),
             directionTextures.animationTextures.get(0)

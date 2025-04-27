@@ -166,6 +166,7 @@ public class BuildingPlacer {
             WallManager.update(engine);
         }
 
+        removeResources(entityType, inventory);
         return true;
     }
 
@@ -192,6 +193,26 @@ public class BuildingPlacer {
         }
 
         return true;
+    }
+
+    private void removeResources(Entity entity, InventoryComponent inventory) {
+        var costs = entity.getComponent(CostComponent.class);
+        if (costs == null) return;
+
+        for (var resoucreCost : costs.resouceCosts.keySet()) {
+            var has = inventory.resources.get(resoucreCost);
+            var cost = costs.resouceCosts.get(resoucreCost);
+            if (has == null || cost == null) {
+                Gdx.app.error(
+                    "BuildingPlacer",
+                    "inventory or item cost is null.",
+                    new NullPointerException()
+                );
+                return;
+            }
+
+            inventory.resources.put(resoucreCost, has - cost);
+        }
     }
 
     /**

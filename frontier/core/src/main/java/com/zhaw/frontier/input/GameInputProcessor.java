@@ -1,8 +1,9 @@
 package com.zhaw.frontier.input;
 
+import static com.zhaw.frontier.utils.EngineHelper.getInventoryComponent;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -20,8 +21,6 @@ import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemySpawnSystem;
 import com.zhaw.frontier.utils.QueueAnimation;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
-
-import static com.zhaw.frontier.utils.EngineHelper.getInventoryComponent;
 
 /**
  * A placeholder input processor for handling game input via keyboard.
@@ -218,7 +217,10 @@ public class GameInputProcessor extends InputAdapter {
                     mouseY
                 );
                 if (
-                    buildingManagerSystem.placeBuilding(resourceBuilding, getInventoryComponent(engine))
+                    buildingManagerSystem.placeBuilding(
+                        resourceBuilding,
+                        getInventoryComponent(engine)
+                    )
                 ) {
                     Gdx.app.debug("GameInputProcessor", "Resource building placed successfully");
                 } else {
@@ -266,5 +268,4 @@ public class GameInputProcessor extends InputAdapter {
 
         return false;
     }
-
 }
