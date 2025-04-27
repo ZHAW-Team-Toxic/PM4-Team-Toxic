@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
@@ -23,7 +24,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Unit tests for the wall placement logic.
- * Verifies correct detection of wall piece types (e.g. SINGLE, STRAIGHT_HORIZONTAL_LEFT)
+ * Verifies correct detection of wall piece types (e.g. SINGLE,
+ * STRAIGHT_HORIZONTAL_LEFT)
  * based on neighboring wall positions.
  */
 @ExtendWith(GdxExtension.class)
@@ -32,16 +34,19 @@ public class WallManagerTest {
     private static Engine testEngine;
     private static ExtendViewport gameWorldView;
     private static TestMapEnvironment testMapEnvironment;
+    private static InventoryComponent inventory;
 
     /**
      * Initializes the test environment with a test map and registers the
-     * {@link BuildingManagerSystem}. Ensures only the map entity is present initially.
+     * {@link BuildingManagerSystem}. Ensures only the map entity is present
+     * initially.
      */
     @BeforeAll
     public static void setUp() {
         testMapEnvironment = new TestMapEnvironment();
         testEngine = testMapEnvironment.getTestEngine();
         gameWorldView = testMapEnvironment.getGameWorldView();
+        inventory = new InventoryComponent();
 
         testEngine.addSystem(
             new BuildingManagerSystem(
@@ -89,7 +94,7 @@ public class WallManagerTest {
         BuildingManagerSystem buildingManagerSystem = testEngine.getSystem(
             BuildingManagerSystem.class
         );
-        buildingManagerSystem.placeBuilding(singleWallPiece);
+        buildingManagerSystem.placeBuilding(singleWallPiece, inventory);
         assertEquals(
             2,
             testEngine.getEntities().size(),
@@ -200,7 +205,7 @@ public class WallManagerTest {
         BuildingManagerSystem buildingManagerSystem = testEngine.getSystem(
             BuildingManagerSystem.class
         );
-        buildingManagerSystem.placeBuilding(singleWallPiece1);
+        buildingManagerSystem.placeBuilding(singleWallPiece1, inventory);
 
         assertEquals(
             2,
@@ -223,7 +228,7 @@ public class WallManagerTest {
             "The wall piece type should be SINGLE."
         );
 
-        buildingManagerSystem.placeBuilding(singleWallPiece2);
+        buildingManagerSystem.placeBuilding(singleWallPiece2, inventory);
 
         assertEquals(
             3,

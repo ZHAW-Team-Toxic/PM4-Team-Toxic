@@ -104,6 +104,7 @@ public class MapLoader {
         (TiledMapTileLayer) map.getLayers().get(1);
         mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer =
         (TiledMapTileLayer) map.getLayers().get(2);
+
         engine.addEntity(mapEntity);
         Gdx.app.debug(
             "MapLoader",
