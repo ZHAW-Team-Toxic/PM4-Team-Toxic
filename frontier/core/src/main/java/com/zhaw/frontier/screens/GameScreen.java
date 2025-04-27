@@ -25,6 +25,7 @@ import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.StateDirectionalTextureSystem;
 import com.zhaw.frontier.systems.TowerTargetingSystem;
 import com.zhaw.frontier.ui.BaseUI;
@@ -118,6 +119,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new CooldownSystem());
 
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
+        EnemyManagementSystem.init(sampleLayer, gameWorldView, engine);
+        enemyManagementSystem = EnemyManagementSystem.getInstance();
+        engine.addSystem(enemyManagementSystem);
         engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
 
         engine.addSystem(cameraControlSystem);
@@ -220,9 +224,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
             }
         }
     }
-
-    Entity enemy;
-    Entity tower;
 
     @Override
     public void resize(int width, int height) {

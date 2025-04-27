@@ -21,6 +21,8 @@ import com.zhaw.frontier.systems.EnemySpawnSystem;
 import com.zhaw.frontier.utils.QueueAnimation;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
+import static com.zhaw.frontier.utils.EngineHelper.getInventoryComponent;
+
 /**
  * A placeholder input processor for handling game input via keyboard.
  * <p>
@@ -98,11 +100,12 @@ public class GameInputProcessor extends InputAdapter {
         // Place a tower if B is pressed.
         if (keycode == Input.Keys.B) {
             Gdx.app.debug(
-                    "GameInputProcessor",
-                    "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
+                "GameInputProcessor",
+                "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
             try {
                 Entity tower = TowerFactory.createDefaultTower(engine, mouseX, mouseY);
-                if (buildingManagerSystem.placeBuilding(tower, getInventoryComponent())) {
+                if (buildingManagerSystem.placeBuilding(tower, getInventoryComponent(engine))) {
                     Gdx.app.debug("GameInputProcessor", "Tower placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Tower could not be placed");
@@ -116,11 +119,12 @@ public class GameInputProcessor extends InputAdapter {
         // Place a tower if B is pressed.
         if (keycode == Input.Keys.H) {
             Gdx.app.debug(
-                    "GameInputProcessor",
-                    "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
+                "GameInputProcessor",
+                "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
             try {
                 Entity hq = HQFactory.createSandClockHQ(engine, mouseX, mouseY);
-                if (buildingManagerSystem.placeBuilding(hq, getInventoryComponent())) {
+                if (buildingManagerSystem.placeBuilding(hq, getInventoryComponent(engine))) {
                     Gdx.app.debug("GameInputProcessor", "Hq placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Hq could not be placed");
@@ -133,8 +137,9 @@ public class GameInputProcessor extends InputAdapter {
 
         if (keycode == Input.Keys.E) {
             Gdx.app.debug(
-                    "GameInputProcessor",
-                    "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
             Entity enemyBasic = EnemyFactory.createPatrolEnemy(mouseX, mouseY);
             PositionComponent pos = enemyBasic.getComponent(PositionComponent.class);
             BottomLayerComponent bottomLayerComponent = engine
@@ -154,8 +159,9 @@ public class GameInputProcessor extends InputAdapter {
 
         if (keycode == Input.Keys.I) {
             Gdx.app.debug(
-                    "GameInputProcessor",
-                    "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
+                "GameInputProcessor",
+                "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
             Entity enemyIdle = EnemyFactory.createIdleEnemy(mouseX, mouseY);
             PositionComponent pos = enemyIdle.getComponent(PositionComponent.class);
             BottomLayerComponent bottomLayerComponent = engine
@@ -183,11 +189,12 @@ public class GameInputProcessor extends InputAdapter {
         // Place a wall if N is pressed.
         if (keycode == Input.Keys.N) {
             Gdx.app.debug(
-                    "GameInputProcessor",
-                    "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
+                "GameInputProcessor",
+                "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
             try {
                 Entity wall = WallFactory.createWoodWall(engine, mouseX, mouseY);
-                if (buildingManagerSystem.placeBuilding(wall, getInventoryComponent())) {
+                if (buildingManagerSystem.placeBuilding(wall, getInventoryComponent(engine))) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Wall could not be placed");
@@ -201,14 +208,18 @@ public class GameInputProcessor extends InputAdapter {
         // Place a resource building if M is pressed.
         if (keycode == Input.Keys.M) {
             Gdx.app.debug(
-                    "GameInputProcessor",
-                    "M pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
+                "GameInputProcessor",
+                "M pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
             try {
                 Entity resourceBuilding = ResourceBuildingFactory.woodResourceBuilding(
-                        engine,
-                        mouseX,
-                        mouseY);
-                if (buildingManagerSystem.placeBuilding(resourceBuilding, getInventoryComponent())) {
+                    engine,
+                    mouseX,
+                    mouseY
+                );
+                if (
+                    buildingManagerSystem.placeBuilding(resourceBuilding, getInventoryComponent(engine))
+                ) {
                     Gdx.app.debug("GameInputProcessor", "Resource building placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Resource building could not be placed");
@@ -222,8 +233,9 @@ public class GameInputProcessor extends InputAdapter {
         // Remove a building if R is pressed.
         if (keycode == Input.Keys.R) {
             Gdx.app.debug(
-                    "GameInputProcessor",
-                    "R pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
+                "GameInputProcessor",
+                "R pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
             try {
                 if (buildingManagerSystem.removeBuilding(mouseX, mouseY)) {
                     Gdx.app.debug("GameInputProcessor", "Building removed successfully");
@@ -237,7 +249,7 @@ public class GameInputProcessor extends InputAdapter {
         }
 
         if (keycode == Input.Keys.P) {
-            InventoryComponent inventory = getInventoryComponent();
+            InventoryComponent inventory = getInventoryComponent(engine);
 
             Gdx.app.debug("GameInputProcessor", "Inventory: " + inventory.resources);
         }
@@ -255,10 +267,4 @@ public class GameInputProcessor extends InputAdapter {
         return false;
     }
 
-    private InventoryComponent getInventoryComponent() {
-        Entity stock = engine
-                .getEntitiesFor(Family.all(InventoryComponent.class).get())
-                .first();
-        return stock.getComponent(InventoryComponent.class);
-    }
 }

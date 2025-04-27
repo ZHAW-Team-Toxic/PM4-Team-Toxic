@@ -1,10 +1,9 @@
 package com.zhaw.frontier.components;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.badlogic.ashley.core.Component;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CostComponent implements Component {
 
@@ -19,5 +18,4 @@ public class CostComponent implements Component {
         resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 0);
         resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 0);
     }
-
 }

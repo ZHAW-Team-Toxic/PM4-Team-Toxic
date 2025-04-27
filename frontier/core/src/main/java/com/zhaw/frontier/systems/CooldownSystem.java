@@ -10,18 +10,18 @@ import com.zhaw.frontier.components.CooldownComponent;
  * CooldownSystem
  */
 public class CooldownSystem extends IteratingSystem {
+
     public CooldownSystem() {
         super(Family.all(CooldownComponent.class).get());
     }
 
-    private ComponentMapper<CooldownComponent> cm = ComponentMapper.getFor(CooldownComponent.class);
+    private final ComponentMapper<CooldownComponent> cm = ComponentMapper.getFor(CooldownComponent.class);
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        var cooolDownComponent = cm.get(entity);
-        if (cooolDownComponent.start + cooolDownComponent.duration <= System.currentTimeMillis()) {
+        var coolDownComponent = cm.get(entity);
+        if (coolDownComponent.start + coolDownComponent.duration <= System.currentTimeMillis()) {
             entity.remove(CooldownComponent.class);
         }
     }
-
 }

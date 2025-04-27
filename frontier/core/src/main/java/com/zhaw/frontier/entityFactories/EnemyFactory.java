@@ -207,7 +207,6 @@ public class EnemyFactory {
         var collision = new CircleCollisionComponent();
         collision.collisionObject = new Circle(x, y, 1);
 
-
         // Komponenten hinzufügen
         enemy.add(position);
         enemy.add(health);

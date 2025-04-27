@@ -28,7 +28,6 @@ import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.EngineHelper;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -165,8 +164,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     private void createTowerButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
         ImageButton btn1 = createImageButton(
             TowerFactory::createDefaultTower,
-            atlas.findRegion("demo/donkey")
-            //atlas.findRegion("buildings/Tower/Wood_Tower1")
+            atlas.findRegion("Wood_Tower1")
         );
         ImageButton btn2 = createImageButton(TowerFactory::createDefaultTower);
         allButtons.add(btn1, btn2);
@@ -255,7 +253,10 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
                     if (selectedFactory != null) {
                         engine
                             .getSystem(BuildingManagerSystem.class)
-                            .placeBuilding(selectedFactory.create(engine, screenX, screenY), EngineHelper.getInventoryComponent(engine));
+                            .placeBuilding(
+                                selectedFactory.create(engine, screenX, screenY),
+                                EngineHelper.getInventoryComponent(engine)
+                            );
                         return true;
                     }
                     return false;

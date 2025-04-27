@@ -14,7 +14,7 @@ public class AttackComponent implements Component {
     public float AttackDamage = 0;
 
     /**
-     * The attack speed of the entity.
+     * The attack speed of the entity in milliseconds.
      */
     public float AttackSpeed = 0;
 

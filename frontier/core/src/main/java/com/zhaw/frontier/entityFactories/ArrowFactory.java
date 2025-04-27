@@ -36,7 +36,7 @@ public class ArrowFactory {
             .get("packed/textures.atlas", TextureAtlas.class);
         var render = new RenderComponent();
         render.renderType = RenderType.NORMAL;
-        render.sprites.put(new TileOffset(0, 0), atlas.findRegion("buildings/Arrow/Arrow"));
+        render.sprites.put(new TileOffset(0, 0), atlas.findRegion("Arrow"));
 
         arrow.add(new PositionComponent(tower.x, tower.y));
 
