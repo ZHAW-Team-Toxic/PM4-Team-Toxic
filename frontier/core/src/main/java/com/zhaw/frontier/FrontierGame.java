@@ -6,11 +6,13 @@ import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.screens.LoadingScreen;
 import com.zhaw.frontier.utils.AppConfigLoader;
 import com.zhaw.frontier.utils.AssetManagerInstance;
+import com.zhaw.frontier.utils.GameStats;
 import com.zhaw.frontier.wrappers.FrontierSpriteBatch;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class FrontierGame extends Game {
 
+    private final GameStats gameStats = new GameStats();
     private SpriteBatchInterface batch;
     private AppConfig appConfig;
 
@@ -42,5 +44,9 @@ public class FrontierGame extends Game {
 
     public AppConfig getAppConfig() {
         return appConfig;
+    }
+
+    public GameStats getGameStats() {
+        return gameStats;
     }
 }
