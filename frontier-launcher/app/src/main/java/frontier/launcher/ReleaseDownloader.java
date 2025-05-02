@@ -210,6 +210,7 @@ public class ReleaseDownloader {
             for (int j = 0; j < assets.length(); j++) {
                 JSONObject asset = assets.getJSONObject(j);
                 String name = asset.optString("name", "").toLowerCase();
+                if (name.contains("launcher")) continue; // 🔒 Prevent downloading the launcher
                 if (name.startsWith("frontier-") && name.contains(platformTag.toLowerCase()) && name.endsWith(".zip")) {
                     System.out.println("Using release: " + release.optString("tag_name", "<no-tag>") + " (asset: " + name + ")");
                     return release;
