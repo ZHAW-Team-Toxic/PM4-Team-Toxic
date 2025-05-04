@@ -66,8 +66,6 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
 
     @Override
     protected void processEntity(Entity tower) {
-        // todo update timer
-        // TODO check timer
         var currentTarget = targetComponentMapper.get(tower);
 
         // remove already killed enemies
@@ -88,12 +86,15 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
             var enemyPosition = positionComponentMapper.get(enemy).basePosition;
             var enemyVelocity = velocityComponentMapper.get(enemy).velocity;
             var towerPosition = positionComponentMapper.get(tower).basePosition;
+            var attack = attackComponentMapper.get(tower);
+
             // todo add stats from attackcomponent
             var arrow = ArrowFactory.createArrow(
                 getEngine(),
                 towerPosition,
                 enemyPosition,
-                enemyVelocity
+                enemyVelocity,
+                (int) attack.AttackDamage
             );
             if (arrow != null) {
                 // set tower direction
@@ -102,11 +103,11 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
                 animation.degrees = (int) arrowVelocity.angleDeg();
 
                 getEngine().addEntity(arrow);
-                var cooldown = attackComponentMapper.get(tower);
+
                 // add cooldown component
                 var cooldownComponent = new CooldownComponent();
                 cooldownComponent.start = System.currentTimeMillis();
-                cooldownComponent.duration = (long) cooldown.AttackSpeed;
+                cooldownComponent.duration = (long) attack.AttackSpeed;
                 tower.add(cooldownComponent);
             }
         } else {

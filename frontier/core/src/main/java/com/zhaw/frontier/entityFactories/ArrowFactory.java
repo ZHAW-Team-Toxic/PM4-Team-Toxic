@@ -17,19 +17,15 @@ import com.zhaw.frontier.utils.TileOffset;
 public class ArrowFactory {
 
     private static final float ARROW_SPEED = 12f;
-    private static final float MAX_RANGE = 40f;
 
     public static Entity createArrow(
         Engine engine,
         Vector2 tower,
         Vector2 target,
-        Vector2 targetVelocity
+        Vector2 targetVelocity,
+        int damage
     ) {
         Entity arrow = engine.createEntity();
-
-        if (tower.dst(target) > MAX_RANGE) {
-            Gdx.app.debug("[ArrowFactory]", "Target out of range");
-        }
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
@@ -58,8 +54,11 @@ public class ArrowFactory {
         var rotation = new TextureRotationComponent();
         rotation.rotation = calcVelocity.angleDeg();
 
+        var projectile = new ProjectileComponent();
+        projectile.damage = damage;
+
         arrow.add(rotation);
-        arrow.add(new ProjectileComponent());
+        arrow.add(projectile);
         arrow.add(velocity);
         arrow.add(render);
         return arrow;
