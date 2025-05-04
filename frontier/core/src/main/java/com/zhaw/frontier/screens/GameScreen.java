@@ -16,12 +16,9 @@ import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
-import com.zhaw.frontier.entityFactories.ArrowFactory;
-import com.zhaw.frontier.entityFactories.EnemyFactory;
-import com.zhaw.frontier.entityFactories.TowerFactory;
+import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.enums.GameMode;
-import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
@@ -119,10 +116,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new CooldownSystem());
 
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
-        EnemyManagementSystem.init(sampleLayer, gameWorldView, engine);
-        enemyManagementSystem = EnemyManagementSystem.getInstance();
-        engine.addSystem(enemyManagementSystem);
-        engine.addSystem(new EnemyManagementSystem(sampleLayer, gameWorldView, engine));
 
         engine.addSystem(cameraControlSystem);
 
@@ -135,7 +128,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         Gdx.app.debug("GameScreen", "Initializing Resource Tracking System.");
 
         // TODO: remove this line, when the resource production system is implemented
-        //ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
+        // ResourceProductionSystem resourceProductionSystem = new
+        // ResourceProductionSystem(engine);
         ResourceProductionSystem.init(engine);
         resourceProductionSystem = ResourceProductionSystem.getInstance();
         engine.addSystem(resourceProductionSystem);

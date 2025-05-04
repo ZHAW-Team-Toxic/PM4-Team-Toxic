@@ -35,6 +35,7 @@ public class EnemyFactory {
 
     /**
      * Creates a new enemy entity with patrol behavior.
+     *
      * @param x The x-coordinate of the enemy's position.
      * @param y The y-coordinate of the enemy's position.
      * @return The created enemy entity.
@@ -49,8 +50,8 @@ public class EnemyFactory {
     /**
      * Creates a new enemy entity with idle behavior.
      *
-     * @param x            The x-coordinate of the enemy's position.
-     * @param y            The y-coordinate of the enemy's position.
+     * @param x The x-coordinate of the enemy's position.
+     * @param y The y-coordinate of the enemy's position.
      * @return The created enemy entity.
      */
     public static Entity createIdleEnemy(float x, float y) {
@@ -64,7 +65,7 @@ public class EnemyFactory {
         if (sharedAnimations.isEmpty()) {
             TextureAtlas atlas = AssetManagerInstance
                 .getManager()
-                .get("packed/enemies/enemyAtlas.atlas", TextureAtlas.class);
+                .get("packed/textures.atlas", TextureAtlas.class);
 
             sharedAnimations.put(
                 EnemyAnimationComponent.EnemyAnimationType.WALK_DOWN,

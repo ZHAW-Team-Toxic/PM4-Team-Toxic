@@ -152,9 +152,10 @@ public class BuildingPlacer {
 
         occupyTile(entityType);
 
-            Gdx.app.debug(
-                "BuildingPlacer",
-                "Tile is buildable on resource layer and has adjacent resource.");
+        Gdx.app.debug(
+            "BuildingPlacer",
+            "Tile is buildable on resource layer and has adjacent resource."
+        );
 
         engine.addEntity(entityType);
 
