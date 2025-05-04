@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.AnimationQueueComponent;
@@ -144,7 +143,8 @@ public class GameInputProcessor extends InputAdapter {
                 .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
                 .get(0)
                 .getComponent(BottomLayerComponent.class);
-            pos.basePosition = WorldCoordinateUtils.calculateWorldCoordinate(
+            pos.basePosition =
+            WorldCoordinateUtils.calculateWorldCoordinate(
                 viewport,
                 bottomLayerComponent.bottomLayer,
                 mouseX,
@@ -165,8 +165,8 @@ public class GameInputProcessor extends InputAdapter {
                 .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
                 .get(0)
                 .getComponent(BottomLayerComponent.class);
-            pos.basePosition = WorldCoordinateUtils.calculateWorldCoordinate(
-
+            pos.basePosition =
+            WorldCoordinateUtils.calculateWorldCoordinate(
                 viewport,
                 bottomLayerComponent.bottomLayer,
                 mouseX,
@@ -260,7 +260,6 @@ public class GameInputProcessor extends InputAdapter {
             } else {
                 Gdx.app.debug("GameInputProcessor", "Failed to spawn enemies");
             }
-
         }
 
         return false;

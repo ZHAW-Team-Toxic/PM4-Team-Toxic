@@ -10,52 +10,78 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
-import lombok.Getter;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
+import lombok.Getter;
 
+/**
+ * {@code EnemySpawnSystem} is an Ashley system responsible for spawning enemies on the map.
+ *
+ * <p>The spawn logic is based on a mathematical function that increases difficulty over rounds.
+ * Spawn points are initialized from TiledMap tile properties and used to randomly place enemies
+ * on the map.</p>
+ *
+ * <p>This system supports spawning Orcs, Goblins, and Demons in different distributions depending
+ * on the current round. The system is implemented as a singleton and should be created via {@link #create(Engine)}.</p>
+ */
 public class EnemySpawnSystem extends IteratingSystem {
 
+    /**
+     * Singleton instance of {@link EnemySpawnSystem}.
+     */
     @Getter
     private static EnemySpawnSystem instance;
 
     private final Engine engine;
     private final TiledMapTileLayer bottomLayer;
-
     private final List<Vector2> spawnPoints = new Vector<>();
 
-    //Base function looks like this f(x)=25*2.5^(x*0.1)+5 sin(x+4.55)+40
+    // Parameters for the spawn scaling function: f(x) = a * b^(x * c) + d * sin(x + offset) + base
     private final float exponentialStretcher = 25F;
     private final float exponentialFlatOut = 0.1F;
     private final float difficultyVarianceDuringRound = 5F;
-    private final float enemyStartingAmount = 40; //so it starts actually at 60
+    private final float enemyStartingAmount = 40;
 
+    // Round thresholds to define enemy type distribution phases
     private final int phaseOne = 5;
     private final int phaseTwo = 8;
     private final int phaseThree = 12;
 
     private final float[] enemyDistribution = new float[3];
 
+    /**
+     * Private constructor. Use {@link #create(Engine)} to create and register the system.
+     *
+     * @param engine the engine to which this system belongs
+     */
     private EnemySpawnSystem(Engine engine) {
         super(Family.all().get());
         this.engine = engine;
-        this.bottomLayer = engine.getEntitiesFor(Family.all(BottomLayerComponent.class).get())
-            .first().getComponent(BottomLayerComponent.class).bottomLayer;
+        this.bottomLayer =
+        engine
+            .getEntitiesFor(Family.all(BottomLayerComponent.class).get())
+            .first()
+            .getComponent(BottomLayerComponent.class)
+            .bottomLayer;
 
         if (!initSpawnPoints()) {
             throw new RuntimeException("Failed to initialize spawn points");
         }
 
         Collections.shuffle(spawnPoints);
-
         Gdx.app.debug(
             "[DEBUG] - EnemySpawnManager",
             "Spawn points initialized: " + spawnPoints.size()
         );
     }
 
+    /**
+     * Creates and registers the {@link EnemySpawnSystem} singleton with the given engine.
+     *
+     * @param engine the game engine
+     * @return the singleton instance
+     */
     public static EnemySpawnSystem create(Engine engine) {
         if (instance == null) {
             instance = new EnemySpawnSystem(engine);
@@ -64,9 +90,14 @@ public class EnemySpawnSystem extends IteratingSystem {
         return instance;
     }
 
+    /**
+     * Spawns enemies for the specified round based on enemy distribution logic.
+     *
+     * @param round the current game round
+     * @return true if spawning succeeded
+     */
     public boolean spawnEnemies(int round) {
         calculateEnemyDistribution(round);
-
         int enemyCount = (int) calculateEnemyCount(round);
 
         Gdx.app.debug(
@@ -80,36 +111,42 @@ public class EnemySpawnSystem extends IteratingSystem {
 
         Gdx.app.debug(
             "[DEBUG] - EnemySpawnManager",
-            "Enemy distribution for round " + round + ": " +
-                "Orc: " + orcCount +
-                ", Goblin: " + goblinCount +
-                ", Demon: " + demonCount
+            "Enemy distribution for round " +
+            round +
+            ": " +
+            "Orc: " +
+            orcCount +
+            ", Goblin: " +
+            goblinCount +
+            ", Demon: " +
+            demonCount
         );
 
-        // Spawn enemies based on the calculated counts
-        if (!spawnOrc(orcCount)) {
-            return false;
-        }
-         if(!spawnGoblin(goblinCount)){
-         return false;
-         }
-         if(!spawnDemon(demonCount)){
-         return false;
-         }
-        return true;
+        return spawnOrc(orcCount) && spawnGoblin(goblinCount) && spawnDemon(demonCount);
     }
 
+    /**
+     * Required by {@link IteratingSystem}, but unused.
+     */
     @Override
-    protected void processEntity(Entity entity, float v) {
-
+    protected void processEntity(Entity entity, float deltaTime) {
+        // No per-entity processing required for this system
     }
 
+    /**
+     * Initializes the list of spawn points by scanning the bottom layer of the tile map.
+     *
+     * @return true if spawn points were found
+     */
     private boolean initSpawnPoints() {
         for (int i = 0; i < bottomLayer.getWidth(); i++) {
             for (int j = 0; j < bottomLayer.getHeight(); j++) {
                 TiledMapTile tile = bottomLayer.getCell(i, j).getTile();
-                if (tile != null && tile.getProperties().containsKey("isSpawnPoint") &&
-                    tile.getProperties().get("isSpawnPoint", Boolean.class)) {
+                if (
+                    tile != null &&
+                    tile.getProperties().containsKey("isSpawnPoint") &&
+                    tile.getProperties().get("isSpawnPoint", Boolean.class)
+                ) {
                     spawnPoints.add(new Vector2(i, j));
                 }
             }
@@ -117,87 +154,103 @@ public class EnemySpawnSystem extends IteratingSystem {
         return true;
     }
 
+    /**
+     * Spawns a given number of Orcs at random spawn points.
+     *
+     * @param count number of orcs to spawn
+     * @return true if successful
+     */
     private boolean spawnOrc(int count) {
         for (int i = 0; i < count; i++) {
-            Vector2 spawnPointOnMap = getRandSpawnPointOnMap();
-            Entity orc = EnemyFactory.createIdleEnemy(
-                spawnPointOnMap.x,
-                spawnPointOnMap.y
-            );
+            Vector2 spawn = getRandSpawnPointOnMap();
+            Entity orc = EnemyFactory.createIdleEnemy(spawn.x, spawn.y);
             engine.addEntity(orc);
         }
-        Gdx.app.debug(
-            "[DEBUG] - EnemySpawnManager",
-            "Orcs spawned " + count
-        );
+        Gdx.app.debug("[DEBUG] - EnemySpawnManager", "Orcs spawned " + count);
         return true;
     }
 
+    /**
+     * Spawns a given number of Goblins at random spawn points.
+     *
+     * @param count number of goblins to spawn
+     * @return true if successful
+     */
     private boolean spawnGoblin(int count) {
         for (int i = 0; i < count; i++) {
-            Vector2 spawnPointOnMap = getRandSpawnPointOnMap();
-            Entity goblin = EnemyFactory.createIdleEnemy(
-                spawnPointOnMap.x,
-                spawnPointOnMap.y
-            );
+            Vector2 spawn = getRandSpawnPointOnMap();
+            Entity goblin = EnemyFactory.createIdleEnemy(spawn.x, spawn.y);
             engine.addEntity(goblin);
         }
-        Gdx.app.debug(
-            "[DEBUG] - EnemySpawnManager",
-            "Goblins spawned " + count
-        );
+        Gdx.app.debug("[DEBUG] - EnemySpawnManager", "Goblins spawned " + count);
         return true;
     }
 
+    /**
+     * Spawns a given number of Demons at random spawn points.
+     *
+     * @param count number of demons to spawn
+     * @return true if successful
+     */
     private boolean spawnDemon(int count) {
         for (int i = 0; i < count; i++) {
-            Vector2 spawnPointOnMap = getRandSpawnPointOnMap();
-            Entity demon = EnemyFactory.createIdleEnemy(
-                spawnPointOnMap.x,
-                spawnPointOnMap.y
-            );
+            Vector2 spawn = getRandSpawnPointOnMap();
+            Entity demon = EnemyFactory.createIdleEnemy(spawn.x, spawn.y);
             engine.addEntity(demon);
         }
-        Gdx.app.debug(
-            "[DEBUG] - EnemySpawnManager",
-            "Demons spawned " + count
-        );
+        Gdx.app.debug("[DEBUG] - EnemySpawnManager", "Demons spawned " + count);
         return true;
     }
 
+    /**
+     * Calculates the number of enemies to spawn for the given round.
+     * Uses an exponential curve with sinusoidal variation to simulate difficulty scaling.
+     *
+     * @param round the current round
+     * @return the calculated number of enemies
+     */
     private double calculateEnemyCount(int round) {
-        float makeFunctionStartAtALowPoint = 4.55F;
-        float exponentialIncrease = 2.5F;
+        float offset = 4.55F;
+        float base = 2.5F;
         double x = round;
-        return exponentialStretcher * Math.pow(exponentialIncrease, x * exponentialFlatOut) +
-            difficultyVarianceDuringRound * Math.sin(x + makeFunctionStartAtALowPoint) + enemyStartingAmount;
+        return (
+            exponentialStretcher * Math.pow(base, x * exponentialFlatOut) +
+            difficultyVarianceDuringRound * Math.sin(x + offset) +
+            enemyStartingAmount
+        );
     }
 
+    /**
+     * Determines the enemy type distribution (Orc, Goblin, Demon) for the current round.
+     *
+     * @param round the current round
+     */
     private void calculateEnemyDistribution(int round) {
-
         if (round <= phaseOne) {
             enemyDistribution[0] = 1;
             enemyDistribution[1] = 0;
             enemyDistribution[2] = 0;
-        }
-        if (phaseOne < round && round <= phaseTwo) {
+        } else if (round <= phaseTwo) {
             enemyDistribution[0] = 0.9F;
             enemyDistribution[1] = 0.1F;
             enemyDistribution[2] = 0;
-        }
-        if (phaseTwo < round && round <= phaseThree) {
+        } else if (round <= phaseThree) {
             enemyDistribution[0] = 0.7F;
             enemyDistribution[1] = 0.15F;
             enemyDistribution[2] = 0.15F;
-        }
-        if(round > phaseThree){
+        } else {
             enemyDistribution[0] = 0.6F;
             enemyDistribution[1] = 0.2F;
             enemyDistribution[2] = 0.2F;
         }
-
     }
 
+    /**
+     * Returns a random spawn point from the initialized spawn points.
+     *
+     * @return a random spawn point
+     * @throws IllegalStateException if no spawn points are available
+     */
     private Vector2 getRandSpawnPointOnMap() {
         if (spawnPoints == null || spawnPoints.isEmpty()) {
             throw new IllegalStateException("No spawn points available");

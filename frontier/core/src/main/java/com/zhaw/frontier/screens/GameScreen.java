@@ -207,7 +207,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new PatrolBehaviourSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Enemy Spawn Manager.");
-        EnemySpawnSystem .create(engine);
+        EnemySpawnSystem.create(engine);
         Gdx.app.debug("[DEBUG] - GameScreen", "Enemy Spawn Manager initialized.");
 
         // create inventory ui
@@ -215,7 +215,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
             .first();
         inventory = inventoryEntity.getComponent(InventoryComponent.class);
-
 
         var mx = new InputMultiplexer();
         mx.addProcessor(baseUI.getStage());

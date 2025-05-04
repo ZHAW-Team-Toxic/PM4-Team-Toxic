@@ -1,5 +1,7 @@
 package com.zhaw.frontier.systems;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -11,8 +13,6 @@ import com.zhaw.frontier.components.EnemyComponent;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the {@link EnemySpawnSystem}.
@@ -52,13 +52,13 @@ public class EnemySpawnSystemTest {
 
     @Test
     public void testSpawnPointSystemRoundOne() {
-
-
         removeAllEnemies();
     }
 
     private void removeAllEnemies() {
-        ImmutableArray<Entity> enemies = testEngine.getEntitiesFor(Family.all(EnemyComponent.class).get());
+        ImmutableArray<Entity> enemies = testEngine.getEntitiesFor(
+            Family.all(EnemyComponent.class).get()
+        );
         for (Entity enemy : enemies) {
             testEngine.removeEntity(enemy);
         }
