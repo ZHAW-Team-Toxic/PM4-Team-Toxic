@@ -149,7 +149,7 @@ public class EnemySpawnSystem extends IteratingSystem {
                 }
             }
         }
-        if(spawnPoints.isEmpty()) {
+        if (spawnPoints.isEmpty()) {
             Gdx.app.error(
                 "[ERROR] - EnemySpawnManager",
                 "No spawn points found in the bottom layer"
