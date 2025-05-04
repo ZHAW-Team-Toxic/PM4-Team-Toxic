@@ -22,10 +22,7 @@ import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
-import com.zhaw.frontier.systems.EnemyManagementSystem;
-import com.zhaw.frontier.systems.ResourceProductionSystem;
-import com.zhaw.frontier.systems.TurnSystem;
+import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -123,7 +120,7 @@ public class BaseUI {
                 if (TurnSystem.getInstance().isEnemyTurn()) {
                     TurnSystem
                         .getInstance()
-                        .executeTurn(GamePhase.ENEMY_TURN, EnemyManagementSystem.getInstance());
+                        .executeTurn(GamePhase.ENEMY_TURN, EnemySpawnSystem.getInstance());
                 }
                 Timer.schedule(
                     new Timer.Task() {

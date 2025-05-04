@@ -61,7 +61,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private Skin skin;
     private InventoryComponent inventory;
     private ResourceProductionSystem resourceProductionSystem;
-    private EnemyManagementSystem enemyManagementSystem;
 
     public GameScreen(FrontierGame frontierGame) {
         this.frontierGame = frontierGame;
@@ -150,12 +149,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
-        EnemyManagementSystem.init(sampleLayer, gameWorldView, engine);
-        enemyManagementSystem = EnemyManagementSystem.getInstance();
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Remover System.");
-        engine.addSystem(enemyManagementSystem);
+
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Remover System initialized.");
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
@@ -209,11 +206,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
 
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Enemy Spawn Manager.");
+        EnemySpawnSystem .create(engine);
+        Gdx.app.debug("[DEBUG] - GameScreen", "Enemy Spawn Manager initialized.");
+
         // create inventory ui
         Entity inventoryEntity = engine
             .getEntitiesFor(Family.all(InventoryComponent.class).get())
             .first();
         inventory = inventoryEntity.getComponent(InventoryComponent.class);
+
 
         var mx = new InputMultiplexer();
         mx.addProcessor(baseUI.getStage());
@@ -221,7 +223,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
-        mx.addProcessor(new GameInputProcessor(engine, frontierGame));
+        mx.addProcessor(new GameInputProcessor(engine, frontierGame, gameWorldView));
         mx.addProcessor(baseUI.createInputAdapter(engine));
         mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
 

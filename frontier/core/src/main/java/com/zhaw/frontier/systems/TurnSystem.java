@@ -71,8 +71,8 @@ public class TurnSystem {
                 break;
             case ENEMY_TURN:
                 System.out.println("Start of enemy turn phase.");
-                if (system instanceof EnemyManagementSystem) {
-                    //TODO: Call the enemy turn logic (without having to specify an enemy...)
+                if (system instanceof EnemySpawnSystem) {
+                    ((EnemySpawnSystem) system).spawnEnemies(turnCounter);
                 } else {
                     throw new IllegalArgumentException(
                         "Invalid system for enemy turn phase: " + system

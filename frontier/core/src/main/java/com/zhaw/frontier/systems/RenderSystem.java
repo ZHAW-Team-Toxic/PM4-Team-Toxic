@@ -156,8 +156,8 @@ public class RenderSystem extends EntitySystem {
         // Render alle Layers
         for (MapLayerRenderEntry layer : layersToRender) {
             if (layer.layer != null) {
-                for (int i = layer.layer.getWidth(); i > 0; i--) {
-                    for (int j = layer.layer.getHeight(); j > 0; j--) {
+                for (int i = layer.layer.getWidth(); i >= 0; i--) {
+                    for (int j = layer.layer.getHeight(); j >= 0; j--) {
                         // Get the tile at the current position
                         if (layer.layer.getCell(i, j) == null) continue;
 
