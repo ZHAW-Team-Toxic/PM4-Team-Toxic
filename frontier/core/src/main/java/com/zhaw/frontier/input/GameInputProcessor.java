@@ -24,9 +24,12 @@ import com.zhaw.frontier.utils.WorldCoordinateUtils;
 /**
  * A placeholder input processor for handling game input via keyboard.
  * <p>
- * This class currently binds building placement and removal actions to specific key events.
- * In the future, the UI will interface with this logic, and more advanced keyboard support
- * may be implemented. For now, key bindings are used to directly trigger actions.
+ * This class currently binds building placement and removal actions to specific
+ * key events.
+ * In the future, the UI will interface with this logic, and more advanced
+ * keyboard support
+ * may be implemented. For now, key bindings are used to directly trigger
+ * actions.
  * </p>
  */
 public class GameInputProcessor extends InputAdapter {
@@ -42,8 +45,9 @@ public class GameInputProcessor extends InputAdapter {
     /**
      * Constructs a new GameInputProcessor.
      *
-     * @param engine        the {@link Engine} used for managing entities and systems.
-     * @param frontierGame  the main {@link FrontierGame} instance.
+     * @param engine       the {@link Engine} used for managing entities and
+     *                     systems.
+     * @param frontierGame the main {@link FrontierGame} instance.
      */
     public GameInputProcessor(Engine engine, FrontierGame frontierGame, Viewport viewport) {
         this.engine = engine;
@@ -53,19 +57,22 @@ public class GameInputProcessor extends InputAdapter {
     }
 
     /**
-     * Processes key down events to perform various game actions during development mode.
+     * Processes key down events to perform various game actions during development
+     * mode.
      * <p>
      * Supported key actions:
      * <ul>
-     *   <li>{@code B}: Places a tower at the current mouse coordinates.</li>
-     *   <li>{@code N}: Places a wall at the current mouse coordinates.</li>
-     *   <li>{@code M}: Places a resource building at the current mouse coordinates.</li>
-     *   <li>{@code R}: Removes a building at the current mouse coordinates.</li>
-     *   <li>{@code E}: Spawns a basic enemy at the current mouse coordinates.</li>
-     *   <li>{@code I}: Spawns an idle enemy at the current mouse coordinates.</li>
+     * <li>{@code B}: Places a tower at the current mouse coordinates.</li>
+     * <li>{@code N}: Places a wall at the current mouse coordinates.</li>
+     * <li>{@code M}: Places a resource building at the current mouse
+     * coordinates.</li>
+     * <li>{@code R}: Removes a building at the current mouse coordinates.</li>
+     * <li>{@code E}: Spawns a basic enemy at the current mouse coordinates.</li>
+     * <li>{@code I}: Spawns an idle enemy at the current mouse coordinates.</li>
      * </ul>
      * <p>
-     * These debug actions are only enabled in the {@link com.zhaw.frontier.enums.AppEnvironment#DEV} environment.
+     * These debug actions are only enabled in the
+     * {@link com.zhaw.frontier.enums.AppEnvironment#DEV} environment.
      * </p>
      *
      * @param keycode the code of the key that was pressed
@@ -91,12 +98,11 @@ public class GameInputProcessor extends InputAdapter {
         // Place a tower if B is pressed.
         if (keycode == Input.Keys.B) {
             Gdx.app.debug(
-                "GameInputProcessor",
-                "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
-            );
+                    "GameInputProcessor",
+                    "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             try {
-                Entity tower = TowerFactory.createBallistaTower(engine, mouseX, mouseY);
-                if (buildingManagerSystem.placeBuilding(tower)) {
+                Entity tower = TowerFactory.createDefaultTower(engine, mouseX, mouseY);
+                if (buildingManagerSystem.placeBuilding(tower, getInventoryComponent())) {
                     Gdx.app.debug("GameInputProcessor", "Tower placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Tower could not be placed");
@@ -110,12 +116,11 @@ public class GameInputProcessor extends InputAdapter {
         // Place a tower if B is pressed.
         if (keycode == Input.Keys.H) {
             Gdx.app.debug(
-                "GameInputProcessor",
-                "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
-            );
+                    "GameInputProcessor",
+                    "B pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             try {
                 Entity hq = HQFactory.createSandClockHQ(engine, mouseX, mouseY);
-                if (buildingManagerSystem.placeBuilding(hq)) {
+                if (buildingManagerSystem.placeBuilding(hq, getInventoryComponent())) {
                     Gdx.app.debug("GameInputProcessor", "Hq placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Hq could not be placed");
@@ -128,9 +133,8 @@ public class GameInputProcessor extends InputAdapter {
 
         if (keycode == Input.Keys.E) {
             Gdx.app.debug(
-                "GameInputProcessor",
-                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
-            );
+                    "GameInputProcessor",
+                    "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             Entity enemyBasic = EnemyFactory.createPatrolEnemy(mouseX, mouseY);
             PositionComponent pos = enemyBasic.getComponent(PositionComponent.class);
             BottomLayerComponent bottomLayerComponent = engine
@@ -150,9 +154,8 @@ public class GameInputProcessor extends InputAdapter {
 
         if (keycode == Input.Keys.I) {
             Gdx.app.debug(
-                "GameInputProcessor",
-                "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
-            );
+                    "GameInputProcessor",
+                    "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             Entity enemyIdle = EnemyFactory.createIdleEnemy(mouseX, mouseY);
             PositionComponent pos = enemyIdle.getComponent(PositionComponent.class);
             BottomLayerComponent bottomLayerComponent = engine
@@ -180,12 +183,11 @@ public class GameInputProcessor extends InputAdapter {
         // Place a wall if N is pressed.
         if (keycode == Input.Keys.N) {
             Gdx.app.debug(
-                "GameInputProcessor",
-                "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
-            );
+                    "GameInputProcessor",
+                    "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             try {
-                Entity wall = WallFactory.createWoodWall(engine, mouseX, mouseY);
-                if (buildingManagerSystem.placeBuilding(wall)) {
+                Entity wall = WallFactory.createDefaultWall(engine, mouseX, mouseY);
+                if (buildingManagerSystem.placeBuilding(wall, getInventoryComponent())) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "Wall could not be placed");
@@ -199,15 +201,13 @@ public class GameInputProcessor extends InputAdapter {
         // Place a resource building if M is pressed.
         if (keycode == Input.Keys.M) {
             Gdx.app.debug(
-                "GameInputProcessor",
-                "M pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
-            );
+                    "GameInputProcessor",
+                    "M pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             try {
                 Entity resourceBuilding = ResourceBuildingFactory.woodResourceBuilding(
-                    engine,
-                    mouseX,
-                    mouseY
-                );
+                        engine,
+                        mouseX,
+                        mouseY);
                 if (buildingManagerSystem.placeBuilding(resourceBuilding)) {
                     Gdx.app.debug("GameInputProcessor", "Resource building placed successfully");
                 } else {
@@ -222,9 +222,8 @@ public class GameInputProcessor extends InputAdapter {
         // Remove a building if R is pressed.
         if (keycode == Input.Keys.R) {
             Gdx.app.debug(
-                "GameInputProcessor",
-                "R pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
-            );
+                    "GameInputProcessor",
+                    "R pressed. MouseX: " + mouseX + ", MouseY: " + mouseY);
             try {
                 if (buildingManagerSystem.removeBuilding(mouseX, mouseY)) {
                     Gdx.app.debug("GameInputProcessor", "Building removed successfully");
@@ -238,10 +237,7 @@ public class GameInputProcessor extends InputAdapter {
         }
 
         if (keycode == Input.Keys.P) {
-            Entity stock = engine
-                .getEntitiesFor(Family.all(InventoryComponent.class).get())
-                .first();
-            InventoryComponent inventory = stock.getComponent(InventoryComponent.class);
+            InventoryComponent inventory = getInventoryComponent();
 
             Gdx.app.debug("GameInputProcessor", "Inventory: " + inventory.resources);
         }
@@ -257,5 +253,12 @@ public class GameInputProcessor extends InputAdapter {
         }
 
         return false;
+    }
+
+    private InventoryComponent getInventoryComponent() {
+        Entity stock = engine
+                .getEntitiesFor(Family.all(InventoryComponent.class).get())
+                .first();
+        return stock.getComponent(InventoryComponent.class);
     }
 }

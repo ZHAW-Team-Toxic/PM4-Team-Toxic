@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 
@@ -47,8 +48,8 @@ public class TowerFactory {
      */
     public static Entity createDefaultTower(Engine engine, float x, float y) { // todo add tower damage to this
         TextureAtlas atlas = AssetManagerInstance
-            .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+                .getManager()
+                .get("packed/textures.atlas", TextureAtlas.class);
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
         HealthComponent healthComponent = new HealthComponent();
@@ -63,44 +64,40 @@ public class TowerFactory {
 
         TowerAnimationComponent directionTextures = new TowerAnimationComponent();
         directionTextures.animationTextures.put(
-            45,
-            atlas.findRegion("buildings/Tower/Wood_Tower1")
-        );
+                45,
+                atlas.findRegion("buildings/Tower/Wood_Tower1"));
         directionTextures.animationTextures.put(0, atlas.findRegion("buildings/Tower/Wood_Tower2"));
         directionTextures.animationTextures.put(
-            315,
-            atlas.findRegion("buildings/Tower/Wood_Tower3")
-        );
+                315,
+                atlas.findRegion("buildings/Tower/Wood_Tower3"));
         directionTextures.animationTextures.put(
-            270,
-            atlas.findRegion("buildings/Tower/Wood_Tower4")
-        );
+                270,
+                atlas.findRegion("buildings/Tower/Wood_Tower4"));
         directionTextures.animationTextures.put(
-            225,
-            atlas.findRegion("buildings/Tower/Wood_Tower5")
-        );
+                225,
+                atlas.findRegion("buildings/Tower/Wood_Tower5"));
         directionTextures.animationTextures.put(
-            180,
-            atlas.findRegion("buildings/Tower/Wood_Tower6")
-        );
+                180,
+                atlas.findRegion("buildings/Tower/Wood_Tower6"));
         directionTextures.animationTextures.put(
-            135,
-            atlas.findRegion("buildings/Tower/Wood_Tower7")
-        );
+                135,
+                atlas.findRegion("buildings/Tower/Wood_Tower7"));
         directionTextures.animationTextures.put(
-            90,
-            atlas.findRegion("buildings/Tower/Wood_Tower8")
-        );
+                90,
+                atlas.findRegion("buildings/Tower/Wood_Tower8"));
         renderComponent.sprites.put(
-            new TileOffset(0, 0),
-            directionTextures.animationTextures.get(0)
-        );
+                new TileOffset(0, 0),
+                directionTextures.animationTextures.get(0));
 
         var attack = new AttackComponent();
         attack.AttackSpeed = 1;
         attack.AttackDamage = 20;
         attack.AttackRange = 10;
 
+        var cost = new CostComponent();
+        cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 5);
+
+        tower.add(cost);
         tower.add(renderComponent);
         tower.add(directionTextures);
         tower.add(attack);

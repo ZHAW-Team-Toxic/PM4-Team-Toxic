@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zhaw.frontier.components.InventoryComponent;
 
 /**
  * System responsible for managing building entities.
@@ -65,8 +66,8 @@ public class BuildingManagerSystem extends EntitySystem {
      * @return {@code true} if the building was successfully placed; {@code false}
      *         otherwise.
      */
-    public boolean placeBuilding(Entity buildingEntity) {
-        return buildingPlacer.placeBuilding(buildingEntity, sampleLayer);
+    public boolean placeBuilding(Entity buildingEntity, InventoryComponent inventory) {
+        return buildingPlacer.placeBuilding(buildingEntity, sampleLayer, inventory);
     }
 
     /**
