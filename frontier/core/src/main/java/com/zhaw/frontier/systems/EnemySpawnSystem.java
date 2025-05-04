@@ -38,10 +38,10 @@ public class EnemySpawnSystem extends IteratingSystem {
     private final List<Vector2> spawnPoints = new Vector<>();
 
     // Parameters for the spawn scaling function: f(x) = a * b^(x * c) + d * sin(x + offset) + base
-    private final float exponentialStretcher = 25F;
-    private final float exponentialFlatOut = 0.1F;
-    private final float difficultyVarianceDuringRound = 5F;
-    private final float enemyStartingAmount = 40;
+    private final float exponentialStretcher = 25F; //a
+    private final float exponentialFlatOut = 0.1F; //c
+    private final float difficultyVarianceDuringRound = 5F; //d
+    private final float enemyStartingAmount = 40; //Starts actually at 62
 
     // Round thresholds to define enemy type distribution phases
     private final int phaseOne = 5;
@@ -211,7 +211,7 @@ public class EnemySpawnSystem extends IteratingSystem {
      */
     private double calculateEnemyCount(int round) {
         float offset = 4.55F;
-        float base = 2.5F;
+        float base = 2.5F; //b
         double x = round;
         return (
             exponentialStretcher * Math.pow(base, x * exponentialFlatOut) +
