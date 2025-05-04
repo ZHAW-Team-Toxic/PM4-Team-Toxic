@@ -14,10 +14,17 @@ import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 
+/**
+ * Factory pattern for creating arrows
+ */
 public class ArrowFactory {
 
     private static final float ARROW_SPEED = 12f;
 
+    /**
+     * Creates an arrow that shoots from tower to the target, predicts the posiition
+     * with the velocity.
+     */
     public static Entity createArrow(
         Engine engine,
         Vector2 tower,

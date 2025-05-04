@@ -9,6 +9,10 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.zhaw.frontier.components.*;
 
+/**
+ * Detects collisions between ProjectileComponents and CollisionComponents and
+ * applies the ProjectileComponents damage.
+ */
 public class ProjectileCollisionSystem extends IntervalIteratingSystem {
 
     private ImmutableArray<Entity> collisionObjects;

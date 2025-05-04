@@ -288,14 +288,14 @@ hq_sandclock_D6
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 3
 hq_sandclock_D6
   rotate: false
   xy: 326, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 3
+  index: 4
 hq_sandclock_D6
   rotate: false
   xy: 326, 2
@@ -480,14 +480,14 @@ Fireball
   size: 124, 79
   orig: 124, 79
   offset: 0, 0
-  index: 5
+  index: 7
 Fireball
   rotate: false
   xy: 128, 2
   size: 124, 79
   orig: 124, 79
   offset: 0, 0
-  index: 7
+  index: 5
 Fireball
   rotate: false
   xy: 1654, 1849
@@ -860,14 +860,14 @@ walk_right_orc
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_right_orc
   rotate: false
   xy: 38, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 idle_up_orc
   rotate: false
   xy: 56, 56
@@ -895,14 +895,14 @@ walk_up_orc
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_up_orc
   rotate: false
   xy: 74, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_orc
   rotate: false
   xy: 92, 92

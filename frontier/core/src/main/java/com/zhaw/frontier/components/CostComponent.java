@@ -5,6 +5,11 @@ import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This component defines how much resources a user must spend to build a
+ * building.
+ */
+
 public class CostComponent implements Component {
 
     /**

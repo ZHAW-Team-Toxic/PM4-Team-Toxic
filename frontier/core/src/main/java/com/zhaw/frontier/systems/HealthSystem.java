@@ -7,6 +7,9 @@ import com.badlogic.ashley.systems.IntervalIteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.zhaw.frontier.components.HealthComponent;
 
+/**
+ * Healthsystem removes enitities that have no health left
+ */
 public class HealthSystem extends IntervalIteratingSystem {
 
     private final ComponentMapper<HealthComponent> hm = ComponentMapper.getFor(

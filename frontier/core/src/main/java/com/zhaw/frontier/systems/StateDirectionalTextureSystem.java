@@ -9,6 +9,10 @@ import com.zhaw.frontier.components.TowerAnimationComponent;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.Set;
 
+/**
+ * Sets the correct texture to render depending on the direction in the
+ * TowerAnimationComponent
+ */
 public class StateDirectionalTextureSystem extends IteratingSystem {
 
     public StateDirectionalTextureSystem() {

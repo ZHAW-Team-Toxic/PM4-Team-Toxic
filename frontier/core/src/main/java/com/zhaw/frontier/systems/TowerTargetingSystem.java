@@ -19,6 +19,10 @@ import com.zhaw.frontier.components.TowerComponent;
 import com.zhaw.frontier.components.VelocityComponent;
 import com.zhaw.frontier.entityFactories.ArrowFactory;
 
+/**
+ * Finds a target in range and spawns arrow that shoot at the target as long as
+ * its in range and no cooldown is active.
+ */
 public class TowerTargetingSystem extends IntervalIteratingSystem {
 
     private ImmutableArray<Entity> enemies;
