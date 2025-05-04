@@ -1,6 +1,5 @@
 package com.zhaw.frontier.systems;
 
-import com.badlogic.ashley.core.EntitySystem;
 import com.zhaw.frontier.enums.GamePhase;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,9 +40,8 @@ public class TurnSystem {
     /**
      * Executes the turn based on the current game phase.
      * @param gamePhase the current game phase
-     * @param system    the system to execute the turn for
      */
-    public void executeTurn(GamePhase gamePhase, EntitySystem system) {
+    public void executeTurn(GamePhase gamePhase) {
         setGamePhase(gamePhase);
         turnCounter++;
 
@@ -55,13 +53,7 @@ public class TurnSystem {
                 break;
             case COLLECTION:
                 System.out.println("Start of collection phase.");
-                if (system instanceof ResourceProductionSystem) {
-                    ((ResourceProductionSystem) system).endTurn();
-                } else {
-                    throw new IllegalArgumentException(
-                        "Invalid system for collection phase: " + system
-                    );
-                }
+                ResourceProductionSystem.getInstance().endTurn();
                 break;
             case BUILD_PROGRESS:
                 System.out.println("Start of build progress phase.");
@@ -71,13 +63,7 @@ public class TurnSystem {
                 break;
             case ENEMY_TURN:
                 System.out.println("Start of enemy turn phase.");
-                if (system instanceof EnemyManagementSystem) {
-                    //TODO: Call the enemy turn logic (without having to specify an enemy...)
-                } else {
-                    throw new IllegalArgumentException(
-                        "Invalid system for enemy turn phase: " + system
-                    );
-                }
+                EnemySpawnSystem.getInstance().spawnEnemies(turnCounter);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid game phase: " + gamePhase);

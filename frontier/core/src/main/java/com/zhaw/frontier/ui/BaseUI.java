@@ -22,10 +22,7 @@ import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
-import com.zhaw.frontier.systems.EnemyManagementSystem;
-import com.zhaw.frontier.systems.ResourceProductionSystem;
-import com.zhaw.frontier.systems.TurnSystem;
+import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -114,16 +111,10 @@ public class BaseUI {
             () -> {
                 demolishButton.setDisabled(true);
                 buildButton.setDisabled(true);
-                TurnSystem
-                    .getInstance()
-                    .executeTurn(GamePhase.COLLECTION, ResourceProductionSystem.getInstance());
-                TurnSystem
-                    .getInstance()
-                    .executeTurn(GamePhase.BUILD_AND_PLAN, ResourceProductionSystem.getInstance());
+                TurnSystem.getInstance().executeTurn(GamePhase.COLLECTION);
+                TurnSystem.getInstance().executeTurn(GamePhase.BUILD_AND_PLAN);
                 if (TurnSystem.getInstance().isEnemyTurn()) {
-                    TurnSystem
-                        .getInstance()
-                        .executeTurn(GamePhase.ENEMY_TURN, EnemyManagementSystem.getInstance());
+                    TurnSystem.getInstance().executeTurn(GamePhase.ENEMY_TURN);
                 }
                 Timer.schedule(
                     new Timer.Task() {

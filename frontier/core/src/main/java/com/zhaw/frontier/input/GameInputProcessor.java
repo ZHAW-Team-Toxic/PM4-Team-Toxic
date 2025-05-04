@@ -6,17 +6,20 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.AnimationQueueComponent;
 import com.zhaw.frontier.components.EnemyAnimationComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
-import com.zhaw.frontier.systems.EnemyManagementSystem;
+import com.zhaw.frontier.systems.EnemySpawnSystem;
 import com.zhaw.frontier.utils.QueueAnimation;
+import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
 /**
  * A placeholder input processor for handling game input via keyboard.
@@ -32,16 +35,21 @@ public class GameInputProcessor extends InputAdapter {
     private final FrontierGame frontierGame;
     private final AppConfig appConfig;
 
+    private Viewport viewport;
+
+    private int round = 15;
+
     /**
      * Constructs a new GameInputProcessor.
      *
      * @param engine        the {@link Engine} used for managing entities and systems.
      * @param frontierGame  the main {@link FrontierGame} instance.
      */
-    public GameInputProcessor(Engine engine, FrontierGame frontierGame) {
+    public GameInputProcessor(Engine engine, FrontierGame frontierGame, Viewport viewport) {
         this.engine = engine;
         this.frontierGame = frontierGame;
         this.appConfig = frontierGame.getAppConfig();
+        this.viewport = viewport;
     }
 
     /**
@@ -67,14 +75,8 @@ public class GameInputProcessor extends InputAdapter {
     public boolean keyDown(int keycode) {
         // Retrieve the BuildingManagerSystem from the engine.
         BuildingManagerSystem buildingManagerSystem = engine.getSystem(BuildingManagerSystem.class);
-        EnemyManagementSystem enemyManagementSystem = engine.getSystem(EnemyManagementSystem.class);
         if (buildingManagerSystem == null) {
             Gdx.app.error("GameInputProcessor", "BuildingManagerSystem not found in engine!");
-            return false;
-        }
-
-        if (enemyManagementSystem == null) {
-            Gdx.app.error("GameInputProcessor", "EnemyManagementSystem not found in engine!");
             return false;
         }
 
@@ -130,7 +132,19 @@ public class GameInputProcessor extends InputAdapter {
                 "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             Entity enemyBasic = EnemyFactory.createPatrolEnemy(mouseX, mouseY);
-            enemyManagementSystem.spawnEnemy(enemyBasic);
+            PositionComponent pos = enemyBasic.getComponent(PositionComponent.class);
+            BottomLayerComponent bottomLayerComponent = engine
+                .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
+                .get(0)
+                .getComponent(BottomLayerComponent.class);
+            pos.basePosition =
+            WorldCoordinateUtils.calculateWorldCoordinate(
+                viewport,
+                bottomLayerComponent.bottomLayer,
+                mouseX,
+                mouseY
+            );
+            engine.addEntity(enemyBasic);
             return true;
         }
 
@@ -141,6 +155,17 @@ public class GameInputProcessor extends InputAdapter {
             );
             Entity enemyIdle = EnemyFactory.createIdleEnemy(mouseX, mouseY);
             PositionComponent pos = enemyIdle.getComponent(PositionComponent.class);
+            BottomLayerComponent bottomLayerComponent = engine
+                .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
+                .get(0)
+                .getComponent(BottomLayerComponent.class);
+            pos.basePosition =
+            WorldCoordinateUtils.calculateWorldCoordinate(
+                viewport,
+                bottomLayerComponent.bottomLayer,
+                mouseX,
+                mouseY
+            );
             pos.lookingDirection.set(0, -1);
             QueueAnimation enemyAnim = new QueueAnimation();
             enemyAnim.animationType = EnemyAnimationComponent.EnemyAnimationType.ATTACK_DOWN;
@@ -148,7 +173,7 @@ public class GameInputProcessor extends InputAdapter {
             enemyAnim.loop = false;
             AnimationQueueComponent queue = enemyIdle.getComponent(AnimationQueueComponent.class);
             queue.queue.add(enemyAnim);
-            enemyManagementSystem.spawnEnemy(enemyIdle);
+            engine.addEntity(enemyIdle);
             return true;
         }
 
@@ -219,6 +244,16 @@ public class GameInputProcessor extends InputAdapter {
             InventoryComponent inventory = stock.getComponent(InventoryComponent.class);
 
             Gdx.app.debug("GameInputProcessor", "Inventory: " + inventory.resources);
+        }
+
+        if (keycode == Input.Keys.L) {
+            round++;
+            EnemySpawnSystem enemySpawnManager = EnemySpawnSystem.create(engine);
+            if (enemySpawnManager.spawnEnemies(round)) {
+                Gdx.app.debug("GameInputProcessor", "Enemies spawned successfully");
+            } else {
+                Gdx.app.debug("GameInputProcessor", "Failed to spawn enemies");
+            }
         }
 
         return false;
