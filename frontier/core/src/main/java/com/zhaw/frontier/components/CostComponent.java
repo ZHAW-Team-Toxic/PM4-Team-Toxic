@@ -12,12 +12,8 @@ import java.util.Map;
 
 public class CostComponent implements Component {
 
-    /**
-     */
     public Map<ResourceTypeEnum, Integer> resouceCosts = new HashMap<>();
 
-    /**
-     */
     public CostComponent() {
         resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 0);
         resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 0);
