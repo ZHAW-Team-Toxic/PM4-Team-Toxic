@@ -65,9 +65,7 @@ public class EnemySpawnSystem extends IteratingSystem {
             .getComponent(BottomLayerComponent.class)
             .bottomLayer;
 
-        if (!initSpawnPoints()) {
-            throw new RuntimeException("Failed to initialize spawn points");
-        }
+        initSpawnPoints();
 
         Collections.shuffle(spawnPoints);
         Gdx.app.debug(
@@ -138,7 +136,7 @@ public class EnemySpawnSystem extends IteratingSystem {
      *
      * @return true if spawn points were found
      */
-    private boolean initSpawnPoints() {
+    private void initSpawnPoints() {
         for (int i = 0; i < bottomLayer.getWidth(); i++) {
             for (int j = 0; j < bottomLayer.getHeight(); j++) {
                 TiledMapTile tile = bottomLayer.getCell(i, j).getTile();
@@ -151,7 +149,12 @@ public class EnemySpawnSystem extends IteratingSystem {
                 }
             }
         }
-        return true;
+        if(spawnPoints.isEmpty()) {
+            Gdx.app.error(
+                "[ERROR] - EnemySpawnManager",
+                "No spawn points found in the bottom layer"
+            );
+        }
     }
 
     /**
