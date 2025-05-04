@@ -3,16 +3,15 @@ package com.zhaw.frontier.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 import lombok.Getter;
 
 /**
@@ -25,7 +24,7 @@ import lombok.Getter;
  * <p>This system supports spawning Orcs, Goblins, and Demons in different distributions depending
  * on the current round. The system is implemented as a singleton and should be created via {@link #create(Engine)}.</p>
  */
-public class EnemySpawnSystem extends IteratingSystem {
+public class EnemySpawnSystem {
 
     /**
      * Singleton instance of {@link EnemySpawnSystem}.
@@ -35,7 +34,7 @@ public class EnemySpawnSystem extends IteratingSystem {
 
     private final Engine engine;
     private final TiledMapTileLayer bottomLayer;
-    private final List<Vector2> spawnPoints = new Vector<>();
+    private final List<Vector2> spawnPoints = new ArrayList<>();
 
     // Parameters for the spawn scaling function: f(x) = a * b^(x * c) + d * sin(x + offset) + base
     private final float exponentialStretcher = 25F; //a
@@ -56,7 +55,6 @@ public class EnemySpawnSystem extends IteratingSystem {
      * @param engine the engine to which this system belongs
      */
     private EnemySpawnSystem(Engine engine) {
-        super(Family.all().get());
         this.engine = engine;
         this.bottomLayer =
         engine
@@ -83,7 +81,6 @@ public class EnemySpawnSystem extends IteratingSystem {
     public static EnemySpawnSystem create(Engine engine) {
         if (instance == null) {
             instance = new EnemySpawnSystem(engine);
-            engine.addSystem(instance);
         }
         return instance;
     }
@@ -121,14 +118,6 @@ public class EnemySpawnSystem extends IteratingSystem {
         );
 
         return spawnOrc(orcCount) && spawnGoblin(goblinCount) && spawnDemon(demonCount);
-    }
-
-    /**
-     * Required by {@link IteratingSystem}, but unused.
-     */
-    @Override
-    protected void processEntity(Entity entity, float deltaTime) {
-        // No per-entity processing required for this system
     }
 
     /**

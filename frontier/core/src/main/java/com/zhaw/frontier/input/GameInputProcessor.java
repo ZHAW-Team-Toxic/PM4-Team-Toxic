@@ -75,14 +75,8 @@ public class GameInputProcessor extends InputAdapter {
     public boolean keyDown(int keycode) {
         // Retrieve the BuildingManagerSystem from the engine.
         BuildingManagerSystem buildingManagerSystem = engine.getSystem(BuildingManagerSystem.class);
-        EnemySpawnSystem enemyManagementSystem = engine.getSystem(EnemySpawnSystem.class);
         if (buildingManagerSystem == null) {
             Gdx.app.error("GameInputProcessor", "BuildingManagerSystem not found in engine!");
-            return false;
-        }
-
-        if (enemyManagementSystem == null) {
-            Gdx.app.error("GameInputProcessor", "EnemyManagementSystem not found in engine!");
             return false;
         }
 

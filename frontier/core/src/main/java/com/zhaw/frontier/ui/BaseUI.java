@@ -111,16 +111,10 @@ public class BaseUI {
             () -> {
                 demolishButton.setDisabled(true);
                 buildButton.setDisabled(true);
-                TurnSystem
-                    .getInstance()
-                    .executeTurn(GamePhase.COLLECTION, ResourceProductionSystem.getInstance());
-                TurnSystem
-                    .getInstance()
-                    .executeTurn(GamePhase.BUILD_AND_PLAN, ResourceProductionSystem.getInstance());
+                TurnSystem.getInstance().executeTurn(GamePhase.COLLECTION);
+                TurnSystem.getInstance().executeTurn(GamePhase.BUILD_AND_PLAN);
                 if (TurnSystem.getInstance().isEnemyTurn()) {
-                    TurnSystem
-                        .getInstance()
-                        .executeTurn(GamePhase.ENEMY_TURN, EnemySpawnSystem.getInstance());
+                    TurnSystem.getInstance().executeTurn(GamePhase.ENEMY_TURN);
                 }
                 Timer.schedule(
                     new Timer.Task() {
