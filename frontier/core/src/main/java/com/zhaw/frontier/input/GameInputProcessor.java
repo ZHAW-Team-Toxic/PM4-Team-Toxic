@@ -18,6 +18,7 @@ import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.enums.AppEnvironment;
+import com.zhaw.frontier.enums.EnemyType;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemySpawnSystem;
 import com.zhaw.frontier.utils.QueueAnimation;
@@ -140,7 +141,7 @@ public class GameInputProcessor extends InputAdapter {
                 "GameInputProcessor",
                 "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
-            Entity enemyBasic = EnemyFactory.createPatrolEnemy(mouseX, mouseY);
+            Entity enemyBasic = EnemyFactory.createEnemy(EnemyType.ORC, mouseX, mouseY);
             PositionComponent pos = enemyBasic.getComponent(PositionComponent.class);
             BottomLayerComponent bottomLayerComponent = engine
                 .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
@@ -157,12 +158,32 @@ public class GameInputProcessor extends InputAdapter {
             return true;
         }
 
+        if (keycode == Input.Keys.O) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyBasic = EnemyFactory.createEnemy(EnemyType.DEMON, mouseX, mouseY);
+            engine.addEntity(enemyBasic);
+            return true;
+        }
+
+        if (keycode == Input.Keys.G) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyBasic = EnemyFactory.createEnemy(EnemyType.GOBLIN, mouseX, mouseY);
+            engine.addEntity(enemyBasic);
+            return true;
+        }
+
         if (keycode == Input.Keys.I) {
             Gdx.app.debug(
                 "GameInputProcessor",
                 "I pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
-            Entity enemyIdle = EnemyFactory.createIdleEnemy(mouseX, mouseY);
+            Entity enemyIdle = EnemyFactory.createIdleEnemy(EnemyType.ORC, mouseX, mouseY);
             PositionComponent pos = enemyIdle.getComponent(PositionComponent.class);
             BottomLayerComponent bottomLayerComponent = engine
                 .getEntitiesFor(Family.one(BottomLayerComponent.class).get())

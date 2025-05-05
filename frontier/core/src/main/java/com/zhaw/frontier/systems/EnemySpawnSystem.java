@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
+import com.zhaw.frontier.enums.EnemyType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -155,7 +156,7 @@ public class EnemySpawnSystem {
     private boolean spawnOrc(int count) {
         for (int i = 0; i < count; i++) {
             Vector2 spawn = getRandSpawnPointOnMap();
-            Entity orc = EnemyFactory.createIdleEnemy(spawn.x, spawn.y);
+            Entity orc = EnemyFactory.createIdleEnemy(EnemyType.ORC, spawn.x, spawn.y);
             engine.addEntity(orc);
         }
         Gdx.app.debug("[DEBUG] - EnemySpawnManager", "Orcs spawned " + count);
@@ -171,7 +172,7 @@ public class EnemySpawnSystem {
     private boolean spawnGoblin(int count) {
         for (int i = 0; i < count; i++) {
             Vector2 spawn = getRandSpawnPointOnMap();
-            Entity goblin = EnemyFactory.createIdleEnemy(spawn.x, spawn.y);
+            Entity goblin = EnemyFactory.createIdleEnemy(EnemyType.GOBLIN, spawn.x, spawn.y);
             engine.addEntity(goblin);
         }
         Gdx.app.debug("[DEBUG] - EnemySpawnManager", "Goblins spawned " + count);
@@ -187,7 +188,7 @@ public class EnemySpawnSystem {
     private boolean spawnDemon(int count) {
         for (int i = 0; i < count; i++) {
             Vector2 spawn = getRandSpawnPointOnMap();
-            Entity demon = EnemyFactory.createIdleEnemy(spawn.x, spawn.y);
+            Entity demon = EnemyFactory.createIdleEnemy(EnemyType.DEMON, spawn.x, spawn.y);
             engine.addEntity(demon);
         }
         Gdx.app.debug("[DEBUG] - EnemySpawnManager", "Demons spawned " + count);
