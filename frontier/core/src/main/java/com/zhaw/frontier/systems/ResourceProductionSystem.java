@@ -36,7 +36,7 @@ import java.util.Map;
 public class ResourceProductionSystem extends EntitySystem {
 
     private static ResourceProductionSystem instance;
-    private Engine engine;
+    private final Engine engine;
     private ImmutableArray<Entity> productionBuildings;
 
     private ResourceProductionSystem(Engine engine) {

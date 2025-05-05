@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
@@ -14,11 +15,12 @@ import java.util.EnumMap;
 
 /**
  * Factory class for creating enemy entities in the game.
- * This class provides methods to create different types of enemies with specific behaviors.
+ * This class provides methods to create different types of enemies with
+ * specific behaviors.
  * Current enemies are:
  * - Orcs:
- *   - Patrol
- *   - Idle
+ * - Patrol
+ * - Idle
  */
 public class EnemyFactory {
 
@@ -33,6 +35,7 @@ public class EnemyFactory {
 
     /**
      * Creates a new enemy entity with patrol behavior.
+     *
      * @param x The x-coordinate of the enemy's position.
      * @param y The y-coordinate of the enemy's position.
      * @return The created enemy entity.
@@ -46,6 +49,7 @@ public class EnemyFactory {
 
     /**
      * Creates a new enemy entity with idle behavior.
+     *
      * @param x The x-coordinate of the enemy's position.
      * @param y The y-coordinate of the enemy's position.
      * @return The created enemy entity.
@@ -172,7 +176,7 @@ public class EnemyFactory {
 
         HealthComponent health = new HealthComponent();
         health.maxHealth = 100;
-        health.currentHealth = 99;
+        health.currentHealth = 100;
         enemy.add(health);
 
         // Render-Komponente mit LayeredSprites
@@ -200,11 +204,17 @@ public class EnemyFactory {
         AnimationQueueComponent queue = new AnimationQueueComponent();
         enemy.add(queue);
 
+        // Collision
+        var collision = new CircleCollisionComponent();
+        collision.collisionObject = new Circle(x, y, 1);
+
         // Komponenten hinzufügen
         enemy.add(position);
+        enemy.add(health);
         enemy.add(velocity);
         enemy.add(render);
         enemy.add(enemyAnimation);
+        enemy.add(collision);
         enemy.add(new EnemyComponent());
 
         return enemy;

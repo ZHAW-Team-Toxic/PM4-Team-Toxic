@@ -40,23 +40,28 @@ import lombok.Getter;
  * 0,0,1,3,3,3,1,0,0
  *
  * Spawn area: 0
- *  - Properties on Tile: isBuildable: {false}, isSpawnPoint: {true}, isTraversable: {true}
+ * - Properties on Tile: isBuildable: {false}, isSpawnPoint: {true},
+ * isTraversable: {true}
  * Buildable area: 1
- *  - Properties on Tile: isBuildable: {true}, isSpawnPoint: {false}, isTraversable: {true}
+ * - Properties on Tile: isBuildable: {true}, isSpawnPoint: {false},
+ * isTraversable: {true}
  * Water area: 2
- *  - Properties on Tile: isBuildable: {false}, isTraversable: {false}
+ * - Properties on Tile: isBuildable: {false}, isTraversable: {false}
  * Wood resource tile: 3
- *  - Properties on Tile: isBuildable: {false}, isTraversable: {true}, resourceType: {wood}
+ * - Properties on Tile: isBuildable: {false}, isTraversable: {true},
+ * resourceType: {wood}
  * Stone resource tile: 4
- *  - Properties on Tile: isBuildable: {false}, isTraversable: {true}, resourceType: {stone}
+ * - Properties on Tile: isBuildable: {false}, isTraversable: {true},
+ * resourceType: {stone}
  * Iron resource tile: 5
- *  - Properties on Tile: isBuildable: {false}, isTraversable: {true}, resourceType: {iron}
+ * - Properties on Tile: isBuildable: {false}, isTraversable: {true},
+ * resourceType: {iron}
  *
  * Important:
- *  - The map is 9x9 tiles.
- *  - Tiles are 16 x 16 pixels.
- *  - (0,0) is the bottom left corner of the map.
- *    - Map gets rendered from bottom left corner.
+ * - The map is 9x9 tiles.
+ * - Tiles are 16 x 16 pixels.
+ * - (0,0) is the bottom left corner of the map.
+ * - Map gets rendered from bottom left corner.
  */
 public class TestMapEnvironment {
 
@@ -81,9 +86,10 @@ public class TestMapEnvironment {
     /**
      * Constructs and initializes the test environment:
      * <ul>
-     *     <li>Sets up camera and viewport</li>
-     *     <li>Loads the test map and layer entities</li>
-     *     <li>Asserts coordinate conversion via {@link #checkIfScreenConversionWorks()}</li>
+     * <li>Sets up camera and viewport</li>
+     * <li>Loads the test map and layer entities</li>
+     * <li>Asserts coordinate conversion via
+     * {@link #checkIfScreenConversionWorks()}</li>
      * </ul>
      *
      * @throws RuntimeException if the map file is missing or invalid
@@ -114,7 +120,7 @@ public class TestMapEnvironment {
         if (!fileHandle.exists()) {
             throw new RuntimeException("Map file does not exist: " + mapPath);
         }
-        MapLoader mapLoader = new MapLoader();
+        MapLoader mapLoader = MapLoader.getInstance();
         assetManager = new AssetManager();
         try {
             mapLoader.loadMap(assetManager, Path.of(mapPath));
@@ -196,7 +202,8 @@ public class TestMapEnvironment {
     /**
      * Converts a tile Y coordinate to a screen coordinate.
      * <p>
-     * This method corrects for the inverted Y axis caused by the difference between Tiled's top-left
+     * This method corrects for the inverted Y axis caused by the difference between
+     * Tiled's top-left
      * origin and libGDX's bottom-left origin.
      * </p>
      *
@@ -210,7 +217,8 @@ public class TestMapEnvironment {
     /**
      * Validates that tile-to-screen coordinate conversion works as expected.
      *
-     * <p>This method converts tile (5,5) to screen coordinates and unprojects them
+     * <p>
+     * This method converts tile (5,5) to screen coordinates and unprojects them
      * using {@link WorldCoordinateUtils#calculateWorldCoordinate}.
      * It asserts that the unprojected result matches (5,5) world coordinates.
      * </p>

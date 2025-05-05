@@ -3,6 +3,7 @@ package com.zhaw.frontier.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.zhaw.frontier.components.AnimationQueueComponent;
 import com.zhaw.frontier.components.BuildingAnimationComponent;
 import com.zhaw.frontier.components.EnemyAnimationComponent;
@@ -12,14 +13,18 @@ import com.zhaw.frontier.components.RenderComponent;
  * Handles the animation processing of entities based on their animation state.
  *
  * <p>
- * The {@code AnimationSystem} is an Ashley ECS system that manages both conditional (queued)
- * and default animations for entities with either {@link EnemyAnimationComponent} or
+ * The {@code AnimationSystem} is an Ashley ECS system that manages both
+ * conditional (queued)
+ * and default animations for entities with either
+ * {@link EnemyAnimationComponent} or
  * {@link BuildingAnimationComponent}, and a {@link RenderComponent}.
  * </p>
  *
  * <p>
- * Conditional animations (e.g. attack, damage) take precedence and are handled by
- * {@link QueueAnimationManager}, whereas fallback animations (e.g. idle, walk) are handled
+ * Conditional animations (e.g. attack, damage) take precedence and are handled
+ * by
+ * {@link QueueAnimationManager}, whereas fallback animations (e.g. idle, walk)
+ * are handled
  * by {@link DefaultAnimationManager}.
  * </p>
  */
@@ -29,7 +34,8 @@ public class AnimationSystem extends IteratingSystem {
     private final QueueAnimationManager conditionalManager;
 
     /**
-     * Creates a new {@code AnimationSystem} that processes entities with animation and rendering components.
+     * Creates a new {@code AnimationSystem} that processes entities with animation
+     * and rendering components.
      */
     public AnimationSystem() {
         super(
@@ -40,10 +46,12 @@ public class AnimationSystem extends IteratingSystem {
         );
         this.defaultManager = new DefaultAnimationManager();
         this.conditionalManager = new QueueAnimationManager();
+        Gdx.app.debug("AnimationSystem", "initialized");
     }
 
     /**
-     * Called once per frame for each matching entity. Delegates to {@link #update(Entity, float)}.
+     * Called once per frame for each matching entity. Delegates to
+     * {@link #update(Entity, float)}.
      *
      * @param entity    the entity to process
      * @param deltaTime time elapsed since last frame (in seconds)
@@ -54,7 +62,8 @@ public class AnimationSystem extends IteratingSystem {
     }
 
     /**
-     * Applies animation logic depending on the presence and content of the {@link AnimationQueueComponent}.
+     * Applies animation logic depending on the presence and content of the
+     * {@link AnimationQueueComponent}.
      *
      * <p>
      * If the queue is not empty, processes the current conditional animation.

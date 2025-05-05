@@ -2,6 +2,7 @@ package com.zhaw.frontier.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -19,7 +20,8 @@ import lombok.Getter;
  * {@link AssetManager} and initializing the corresponding map layer entities
  * in the Ashley engine.
  * <p>
- * It follows a singleton pattern to ensure only one instance of the map loader is used.
+ * It follows a singleton pattern to ensure only one instance of the map loader
+ * is used.
  * </p>
  */
 public class MapLoader {
@@ -55,10 +57,13 @@ public class MapLoader {
     }
 
     /**
-     * Loads a tiled map from the specified path using the provided {@link AssetManager}.
+     * Loads a tiled map from the specified path using the provided
+     * {@link AssetManager}.
      * <p>
-     * The {@link AssetManager} is configured with a {@link TmxMapLoader} to load {@link TiledMap}
-     * files. If any error occurs during loading, a {@link MapLoadingException} is thrown.
+     * The {@link AssetManager} is configured with a {@link TmxMapLoader} to load
+     * {@link TiledMap}
+     * files. If any error occurs during loading, a {@link MapLoadingException} is
+     * thrown.
      * </p>
      *
      * @param assetManager the {@link AssetManager} used to load assets.
@@ -79,14 +84,18 @@ public class MapLoader {
     /**
      * Initializes the map layer entities in the given {@link Engine}.
      * <p>
-     * This method retrieves the loaded {@link TiledMap} from the {@link AssetManager} and creates a
-     * map entity using the {@link MapFactory}. It then assigns the bottom, decoration, and resource layers
-     * to the corresponding components of the map entity before adding it to the engine.
+     * This method retrieves the loaded {@link TiledMap} from the
+     * {@link AssetManager} and creates a
+     * map entity using the {@link MapFactory}. It then assigns the bottom,
+     * decoration, and resource layers
+     * to the corresponding components of the map entity before adding it to the
+     * engine.
      * </p>
      *
      * @param engine the {@link Engine} that manages entities.
      */
     public void initMapLayerEntities(Engine engine) {
+        Gdx.app.debug("MapLoader", "Initializing Map Layer Entities.");
         map = assetManager.get(mapPath.toString(), TiledMap.class);
         mapEntity = MapFactory.createDefaultMap(engine);
         mapEntity.getComponent(BottomLayerComponent.class).bottomLayer =
@@ -95,6 +104,37 @@ public class MapLoader {
         (TiledMapTileLayer) map.getLayers().get(1);
         mapEntity.getComponent(ResourceLayerComponent.class).resourceLayer =
         (TiledMapTileLayer) map.getLayers().get(2);
+
         engine.addEntity(mapEntity);
+        Gdx.app.debug(
+            "MapLoader",
+            "Layer " +
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(BottomLayerComponent.class)
+                .bottomLayer.getName() +
+            " loaded."
+        );
+        Gdx.app.debug(
+            "MapLoader",
+            "Layer " +
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(DecorationLayerComponent.class)
+                .decorationLayer.getName() +
+            " loaded."
+        );
+        Gdx.app.debug(
+            "MapLoader",
+            "Layer " +
+            MapLoader
+                .getInstance()
+                .getMapEntity()
+                .getComponent(ResourceLayerComponent.class)
+                .resourceLayer.getName() +
+            " loaded."
+        );
     }
 }

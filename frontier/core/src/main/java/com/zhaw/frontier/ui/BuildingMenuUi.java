@@ -3,6 +3,7 @@ package com.zhaw.frontier.ui;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -26,6 +27,7 @@ import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.EngineHelper;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -160,10 +162,13 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private void createTowerButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
-        ImageButton btn1 = createImageButton(TowerFactory::createDefaultTower);
+        ImageButton btn1 = createImageButton(
+            TowerFactory::createDefaultTower,
+            atlas.findRegion("Wood_Tower1")
+        );
         ImageButton btn2 = createImageButton(TowerFactory::createDefaultTower);
         allButtons.add(btn1, btn2);
-        groupTable.add(toContainer(btn1)).pad(2);
+        groupTable.add(toSizedContainer(btn1, 64, 128)).pad(2);
         groupTable.add(toContainer(btn2)).pad(2);
     }
 
@@ -185,6 +190,18 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         groupTable.add(toContainer(wall2)).pad(2);
     }
 
+    private ImageButton createImageButton(
+        BuildableFactory buildableFactory,
+        TextureRegion buttonImage
+    ) {
+        ImageButtonStyle style = new ImageButtonStyle();
+        TextureRegionDrawable init = new TextureRegionDrawable(buttonImage);
+        style.up = init;
+        ImageButton button = new ImageButton(style);
+        buttonFactoryMap.putIfAbsent(button, buildableFactory);
+        return button;
+    }
+
     private ImageButton createImageButton(BuildableFactory buildableFactory) {
         ImageButtonStyle style = new ImageButtonStyle();
         TextureRegionDrawable init = new TextureRegionDrawable(atlas.findRegion("demo/donkey"));
@@ -195,8 +212,16 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private Container<ImageButton> toContainer(ImageButton imageButton) {
+        return toSizedContainer(imageButton, 64, 64);
+    }
+
+    private Container<ImageButton> toSizedContainer(
+        ImageButton imageButton,
+        int width,
+        int height
+    ) {
         Container<ImageButton> container = new Container<>(imageButton);
-        container.size(64, 64).pad(5);
+        container.size(width, height).pad(5);
         imageButton.addListener(
             new ChangeListener() {
                 @Override
@@ -214,8 +239,9 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
 
     /**
      * Creates an input adapter that switches between building and demolishing mode.
-     * @param engine    The engine instance to use for building and demolishing
-     * @return          The input adapter that switches between building and demolishing mode
+     *
+     * @param engine The engine instance to use for building and demolishing
+     * @return The input adapter that switches between building and demolishing mode
      */
     public InputAdapter createInputAdapter(Engine engine) {
         return new InputAdapter() {
@@ -227,7 +253,10 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
                     if (selectedFactory != null) {
                         engine
                             .getSystem(BuildingManagerSystem.class)
-                            .placeBuilding(selectedFactory.create(engine, screenX, screenY));
+                            .placeBuilding(
+                                selectedFactory.create(engine, screenX, screenY),
+                                EngineHelper.getInventoryComponent(engine)
+                            );
                         return true;
                     }
                     return false;

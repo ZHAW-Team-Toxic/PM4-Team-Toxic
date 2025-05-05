@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -16,8 +17,10 @@ import lombok.Getter;
 /**
  * System for controlling the camera.
  * <p>
- * This system is responsible for updating the camera and the input adapter. The camera is updated based on input events
- * processed via the {@link RTSInputAdapter}. In future versions, the camera may be controlled through ECS components.
+ * This system is responsible for updating the camera and the input adapter. The
+ * camera is updated based on input events
+ * processed via the {@link RTSInputAdapter}. In future versions, the camera may
+ * be controlled through ECS components.
  * </p>
  */
 public class CameraControlSystem extends IteratingSystem {
@@ -39,7 +42,8 @@ public class CameraControlSystem extends IteratingSystem {
      *
      * @param viewport the {@link ExtendViewport} to be used for rendering.
      * @param engine   the {@link Engine} used for managing entities and systems.
-     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering tile maps.
+     * @param renderer the {@link OrthogonalTiledMapRenderer} used for rendering
+     *                 tile maps.
      */
     public CameraControlSystem(
         ExtendViewport viewport,
@@ -52,12 +56,25 @@ public class CameraControlSystem extends IteratingSystem {
         this.renderer = renderer;
         setUpGameCamera(viewport);
         inputAdapter = new RTSInputAdapter(viewport);
+        Gdx.app.debug("CameraControlSystem", "initialized");
+        Gdx.app.debug(
+            "CameraControlSystem",
+            "Camera Control System initialized." +
+            " Camera position: " +
+            ((OrthographicCamera) camera).position.x +
+            " x " +
+            ((OrthographicCamera) camera).position.y +
+            " y" +
+            " Camera zoom: " +
+            ((OrthographicCamera) camera).zoom
+        );
     }
 
     /**
      * Updates the camera and input adapter each frame.
      * <p>
-     * This method calls the super update method to process any entities (currently none), sets the renderer view to the camera,
+     * This method calls the super update method to process any entities (currently
+     * none), sets the renderer view to the camera,
      * applies the viewport, and updates the input adapter.
      * </p>
      *
@@ -75,8 +92,10 @@ public class CameraControlSystem extends IteratingSystem {
     /**
      * Processes each camera entity.
      * <p>
-     * Currently, this method is not used because the camera is not updated per entity.
-     * In the future, the {@link RTSInputAdapter} might utilize a camera component to update individual camera entities.
+     * Currently, this method is not used because the camera is not updated per
+     * entity.
+     * In the future, the {@link RTSInputAdapter} might utilize a camera component
+     * to update individual camera entities.
      * </p>
      *
      * @param entity    the current entity being processed.
@@ -84,14 +103,17 @@ public class CameraControlSystem extends IteratingSystem {
      */
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        // TODO: RTSInputAdapter should use camera component for processing individual entities.
+        // TODO: RTSInputAdapter should use camera component for processing individual
+        // entities.
     }
 
     /**
      * Sets up the game camera.
      * <p>
-     * This method initializes a new {@link OrthographicCamera}, sets its position and zoom,
-     * updates the camera, and assigns it to the provided viewport. Additionally, it creates a camera entity using the
+     * This method initializes a new {@link OrthographicCamera}, sets its position
+     * and zoom,
+     * updates the camera, and assigns it to the provided viewport. Additionally, it
+     * creates a camera entity using the
      * {@link CameraFactory} and adds it to the engine.
      * </p>
      *

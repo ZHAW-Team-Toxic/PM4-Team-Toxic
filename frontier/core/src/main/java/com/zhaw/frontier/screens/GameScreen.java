@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,13 +15,16 @@ import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
-import com.zhaw.frontier.components.map.DecorationLayerComponent;
-import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.CursorFactory;
+import com.zhaw.frontier.entityFactories.CursorFactory;
+import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.StateDirectionalTextureSystem;
+import com.zhaw.frontier.systems.TowerTargetingSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
@@ -82,48 +84,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public void show() {
         Gdx.app.setLogLevel(this.frontierGame.getAppConfig().getLogLevel());
         // setup up ecs(entity component system)
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing the engine.");
+        Gdx.app.debug("GameScreen", "Initializing the engine.");
 
-        //set-up Map
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Map Layer Entities.");
+        // set-up Map
         MapLoader.getInstance().initMapLayerEntities(engine);
-        Gdx.app.debug(
-            "[DEBUG] - GameScreen",
-            "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(BottomLayerComponent.class)
-                .bottomLayer.getName() +
-            " loaded."
-        );
-        Gdx.app.debug(
-            "[DEBUG] - GameScreen",
-            "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(DecorationLayerComponent.class)
-                .decorationLayer.getName() +
-            " loaded."
-        );
-        Gdx.app.debug(
-            "[DEBUG] - GameScreen",
-            "Layer " +
-            MapLoader
-                .getInstance()
-                .getMapEntity()
-                .getComponent(ResourceLayerComponent.class)
-                .resourceLayer.getName() +
-            " loaded."
-        );
-
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing sample layer.");
-        //init sample layer  as base for the map width / map height
+        Gdx.app.debug("GameScreen", "Initializing sample layer.");
+        // init sample layer as base for the map width / map height
         sampleLayer =
         MapLoader.getInstance().getMapEntity().getComponent(BottomLayerComponent.class).bottomLayer;
         Gdx.app.debug(
-            "[DEBUG] - GameScreen",
+            "GameScreen",
             "Sample Layer loaded. Map width: " +
             sampleLayer.getWidth() +
             " Map height: " +
@@ -136,57 +106,33 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
-
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Movement System.");
         engine.addSystem(new MovementSystem());
-        Gdx.app.debug("[DEBUG] - GameScreen", "Movement System initialized.");
-
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Animation System.");
         engine.addSystem(new AnimationSystem());
-        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
-
+        engine.addSystem(new StateDirectionalTextureSystem());
+        engine.addSystem(new ProjectileCollisionSystem());
         engine.addSystem(new SoundSystem());
+        engine.addSystem(new HealthSystem());
+        engine.addSystem(new TowerTargetingSystem());
+        engine.addSystem(new CooldownSystem());
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
-        Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Remover System.");
-
-        Gdx.app.debug("[DEBUG] - GameScreen", "Building Remover System initialized.");
-
-        Gdx.app.debug("[DEBUG] - GameScreen", "Building Manager System initialized.");
-
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Camera Control System.");
         engine.addSystem(cameraControlSystem);
-        Gdx.app.debug(
-            "[DEBUG] - GameScreen",
-            "Camera Control System initialized." +
-            " Camera position: " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).position.x +
-            " x " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).position.y +
-            " y" +
-            " Camera zoom: " +
-            ((OrthographicCamera) cameraControlSystem.getCamera()).zoom
-        );
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Creating stock entity.");
+        Gdx.app.debug("GameScreen", "Creating stock entity.");
         Entity stock = engine.createEntity();
         stock.add(new InventoryComponent());
         stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
         engine.addEntity(stock);
-        Gdx.app.debug("[DEBUG] - GameScreen", "Stock entity created.");
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Resource Tracking System.");
+        Gdx.app.debug("GameScreen", "Initializing Resource Tracking System.");
 
         // TODO: remove this line, when the resource production system is implemented
-        //ResourceProductionSystem resourceProductionSystem = new ResourceProductionSystem(engine);
+        // ResourceProductionSystem resourceProductionSystem = new
+        // ResourceProductionSystem(engine);
         ResourceProductionSystem.init(engine);
         resourceProductionSystem = ResourceProductionSystem.getInstance();
-
         engine.addSystem(resourceProductionSystem);
-        Gdx.app.debug("[DEBUG] - GameScreen", "Resource Tracking System initialized.");
 
         // create game ui
         gameUi = new ScreenViewport();
@@ -195,10 +141,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
         baseUI.addObserver(buildingMenuUi);
         buildingMenuUi.addObserver(this);
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Render System.");
-        //setup render system
+        Gdx.app.debug("GameScreen", "Initializing Render System.");
+        // setup render system
         engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
-        Gdx.app.debug("[DEBUG] - GameScreen", "Render System initialized.");
         // create resource ui
         skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
@@ -227,17 +172,19 @@ public class GameScreen implements Screen, ButtonClickObserver {
         mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
 
         Gdx.input.setInputProcessor(mx);
-        //***********************************
+        // ***********************************
         // Test Inventory for testing resource production for wood
         /*
-        Entity testLumberMill = engine.createEntity();
-        ResourceProductionComponent production = new ResourceProductionComponent();
-        production.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 2); // 2 Holz pro angrenzende Ressource
-        production.countOfAdjacentResources = 3; // simuliert 3 angrenzende Wald-Tiles
-        testLumberMill.add(production);
-        engine.addEntity(testLumberMill);
-        */
-        //***********************************
+         * Entity testLumberMill = engine.createEntity();
+         * ResourceProductionComponent production = new ResourceProductionComponent();
+         * production.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 2); // 2
+         * Holz pro angrenzende Ressource
+         * production.countOfAdjacentResources = 3; // simuliert 3 angrenzende
+         * Wald-Tiles
+         * testLumberMill.add(production);
+         * engine.addEntity(testLumberMill);
+         */
+        // ***********************************
     }
 
     @Override
@@ -256,13 +203,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             frontierGame.switchScreen(new PauseScreen(frontierGame, this));
         }
-        //***********************************
+        // ***********************************
         // Simulate resource production -> Temporary for testing
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             // Simulate end of turn
             resourceProductionSystem.endTurn();
         }
-        //***********************************
+        // ***********************************
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             SoundSystem soundSystem = engine.getSystem(SoundSystem.class);

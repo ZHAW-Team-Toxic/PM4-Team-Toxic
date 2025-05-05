@@ -18,12 +18,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 /**
  * Integration tests for verifying the resource production and tracking system.
  *
- * <p>This test suite uses a test map and simulates the placement of resource-producing buildings.
- * It verifies whether the correct resources are collected and stored in the global inventory based
- * on adjacent resource tiles and production rate configuration.</p>
+ * <p>
+ * This test suite uses a test map and simulates the placement of
+ * resource-producing buildings.
+ * It verifies whether the correct resources are collected and stored in the
+ * global inventory based
+ * on adjacent resource tiles and production rate configuration.
+ * </p>
  *
- * <p>The building placement uses screen-to-world coordinate conversion,
- * and validates adjacency to resource tiles using {@link BuildingManagerSystem} and {@code ResourceAdjacencyChecker}.</p>
+ * <p>
+ * The building placement uses screen-to-world coordinate conversion,
+ * and validates adjacency to resource tiles using {@link BuildingManagerSystem}
+ * and {@code ResourceAdjacencyChecker}.
+ * </p>
  *
  * @see ResourceProductionSystem
  * @see BuildingManagerSystem
@@ -37,18 +44,25 @@ public class ResourceTrackingSystemTest {
     private static Engine testEngine;
     private static ExtendViewport gameWorldView;
     private static TestMapEnvironment testMapEnvironment;
+    private static InventoryComponent inventoryComponent;
 
     /**
-     * Sets up the test environment by initializing the test map, engine, and viewport.
+     * Sets up the test environment by initializing the test map, engine, and
+     * viewport.
      *
-     * <p>The environment is configured using {@link TestMapEnvironment}, which loads a 9x9 test TMX map
-     * with predefined tile properties for buildability and resource types.</p>
+     * <p>
+     * The environment is configured using {@link TestMapEnvironment}, which loads a
+     * 9x9 test TMX map
+     * with predefined tile properties for buildability and resource types.
+     * </p>
      */
     @BeforeAll
     public static void setUp() {
         testMapEnvironment = new TestMapEnvironment();
         testEngine = testMapEnvironment.getTestEngine();
         gameWorldView = testMapEnvironment.getGameWorldView();
+        inventoryComponent = new InventoryComponent();
+        inventoryComponent.resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 10);
 
         addSystemsUnderTestHere();
     }
@@ -56,10 +70,12 @@ public class ResourceTrackingSystemTest {
     /**
      * Registers the systems that are under test.
      *
-     * <p>This includes:
+     * <p>
+     * This includes:
      * <ul>
-     *     <li>{@link BuildingManagerSystem} – handles building placement</li>
-     *     <li>{@link ResourceProductionSystem} – processes resource generation per turn</li>
+     * <li>{@link BuildingManagerSystem} – handles building placement</li>
+     * <li>{@link ResourceProductionSystem} – processes resource generation per
+     * turn</li>
      * </ul>
      * A global inventory entity is also added to the engine.
      */
@@ -99,10 +115,12 @@ public class ResourceTrackingSystemTest {
     }
 
     /**
-     * Tests that a wood-producing building at tile (4,2) successfully collects wood resources.
+     * Tests that a wood-producing building at tile (4,2) successfully collects wood
+     * resources.
      *
      * <p>
-     * Expected: After placing the building and running a system update, the inventory should
+     * Expected: After placing the building and running a system update, the
+     * inventory should
      * contain a positive amount of {@link ResourceTypeEnum#RESOURCE_TYPE_WOOD}.
      * </p>
      */
@@ -116,7 +134,10 @@ public class ResourceTrackingSystemTest {
             .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 1);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(building, inventoryComponent),
+            "Building should be placed on buildable tile."
+        );
 
         ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
         rps.endTurn();
@@ -132,10 +153,12 @@ public class ResourceTrackingSystemTest {
     }
 
     /**
-     * Tests that a stone-producing building at tile (2,4) successfully collects stone resources.
+     * Tests that a stone-producing building at tile (2,4) successfully collects
+     * stone resources.
      *
      * <p>
-     * Expected: After placing the building and updating the engine, the inventory should contain
+     * Expected: After placing the building and updating the engine, the inventory
+     * should contain
      * a positive amount of {@link ResourceTypeEnum#RESOURCE_TYPE_STONE}.
      * </p>
      */
@@ -149,7 +172,10 @@ public class ResourceTrackingSystemTest {
             .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 1);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(building, inventoryComponent),
+            "Building should be placed on buildable tile."
+        );
 
         ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
         rps.endTurn();
@@ -165,10 +191,12 @@ public class ResourceTrackingSystemTest {
     }
 
     /**
-     * Tests that an iron-producing building at tile (6,4) successfully collects iron resources.
+     * Tests that an iron-producing building at tile (6,4) successfully collects
+     * iron resources.
      *
      * <p>
-     * Expected: The building has adjacent iron tiles, and after system update, the inventory should
+     * Expected: The building has adjacent iron tiles, and after system update, the
+     * inventory should
      * contain a positive amount of {@link ResourceTypeEnum#RESOURCE_TYPE_IRON}.
      * </p>
      */
@@ -182,7 +210,10 @@ public class ResourceTrackingSystemTest {
             .productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 1);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(building, inventoryComponent),
+            "Building should be placed on buildable tile."
+        );
 
         ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
         rps.endTurn();
@@ -198,10 +229,12 @@ public class ResourceTrackingSystemTest {
     }
 
     /**
-     * Tests that a wood-producing building with production rate 0 does not collect any wood.
+     * Tests that a wood-producing building with production rate 0 does not collect
+     * any wood.
      *
      * <p>
-     * The building is placed at tile (4,4) where no adjacent wood resource is available.
+     * The building is placed at tile (4,4) where no adjacent wood resource is
+     * available.
      * It should be rejected by the {@link BuildingManagerSystem}.
      * </p>
      */
@@ -216,7 +249,7 @@ public class ResourceTrackingSystemTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
-            bms.placeBuilding(building),
+            bms.placeBuilding(building, inventoryComponent),
             "Building should not be placed on a tile where there are no adjacent resources."
         );
         testEngine.removeEntity(building);
@@ -229,7 +262,10 @@ public class ResourceTrackingSystemTest {
         building.getComponent(PositionComponent.class).basePosition.y = tileToScreenY(3);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(building), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(building, inventoryComponent),
+            "Building should be placed on buildable tile."
+        );
 
         ResourceProductionSystem rps = testEngine.getSystem(ResourceProductionSystem.class);
         rps.endTurn();
@@ -251,7 +287,7 @@ public class ResourceTrackingSystemTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
-            bms.placeBuilding(building),
+            bms.placeBuilding(building, inventoryComponent),
             "Should not be placed without adjacent resources."
         );
     }
@@ -259,7 +295,9 @@ public class ResourceTrackingSystemTest {
     /**
      * Cleans up the test environment after all tests have run.
      *
-     * <p>Removes all entities from the engine and disposes of the map environment.</p>
+     * <p>
+     * Removes all entities from the engine and disposes of the map environment.
+     * </p>
      */
     @AfterAll
     public static void tearDown() {
@@ -278,10 +316,12 @@ public class ResourceTrackingSystemTest {
     }
 
     /**
-     * Converts a tile Y-coordinate to screen-space, compensating for Y-axis inversion.
+     * Converts a tile Y-coordinate to screen-space, compensating for Y-axis
+     * inversion.
      *
      * <p>
-     * In libGDX, (0,0) is bottom-left, but in Tiled it's top-left. This method corrects that.
+     * In libGDX, (0,0) is bottom-left, but in Tiled it's top-left. This method
+     * corrects that.
      * </p>
      *
      * @param tileCoord the Y tile coordinate

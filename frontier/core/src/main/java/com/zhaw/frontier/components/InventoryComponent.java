@@ -26,4 +26,14 @@ public class InventoryComponent implements Component {
         resources.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 0);
         resources.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 0);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (var resoucreType : resources.keySet()) {
+            builder.append(resoucreType.name());
+            builder.append(" : " + resources.get(resoucreType) + "\n");
+        }
+        return builder.toString();
+    }
 }
