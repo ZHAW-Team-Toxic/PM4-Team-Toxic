@@ -107,9 +107,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new AnimationSystem());
         Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
 
-        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing HQ Lifecycle System.");
-        engine.addSystem(new HQLifecycleSystem(frontierGame));
-        Gdx.app.debug("[DEBUG] - GameScreen", "HQ Lifecycle System initialized.");
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing win condition system.");
+        engine.addSystem(new WinConditionSystem(frontierGame));
+        Gdx.app.debug("[DEBUG] - GameScreen", "win condition system initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing lose condition system.");
+        engine.addSystem(new LoseConditionSystem(frontierGame));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Lost condition system initialized.");
 
         engine.addSystem(new StateDirectionalTextureSystem());
         engine.addSystem(new ProjectileCollisionSystem());
@@ -197,6 +201,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.update(delta);
         updateUI();
         baseUI.render(delta);
+        checkWinningCondition();
     }
 
     void handleInput() {
@@ -265,6 +270,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
         int ironIncome = income.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_IRON, 0);
 
         resourceUI.updateResources(wood, woodIncome, stone, stoneIncome, iron, ironIncome);
+    }
+
+    private void checkWinningCondition(){
+        if (TurnSystem.getInstance().getTurnCounter() >= 10) {
+            frontierGame.switchScreen(new WinScreen(frontierGame));
+        }
     }
 
     @Override

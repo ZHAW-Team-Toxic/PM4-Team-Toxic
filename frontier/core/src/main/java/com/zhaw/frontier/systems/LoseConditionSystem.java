@@ -8,12 +8,12 @@ import com.zhaw.frontier.components.EntityTypeComponent.EntityType;
 import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.screens.LoseScreen;
 
-public class HQLifecycleSystem extends IteratingSystem {
+public class LoseConditionSystem extends IteratingSystem {
 
     private final FrontierGame frontierGame;
     private boolean hqDestroyed = false;
 
-    public HQLifecycleSystem(FrontierGame frontierGame) {
+    public LoseConditionSystem(FrontierGame frontierGame) {
         super(Family.all(HealthComponent.class, EntityTypeComponent.class).get());
         this.frontierGame = frontierGame;
     }
