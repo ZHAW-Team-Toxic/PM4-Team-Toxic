@@ -111,11 +111,7 @@ public class BaseUI {
             () -> {
                 demolishButton.setDisabled(true);
                 buildButton.setDisabled(true);
-                TurnSystem.getInstance().executeTurn(GamePhase.COLLECTION);
-                TurnSystem.getInstance().executeTurn(GamePhase.BUILD_AND_PLAN);
-                if (TurnSystem.getInstance().isEnemyTurn()) {
-                    TurnSystem.getInstance().executeTurn(GamePhase.ENEMY_TURN);
-                }
+                TurnSystem.getInstance().advanceTurn();
                 Timer.schedule(
                     new Timer.Task() {
                         @Override
@@ -126,6 +122,7 @@ public class BaseUI {
                     },
                     3
                 );
+                System.out.println("It's turn " + TurnSystem.getInstance().getTurnCounter());
                 System.out.println("Skipping time");
             },
             null

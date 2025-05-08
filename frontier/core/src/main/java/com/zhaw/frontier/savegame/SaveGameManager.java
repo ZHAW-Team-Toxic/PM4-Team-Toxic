@@ -11,6 +11,9 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.*;
+import com.zhaw.frontier.enums.GamePhase;
+import com.zhaw.frontier.systems.TurnSystem;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,6 +121,10 @@ public class SaveGameManager {
             gameState.entities.add(data);
         }
 
+        TurnSystem turnSystem = TurnSystem.getInstance();
+        gameState.metadata.put("turnCounter", turnSystem.getTurnCounter());
+        gameState.metadata.put("gamePhase", turnSystem.getGamePhase().name());
+
         FileHandle saveDir = Gdx.files.external("frontier/saves/");
         if (!saveDir.exists()) {
             saveDir.mkdirs();
@@ -155,6 +162,22 @@ public class SaveGameManager {
         }
 
         GameState gameState = json.fromJson(GameState.class, file.readString());
+
+        Object turnObj = gameState.metadata.get("turnCounter");
+        Object phaseObj = gameState.metadata.get("gamePhase");
+
+        if (turnObj instanceof Number turnNumber) {
+            TurnSystem.getInstance().setTurnCounter(turnNumber.intValue());
+        }
+
+        if (phaseObj instanceof String phaseString) {
+            try {
+                GamePhase phase = GamePhase.valueOf(phaseString);
+                TurnSystem.getInstance().setGamePhase(phase);
+            } catch (IllegalArgumentException e) {
+                Gdx.app.log(this.getClass().getSimpleName(), "Unknown game phase: " + phaseString);
+            }
+        }
 
         for (EntityData data : gameState.entities) {
             EntityTypeComponent.EntityType entityType;
