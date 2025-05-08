@@ -13,7 +13,8 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Utility class for checking if a multi-tile building has adjacent resource tiles.
+ * Utility class for checking if a multi-tile building has adjacent resource
+ * tiles.
  */
 public class ResourceAdjacencyChecker {
 
@@ -84,7 +85,7 @@ public class ResourceAdjacencyChecker {
         if (adjacentCount > 0) {
             prod.countOfAdjacentResources = adjacentCount;
             Gdx.app.debug(
-                "[DEBUG] - ResourceAdjacencyChecker",
+                "ResourceAdjacencyChecker",
                 "Found " + adjacentCount + " adjacent resources of type " + requiredType
             );
             return true;

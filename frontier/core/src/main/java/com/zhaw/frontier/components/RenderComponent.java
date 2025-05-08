@@ -12,6 +12,8 @@ public class RenderComponent implements Component {
 
     public enum RenderType {
         BUILDING,
+        TOWER,
+        NORMAL,
         ENEMY,
     }
 

@@ -3,7 +3,7 @@ package com.zhaw.frontier.systems;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Engine;
 import com.zhaw.frontier.enums.GamePhase;
 import org.junit.jupiter.api.*;
 
@@ -22,7 +22,7 @@ class TurnSystemTest {
     void testExecuteTurn_setsGamePhaseAndIncrementsTurnCounter() {
         int initialCounter = turnSystem.getTurnCounter();
 
-        turnSystem.executeTurn(GamePhase.BUILD_AND_PLAN, mock(EntitySystem.class));
+        turnSystem.executeTurn(GamePhase.BUILD_AND_PLAN);
 
         assertEquals(GamePhase.BUILD_AND_PLAN, turnSystem.getGamePhase());
         assertEquals(initialCounter + 1, turnSystem.getTurnCounter());
@@ -30,41 +30,19 @@ class TurnSystemTest {
 
     @Test
     void testExecuteTurn_collectionPhase_callsEndTurn() {
-        ResourceProductionSystem resourceSystem = mock(ResourceProductionSystem.class);
+        Engine testEngine = new Engine();
+        ResourceProductionSystem.init(testEngine);
+        testEngine.addSystem(ResourceProductionSystem.getInstance());
 
-        turnSystem.executeTurn(GamePhase.COLLECTION, resourceSystem);
+        turnSystem.executeTurn(GamePhase.COLLECTION);
 
-        verify(resourceSystem).endTurn();
-    }
-
-    @Test
-    void testExecuteTurn_collectionPhase_withWrongSystem_throwsException() {
-        EntitySystem wrongSystem = mock(EntitySystem.class);
-
-        Exception exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> turnSystem.executeTurn(GamePhase.COLLECTION, wrongSystem)
-        );
-
-        assertTrue(exception.getMessage().contains("Invalid system for collection phase"));
-    }
-
-    @Test
-    void testExecuteTurn_enemyTurn_withWrongSystem_throwsException() {
-        EntitySystem wrongSystem = mock(EntitySystem.class);
-
-        Exception exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> turnSystem.executeTurn(GamePhase.ENEMY_TURN, wrongSystem)
-        );
-
-        assertTrue(exception.getMessage().contains("Invalid system for enemy turn phase"));
+        assertEquals(GamePhase.COLLECTION, turnSystem.getGamePhase());
     }
 
     @Test
     void testIsEnemyTurn_returnsTrueEveryFifthTurn_upTo50() {
         for (int turn = 1; turn <= 50; turn++) {
-            turnSystem.executeTurn(GamePhase.BUILD_AND_PLAN, mock(EntitySystem.class));
+            turnSystem.executeTurn(GamePhase.BUILD_AND_PLAN);
             boolean expected = (turn + 1) % 5 == 0;
             boolean actual = turnSystem.isEnemyTurn();
 

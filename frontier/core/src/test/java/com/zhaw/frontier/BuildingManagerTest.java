@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceGeneratorComponent;
@@ -18,14 +19,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Integration tests for verifying the building placement system handled by {@link BuildingManagerSystem}.
+ * Integration tests for verifying the building placement system handled by
+ * {@link BuildingManagerSystem}.
  *
  * <p>
  * Tests cover:
  * <ul>
- *     <li>Valid placements on buildable tiles</li>
- *     <li>Invalid placements (non-buildable, overlapping, resource tiles)</li>
- *     <li>Special rules for resource-producing buildings</li>
+ * <li>Valid placements on buildable tiles</li>
+ * <li>Invalid placements (non-buildable, overlapping, resource tiles)</li>
+ * <li>Special rules for resource-producing buildings</li>
  * </ul>
  * </p>
  */
@@ -35,11 +37,15 @@ public class BuildingManagerTest {
     private static Engine testEngine;
     private static ExtendViewport gameWorldView;
     private static TestMapEnvironment testMapEnvironment;
+    private static InventoryComponent inventory;
 
     /**
-     * Sets up the test environment by initializing the test map, engine, and viewport.
+     * Sets up the test environment by initializing the test map, engine, and
+     * viewport.
      *
-     * <p>Uses {@link TestMapEnvironment} to prepare the map and provide tile layer access.
+     * <p>
+     * Uses {@link TestMapEnvironment} to prepare the map and provide tile layer
+     * access.
      * Adds the {@link BuildingManagerSystem} to the test engine.
      * </p>
      */
@@ -48,6 +54,8 @@ public class BuildingManagerTest {
         testMapEnvironment = new TestMapEnvironment();
         testEngine = testMapEnvironment.getTestEngine();
         gameWorldView = testMapEnvironment.getGameWorldView();
+        inventory = new InventoryComponent();
+        inventory.resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 10);
 
         addSystemsUnderTestHere();
 
@@ -78,7 +86,10 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(5);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(tower), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(tower, inventory),
+            "Building should be placed on buildable tile."
+        );
         testEngine.removeEntity(tower);
     }
 
@@ -93,12 +104,16 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(3);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(tower), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(tower, inventory),
+            "Building should be placed on buildable tile."
+        );
         testEngine.removeEntity(tower);
     }
 
     /**
-     * Ensures that placement on water or non-buildable terrain is rejected for a 1x1 tower building.
+     * Ensures that placement on water or non-buildable terrain is rejected for a
+     * 1x1 tower building.
      */
     @Test
     public void testBuildingNotPlacedOnNonBuildableTile1x1() {
@@ -109,14 +124,15 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
-            bms.placeBuilding(tower),
+            bms.placeBuilding(tower, inventory),
             "Building should not be placed on non-buildable tile."
         );
         testEngine.removeEntity(tower);
     }
 
     /**
-     * Ensures that placement on water or non-buildable terrain is rejected for a 2x2 tower building.
+     * Ensures that placement on water or non-buildable terrain is rejected for a
+     * 2x2 tower building.
      */
     @Test
     public void testBuildingNotPlacedOnNonBuildableTile2x2() {
@@ -127,14 +143,15 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
-            bms.placeBuilding(tower),
+            bms.placeBuilding(tower, inventory),
             "Building should not be placed on non-buildable tile."
         );
         testEngine.removeEntity(tower);
     }
 
     /**
-     * Ensures that resource tiles (e.g., stone, wood) block placement of non-resource buildings for 1x1.
+     * Ensures that resource tiles (e.g., stone, wood) block placement of
+     * non-resource buildings for 1x1.
      */
     @Test
     public void testBuildingNotPlacedOnResourceTile1x1() {
@@ -144,12 +161,16 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertFalse(bms.placeBuilding(tower), "Building should not be placed on resource tile.");
+        assertFalse(
+            bms.placeBuilding(tower, inventory),
+            "Building should not be placed on resource tile."
+        );
         testEngine.removeEntity(tower);
     }
 
     /**
-     * Ensures that resource tiles (e.g., stone, wood) block placement of non-resource buildings for a 2x2.
+     * Ensures that resource tiles (e.g., stone, wood) block placement of
+     * non-resource buildings for a 2x2.
      */
     @Test
     public void testBuildingNotPlacedOnResourceTile2x2() {
@@ -159,7 +180,10 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertFalse(bms.placeBuilding(tower), "Building should not be placed on resource tile.");
+        assertFalse(
+            bms.placeBuilding(tower, inventory),
+            "Building should not be placed on resource tile."
+        );
         testEngine.removeEntity(tower);
     }
 
@@ -174,14 +198,20 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(tower), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(tower, inventory),
+            "Building should be placed on buildable tile."
+        );
 
         Entity tower2 = createMockedTower(1, 1);
         PositionComponent bp2 = tower2.getComponent(PositionComponent.class);
         bp2.basePosition.x = TestMapEnvironment.tileToScreenX(4);
         bp2.basePosition.y = TestMapEnvironment.tileToScreenY(4);
 
-        assertFalse(bms.placeBuilding(tower2), "Building should not be placed on occupied tile.");
+        assertFalse(
+            bms.placeBuilding(tower2, inventory),
+            "Building should not be placed on occupied tile."
+        );
         testEngine.removeEntity(tower);
     }
 
@@ -197,19 +227,26 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(tower), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(tower, inventory),
+            "Building should be placed on buildable tile."
+        );
 
         Entity tower2 = createMockedTower(2, 2);
         PositionComponent bp2 = tower2.getComponent(PositionComponent.class);
         bp2.basePosition.x = TestMapEnvironment.tileToScreenX(3);
         bp2.basePosition.y = TestMapEnvironment.tileToScreenY(4);
 
-        assertFalse(bms.placeBuilding(tower2), "Building should not be placed on occupied tile.");
+        assertFalse(
+            bms.placeBuilding(tower2, inventory),
+            "Building should not be placed on occupied tile."
+        );
         testEngine.removeEntity(tower);
     }
 
     /**
-     * Tests that a valid resource-producing building is placed correctly when adjacent resource tiles exist.
+     * Tests that a valid resource-producing building is placed correctly when
+     * adjacent resource tiles exist.
      * The resource building is from type "stone".
      */
     @Test
@@ -225,14 +262,15 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(
-            bms.placeBuilding(resourceBuilding),
+            bms.placeBuilding(resourceBuilding, inventory),
             "Building should be placed on buildable tile."
         );
         testEngine.removeEntity(resourceBuilding);
     }
 
     /**
-     * Tests that a valid resource-producing building is placed correctly when adjacent resource tiles exist.
+     * Tests that a valid resource-producing building is placed correctly when
+     * adjacent resource tiles exist.
      * The resource building is from type "stone".
      */
     @Test
@@ -248,7 +286,7 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
 
-        bms.placeBuilding(resourceBuilding);
+        bms.placeBuilding(resourceBuilding, inventory);
 
         ResourceProductionComponent resourceProductionComponent = resourceBuilding.getComponent(
             ResourceProductionComponent.class
@@ -268,7 +306,8 @@ public class BuildingManagerTest {
     }
 
     /**
-     * Tests that a resource-producing building is rejected if no matching adjacent resource tiles exist.
+     * Tests that a resource-producing building is rejected if no matching adjacent
+     * resource tiles exist.
      * The resource building is from type "wood".
      */
     @Test
@@ -284,14 +323,15 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
-            bms.placeBuilding(resourceBuilding),
+            bms.placeBuilding(resourceBuilding, inventory),
             "Building should not be placed without adjacent resource tiles."
         );
         testEngine.removeEntity(resourceBuilding);
     }
 
     /**
-     * Tests that a resource-producing building is rejected if no matching adjacent resource tiles exist.
+     * Tests that a resource-producing building is rejected if no matching adjacent
+     * resource tiles exist.
      * The resource building is from type "wood" and it's a 2x2 building.
      */
     @Test
@@ -307,7 +347,7 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
-            bms.placeBuilding(resourceBuilding),
+            bms.placeBuilding(resourceBuilding, inventory),
             "Building should not be placed without adjacent resource tiles."
         );
         testEngine.removeEntity(resourceBuilding);
@@ -324,7 +364,10 @@ public class BuildingManagerTest {
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(hq, inventory),
+            "Building should be placed on buildable tile."
+        );
         OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
             OccupiesTilesComponent.class
         );
@@ -343,7 +386,10 @@ public class BuildingManagerTest {
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(hq, inventory),
+            "Building should be placed on buildable tile."
+        );
         OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
             OccupiesTilesComponent.class
         );
@@ -352,7 +398,8 @@ public class BuildingManagerTest {
     }
 
     /**
-     * Tests if a building can be removed from a different location than the one it was placed.
+     * Tests if a building can be removed from a different location than the one it
+     * was placed.
      * The building is a 1x1 building.
      */
     @Test
@@ -362,7 +409,10 @@ public class BuildingManagerTest {
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(hq, inventory),
+            "Building should be placed on buildable tile."
+        );
         OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
             OccupiesTilesComponent.class
         );
@@ -390,7 +440,10 @@ public class BuildingManagerTest {
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(hq, inventory),
+            "Building should be placed on buildable tile."
+        );
         OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
             OccupiesTilesComponent.class
         );
@@ -408,7 +461,8 @@ public class BuildingManagerTest {
     }
 
     /**
-     * Tests if a building can be removed from a different location than the one it was placed.
+     * Tests if a building can be removed from a different location than the one it
+     * was placed.
      * The building is a 2x2 building.
      */
     @Test
@@ -418,7 +472,10 @@ public class BuildingManagerTest {
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(hq), "Building should be placed on buildable tile.");
+        assertTrue(
+            bms.placeBuilding(hq, inventory),
+            "Building should be placed on buildable tile."
+        );
         OccupiesTilesComponent occupiesTilesComponent = hq.getComponent(
             OccupiesTilesComponent.class
         );
@@ -447,7 +504,10 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(5);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(tower), "Initial building placement should succeed.");
+        assertTrue(
+            bms.placeBuilding(tower, inventory),
+            "Initial building placement should succeed."
+        );
 
         bp.basePosition.x = TestMapEnvironment.tileToScreenX(5);
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(5);
@@ -461,12 +521,16 @@ public class BuildingManagerTest {
         PositionComponent bp2 = tower2.getComponent(PositionComponent.class);
         bp2.basePosition.set(bp.basePosition);
 
-        assertTrue(bms.placeBuilding(tower2), "Building should be placeable again after removal.");
+        assertTrue(
+            bms.placeBuilding(tower2, inventory),
+            "Building should be placeable again after removal."
+        );
         testEngine.removeEntity(tower2);
     }
 
     /**
-     * Tests if a building can be placed on a tile that is partially occupied by another building.
+     * Tests if a building can be placed on a tile that is partially occupied by
+     * another building.
      * The building is a 2x2 building.
      */
     @Test
@@ -478,14 +542,15 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertFalse(
-            bms.placeBuilding(tower),
+            bms.placeBuilding(tower, inventory),
             "Building should not be placed if part is on non-buildable tiles."
         );
         testEngine.removeEntity(tower);
     }
 
     /**
-     * Tests if a resource building can be placed if the resource is only diagonally adjacent.
+     * Tests if a resource building can be placed if the resource is only diagonally
+     * adjacent.
      * The building is a 1x1 building.
      */
     @Test
@@ -501,7 +566,7 @@ public class BuildingManagerTest {
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
         assertTrue(
-            bms.placeBuilding(resourceBuilding),
+            bms.placeBuilding(resourceBuilding, inventory),
             "Diagonal adjacent resource should be counted."
         );
         testEngine.removeEntity(resourceBuilding);
@@ -519,8 +584,11 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertTrue(bms.placeBuilding(tower), "First placement should succeed.");
-        assertFalse(bms.placeBuilding(tower), "Second placement of same entity should fail.");
+        assertTrue(bms.placeBuilding(tower, inventory), "First placement should succeed.");
+        assertFalse(
+            bms.placeBuilding(tower, inventory),
+            "Second placement of same entity should fail."
+        );
         testEngine.removeEntity(tower);
     }
 
@@ -537,12 +605,16 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(8);
 
         BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
-        assertFalse(bms.placeBuilding(tower), "Placement beyond map bounds should fail.");
+        assertFalse(
+            bms.placeBuilding(tower, inventory),
+            "Placement beyond map bounds should fail."
+        );
         testEngine.removeEntity(tower);
     }
 
     /**
-     * Cleans up the test environment by removing all entities and disposing of map resources.
+     * Cleans up the test environment by removing all entities and disposing of map
+     * resources.
      */
     @AfterAll
     public static void tearDown() {

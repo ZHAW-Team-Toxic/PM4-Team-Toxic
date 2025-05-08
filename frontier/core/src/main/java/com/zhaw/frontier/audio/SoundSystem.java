@@ -14,6 +14,10 @@ import com.badlogic.gdx.audio.Sound;
 
 public class SoundSystem extends EntitySystem {
 
+    public SoundSystem() {
+        Gdx.app.debug("SoundSystem", "initialized");
+    }
+
     Sound clickSound;
     private Music backgroundMusic;
 
