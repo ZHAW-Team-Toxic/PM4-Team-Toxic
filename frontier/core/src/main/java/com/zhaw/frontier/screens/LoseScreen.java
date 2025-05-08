@@ -28,14 +28,19 @@ public class LoseScreen extends ScreenAdapter {
 
         stage.clear();
 
-        new LoseScreenUI(stage, skin, 0, this::openStartScreen);
+        new LoseScreenUI(
+            stage,
+            skin,
+            frontierGame.getGameStats().getEnemiesKilled(),
+            this::openStartScreen
+        );
 
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.2f, 0, 0, 1); // dunkles Rot für "Game Over"
+        Gdx.gl.glClearColor(0.2f, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);

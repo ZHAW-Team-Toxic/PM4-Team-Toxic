@@ -146,6 +146,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new AnimationSystem());
         Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
 
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing HQ Lifecycle System.");
+        engine.addSystem(new HQLifecycleSystem(frontierGame));
+        Gdx.app.debug("[DEBUG] - GameScreen", "HQ Lifecycle System initialized.");
+
         engine.addSystem(new SoundSystem());
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Building Manager System.");
@@ -260,6 +264,10 @@ public class GameScreen implements Screen, ButtonClickObserver {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             // Simulate end of turn
             resourceProductionSystem.endTurn();
+
+            if (TurnSystem.getInstance().getTurnCounter() >= 10) {
+                frontierGame.switchScreen(new WinScreen(frontierGame));
+            }
         }
         //***********************************
 

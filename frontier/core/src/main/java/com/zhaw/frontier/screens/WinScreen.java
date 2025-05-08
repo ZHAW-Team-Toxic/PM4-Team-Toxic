@@ -12,6 +12,7 @@ import com.zhaw.frontier.ui.WinScreenUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 
 public class WinScreen extends ScreenAdapter {
+
     private final FrontierGame frontierGame;
 
     private Stage stage;
@@ -27,7 +28,12 @@ public class WinScreen extends ScreenAdapter {
 
         stage.clear();
 
-        new WinScreenUI(stage, skin, 0, this::openStartScreen);
+        new WinScreenUI(
+            stage,
+            skin,
+            frontierGame.getGameStats().getEnemiesKilled(),
+            this::openStartScreen
+        );
 
         Gdx.input.setInputProcessor(stage);
     }

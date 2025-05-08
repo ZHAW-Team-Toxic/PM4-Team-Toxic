@@ -15,12 +15,14 @@ public class LoseScreenUI {
         Label killStats = new Label("Enemies defeated: " + enemiesKilled, skin);
         TextButton backToMenu = new TextButton("Back to Menu", skin);
 
-        backToMenu.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                openStartScreen.run();
+        backToMenu.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    openStartScreen.run();
+                }
             }
-        });
+        );
 
         table.add(loseLabel).padBottom(30).row();
         table.add(killStats).padBottom(30).row();
