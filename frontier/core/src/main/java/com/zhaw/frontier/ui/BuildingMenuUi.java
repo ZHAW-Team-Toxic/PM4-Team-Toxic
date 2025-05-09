@@ -136,7 +136,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
 
     @Override
     public void buttonClicked(GameMode gameMode) {
-        if (GameMode.BUILDING == gameMode) {
+        if (GameMode.BUILDING == gameMode && !visible) {
             show();
         } else {
             hide();
