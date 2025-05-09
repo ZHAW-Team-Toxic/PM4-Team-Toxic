@@ -122,8 +122,8 @@ public class SaveGameManager {
         }
 
         TurnSystem turnSystem = TurnSystem.getInstance();
-        gameState.metadata.put("turnCounter", turnSystem.getTurnCounter());
-        gameState.metadata.put("gamePhase", turnSystem.getGamePhase().name());
+        gameState.metadata.turnCounter = turnSystem.getTurnCounter();
+        gameState.metadata.gamePhase = turnSystem.getGamePhase();
 
         FileHandle saveDir = Gdx.files.external("frontier/saves/");
         if (!saveDir.exists()) {
@@ -163,21 +163,8 @@ public class SaveGameManager {
 
         GameState gameState = json.fromJson(GameState.class, file.readString());
 
-        Object turnObj = gameState.metadata.get("turnCounter");
-        Object phaseObj = gameState.metadata.get("gamePhase");
-
-        if (turnObj instanceof Number turnNumber) {
-            TurnSystem.getInstance().setTurnCounter(turnNumber.intValue());
-        }
-
-        if (phaseObj instanceof String phaseString) {
-            try {
-                GamePhase phase = GamePhase.valueOf(phaseString);
-                TurnSystem.getInstance().setGamePhase(phase);
-            } catch (IllegalArgumentException e) {
-                Gdx.app.log(this.getClass().getSimpleName(), "Unknown game phase: " + phaseString);
-            }
-        }
+        TurnSystem.getInstance().setTurnCounter(gameState.metadata.turnCounter);
+        TurnSystem.getInstance().setGamePhase(gameState.metadata.gamePhase);
 
         for (EntityData data : gameState.entities) {
             EntityTypeComponent.EntityType entityType;

@@ -1,5 +1,6 @@
 package com.zhaw.frontier.savegame;
 
+import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -22,6 +23,7 @@ import com.zhaw.frontier.entityFactories.HQFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.LoadingScreen;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -349,5 +351,23 @@ public class SaveGameManagerTest {
         var entities = engine.getEntities();
         assertEquals(1, entities.size());
         return entities.first();
+    }
+
+    @Test
+    public void testMetadataSaveAndLoadDirect() {
+        int turnCounter = 42;
+        GamePhase gamePhase = GamePhase.COLLECTION;
+
+        GameState gameState = new GameState();
+        gameState.getMetadata().turnCounter = turnCounter;
+        gameState.getMetadata().gamePhase = gamePhase;
+
+        FileHandle file = Gdx.files.external("frontier/saves/metadata-direct-test.json");
+        file.writeString(json.toJson(gameState), false);
+
+        GameState reloaded = json.fromJson(GameState.class, file.readString());
+
+        assertEquals(turnCounter, reloaded.getMetadata().turnCounter);
+        assertEquals(gamePhase, reloaded.getMetadata().gamePhase);
     }
 }
