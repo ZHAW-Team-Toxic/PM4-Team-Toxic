@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.enums.GameMode;
-import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.*;
@@ -122,7 +121,6 @@ public class BaseUI {
                     },
                     3
                 );
-                System.out.println("It's turn " + TurnSystem.getInstance().getTurnCounter());
                 System.out.println("Skipping time");
             },
             null

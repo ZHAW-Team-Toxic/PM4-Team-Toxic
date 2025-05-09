@@ -1,9 +1,6 @@
 package com.zhaw.frontier.savegame;
 
-import com.zhaw.frontier.enums.GamePhase;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GameState {
 

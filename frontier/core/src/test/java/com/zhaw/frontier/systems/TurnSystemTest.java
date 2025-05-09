@@ -32,7 +32,6 @@ class TurnSystemTest {
         assertEquals(GamePhase.BUILD_AND_PLAN, turnSystem.getGamePhase());
     }
 
-
     @Test
     void testIsEnemyTurn_returnsTrueEveryFifthTurn_upTo50() {
         for (int turn = 1; turn <= 50; turn++) {

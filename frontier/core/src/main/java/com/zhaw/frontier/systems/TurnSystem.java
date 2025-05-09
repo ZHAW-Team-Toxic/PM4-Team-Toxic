@@ -81,7 +81,6 @@ public class TurnSystem {
         turnCounter++;
     }
 
-
     /**
      * Checks if it's the enemy's turn.
      * @return  true if it's the enemy's turn, false otherwise

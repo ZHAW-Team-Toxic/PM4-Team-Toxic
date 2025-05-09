@@ -11,9 +11,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.*;
-import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.systems.TurnSystem;
-
 import java.util.HashMap;
 import java.util.Map;
 
