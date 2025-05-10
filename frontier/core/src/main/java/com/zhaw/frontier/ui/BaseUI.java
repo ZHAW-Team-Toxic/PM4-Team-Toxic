@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.enums.GameMode;
-import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.*;
@@ -111,11 +110,7 @@ public class BaseUI {
             () -> {
                 demolishButton.setDisabled(true);
                 buildButton.setDisabled(true);
-                TurnSystem.getInstance().executeTurn(GamePhase.COLLECTION);
-                TurnSystem.getInstance().executeTurn(GamePhase.BUILD_AND_PLAN);
-                if (TurnSystem.getInstance().isEnemyTurn()) {
-                    TurnSystem.getInstance().executeTurn(GamePhase.ENEMY_TURN);
-                }
+                TurnSystem.getInstance().advanceTurn();
                 Timer.schedule(
                     new Timer.Task() {
                         @Override

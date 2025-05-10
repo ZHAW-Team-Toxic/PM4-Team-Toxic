@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.*;
+import com.zhaw.frontier.systems.TurnSystem;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,6 +119,10 @@ public class SaveGameManager {
             gameState.entities.add(data);
         }
 
+        TurnSystem turnSystem = TurnSystem.getInstance();
+        gameState.metadata.turnCounter = turnSystem.getTurnCounter();
+        gameState.metadata.gamePhase = turnSystem.getGamePhase();
+
         FileHandle saveDir = Gdx.files.external("frontier/saves/");
         if (!saveDir.exists()) {
             saveDir.mkdirs();
@@ -155,6 +160,9 @@ public class SaveGameManager {
         }
 
         GameState gameState = json.fromJson(GameState.class, file.readString());
+
+        TurnSystem.getInstance().setTurnCounter(gameState.metadata.turnCounter);
+        TurnSystem.getInstance().setGamePhase(gameState.metadata.gamePhase);
 
         for (EntityData data : gameState.entities) {
             EntityTypeComponent.EntityType entityType;

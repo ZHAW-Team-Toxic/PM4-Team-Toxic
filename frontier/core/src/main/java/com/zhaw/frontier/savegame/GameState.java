@@ -1,7 +1,6 @@
 package com.zhaw.frontier.savegame;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GameState {
 
@@ -9,5 +8,9 @@ public class GameState {
     public ArrayList<EntityData> entities = new ArrayList<>();
 
     // Additional data
-    public HashMap<String, Object> metadata = new HashMap<>();
+    public MetaData metadata = new MetaData();
+
+    MetaData getMetadata() {
+        return metadata;
+    }
 }
