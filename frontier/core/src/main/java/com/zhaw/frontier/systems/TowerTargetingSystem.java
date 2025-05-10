@@ -11,6 +11,7 @@ import com.zhaw.frontier.components.AttackComponent;
 import com.zhaw.frontier.components.CircleCollisionComponent;
 import com.zhaw.frontier.components.CooldownComponent;
 import com.zhaw.frontier.components.CurrentTargetComponent;
+import com.zhaw.frontier.components.DeathComponent;
 import com.zhaw.frontier.components.EnemyComponent;
 import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.components.PositionComponent;
@@ -45,6 +46,7 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
         super(
             Family
                 .all(TowerAnimationComponent.class, TowerComponent.class, AttackComponent.class)
+                .exclude(DeathComponent.class)
                 .get(),
             0.1f
         );
@@ -63,6 +65,7 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
                 HealthComponent.class,
                 EnemyComponent.class
             )
+            .exclude(DeathComponent.class)
             .get();
 
         this.enemies = engine.getEntitiesFor(enemyFamily);
@@ -98,7 +101,7 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
                 towerPosition,
                 enemyPosition,
                 enemyVelocity,
-                (int) attack.AttackDamage
+                (int) attack.damage
             );
             if (arrow != null) {
                 // set tower direction
@@ -111,7 +114,7 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
                 // add cooldown component
                 var cooldownComponent = new CooldownComponent();
                 cooldownComponent.start = System.currentTimeMillis();
-                cooldownComponent.duration = (long) attack.AttackSpeed;
+                cooldownComponent.duration = (long) attack.attackInterval;
                 tower.add(cooldownComponent);
             }
         } else {
@@ -137,7 +140,7 @@ public class TowerTargetingSystem extends IntervalIteratingSystem {
 
         return (
             enemyPosition.basePosition.dst(towerPosition.basePosition) <=
-            towerAttackComponent.AttackRange
+            towerAttackComponent.attackRange
         );
     }
 }

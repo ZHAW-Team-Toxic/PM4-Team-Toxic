@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IntervalIteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.zhaw.frontier.components.DeathComponent;
 import com.zhaw.frontier.components.HealthComponent;
 
 /**
@@ -17,7 +18,7 @@ public class HealthSystem extends IntervalIteratingSystem {
     );
 
     public HealthSystem() {
-        super(Family.all(HealthComponent.class).get(), 0.5f);
+        super(Family.all(HealthComponent.class).exclude(DeathComponent.class).get(), 0.5f);
         Gdx.app.debug("HealthSystem", "initialized");
     }
 
@@ -30,7 +31,8 @@ public class HealthSystem extends IntervalIteratingSystem {
                 "HealthSystem",
                 "removing entity for having below 0 health" + entity.toString()
             );
-            getEngine().removeEntity(entity);
+            entityHealth.isDead = true;
+            entity.add(new DeathComponent(1.0f));
         }
     }
 }

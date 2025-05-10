@@ -1,12 +1,15 @@
 package com.zhaw.frontier.systems;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.WallPieceComponent;
+import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class responsible for analyzing wall adjacency.
@@ -32,9 +35,19 @@ public class WallAdjacencyChecker {
 
         WallPieceComponent wallPiece = entity.getComponent(WallPieceComponent.class);
         wallPiece.currentWallPiece = determineWallPiece(entity, allWalls);
+
         RenderComponent renderComponent = entity.getComponent(RenderComponent.class);
-        renderComponent.sprites =
-        new HashMap<>(wallPiece.wallPieceTextures.get(wallPiece.currentWallPiece));
+        HashMap<TileOffset, TextureRegion> original = wallPiece.wallPieceTextures.get(
+            wallPiece.currentWallPiece
+        );
+
+        // Deep copy each TextureRegion to prevent shared sprite references
+        HashMap<TileOffset, TextureRegion> deepCopy = new HashMap<>();
+        for (Map.Entry<TileOffset, TextureRegion> entry : original.entrySet()) {
+            deepCopy.put(entry.getKey(), new TextureRegion(entry.getValue())); // clone region
+        }
+
+        renderComponent.sprites = deepCopy;
     }
 
     private static WallPieceComponent.WallPiece determineWallPiece(

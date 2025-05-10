@@ -71,9 +71,10 @@ public class SaveGameManager {
             // Saves the attack information.
             AttackComponent attackComponent = entity.getComponent(AttackComponent.class);
             if (attackComponent != null) {
-                data.damage = attackComponent.AttackDamage;
-                data.range = attackComponent.AttackRange;
-                data.speed = attackComponent.AttackSpeed;
+                data.damage = attackComponent.damage;
+                data.range = attackComponent.attackRange;
+                data.speed = attackComponent.attackInterval;
+                data.cooldown = attackComponent.attackCooldown;
             }
 
             // Saves the inventory
@@ -260,9 +261,10 @@ public class SaveGameManager {
             if (data.damage != null || data.range != null || data.speed != null) {
                 AttackComponent attack = entity.getComponent(AttackComponent.class);
                 if (attack != null) {
-                    if (data.damage != null) attack.AttackDamage = data.damage;
-                    if (data.range != null) attack.AttackRange = data.range;
-                    if (data.speed != null) attack.AttackSpeed = data.speed;
+                    if (data.damage != null) attack.damage = data.damage;
+                    if (data.range != null) attack.attackRange = data.range;
+                    if (data.speed != null) attack.attackInterval = data.speed;
+                    if (data.cooldown != null) attack.attackCooldown = data.cooldown;
                 }
             }
 

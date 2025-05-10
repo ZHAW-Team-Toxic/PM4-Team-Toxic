@@ -13,6 +13,8 @@ import com.zhaw.frontier.components.map.ResourceLayerComponent;
 import com.zhaw.frontier.entityFactories.MapFactory;
 import com.zhaw.frontier.exceptions.MapLoadingException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
 /**
@@ -136,5 +138,22 @@ public class MapLoader {
                 .resourceLayer.getName() +
             " loaded."
         );
+    }
+
+    public List<TiledMapTileLayer> getAllWalkableLayers() {
+        List<TiledMapTileLayer> layers = new ArrayList<>();
+
+        if (mapEntity != null) {
+            BottomLayerComponent bottom = mapEntity.getComponent(BottomLayerComponent.class);
+            DecorationLayerComponent deco = mapEntity.getComponent(DecorationLayerComponent.class);
+            ResourceLayerComponent resource = mapEntity.getComponent(ResourceLayerComponent.class);
+
+            if (bottom != null && bottom.bottomLayer != null) layers.add(bottom.bottomLayer);
+            if (deco != null && deco.decorationLayer != null) layers.add(deco.decorationLayer);
+            if (resource != null && resource.resourceLayer != null) layers.add(
+                resource.resourceLayer
+            );
+        }
+        return layers;
     }
 }

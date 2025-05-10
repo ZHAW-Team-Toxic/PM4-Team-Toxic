@@ -1,4 +1,4 @@
-package com.zhaw.frontier.systems;
+package com.zhaw.frontier.systems.building;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;

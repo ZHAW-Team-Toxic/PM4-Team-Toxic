@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.components.InventoryComponent;
@@ -12,8 +14,8 @@ import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.WallPieceComponent;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.WallManager;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,8 +83,10 @@ public class WallManagerTest {
             1,
             1
         );
+        Texture dummyTexture = new Texture(2, 2, Pixmap.Format.RGBA8888);
+        TextureRegion region = new TextureRegion(dummyTexture);
         HashMap<TileOffset, TextureRegion> sprites = new HashMap<>();
-        sprites.put(new TileOffset(0, 0), new TextureRegion());
+        sprites.put(new TileOffset(0, 0), region);
         wallPieceComponent1.wallPieceTextures.put(WallPieceComponent.WallPiece.CROSS, sprites);
         wallPieceComponent1.wallPieceTextures.put(WallPieceComponent.WallPiece.SINGLE, sprites);
         renderComponent.sprites = sprites;
@@ -144,8 +148,10 @@ public class WallManagerTest {
             1,
             1
         );
+        Texture dummyTexture = new Texture(2, 2, Pixmap.Format.RGBA8888);
+        TextureRegion region = new TextureRegion(dummyTexture);
         HashMap<TileOffset, TextureRegion> sprites = new HashMap<>();
-        sprites.put(new TileOffset(0, 0), new TextureRegion());
+        sprites.put(new TileOffset(0, 0), region);
         renderComponent1.sprites = sprites;
         wallPieceComponent1.wallPieceTextures.put(WallPieceComponent.WallPiece.CROSS, sprites);
         wallPieceComponent1.wallPieceTextures.put(WallPieceComponent.WallPiece.SINGLE, sprites);

@@ -12,7 +12,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceGeneratorComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

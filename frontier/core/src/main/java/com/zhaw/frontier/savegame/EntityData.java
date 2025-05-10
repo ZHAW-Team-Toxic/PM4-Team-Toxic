@@ -9,7 +9,7 @@ public class EntityData {
     public Float x, y;
     public Integer maxHealth;
     public Integer currentHealth;
-    public Float damage, range, speed;
+    public Float damage, range, speed, cooldown;
     public HashMap<String, Integer> inventory = new HashMap<>();
     public String resourceType;
     public Integer countOfAdjacentResources;

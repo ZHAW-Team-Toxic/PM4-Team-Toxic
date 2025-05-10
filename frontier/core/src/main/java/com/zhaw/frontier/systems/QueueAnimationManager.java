@@ -103,6 +103,10 @@ public class QueueAnimationManager {
             queue.queue.poll();
 
             if (enemyAnimM.has(entity)) {
+                if (entity.getComponent(DeathComponent.class) != null) {
+                    return; // skip resetting to idle after death
+                }
+
                 EnemyAnimationComponent anim = enemyAnimM.get(entity);
                 PositionComponent pos = entity.getComponent(PositionComponent.class);
 
