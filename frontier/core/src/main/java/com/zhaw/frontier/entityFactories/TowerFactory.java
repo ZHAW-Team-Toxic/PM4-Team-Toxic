@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 
@@ -52,11 +53,6 @@ public class TowerFactory {
             .get("packed/textures.atlas", TextureAtlas.class);
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
-        HealthComponent healthComponent = new HealthComponent();
-        healthComponent.maxHealth = 100;
-        healthComponent.currentHealth = 60;
-        tower.add(healthComponent);
-        tower.add(new AttackComponent());
 
         // Placeholder texture
 
@@ -76,10 +72,7 @@ public class TowerFactory {
             directionTextures.animationTextures.get(0)
         );
 
-        var attack = new AttackComponent();
-        attack.AttackSpeed = 1000;
-        attack.AttackDamage = 20;
-        attack.AttackRange = 10;
+        var attack = new AttackComponent(20, 10, 1000);
 
         var cost = new CostComponent();
         cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 5);
@@ -92,6 +85,7 @@ public class TowerFactory {
         tower.add(new OccupiesTilesComponent());
         tower.add(new HealthComponent());
         tower.add(new TowerComponent());
+        tower.add(new TeamComponent(Team.PLAYER));
         tower.add(new BuildingAnimationComponent());
         return tower;
     }
