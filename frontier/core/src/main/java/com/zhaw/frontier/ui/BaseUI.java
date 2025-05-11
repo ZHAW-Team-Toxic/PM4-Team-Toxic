@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -82,7 +82,7 @@ public class BaseUI {
         float pauseButtonX = fireplaceButtonX;
         float pauseButtonY = fireplaceButtonY + buttonHeight + 10;
 
-        Button demolishButton = createButton(
+        TextButton demolishButton = createButton(
             "BrokenPickaxe",
             demolishButtonX,
             demolishButtonY,
@@ -102,6 +102,11 @@ public class BaseUI {
             "build"
         );
 
+        ButtonGroup<TextButton> modeGroup = new ButtonGroup<>(buildButton, demolishButton);
+        modeGroup.setMaxCheckCount(1);
+        modeGroup.setMinCheckCount(0);
+        modeGroup.setUncheckLast(true);
+
         TextButton fireplaceButton = createButton(
             "Campfire",
             fireplaceButtonX,
@@ -116,6 +121,8 @@ public class BaseUI {
                     new Timer.Task() {
                         @Override
                         public void run() {
+                            buildButton.setChecked(false);
+                            demolishButton.setChecked(false);
                             demolishButton.setDisabled(false);
                             buildButton.setDisabled(false);
                         }
@@ -124,7 +131,7 @@ public class BaseUI {
                 );
                 System.out.println("Skipping time");
             },
-            null
+            "campfire"
         );
 
         TextButton pauseButton = createButton(
