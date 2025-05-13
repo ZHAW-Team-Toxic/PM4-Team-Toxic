@@ -34,7 +34,7 @@ import lombok.Setter;
  * The game modes are represented by buttons that are displayed on the screen.
  * The buttons include: demolish, build, fireplace, and pause.
  */
-public class BaseUI {
+public class BaseUI implements ButtonClickObserver {
 
     private Array<ButtonClickObserver> observers = new Array<>();
     private Stage uiStage;
@@ -44,7 +44,9 @@ public class BaseUI {
 
     @Setter
     @Getter
-    GameMode gameMode = GameMode.NORMAL;
+    private GameMode gameMode = GameMode.NORMAL;
+
+    private TextButton buildButton;
 
     /**
      * Constructor for BaseUIScreen.
@@ -92,7 +94,8 @@ public class BaseUI {
             "demolish"
         );
 
-        TextButton buildButton = createButton(
+        buildButton =
+        createButton(
             "Pickaxe",
             buildButtonX,
             buildButtonY,
@@ -141,6 +144,8 @@ public class BaseUI {
             null,
             "pauseButton",
             () -> {
+                buildButton.setChecked(false);
+                demolishButton.setChecked(false);
                 frontierGame.switchScreen(new PauseScreen(frontierGame, gameScreen));
                 System.out.println("Opening pause menu...");
             },
@@ -277,5 +282,16 @@ public class BaseUI {
                 return false;
             }
         };
+    }
+
+    /**
+     * Unchecks the buildButton when the BuildingMenuUi is closed using the "X" at the corner
+     * @param newMode   New mode after the BuildingMenuUi is closed
+     */
+    public void buttonClicked(GameMode newMode) {
+        if (newMode == GameMode.NORMAL && gameMode == GameMode.BUILDING) {
+            buildButton.setChecked(false);
+        }
+        gameMode = newMode;
     }
 }
