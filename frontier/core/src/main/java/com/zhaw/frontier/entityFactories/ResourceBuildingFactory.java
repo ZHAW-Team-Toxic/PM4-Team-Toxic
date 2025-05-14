@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.*;
@@ -105,11 +106,7 @@ public class ResourceBuildingFactory {
         ResourceTypeEnum resourceType
     ) {
         Entity resourceBuilding = engine.createEntity();
-        resourceBuilding.add(new PositionComponent());
-        HealthComponent healthComponent = new HealthComponent();
-        healthComponent.maxHealth = 100;
-        healthComponent.currentHealth = 60;
-        resourceBuilding.add(healthComponent);
+        resourceBuilding.add(new HealthComponent());
         resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
@@ -124,6 +121,7 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(
             new EntityTypeComponent(EntityTypeComponent.EntityType.RESOURCE_BUILDING)
         );
+        resourceBuilding.add(new TeamComponent(Team.PLAYER));
         return resourceBuilding;
     }
 

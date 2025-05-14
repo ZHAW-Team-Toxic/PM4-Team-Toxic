@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 import java.util.HashMap;
@@ -39,14 +40,7 @@ public class WallFactory {
         initWoodWallPiecesSprites();
         Entity wall = createDefaultWall(engine, x, y);
         wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.WOOD_WALL));
-        RenderComponent render = new RenderComponent(
-            RenderComponent.RenderType.BUILDING,
-            10,
-            16,
-            16
-        );
-        render.heightInTiles = 1;
-        render.widthInTiles = 1;
+        RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
 
         render.sprites =
         new HashMap<>(woodWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
@@ -63,14 +57,7 @@ public class WallFactory {
         initStoneWallPiecesSprites();
         Entity wall = createDefaultWall(engine, x, y);
         wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.STONE_WALL));
-        RenderComponent render = new RenderComponent(
-            RenderComponent.RenderType.BUILDING,
-            10,
-            16,
-            16
-        );
-        render.heightInTiles = 1;
-        render.widthInTiles = 1;
+        RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
 
         render.sprites =
         new HashMap<>(stoneWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
@@ -87,14 +74,7 @@ public class WallFactory {
         initIronWallPiecesSprites();
         Entity wall = createDefaultWall(engine, x, y);
         wall.add(new EntityTypeComponent(EntityTypeComponent.EntityType.IRON_WALL));
-        RenderComponent render = new RenderComponent(
-            RenderComponent.RenderType.BUILDING,
-            10,
-            16,
-            16
-        );
-        render.heightInTiles = 1;
-        render.widthInTiles = 1;
+        RenderComponent render = new RenderComponent(RenderComponent.RenderType.BUILDING, 10, 1, 1);
 
         render.sprites =
         new HashMap<>(ironWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
@@ -112,16 +92,15 @@ public class WallFactory {
         PositionComponent position = new PositionComponent(x, y, 1, 1);
         OccupiesTilesComponent occupiesTiles = new OccupiesTilesComponent();
 
-        HealthComponent health = new HealthComponent();
-        health.maxHealth = 100;
-        health.currentHealth = 50;
         BuildingAnimationComponent buildingAnimation = new BuildingAnimationComponent();
 
         wall.add(position);
         wall.add(occupiesTiles);
-        wall.add(health);
+        wall.add(new HealthComponent());
         wall.add(buildingAnimation);
 
+        wall.add(new AnimationQueueComponent());
+        wall.add(new TeamComponent(Team.PLAYER));
         return wall;
     }
 
