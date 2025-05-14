@@ -173,9 +173,19 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private void createRessourceButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
-        ImageButton wood = createImageButton(ResourceBuildingFactory::woodResourceBuilding);
-        ImageButton stone = createImageButton(ResourceBuildingFactory::stoneResourceBuilding);
-        ImageButton iron = createImageButton(ResourceBuildingFactory::ironResourceBuilding);
+        ImageButton wood = createImageButton(
+            ResourceBuildingFactory::woodResourceBuilding,
+            atlas.findRegion("wood_resource_building_ui")
+        );
+        ImageButton stone = createImageButton(
+            ResourceBuildingFactory::stoneResourceBuilding,
+            atlas.findRegion("stone_resource_building_ui")
+        );
+        ImageButton iron = createImageButton(
+            ResourceBuildingFactory::ironResourceBuilding,
+            atlas.findRegion("iron_resource_building_ui")
+        );
+
         allButtons.add(wood, stone, iron);
         groupTable.add(toContainer(wood)).pad(2);
         groupTable.add(toContainer(stone)).pad(2);
@@ -183,11 +193,22 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private void createWallButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
-        ImageButton wall1 = createImageButton(WallFactory::createWoodWall);
-        ImageButton wall2 = createImageButton(WallFactory::createStoneWall);
-        allButtons.add(wall1, wall2);
-        groupTable.add(toContainer(wall1)).pad(2);
-        groupTable.add(toContainer(wall2)).pad(2);
+        ImageButton woodWall = createImageButton(
+            WallFactory::createWoodWall,
+            atlas.findRegion("wall_wood_single")
+        );
+        ImageButton stoneWall = createImageButton(
+            WallFactory::createStoneWall,
+            atlas.findRegion("wall_stone_single")
+        );
+        ImageButton ironWall = createImageButton(
+            WallFactory::createIronWall,
+            atlas.findRegion("wall_iron_single")
+        );
+        allButtons.add(woodWall, stoneWall, ironWall);
+        groupTable.add(toContainer(woodWall)).pad(2);
+        groupTable.add(toContainer(stoneWall)).pad(2);
+        groupTable.add(toContainer(ironWall)).pad(2);
     }
 
     private ImageButton createImageButton(
