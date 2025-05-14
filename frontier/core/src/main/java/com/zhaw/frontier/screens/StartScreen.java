@@ -23,6 +23,7 @@ import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.savegame.SaveGameManager;
 import com.zhaw.frontier.systems.TurnSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
+import com.zhaw.frontier.utils.GameStats;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class StartScreen extends ScreenAdapter {
@@ -71,7 +72,7 @@ public class StartScreen extends ScreenAdapter {
         this.background.getCamera().position.set(8, 4.5f, 0);
         Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
 
-        frontierGame.getGameStats().reset();
+        GameStats.getInstance().reset();
         TurnSystem.getInstance().resetTurnCounter();
 
         this.menu = new ScreenViewport();

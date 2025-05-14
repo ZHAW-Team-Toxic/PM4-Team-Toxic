@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.ui.WinScreenUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
+import com.zhaw.frontier.utils.GameStats;
 
 public class WinScreen extends ScreenAdapter {
 
@@ -31,7 +32,7 @@ public class WinScreen extends ScreenAdapter {
         new WinScreenUI(
             stage,
             skin,
-            frontierGame.getGameStats().getEnemiesKilled(),
+            GameStats.getInstance().getEnemiesKilled(),
             this::openStartScreen
         );
 

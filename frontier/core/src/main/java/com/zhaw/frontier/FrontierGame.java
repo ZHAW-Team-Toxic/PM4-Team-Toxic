@@ -12,7 +12,6 @@ import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class FrontierGame extends Game {
 
-    private final GameStats gameStats = new GameStats();
     private SpriteBatchInterface batch;
     private AppConfig appConfig;
 
@@ -44,9 +43,5 @@ public class FrontierGame extends Game {
 
     public AppConfig getAppConfig() {
         return appConfig;
-    }
-
-    public GameStats getGameStats() {
-        return gameStats;
     }
 }
