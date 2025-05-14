@@ -18,8 +18,6 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.CursorFactory;
-import com.zhaw.frontier.entityFactories.CursorFactory;
-import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
@@ -163,6 +161,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // create resource ui
         skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
+
+        ErrorSystem.init(baseUI.getStage(), skin);
 
         SimpleAStarPathfinder pathfinder = new SimpleAStarPathfinder(
             MapLoader.getInstance().getAllWalkableLayers(),
