@@ -2,10 +2,6 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
@@ -35,17 +31,22 @@ public class ResourceBuildingFactory {
         HashMap<TileOffset, TextureRegion>
     > ironResourceBuildingCache = new HashMap<>();
 
-
     public static Entity woodResourceBuilding(Engine engine, float x, float y) {
         initWoodResourceBuilding();
-        Entity resourceBuilding = createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_WOOD);
+        Entity resourceBuilding = createResourceBuildingWithType(
+            engine,
+            x,
+            y,
+            ResourceTypeEnum.RESOURCE_TYPE_WOOD
+        );
         RenderComponent renderComponent = new RenderComponent(
             RenderComponent.RenderType.BUILDING,
             10,
             TILE_SIZE,
             TILE_SIZE
         );
-        renderComponent.sprites = new HashMap<>(woodResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_WOOD));
+        renderComponent.sprites =
+        new HashMap<>(woodResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_WOOD));
         renderComponent.heightInTiles = 3;
         renderComponent.widthInTiles = 3;
 
@@ -55,14 +56,20 @@ public class ResourceBuildingFactory {
 
     public static Entity stoneResourceBuilding(Engine engine, float x, float y) {
         initStoneResourceBuilding();
-        Entity resourceBuilding = createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_STONE);
+        Entity resourceBuilding = createResourceBuildingWithType(
+            engine,
+            x,
+            y,
+            ResourceTypeEnum.RESOURCE_TYPE_STONE
+        );
         RenderComponent renderComponent = new RenderComponent(
             RenderComponent.RenderType.BUILDING,
             10,
             TILE_SIZE,
             TILE_SIZE
         );
-        renderComponent.sprites = new HashMap<>(stoneResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_STONE));
+        renderComponent.sprites =
+        new HashMap<>(stoneResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_STONE));
         renderComponent.heightInTiles = 3;
         renderComponent.widthInTiles = 3;
         resourceBuilding.add(renderComponent);
@@ -71,14 +78,20 @@ public class ResourceBuildingFactory {
 
     public static Entity ironResourceBuilding(Engine engine, float x, float y) {
         initIronResourceBuilding();
-        Entity resourceBuilding = createResourceBuildingWithType(engine, x, y, ResourceTypeEnum.RESOURCE_TYPE_IRON);
+        Entity resourceBuilding = createResourceBuildingWithType(
+            engine,
+            x,
+            y,
+            ResourceTypeEnum.RESOURCE_TYPE_IRON
+        );
         RenderComponent renderComponent = new RenderComponent(
             RenderComponent.RenderType.BUILDING,
             10,
             TILE_SIZE,
             TILE_SIZE
         );
-        renderComponent.sprites = new HashMap<>(ironResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_IRON));
+        renderComponent.sprites =
+        new HashMap<>(ironResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_IRON));
         renderComponent.heightInTiles = 3;
         renderComponent.widthInTiles = 3;
         resourceBuilding.add(renderComponent);
@@ -117,7 +130,9 @@ public class ResourceBuildingFactory {
     private static void initWoodResourceBuilding() {
         if (!woodResourceBuildingCache.isEmpty()) return;
 
-        TextureAtlas atlas = AssetManagerInstance.getManager().get("packed/textures.atlas", TextureAtlas.class);
+        TextureAtlas atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         HashMap<TileOffset, TextureRegion> map = new HashMap<>();
 
         map.put(new TileOffset(0, 0), atlas.findRegion("wood_00_S"));
@@ -136,7 +151,9 @@ public class ResourceBuildingFactory {
     private static void initStoneResourceBuilding() {
         if (!stoneResourceBuildingCache.isEmpty()) return;
 
-        TextureAtlas atlas = AssetManagerInstance.getManager().get("packed/textures.atlas", TextureAtlas.class);
+        TextureAtlas atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         HashMap<TileOffset, TextureRegion> map = new HashMap<>();
 
         map.put(new TileOffset(0, 0), atlas.findRegion("stone_00_S"));
@@ -155,7 +172,9 @@ public class ResourceBuildingFactory {
     private static void initIronResourceBuilding() {
         if (!ironResourceBuildingCache.isEmpty()) return;
 
-        TextureAtlas atlas = AssetManagerInstance.getManager().get("packed/textures.atlas", TextureAtlas.class);
+        TextureAtlas atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         HashMap<TileOffset, TextureRegion> map = new HashMap<>();
 
         map.put(new TileOffset(0, 0), atlas.findRegion("iron_00_S"));

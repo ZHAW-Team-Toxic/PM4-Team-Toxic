@@ -2,7 +2,6 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
@@ -50,7 +49,7 @@ public class WallFactory {
         render.widthInTiles = 1;
 
         render.sprites =
-            new HashMap<>(woodWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
+        new HashMap<>(woodWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
         wall.add(render);
 
         WallPieceComponent wallPiece = new WallPieceComponent();
@@ -74,7 +73,7 @@ public class WallFactory {
         render.widthInTiles = 1;
 
         render.sprites =
-            new HashMap<>(stoneWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
+        new HashMap<>(stoneWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
         wall.add(render);
 
         WallPieceComponent wallPiece = new WallPieceComponent();
@@ -98,7 +97,7 @@ public class WallFactory {
         render.widthInTiles = 1;
 
         render.sprites =
-            new HashMap<>(ironWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
+        new HashMap<>(ironWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
         wall.add(render);
 
         WallPieceComponent wallPiece = new WallPieceComponent();
@@ -328,10 +327,7 @@ public class WallFactory {
         );
 
         HashMap<TileOffset, TextureRegion> cornerTopLeftPiece = new HashMap<>();
-        cornerTopLeftPiece.put(
-            new TileOffset(0, 0),
-            atlas.findRegion("wall_stone_corner_topleft")
-        );
+        cornerTopLeftPiece.put(new TileOffset(0, 0), atlas.findRegion("wall_stone_corner_topleft"));
         stoneWallPiecesCache.put(WallPieceComponent.WallPiece.CORNER_TOP_LEFT, cornerTopLeftPiece);
 
         HashMap<TileOffset, TextureRegion> cornerTopRightPiece = new HashMap<>();
@@ -339,7 +335,10 @@ public class WallFactory {
             new TileOffset(0, 0),
             atlas.findRegion("wall_stone_corner_topright")
         );
-        stoneWallPiecesCache.put(WallPieceComponent.WallPiece.CORNER_TOP_RIGHT, cornerTopRightPiece);
+        stoneWallPiecesCache.put(
+            WallPieceComponent.WallPiece.CORNER_TOP_RIGHT,
+            cornerTopRightPiece
+        );
 
         HashMap<TileOffset, TextureRegion> cornerBottomLeftPiece = new HashMap<>();
         cornerBottomLeftPiece.put(
@@ -384,7 +383,6 @@ public class WallFactory {
         HashMap<TileOffset, TextureRegion> wallPiece = new HashMap<>();
         wallPiece.put(new TileOffset(0, 0), atlas.findRegion("wall_stone_destroyed"));
         stoneWallPiecesCache.put(WallPieceComponent.WallPiece.DESTROYED, wallPiece);
-
     }
 
     private static void initIronWallPiecesSprites() {
@@ -459,10 +457,7 @@ public class WallFactory {
         );
 
         HashMap<TileOffset, TextureRegion> cornerTopLeftPiece = new HashMap<>();
-        cornerTopLeftPiece.put(
-            new TileOffset(0, 0),
-            atlas.findRegion("wall_iron_corner_topleft")
-        );
+        cornerTopLeftPiece.put(new TileOffset(0, 0), atlas.findRegion("wall_iron_corner_topleft"));
         ironWallPiecesCache.put(WallPieceComponent.WallPiece.CORNER_TOP_LEFT, cornerTopLeftPiece);
 
         HashMap<TileOffset, TextureRegion> cornerTopRightPiece = new HashMap<>();
@@ -515,6 +510,5 @@ public class WallFactory {
         HashMap<TileOffset, TextureRegion> wallPiece = new HashMap<>();
         wallPiece.put(new TileOffset(0, 0), atlas.findRegion("wall_iron_destroyed"));
         ironWallPiecesCache.put(WallPieceComponent.WallPiece.DESTROYED, wallPiece);
-
     }
 }
