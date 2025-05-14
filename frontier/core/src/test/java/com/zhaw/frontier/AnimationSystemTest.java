@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.systems.AnimationSystem;
-import com.zhaw.frontier.systems.MovementSystem;
+import com.zhaw.frontier.systems.movement.MovementSystem;
 import com.zhaw.frontier.utils.QueueAnimation;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

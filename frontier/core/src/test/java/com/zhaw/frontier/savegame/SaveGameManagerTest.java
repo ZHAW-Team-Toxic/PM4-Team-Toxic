@@ -1,5 +1,6 @@
 package com.zhaw.frontier.savegame;
 
+import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -22,6 +23,7 @@ import com.zhaw.frontier.entityFactories.HQFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.entityFactories.WallFactory;
+import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.LoadingScreen;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -161,9 +163,10 @@ public class SaveGameManagerTest {
         health.currentHealth = 88;
 
         AttackComponent attack = tower.getComponent(AttackComponent.class);
-        attack.AttackDamage = 25;
-        attack.AttackRange = 6;
-        attack.AttackSpeed = 1.1f;
+        attack.damage = 25;
+        attack.attackRange = 6;
+        attack.attackInterval = 1.1f;
+        attack.attackCooldown = 1f;
 
         engine.addEntity(tower);
 
@@ -183,9 +186,10 @@ public class SaveGameManagerTest {
 
         AttackComponent loadedAttack = loaded.getComponent(AttackComponent.class);
         assertNotNull(loadedAttack);
-        assertEquals(25, loadedAttack.AttackDamage);
-        assertEquals(6, loadedAttack.AttackRange);
-        assertEquals(1.1f, loadedAttack.AttackSpeed, 0.001f);
+        assertEquals(25, loadedAttack.damage);
+        assertEquals(6, loadedAttack.attackRange);
+        assertEquals(1.1f, loadedAttack.attackInterval, 0.001f);
+        assertEquals(1f, loadedAttack.attackCooldown, 0.001f);
 
         EntityTypeComponent type = loaded.getComponent(EntityTypeComponent.class);
         assertNotNull(type);
@@ -349,5 +353,23 @@ public class SaveGameManagerTest {
         var entities = engine.getEntities();
         assertEquals(1, entities.size());
         return entities.first();
+    }
+
+    @Test
+    public void testMetadataSaveAndLoadDirect() {
+        int turnCounter = 42;
+        GamePhase gamePhase = GamePhase.COLLECTION;
+
+        GameState gameState = new GameState();
+        gameState.getMetadata().turnCounter = turnCounter;
+        gameState.getMetadata().gamePhase = gamePhase;
+
+        FileHandle file = Gdx.files.external("frontier/saves/metadata-direct-test.json");
+        file.writeString(json.toJson(gameState), false);
+
+        GameState reloaded = json.fromJson(GameState.class, file.readString());
+
+        assertEquals(turnCounter, reloaded.getMetadata().turnCounter);
+        assertEquals(gamePhase, reloaded.getMetadata().gamePhase);
     }
 }

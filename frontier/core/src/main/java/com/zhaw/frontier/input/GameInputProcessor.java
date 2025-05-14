@@ -19,8 +19,8 @@ import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.enums.EnemyType;
-import com.zhaw.frontier.systems.BuildingManagerSystem;
 import com.zhaw.frontier.systems.EnemySpawnSystem;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.QueueAnimation;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
@@ -175,6 +175,76 @@ public class GameInputProcessor extends InputAdapter {
             );
             Entity enemyBasic = EnemyFactory.createEnemy(EnemyType.GOBLIN, mouseX, mouseY);
             engine.addEntity(enemyBasic);
+            return true;
+        }
+
+        if (keycode == Input.Keys.X) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyPath = EnemyFactory.createPathfindingEnemy(EnemyType.ORC, mouseX, mouseY);
+            PositionComponent pos = enemyPath.getComponent(PositionComponent.class);
+            BottomLayerComponent bottomLayerComponent = engine
+                .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
+                .get(0)
+                .getComponent(BottomLayerComponent.class);
+            pos.basePosition =
+            WorldCoordinateUtils.calculateWorldCoordinate(
+                viewport,
+                bottomLayerComponent.bottomLayer,
+                mouseX,
+                mouseY
+            );
+            engine.addEntity(enemyPath);
+            return true;
+        }
+
+        if (keycode == Input.Keys.Y) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyPath = EnemyFactory.createPathfindingEnemy(EnemyType.DEMON, mouseX, mouseY);
+            PositionComponent pos = enemyPath.getComponent(PositionComponent.class);
+            BottomLayerComponent bottomLayerComponent = engine
+                .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
+                .get(0)
+                .getComponent(BottomLayerComponent.class);
+            pos.basePosition =
+            WorldCoordinateUtils.calculateWorldCoordinate(
+                viewport,
+                bottomLayerComponent.bottomLayer,
+                mouseX,
+                mouseY
+            );
+            engine.addEntity(enemyPath);
+            return true;
+        }
+
+        if (keycode == Input.Keys.Z) {
+            Gdx.app.debug(
+                "GameInputProcessor",
+                "E pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
+            );
+            Entity enemyPath = EnemyFactory.createPathfindingEnemy(
+                EnemyType.GOBLIN,
+                mouseX,
+                mouseY
+            );
+            PositionComponent pos = enemyPath.getComponent(PositionComponent.class);
+            BottomLayerComponent bottomLayerComponent = engine
+                .getEntitiesFor(Family.one(BottomLayerComponent.class).get())
+                .get(0)
+                .getComponent(BottomLayerComponent.class);
+            pos.basePosition =
+            WorldCoordinateUtils.calculateWorldCoordinate(
+                viewport,
+                bottomLayerComponent.bottomLayer,
+                mouseX,
+                mouseY
+            );
+            engine.addEntity(enemyPath);
             return true;
         }
 

@@ -60,7 +60,7 @@ public class TowertargetingSystemTest {
         var anim = new TowerAnimationComponent();
         var towerComponent = new TowerComponent();
         var attackComponent = new AttackComponent();
-        attackComponent.AttackRange = RANGE;
+        attackComponent.attackRange = RANGE;
         var position = new PositionComponent();
         position.basePosition = new Vector2(x, y);
 
