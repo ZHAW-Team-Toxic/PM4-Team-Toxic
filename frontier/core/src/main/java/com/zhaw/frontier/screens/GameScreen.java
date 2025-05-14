@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.algorithm.SimpleAStarPathfinder;
 import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.InventoryComponent;
@@ -22,11 +23,20 @@ import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.StateDirectionalTextureSystem;
 import com.zhaw.frontier.systems.TowerTargetingSystem;
+import com.zhaw.frontier.systems.behaviour.IdleBehaviourSystem;
+import com.zhaw.frontier.systems.behaviour.PatrolBehaviourSystem;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
+import com.zhaw.frontier.systems.movement.BlockingMovementSystem;
+import com.zhaw.frontier.systems.movement.MovementSystem;
+import com.zhaw.frontier.systems.movement.PathFollowerSystem;
+import com.zhaw.frontier.systems.movement.PathfindingSystem;
+import com.zhaw.frontier.systems.movement.SteeringMovementSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.EnemySpawner;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import java.util.Map;
 import lombok.Getter;
@@ -103,6 +113,15 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         engine.addSystem(new IdleBehaviourSystem());
         engine.addSystem(new PatrolBehaviourSystem());
+        engine.addSystem(new EnemyAttackSystem());
+        engine.addSystem(new EnemyAttackAnimationSystem());
+        engine.addSystem(new HealthSystem());
+        engine.addSystem(new DeathSystem());
+        engine.addSystem(new BlockingMovementSystem());
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Movement System.");
+        engine.addSystem(new PathFollowerSystem());
+        engine.addSystem(new SteeringMovementSystem());
         engine.addSystem(new MovementSystem());
         engine.addSystem(new AnimationSystem());
         Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
@@ -119,7 +138,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new ProjectileCollisionSystem());
 
         engine.addSystem(new SoundSystem());
-        engine.addSystem(new HealthSystem());
         engine.addSystem(new TowerTargetingSystem());
         engine.addSystem(new CooldownSystem());
 
@@ -156,11 +174,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
         skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
 
-        engine.addSystem(new IdleBehaviourSystem());
-        engine.addSystem(new PatrolBehaviourSystem());
+        SimpleAStarPathfinder pathfinder = new SimpleAStarPathfinder(
+            MapLoader.getInstance().getAllWalkableLayers(),
+            engine
+        );
+        PathfindingSystem pathfindingSystem = new PathfindingSystem(pathfinder);
+        engine.addSystem(pathfindingSystem);
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Enemy Spawn Manager.");
         EnemySpawnSystem.create(engine);
+        EnemySpawner.getInstance().init(gameUi, engine);
         Gdx.app.debug("[DEBUG] - GameScreen", "Enemy Spawn Manager initialized.");
 
         // create inventory ui

@@ -27,6 +27,7 @@ public class EnemyAnimationComponent implements Component {
         ATTACK_UP,
         ATTACK_LEFT,
         ATTACK_RIGHT,
+        DEATH,
     }
 
     /** All animations mapped by type */

@@ -16,6 +16,7 @@ public class TurnSystem {
     @Setter
     private GamePhase gamePhase;
 
+    @Setter
     @Getter
     private int turnCounter;
 
@@ -43,10 +44,8 @@ public class TurnSystem {
      *
      * @param gamePhase the current game phase
      */
-    public void executeTurn(GamePhase gamePhase) {
+    private void executeTurn(GamePhase gamePhase) {
         setGamePhase(gamePhase);
-
-        turnCounter++;
 
         switch (gamePhase) {
             case BUILD_AND_PLAN:
@@ -71,6 +70,17 @@ public class TurnSystem {
             default:
                 throw new IllegalArgumentException("Invalid game phase: " + gamePhase);
         }
+    }
+
+    public void advanceTurn() {
+        executeTurn(GamePhase.COLLECTION);
+        executeTurn(GamePhase.BUILD_AND_PLAN);
+
+        if (isEnemyTurn()) {
+            executeTurn(GamePhase.ENEMY_TURN);
+        }
+
+        turnCounter++;
     }
 
     /**

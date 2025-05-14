@@ -5,9 +5,9 @@ package com.zhaw.frontier.enums;
  * Each enemy type has a name, health, attack damage, and speed.
  */
 public enum EnemyType {
-    ORC("orc", 100, 10, 10f),
-    DEMON("demon", 200, 20, 7.5f),
-    GOBLIN("goblin", 70, 15, 12.5f);
+    ORC("orc", 100, 10, 2f),
+    DEMON("demon", 200, 20, 1.5f),
+    GOBLIN("goblin", 70, 15, 3.5f);
 
     private final String typeName;
     private final int health;

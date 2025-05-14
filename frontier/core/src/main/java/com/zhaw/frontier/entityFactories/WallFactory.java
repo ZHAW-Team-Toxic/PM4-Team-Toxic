@@ -2,11 +2,24 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.AnimationQueueComponent;
+import com.zhaw.frontier.components.BuildingAnimationComponent;
+import com.zhaw.frontier.components.BuildingAnimationComponent.BuildingAnimationType;
+import com.zhaw.frontier.components.EntityTypeComponent;
+import com.zhaw.frontier.components.HealthComponent;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
+import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.components.RenderComponent;
+import com.zhaw.frontier.components.TeamComponent;
+import com.zhaw.frontier.components.WallPieceComponent;
+import com.zhaw.frontier.configs.AppProperties;
+import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +28,10 @@ import java.util.Map;
  * <p>
  * This class is responsible for generating default wall entities.
  * A default wall entity is composed of a {@link PositionComponent},
- * a {@link HealthComponent}, and a {@link RenderComponent}. The render component is set
- * to render the wall as a building using a placeholder texture that should be replaced
+ * a {@link HealthComponent}, and a {@link RenderComponent}. The render
+ * component is set
+ * to render the wall as a building using a placeholder texture that should be
+ * replaced
  * with the actual wall texture in the future.
  * </p>
  */
@@ -34,6 +49,11 @@ public class WallFactory {
         WallPieceComponent.WallPiece,
         HashMap<TileOffset, TextureRegion>
     > ironWallPiecesCache = new HashMap<>();
+
+    private static final EnumMap<
+        BuildingAnimationType,
+        HashMap<TileOffset, Animation<TextureRegion>>
+    > sharedAnimations = new EnumMap<>(BuildingAnimationType.class);
 
     public static Entity createWoodWall(Engine engine, float x, float y) {
         Entity wall = createDefaultWall(engine, x, y);
@@ -53,10 +73,48 @@ public class WallFactory {
         return wall;
     }
 
+    private static void initializeSharedWallAnimations() {
+        if (sharedAnimations.isEmpty()) {
+            TextureAtlas deathAtlas = AssetManagerInstance
+                .getManager()
+                .get("packed/textures.atlas", TextureAtlas.class);
+
+            HashMap<TileOffset, Animation<TextureRegion>> deathAnimation = new HashMap<>();
+            deathAnimation.put(
+                new TileOffset(0, 0),
+                new Animation<>(
+                    AppProperties.DEATH_FRAME_DURATION,
+                    deathAtlas.findRegions("death/explosion"),
+                    Animation.PlayMode.LOOP
+                )
+            );
+            sharedAnimations.put(
+                BuildingAnimationComponent.BuildingAnimationType.DESTROYING,
+                deathAnimation
+            );
+        }
+    }
+
+    /**
+     * Creates a default wall entity with the necessary components.
+     * <p>
+     * The wall entity is initialized with a {@link PositionComponent} for spatial
+     * positioning,
+     * a {@link HealthComponent} for health management, and a
+     * {@link RenderComponent} for rendering.
+     * The {@code RenderComponent} uses a placeholder texture (created by
+     * {@link #createPlaceHolder()})
+     * with its render type set to {@link RenderComponent.RenderType#BUILDING}.
+     * </p>
+     *
+     * @param engine the {@link Engine} used to create and manage the entity.
+     * @return the newly created wall entity.
+     */
     private static Entity createDefaultWall(Engine engine, float x, float y) {
         initWoodWallPiecesSprites();
         initStoneWallPiecesSprites();
         initIronWallPiecesSprites();
+        initializeSharedWallAnimations();
 
         Entity wall = engine.createEntity();
         PositionComponent position = new PositionComponent(x, y, 1, 1);
@@ -66,9 +124,8 @@ public class WallFactory {
         new HashMap<>(woodWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
 
         HealthComponent health = new HealthComponent();
-        health.maxHealth = 100;
-        health.currentHealth = 50;
         BuildingAnimationComponent buildingAnimation = new BuildingAnimationComponent();
+        buildingAnimation.animations = sharedAnimations;
         WallPieceComponent wallPiece = new WallPieceComponent();
         wallPiece.wallPieceTextures = woodWallPiecesCache;
         wallPiece.currentWallPiece = WallPieceComponent.WallPiece.SINGLE;
@@ -79,6 +136,8 @@ public class WallFactory {
         wall.add(health);
         wall.add(buildingAnimation);
         wall.add(wallPiece);
+        wall.add(new AnimationQueueComponent());
+        wall.add(new TeamComponent(Team.PLAYER));
 
         return wall;
     }
