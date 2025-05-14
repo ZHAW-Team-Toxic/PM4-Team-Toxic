@@ -25,6 +25,7 @@ public class WallPieceComponent implements Component {
         STRAIGHT_VERTICAL_UP,
         STRAIGHT_VERTICAL_DOWN,
         SINGLE,
+        DESTROYED
     }
 
     public WallPiece currentWallPiece = WallPiece.SINGLE;

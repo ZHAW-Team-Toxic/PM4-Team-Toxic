@@ -163,13 +163,6 @@ hq_sandclock_D6
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
-hq_sandclock_D6
-  rotate: false
-  xy: 326, 2
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
   index: 5
 hq_sandclock_D6
   rotate: false
@@ -178,6 +171,13 @@ hq_sandclock_D6
   orig: 16, 16
   offset: 0, 0
   index: 3
+hq_sandclock_D6
+  rotate: false
+  xy: 326, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
 hq_sandclock_D9
   rotate: false
   xy: 344, 2
@@ -215,6 +215,264 @@ hq_sandclock_D9
   index: 5
 
 textures3.png
+size: 512, 32
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+destroyed_00_S
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_01_S
+  rotate: false
+  xy: 20, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_02_S
+  rotate: false
+  xy: 38, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_10_S
+  rotate: false
+  xy: 56, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_11_S
+  rotate: false
+  xy: 74, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_12_S
+  rotate: false
+  xy: 92, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_20_S
+  rotate: false
+  xy: 110, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_21_S
+  rotate: false
+  xy: 128, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+destroyed_22_S
+  rotate: false
+  xy: 146, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_00_S
+  rotate: false
+  xy: 164, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_01_S
+  rotate: false
+  xy: 182, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_01_S
+  rotate: false
+  xy: 182, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_01_S
+  rotate: false
+  xy: 182, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_02_S
+  rotate: false
+  xy: 200, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_02_S
+  rotate: false
+  xy: 200, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_02_S
+  rotate: false
+  xy: 200, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_10_S
+  rotate: false
+  xy: 218, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_11_S
+  rotate: false
+  xy: 236, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_12_S
+  rotate: false
+  xy: 254, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_12_S
+  rotate: false
+  xy: 254, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_20_S
+  rotate: false
+  xy: 272, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_21_S
+  rotate: false
+  xy: 290, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_21_S
+  rotate: false
+  xy: 290, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_21_S
+  rotate: false
+  xy: 290, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+iron_22_S
+  rotate: false
+  xy: 308, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_22_S
+  rotate: false
+  xy: 308, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_00_S
+  rotate: false
+  xy: 326, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_10_S
+  rotate: false
+  xy: 344, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_11_S
+  rotate: false
+  xy: 362, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_20_S
+  rotate: false
+  xy: 380, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_00_S
+  rotate: false
+  xy: 398, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_10_S
+  rotate: false
+  xy: 416, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_11_S
+  rotate: false
+  xy: 434, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_12_S
+  rotate: false
+  xy: 452, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_20_S
+  rotate: false
+  xy: 470, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_22_S
+  rotate: false
+  xy: 488, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+
+textures4.png
 size: 256, 64
 format: RGBA8888
 filter: Nearest, Nearest
@@ -276,7 +534,257 @@ Wood_Tower8
   offset: 0, 0
   index: -1
 
-textures4.png
+textures5.png
+size: 256, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+wall_iron_T_bottom
+  rotate: false
+  xy: 2, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_T_left
+  rotate: false
+  xy: 132, 102
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_T_right
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_T_top
+  rotate: false
+  xy: 20, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_corner_bottomleft
+  rotate: false
+  xy: 132, 84
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_corner_bottomright
+  rotate: false
+  xy: 150, 102
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_corner_topleft
+  rotate: false
+  xy: 20, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_corner_topright
+  rotate: false
+  xy: 38, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_cross
+  rotate: false
+  xy: 132, 66
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_destroyed
+  rotate: false
+  xy: 150, 84
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_horizontal_left
+  rotate: false
+  xy: 168, 102
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_horizontal_middle
+  rotate: false
+  xy: 38, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_horizontal_right
+  rotate: false
+  xy: 56, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_single
+  rotate: false
+  xy: 132, 48
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_vertical_bottom
+  rotate: false
+  xy: 150, 66
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_iron_vertical_top
+  rotate: false
+  xy: 168, 84
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_rion_vertical_middle
+  rotate: false
+  xy: 2, 38
+  size: 128, 80
+  orig: 128, 80
+  offset: 0, 0
+  index: -1
+
+textures6.png
+size: 64, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+wall_stone_T-right
+  rotate: false
+  xy: 2, 110
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_T_bottom
+  rotate: false
+  xy: 2, 92
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_T_left
+  rotate: false
+  xy: 20, 110
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_T_top
+  rotate: false
+  xy: 2, 74
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_corner_bottomleft
+  rotate: false
+  xy: 20, 92
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_corner_bottomright
+  rotate: false
+  xy: 38, 110
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_corner_topleft
+  rotate: false
+  xy: 2, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_corner_topright
+  rotate: false
+  xy: 20, 74
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_cross
+  rotate: false
+  xy: 38, 92
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_destroyed
+  rotate: false
+  xy: 2, 38
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_horizontal_left
+  rotate: false
+  xy: 20, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_horizontal_middle
+  rotate: false
+  xy: 38, 74
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_horizontal_right
+  rotate: false
+  xy: 2, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_single
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_vertical_bottom
+  rotate: false
+  xy: 20, 38
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_vertical_middle
+  rotate: false
+  xy: 38, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_stone_vertical_top
+  rotate: false
+  xy: 20, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+
+textures7.png
 size: 64, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -344,57 +852,64 @@ wall_wood_cross
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall_wood_horizontal_left
+wall_wood_destroyed
   rotate: false
   xy: 2, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall_wood_horizontal_middle
+wall_wood_horizontal_left
   rotate: false
   xy: 20, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall_wood_horizontal_right
+wall_wood_horizontal_middle
   rotate: false
   xy: 38, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall_wood_single
+wall_wood_horizontal_right
   rotate: false
   xy: 2, 20
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall_wood_vertical_bottom
+wall_wood_single
   rotate: false
   xy: 2, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall_wood_vertical_middle
+wall_wood_vertical_bottom
   rotate: false
   xy: 20, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall_wood_vertical_top
+wall_wood_vertical_middle
   rotate: false
   xy: 38, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
+wall_wood_vertical_top
+  rotate: false
+  xy: 20, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 
-textures5.png
+textures8.png
 size: 512, 256
 format: RGBA8888
 filter: Nearest, Nearest
@@ -421,7 +936,7 @@ cursor/medivial_cursor_demolish
   offset: 0, 0
   index: -1
 
-textures6.png
+textures9.png
 size: 512, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -441,7 +956,7 @@ demo/libgdx
   offset: 0, 0
   index: -1
 
-textures7.png
+textures10.png
 size: 2048, 1024
 format: RGBA8888
 filter: Nearest, Nearest
@@ -461,7 +976,7 @@ demo2/image
   offset: 0, 0
   index: -1
 
-textures8.png
+textures11.png
 size: 128, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -661,14 +1176,14 @@ walk_down_demon
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_demon
   rotate: false
   xy: 38, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 idle_left_demon
   rotate: false
   xy: 56, 56
@@ -766,14 +1281,14 @@ walk_up_demon
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_up_demon
   rotate: false
   xy: 38, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_down_demon
   rotate: false
   xy: 56, 38
@@ -831,7 +1346,7 @@ walk_up_demon
   offset: 0, 0
   index: 5
 
-textures9.png
+textures12.png
 size: 512, 32
 format: RGBA8888
 filter: Nearest, Nearest
@@ -947,14 +1462,14 @@ walk_down_goblin
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_goblin
   rotate: false
   xy: 236, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 idle_left_goblin
   rotate: false
   xy: 254, 2
@@ -982,14 +1497,14 @@ walk_left_goblin
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_left_goblin
   rotate: false
   xy: 272, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 idle_right_goblin
   rotate: false
   xy: 290, 2
@@ -1017,14 +1532,14 @@ walk_right_goblin
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_right_goblin
   rotate: false
   xy: 308, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 idle_up_goblin
   rotate: false
   xy: 326, 2
@@ -1117,7 +1632,7 @@ walk_up_goblin
   offset: 0, 0
   index: 5
 
-textures10.png
+textures13.png
 size: 128, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1394,14 +1909,14 @@ walk_up_orc
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_up_orc
   rotate: false
   xy: 74, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_orc
   rotate: false
   xy: 92, 92
@@ -1459,7 +1974,7 @@ walk_up_orc
   offset: 0, 0
   index: 5
 
-textures11.png
+textures14.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1570,7 +2085,7 @@ Frontier_Knights
   offset: 0, 0
   index: 4
 
-textures12.png
+textures15.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1590,7 +2105,7 @@ Frontier_Tower
   offset: 0, 0
   index: -1
 
-textures13.png
+textures16.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1603,7 +2118,7 @@ Frontier_Ground_Background
   offset: 0, 0
   index: -1
 
-textures14.png
+textures17.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
@@ -1613,5 +2128,32 @@ Frontier_Sky_Background
   xy: 2, 2
   size: 1536, 1024
   orig: 1536, 1024
+  offset: 0, 0
+  index: -1
+
+textures18.png
+size: 256, 64
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+iron_resource_building_ui
+  rotate: false
+  xy: 2, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+stone_resource_building_ui
+  rotate: false
+  xy: 52, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+wood_resource_building_ui
+  rotate: false
+  xy: 102, 2
+  size: 48, 48
+  orig: 48, 48
   offset: 0, 0
   index: -1
