@@ -284,7 +284,7 @@ public class GameInputProcessor extends InputAdapter {
                 "N pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                Entity wall = WallFactory.createWoodWall(engine, mouseX, mouseY);
+                Entity wall = WallFactory.createStoneWall(engine, mouseX, mouseY);
                 if (buildingManagerSystem.placeBuilding(wall, getInventoryComponent(engine))) {
                     Gdx.app.debug("GameInputProcessor", "Wall placed successfully");
                 } else {
