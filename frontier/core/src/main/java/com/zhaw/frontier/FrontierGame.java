@@ -6,7 +6,6 @@ import com.zhaw.frontier.configs.AppConfig;
 import com.zhaw.frontier.screens.LoadingScreen;
 import com.zhaw.frontier.utils.AppConfigLoader;
 import com.zhaw.frontier.utils.AssetManagerInstance;
-import com.zhaw.frontier.utils.GameStats;
 import com.zhaw.frontier.wrappers.FrontierSpriteBatch;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 

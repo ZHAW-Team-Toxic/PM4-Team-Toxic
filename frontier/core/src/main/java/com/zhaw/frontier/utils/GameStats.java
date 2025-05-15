@@ -1,8 +1,7 @@
 package com.zhaw.frontier.utils;
 
-import lombok.Getter;
-
 public class GameStats {
+
     private static GameStats instance;
 
     private GameStats() {}
