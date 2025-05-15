@@ -166,6 +166,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         BuildingMenuUi buildingMenuUi = new BuildingMenuUi(engine, stage);
         baseUI.addObserver(buildingMenuUi);
         buildingMenuUi.addObserver(this);
+        buildingMenuUi.addObserver(baseUI);
 
         Gdx.app.debug("GameScreen", "Initializing Render System.");
         // setup render system

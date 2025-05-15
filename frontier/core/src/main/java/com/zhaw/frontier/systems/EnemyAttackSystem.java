@@ -5,6 +5,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.PathfindingBehaviourComponent;
+import java.util.List;
 
 /**
  * System that enables AI-controlled entities (enemies) to attack hostile targets.
@@ -52,6 +53,9 @@ public class EnemyAttackSystem extends EntitySystem {
     );
     private final ComponentMapper<CooldownComponent> cm = ComponentMapper.getFor(
         CooldownComponent.class
+    );
+    private final ComponentMapper<OccupiesTilesComponent> otm = ComponentMapper.getFor(
+        OccupiesTilesComponent.class
     );
 
     private ImmutableArray<Entity> attackers;
@@ -104,6 +108,8 @@ public class EnemyAttackSystem extends EntitySystem {
             PathfindingBehaviourComponent path = pfm.get(attacker);
 
             Entity target = null;
+            Vector2 attackerPos = pos.basePosition;
+            float closestDistance = Float.MAX_VALUE;
 
             // Priority 1: current pathfinding target
             if (
@@ -118,7 +124,11 @@ public class EnemyAttackSystem extends EntitySystem {
                     hm.has(potential) &&
                     pm.has(potential)
                 ) {
-                    target = potential;
+                    float distance = getDistanceToTarget(attackerPos, potential);
+                    if (distance <= attack.attackRange) {
+                        target = potential;
+                        closestDistance = distance;
+                    }
                 }
             }
 
@@ -138,9 +148,8 @@ public class EnemyAttackSystem extends EntitySystem {
 
             if (target == null) continue;
 
-            PositionComponent targetPos = pm.get(target);
-            float distance = pos.basePosition.dst(targetPos.basePosition);
-            if (distance <= attack.attackRange) {
+            boolean inRange = isTargetInRange(attackerPos, target, attack.attackRange);
+            if (inRange) {
                 // Stop before attacking
                 if (vm.has(attacker)) {
                     Vector2 velocity = vm.get(attacker).velocity;
@@ -168,6 +177,33 @@ public class EnemyAttackSystem extends EntitySystem {
                     }
                 }
             }
+        }
+    }
+
+    private boolean isTargetInRange(Vector2 attackerPos, Entity target, float attackRange) {
+        if (otm.has(target)) {
+            List<Vector2> tiles = otm.get(target).occupiedTiles;
+            for (Vector2 tile : tiles) {
+                if (attackerPos.dst(tile) <= attackRange) return true;
+            }
+            return false;
+        } else {
+            Vector2 targetPos = pm.get(target).basePosition;
+            return attackerPos.dst(targetPos) <= attackRange;
+        }
+    }
+
+    private float getDistanceToTarget(Vector2 attackerPos, Entity target) {
+        if (otm.has(target)) {
+            List<Vector2> tiles = otm.get(target).occupiedTiles;
+            float minDist = Float.MAX_VALUE;
+            for (Vector2 tile : tiles) {
+                float dist = attackerPos.dst(tile);
+                if (dist < minDist) minDist = dist;
+            }
+            return minDist;
+        } else {
+            return attackerPos.dst(pm.get(target).basePosition);
         }
     }
 

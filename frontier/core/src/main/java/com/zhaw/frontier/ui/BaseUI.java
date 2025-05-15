@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -34,7 +34,7 @@ import lombok.Setter;
  * The game modes are represented by buttons that are displayed on the screen.
  * The buttons include: demolish, build, fireplace, and pause.
  */
-public class BaseUI {
+public class BaseUI implements ButtonClickObserver {
 
     private Array<ButtonClickObserver> observers = new Array<>();
     private Stage uiStage;
@@ -44,7 +44,9 @@ public class BaseUI {
 
     @Setter
     @Getter
-    GameMode gameMode = GameMode.NORMAL;
+    private GameMode gameMode = GameMode.NORMAL;
+
+    private TextButton buildButton;
 
     /**
      * Constructor for BaseUIScreen.
@@ -82,7 +84,7 @@ public class BaseUI {
         float pauseButtonX = fireplaceButtonX;
         float pauseButtonY = fireplaceButtonY + buttonHeight + 10;
 
-        Button demolishButton = createButton(
+        TextButton demolishButton = createButton(
             "BrokenPickaxe",
             demolishButtonX,
             demolishButtonY,
@@ -92,7 +94,8 @@ public class BaseUI {
             "demolish"
         );
 
-        TextButton buildButton = createButton(
+        buildButton =
+        createButton(
             "Pickaxe",
             buildButtonX,
             buildButtonY,
@@ -101,6 +104,11 @@ public class BaseUI {
             () -> System.out.println("Build button was clicked!"),
             "build"
         );
+
+        ButtonGroup<TextButton> modeGroup = new ButtonGroup<>(buildButton, demolishButton);
+        modeGroup.setMaxCheckCount(1);
+        modeGroup.setMinCheckCount(0);
+        modeGroup.setUncheckLast(true);
 
         TextButton fireplaceButton = createButton(
             "Campfire",
@@ -116,6 +124,8 @@ public class BaseUI {
                     new Timer.Task() {
                         @Override
                         public void run() {
+                            buildButton.setChecked(false);
+                            demolishButton.setChecked(false);
                             demolishButton.setDisabled(false);
                             buildButton.setDisabled(false);
                         }
@@ -124,7 +134,7 @@ public class BaseUI {
                 );
                 System.out.println("Skipping time");
             },
-            null
+            "campfire"
         );
 
         TextButton pauseButton = createButton(
@@ -134,6 +144,8 @@ public class BaseUI {
             null,
             "pauseButton",
             () -> {
+                buildButton.setChecked(false);
+                demolishButton.setChecked(false);
                 frontierGame.switchScreen(new PauseScreen(frontierGame, gameScreen));
                 System.out.println("Opening pause menu...");
             },
@@ -270,5 +282,16 @@ public class BaseUI {
                 return false;
             }
         };
+    }
+
+    /**
+     * Unchecks the buildButton when the BuildingMenuUi is closed using the "X" at the corner
+     * @param newMode   New mode after the BuildingMenuUi is closed
+     */
+    public void buttonClicked(GameMode newMode) {
+        if (newMode == GameMode.NORMAL && gameMode == GameMode.BUILDING) {
+            buildButton.setChecked(false);
+        }
+        gameMode = newMode;
     }
 }
