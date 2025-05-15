@@ -3,7 +3,6 @@ package com.zhaw.frontier.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -19,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 public class RTSInputAdapter extends InputAdapter {
 
     private final ExtendViewport viewport;
-    private final Camera camera;
+    private final OrthographicCamera camera;
     private final Vector3 lastTouch = new Vector3();
     private final Vector3 currentTouch = new Vector3();
     private final Vector3 cameraTarget;
@@ -36,7 +35,7 @@ public class RTSInputAdapter extends InputAdapter {
      */
     public RTSInputAdapter(ExtendViewport viewport) {
         this.viewport = viewport;
-        this.camera = viewport.getCamera();
+        this.camera = (OrthographicCamera) viewport.getCamera() ;
         // Initialize the camera target to the camera's starting position.
         this.cameraTarget = new Vector3(camera.position);
     }
@@ -87,8 +86,9 @@ public class RTSInputAdapter extends InputAdapter {
             float deltaX = lastTouch.x - currentTouch.x;
             float deltaY = lastTouch.y - currentTouch.y;
             // Update the camera target by adding the delta.
+
             cameraTarget.add(deltaX, deltaY, 0);
-            // Update the last touch position for the next event.
+            this.clampCamera(camera, cameraTarget);
             lastTouch.set(currentTouch);
             return true;
         }
@@ -115,11 +115,29 @@ public class RTSInputAdapter extends InputAdapter {
         // Calculate the target zoom level.
         float targetZoom = camera.zoom + amountY * zoomSpeed;
         // Clamp the target zoom to a defined range.
-        targetZoom = MathUtils.clamp(targetZoom, 30f, 90f);
+        targetZoom = MathUtils.clamp(targetZoom, 30f, 60f);
         // Interpolate the camera's zoom toward the target zoom.
         camera.zoom = MathUtils.lerp(camera.zoom, targetZoom, smoothingFactor);
+        this.clampCamera(camera, cameraTarget);
+        this.clampCamera(camera, camera.position);
         camera.update();
         return true;
+    }
+
+    private void clampCamera(OrthographicCamera camera, Vector3 target) {
+        float width = camera.viewportWidth * camera.zoom;
+        float height = camera.viewportHeight * camera.zoom;
+        float w = width * Math.abs(camera.up.y) + height * Math.abs(camera.up.x);
+        float h = height * Math.abs(camera.up.y) + width * Math.abs(camera.up.x);
+
+        float minX = w / 2;
+        float minY = h / 2;
+        float mapWidth = 32 * 32;
+        float mapHeight = 32 * 32;
+        float maxX = mapWidth - (w / 2);
+        float maxY = mapHeight - (h / 2);
+        target.x = MathUtils.clamp(cameraTarget.x, minX, maxX);
+        target.y = MathUtils.clamp(cameraTarget.y, minY, maxY);
     }
 
     /**
