@@ -224,7 +224,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.update(delta);
         updateUI();
         baseUI.render(delta);
-        checkWinningCondition();
     }
 
     void handleInput() {
@@ -240,10 +239,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             // Simulate end of turn
             resourceProductionSystem.endTurn();
-
-            if (TurnSystem.getInstance().getTurnCounter() >= 10) {
-                frontierGame.switchScreen(new WinScreen(frontierGame));
-            }
         }
         // ***********************************
 
@@ -293,12 +288,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         int ironIncome = income.getOrDefault(ResourceTypeEnum.RESOURCE_TYPE_IRON, 0);
 
         resourceUI.updateResources(wood, woodIncome, stone, stoneIncome, iron, ironIncome);
-    }
-
-    private void checkWinningCondition(){
-        if (TurnSystem.getInstance().getTurnCounter() >= 10) {
-            frontierGame.switchScreen(new WinScreen(frontierGame));
-        }
     }
 
     @Override
