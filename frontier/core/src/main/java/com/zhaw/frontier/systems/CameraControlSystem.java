@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.entityFactories.CameraFactory;
 import com.zhaw.frontier.input.RTSInputAdapter;
 import com.zhaw.frontier.mappers.CameraMapper;
@@ -56,6 +57,7 @@ public class CameraControlSystem extends IteratingSystem {
         this.renderer = renderer;
         setUpGameCamera(viewport);
         inputAdapter = new RTSInputAdapter(viewport);
+
         Gdx.app.debug("CameraControlSystem", "initialized");
         Gdx.app.debug(
             "CameraControlSystem",
@@ -123,7 +125,7 @@ public class CameraControlSystem extends IteratingSystem {
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
         // Set the camera's initial position (example: centered at 32*16, 32*16)
-        camera.position.set(32 * 16, 32 * 16, 0);
+        camera.position.set(AppProperties.WORLD_WIDTH / 2, AppProperties.WORLD_HEIGHT / 2, 0);
         // Set the initial zoom level of the camera.
         this.camera.zoom = 40.0f;
         // TODO: Configure camera properties through components in the future.

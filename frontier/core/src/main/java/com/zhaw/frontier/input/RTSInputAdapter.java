@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.zhaw.frontier.configs.AppProperties;
 
 /**
  * An input adapter for real-time strategy (RTS) style camera controls.
@@ -132,10 +133,8 @@ public class RTSInputAdapter extends InputAdapter {
 
         float minX = w / 2;
         float minY = h / 2;
-        float mapWidth = 32 * 32;
-        float mapHeight = 32 * 32;
-        float maxX = mapWidth - (w / 2);
-        float maxY = mapHeight - (h / 2);
+        float maxX = AppProperties.WORLD_WIDTH - (w / 2);
+        float maxY = AppProperties.WORLD_HEIGHT - (h / 2);
         target.x = MathUtils.clamp(cameraTarget.x, minX, maxX);
         target.y = MathUtils.clamp(cameraTarget.y, minY, maxY);
     }

@@ -41,4 +41,7 @@ public class AppProperties {
      * If the entity is within this distance from the waypoint, it is considered to have arrived.
      */
     public static final float PATH_FOLLOWER_STOP_TRESHOLD = 0.1f;
+
+    public static final float WORLD_HEIGHT = 64 * 16;
+    public static final float WORLD_WIDTH = 64 * 16;
 }
