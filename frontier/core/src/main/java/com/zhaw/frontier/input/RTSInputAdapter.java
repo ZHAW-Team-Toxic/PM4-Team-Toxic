@@ -35,7 +35,7 @@ public class RTSInputAdapter extends InputAdapter {
      */
     public RTSInputAdapter(ExtendViewport viewport) {
         this.viewport = viewport;
-        this.camera = (OrthographicCamera) viewport.getCamera() ;
+        this.camera = (OrthographicCamera) viewport.getCamera();
         // Initialize the camera target to the camera's starting position.
         this.cameraTarget = new Vector3(camera.position);
     }
