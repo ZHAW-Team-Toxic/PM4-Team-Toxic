@@ -11,14 +11,11 @@ public class ErrorSystem {
 
     private static ErrorSystem instance;
 
-    private final Skin skin;
-    private final Stage stage;
+    private Skin skin;
+    private Stage stage;
     private Dialog activeDialog;
 
     private ErrorSystem(Stage stage, Skin skin) {
-        if (instance != null) {
-            throw new IllegalStateException("ErrorSystem already initialized");
-        }
         this.stage = stage;
         this.skin = skin;
     }
@@ -27,9 +24,7 @@ public class ErrorSystem {
      * Initializes the singleton instance.
      */
     public static void init(Stage stage, Skin skin) {
-        if (instance == null) {
-            instance = new ErrorSystem(stage, skin);
-        }
+        instance = new ErrorSystem(stage, skin);
     }
 
     /**
@@ -73,6 +68,7 @@ public class ErrorSystem {
 
             activeDialog.getContentTable().add(contentTable);
             activeDialog.show(stage);
+            activeDialog.setModal(true);
         }
     }
 

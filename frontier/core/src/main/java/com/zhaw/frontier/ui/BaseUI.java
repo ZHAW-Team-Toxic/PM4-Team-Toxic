@@ -218,7 +218,6 @@ public class BaseUI implements ButtonClickObserver {
      */
     public void dispose() {
         uiStage.dispose();
-        skin.dispose();
     }
 
     private TextButton createButton(

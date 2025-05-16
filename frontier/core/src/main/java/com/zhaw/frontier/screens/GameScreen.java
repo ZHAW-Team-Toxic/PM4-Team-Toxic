@@ -75,8 +75,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         this.spriteBatchWrapper = frontierGame.getBatch();
         Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
-        baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
-        baseUI.addObserver(this);
         this.engine = new Engine();
 
         this.gameWorldView = new ExtendViewport(16, 9);
@@ -141,13 +139,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         Gdx.app.debug("GameScreen", "Initializing Resource Tracking System.");
 
-        // TODO: remove this line, when the resource production system is implemented
-        // ResourceProductionSystem resourceProductionSystem = new
-        // ResourceProductionSystem(engine);
         ResourceProductionSystem.init(engine);
         resourceProductionSystem = ResourceProductionSystem.getInstance();
         engine.addSystem(resourceProductionSystem);
 
+        baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
+        baseUI.addObserver(this);
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
@@ -184,29 +181,15 @@ public class GameScreen implements Screen, ButtonClickObserver {
         inventory = inventoryEntity.getComponent(InventoryComponent.class);
 
         var mx = new InputMultiplexer();
-        mx.addProcessor(baseUI.getStage());
         mx.addProcessor(stage);
+        mx.addProcessor(baseUI.getStage());
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
         mx.addProcessor(new GameInputProcessor(engine, frontierGame, gameWorldView));
         mx.addProcessor(baseUI.createInputAdapter(engine));
         mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
-
         Gdx.input.setInputProcessor(mx);
-        // ***********************************
-        // Test Inventory for testing resource production for wood
-        /*
-         * Entity testLumberMill = engine.createEntity();
-         * ResourceProductionComponent production = new ResourceProductionComponent();
-         * production.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 2); // 2
-         * Holz pro angrenzende Ressource
-         * production.countOfAdjacentResources = 3; // simuliert 3 angrenzende
-         * Wald-Tiles
-         * testLumberMill.add(production);
-         * engine.addEntity(testLumberMill);
-         */
-        // ***********************************
     }
 
     @Override
@@ -265,6 +248,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void dispose() {
         stage.dispose();
+        baseUI.dispose();
     }
 
     private void updateUI() {
