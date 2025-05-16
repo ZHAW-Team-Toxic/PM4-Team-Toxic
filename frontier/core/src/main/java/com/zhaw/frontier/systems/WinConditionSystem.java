@@ -20,8 +20,7 @@ public class WinConditionSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         if (triggered) return;
-
-        if ((TurnSystem.getInstance().getTurnCounter() / 5) >= 10) {
+        if (TurnSystem.getInstance().getTurnCounter() >= 10) {
             triggered = true;
             frontierGame.setScreen(new WinScreen(frontierGame));
         }
