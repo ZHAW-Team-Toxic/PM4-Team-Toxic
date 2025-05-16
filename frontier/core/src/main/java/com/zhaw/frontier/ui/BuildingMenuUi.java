@@ -2,6 +2,7 @@ package com.zhaw.frontier.ui;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -39,10 +40,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     private boolean visible = false;
     private Engine engine;
     private ButtonGroup<ImageButton> buttons = new ButtonGroup<ImageButton>();
-    private Map<ImageButton, BuildableFactory> buttonFactoryMap = new HashMap<
-        ImageButton,
-        BuildableFactory
-    >();
+    private Map<ImageButton, BuildableFactory> buttonFactoryMap = new HashMap<ImageButton, BuildableFactory>();
     private Viewport viewport;
 
     private final Array<ButtonClickObserver> observers = new Array<>();
@@ -67,7 +65,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         Table menuTable = new Table();
         menuTable.setBackground(skin.getDrawable("build_menu_96_32"));
         menuTable.setFillParent(false);
-        menuTable.pad(10);
+        menuTable.pad(20);
         menuTable.bottom();
         menuTable.defaults().pad(5);
 
@@ -76,14 +74,13 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         closeRow.add().expandX(); // spacer
         TextButton closeButton = new TextButton("X", skin);
         closeButton.addListener(
-            new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    notifyObservers(GameMode.NORMAL);
-                    hide();
-                }
-            }
-        );
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        notifyObservers(GameMode.NORMAL);
+                        hide();
+                    }
+                });
         closeRow.add(closeButton).top().right().padTop(10).padRight(10);
 
         menuTable.add(closeRow).expandX().fillX().row();
@@ -106,7 +103,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         menuTable.add(groupRow).expandX().center();
 
         // === Add menuTable to rootTable at the bottom, and stretch it ===
-        rootTable.add(menuTable).width(viewport.getWorldWidth() * 0.3f).bottom().padBottom(10);
+        rootTable.add(menuTable).width(viewport.getWorldWidth() * 0.4f).bottom().padBottom(10);
     }
 
     public void show() {
@@ -157,34 +154,28 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         Table groupTable = new Table();
         groupTable.top();
         groupTable.setSkin(skin);
-        groupTable.add(title).colspan(99).padBottom(5).row(); // Title above buttons
+        groupTable.add(title).colspan(64).padBottom(5).row(); // Title above buttons
         return groupTable;
     }
 
     private void createTowerButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
         ImageButton btn1 = createImageButton(
-            TowerFactory::createDefaultTower,
-            atlas.findRegion("Wood_Tower1")
-        );
-        ImageButton btn2 = createImageButton(TowerFactory::createDefaultTower);
-        allButtons.add(btn1, btn2);
+                TowerFactory::createDefaultTower,
+                atlas.findRegion("Wood_Tower1"));
+        allButtons.add(btn1);
         groupTable.add(toSizedContainer(btn1, 64, 128)).pad(2);
-        groupTable.add(toContainer(btn2)).pad(2);
     }
 
     private void createRessourceButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
         ImageButton wood = createImageButton(
-            ResourceBuildingFactory::woodResourceBuilding,
-            atlas.findRegion("wood_resource_building_ui")
-        );
+                ResourceBuildingFactory::woodResourceBuilding,
+                atlas.findRegion("wood_resource_building_ui"));
         ImageButton stone = createImageButton(
-            ResourceBuildingFactory::stoneResourceBuilding,
-            atlas.findRegion("stone_resource_building_ui")
-        );
+                ResourceBuildingFactory::stoneResourceBuilding,
+                atlas.findRegion("stone_resource_building_ui"));
         ImageButton iron = createImageButton(
-            ResourceBuildingFactory::ironResourceBuilding,
-            atlas.findRegion("iron_resource_building_ui")
-        );
+                ResourceBuildingFactory::ironResourceBuilding,
+                atlas.findRegion("iron_resource_building_ui"));
 
         allButtons.add(wood, stone, iron);
         groupTable.add(toContainer(wood)).pad(2);
@@ -194,17 +185,14 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
 
     private void createWallButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
         ImageButton woodWall = createImageButton(
-            WallFactory::createWoodWall,
-            atlas.findRegion("wall_wood_single")
-        );
+                WallFactory::createWoodWall,
+                atlas.findRegion("wall_wood_single"));
         ImageButton stoneWall = createImageButton(
-            WallFactory::createStoneWall,
-            atlas.findRegion("wall_stone_single")
-        );
+                WallFactory::createStoneWall,
+                atlas.findRegion("wall_stone_single"));
         ImageButton ironWall = createImageButton(
-            WallFactory::createIronWall,
-            atlas.findRegion("wall_iron_single")
-        );
+                WallFactory::createIronWall,
+                atlas.findRegion("wall_iron_single"));
         allButtons.add(woodWall, stoneWall, ironWall);
         groupTable.add(toContainer(woodWall)).pad(2);
         groupTable.add(toContainer(stoneWall)).pad(2);
@@ -212,9 +200,8 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private ImageButton createImageButton(
-        BuildableFactory buildableFactory,
-        TextureRegion buttonImage
-    ) {
+            BuildableFactory buildableFactory,
+            TextureRegion buttonImage) {
         ImageButtonStyle style = new ImageButtonStyle();
         TextureRegionDrawable init = new TextureRegionDrawable(buttonImage);
         style.up = init;
@@ -237,24 +224,22 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     }
 
     private Container<ImageButton> toSizedContainer(
-        ImageButton imageButton,
-        int width,
-        int height
-    ) {
+            ImageButton imageButton,
+            int width,
+            int height) {
         Container<ImageButton> container = new Container<>(imageButton);
         container.size(width, height).pad(5);
         imageButton.addListener(
-            new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    if (imageButton.isChecked()) {
-                        container.setBackground(skin.getDrawable("selected"));
-                    } else {
-                        container.setBackground((Drawable) null); // remove border
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        if (imageButton.isChecked()) {
+                            container.setBackground(skin.getDrawable("selected"));
+                        } else {
+                            container.setBackground((Drawable) null); // remove border
+                        }
                     }
-                }
-            }
-        );
+                });
         return container;
     }
 
@@ -273,11 +258,10 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
                     BuildableFactory selectedFactory = buttonFactoryMap.get(imageButton);
                     if (selectedFactory != null) {
                         engine
-                            .getSystem(BuildingManagerSystem.class)
-                            .placeBuilding(
-                                selectedFactory.create(engine, screenX, screenY),
-                                EngineHelper.getInventoryComponent(engine)
-                            );
+                                .getSystem(BuildingManagerSystem.class)
+                                .placeBuilding(
+                                        selectedFactory.create(engine, screenX, screenY),
+                                        EngineHelper.getInventoryComponent(engine));
                         return true;
                     }
                     return false;
