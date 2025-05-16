@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -162,7 +163,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
 
-        ErrorSystem.init(baseUI.getStage(), skin);
+        ErrorSystem.init(stage, skin);
 
         SimpleAStarPathfinder pathfinder = new SimpleAStarPathfinder(
             MapLoader.getInstance().getAllWalkableLayers(),
@@ -210,6 +211,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1); // Black background
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         handleInput();
         engine.update(delta);
         updateUI();
