@@ -72,7 +72,7 @@ public class TowerFactory {
             directionTextures.animationTextures.get(0)
         );
 
-        var attack = new AttackComponent(20, 10, 1000);
+        var attack = new AttackComponent(100, 10, 1000);
 
         var cost = new CostComponent();
         cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 5);
