@@ -22,6 +22,8 @@ import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
+import com.zhaw.frontier.systems.StateDirectionalTextureSystem;
+import com.zhaw.frontier.systems.TowerTargetingSystem;
 import com.zhaw.frontier.systems.behaviour.IdleBehaviourSystem;
 import com.zhaw.frontier.systems.behaviour.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.building.BuildingManagerSystem;
@@ -121,8 +123,19 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new SteeringMovementSystem());
         engine.addSystem(new MovementSystem());
         engine.addSystem(new AnimationSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing win condition system.");
+        engine.addSystem(new WinConditionSystem(frontierGame));
+        Gdx.app.debug("[DEBUG] - GameScreen", "win condition system initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing lose condition system.");
+        engine.addSystem(new LoseConditionSystem(frontierGame));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Lost condition system initialized.");
+
         engine.addSystem(new StateDirectionalTextureSystem());
         engine.addSystem(new ProjectileCollisionSystem());
+
         engine.addSystem(new SoundSystem());
         engine.addSystem(new TowerTargetingSystem());
         engine.addSystem(new CooldownSystem());

@@ -21,7 +21,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.savegame.SaveGameManager;
+import com.zhaw.frontier.systems.TurnSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
+import com.zhaw.frontier.utils.GameStats;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 
 public class StartScreen extends ScreenAdapter {
@@ -70,9 +72,11 @@ public class StartScreen extends ScreenAdapter {
         this.background.getCamera().position.set(8, 4.5f, 0);
         Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
 
+        GameStats.getInstance().reset();
+        TurnSystem.getInstance().resetTurnCounter();
+
         this.menu = new ScreenViewport();
         this.stage = new Stage(menu, spriteBatchWrapper.getBatch());
-        Gdx.input.setInputProcessor(stage);
 
         this.skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
 
@@ -148,6 +152,11 @@ public class StartScreen extends ScreenAdapter {
             float speedY = -MathUtils.random(1f, 2f);
             flyingFireballs.add(new Fireball(startX, startY, speedX, speedY));
         }
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
