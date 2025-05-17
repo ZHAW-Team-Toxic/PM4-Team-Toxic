@@ -67,7 +67,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         Table menuTable = new Table();
         menuTable.setBackground(skin.getDrawable("build_menu_96_32"));
         menuTable.setFillParent(false);
-        menuTable.pad(10);
+        menuTable.pad(20);
         menuTable.bottom();
         menuTable.defaults().pad(5);
 
@@ -106,7 +106,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         menuTable.add(groupRow).expandX().center();
 
         // === Add menuTable to rootTable at the bottom, and stretch it ===
-        rootTable.add(menuTable).width(viewport.getWorldWidth() * 0.3f).bottom().padBottom(10);
+        rootTable.add(menuTable).width(viewport.getWorldWidth() * 0.4f).bottom().padBottom(10);
     }
 
     public void show() {
@@ -166,10 +166,8 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
             TowerFactory::createDefaultTower,
             atlas.findRegion("Wood_Tower1")
         );
-        ImageButton btn2 = createImageButton(TowerFactory::createDefaultTower);
-        allButtons.add(btn1, btn2);
+        allButtons.add(btn1);
         groupTable.add(toSizedContainer(btn1, 64, 128)).pad(2);
-        groupTable.add(toContainer(btn2)).pad(2);
     }
 
     private void createRessourceButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
