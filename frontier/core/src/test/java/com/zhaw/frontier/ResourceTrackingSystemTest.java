@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.systems.ErrorSystem;
 import com.zhaw.frontier.systems.ResourceProductionSystem;
 import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import org.junit.jupiter.api.AfterAll;
@@ -63,6 +64,7 @@ public class ResourceTrackingSystemTest {
         gameWorldView = testMapEnvironment.getGameWorldView();
         inventoryComponent = new InventoryComponent();
         inventoryComponent.resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 10);
+        ErrorSystem.init(null, null);
 
         addSystemsUnderTestHere();
     }

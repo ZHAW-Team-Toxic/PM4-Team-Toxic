@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,8 +19,6 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.CursorFactory;
-import com.zhaw.frontier.entityFactories.CursorFactory;
-import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
@@ -76,8 +75,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         this.spriteBatchWrapper = frontierGame.getBatch();
         Gdx.graphics.setCursor(CursorFactory.createDefaultCursor());
         this.renderer = new OrthogonalTiledMapRenderer(null, spriteBatchWrapper.getBatch());
-        baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
-        baseUI.addObserver(this);
         this.engine = new Engine();
 
         this.gameWorldView = new ExtendViewport(16, 9);
@@ -142,13 +139,12 @@ public class GameScreen implements Screen, ButtonClickObserver {
 
         Gdx.app.debug("GameScreen", "Initializing Resource Tracking System.");
 
-        // TODO: remove this line, when the resource production system is implemented
-        // ResourceProductionSystem resourceProductionSystem = new
-        // ResourceProductionSystem(engine);
         ResourceProductionSystem.init(engine);
         resourceProductionSystem = ResourceProductionSystem.getInstance();
         engine.addSystem(resourceProductionSystem);
 
+        baseUI = new BaseUI(frontierGame, spriteBatchWrapper, this);
+        baseUI.addObserver(this);
         // create game ui
         gameUi = new ScreenViewport();
         stage = new Stage(gameUi, spriteBatchWrapper.getBatch());
@@ -163,6 +159,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // create resource ui
         skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
         resourceUI = new ResourceUI(skin, stage);
+
+        ErrorSystem.init(stage, skin);
 
         SimpleAStarPathfinder pathfinder = new SimpleAStarPathfinder(
             MapLoader.getInstance().getAllWalkableLayers(),
@@ -183,33 +181,22 @@ public class GameScreen implements Screen, ButtonClickObserver {
         inventory = inventoryEntity.getComponent(InventoryComponent.class);
 
         var mx = new InputMultiplexer();
-        mx.addProcessor(baseUI.getStage());
         mx.addProcessor(stage);
+        mx.addProcessor(baseUI.getStage());
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
         mx.addProcessor(new GameInputProcessor(engine, frontierGame, gameWorldView));
         mx.addProcessor(baseUI.createInputAdapter(engine));
         mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
-
         Gdx.input.setInputProcessor(mx);
-        // ***********************************
-        // Test Inventory for testing resource production for wood
-        /*
-         * Entity testLumberMill = engine.createEntity();
-         * ResourceProductionComponent production = new ResourceProductionComponent();
-         * production.productionRate.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 2); // 2
-         * Holz pro angrenzende Ressource
-         * production.countOfAdjacentResources = 3; // simuliert 3 angrenzende
-         * Wald-Tiles
-         * testLumberMill.add(production);
-         * engine.addEntity(testLumberMill);
-         */
-        // ***********************************
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1); // Black background
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         handleInput();
         engine.update(delta);
         updateUI();
@@ -261,6 +248,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void dispose() {
         stage.dispose();
+        baseUI.dispose();
     }
 
     private void updateUI() {
