@@ -256,6 +256,11 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+
+        SoundSystem soundSystem = engine.getSystem(SoundSystem.class);
+        if (soundSystem != null) {
+            engine.removeSystem(engine.getSystem(SoundSystem.class));
+        }
     }
 
     @Override
