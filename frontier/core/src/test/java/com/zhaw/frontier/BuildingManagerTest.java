@@ -12,6 +12,7 @@ import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceGeneratorComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.systems.ErrorSystem;
 import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -56,6 +57,7 @@ public class BuildingManagerTest {
         gameWorldView = testMapEnvironment.getGameWorldView();
         inventory = new InventoryComponent();
         inventory.resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 10);
+        ErrorSystem.init(null, null);
 
         addSystemsUnderTestHere();
 

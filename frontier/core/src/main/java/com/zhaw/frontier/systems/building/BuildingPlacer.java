@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
 import com.zhaw.frontier.mappers.MapLayerMapper;
+import com.zhaw.frontier.systems.ErrorSystem;
 import com.zhaw.frontier.systems.ResourceAdjacencyChecker;
 import com.zhaw.frontier.systems.WallManager;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
@@ -79,6 +80,7 @@ public class BuildingPlacer {
                 "Player does not have the resources to build this building \n" +
                 inventory.toString()
             );
+            ErrorSystem.getInstance().showNotEnoughResources();
             return false;
         }
 
@@ -114,11 +116,13 @@ public class BuildingPlacer {
 
         if (!checkIfTileIsBuildableOnBottomLayer(engine, entityType)) {
             Gdx.app.debug("BuildingPlacer", "Tile is not buildable on bottom layer.");
+            ErrorSystem.getInstance().showCannotBuildHere();
             return false;
         }
 
         if (!checkIfTileIsBuildableOnResourceLayer(engine, entityType)) {
             Gdx.app.debug("BuildingPlacer", "Tile is not buildable on resource layer.");
+            ErrorSystem.getInstance().showCannotBuildHere();
             return false;
         }
 
@@ -131,6 +135,7 @@ public class BuildingPlacer {
                 worldCoordinateY +
                 " y"
             );
+            ErrorSystem.getInstance().showIsOccupied();
             return false;
         }
 
@@ -148,6 +153,7 @@ public class BuildingPlacer {
                     "BuildingPlacer",
                     "Tile is buildable on resource layer but has no adjacent resource."
                 );
+                ErrorSystem.getInstance().showCannotBuildHere();
                 return false;
             }
         }
