@@ -18,7 +18,7 @@ import com.zhaw.frontier.entityFactories.TowerFactory;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
 /**
- * SelectSystem
+ * Adds a RangeComponent to a tower entity if it is clicked.
  */
 public class RangeVisualSystem extends EntitySystem {
 
