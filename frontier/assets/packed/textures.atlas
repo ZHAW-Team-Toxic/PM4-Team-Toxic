@@ -1359,14 +1359,14 @@ walk_down_goblin
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_down_goblin
   rotate: false
   xy: 236, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 idle_left_goblin
   rotate: false
   xy: 254, 2
@@ -1429,14 +1429,14 @@ walk_right_goblin
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_right_goblin
   rotate: false
   xy: 308, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 idle_up_goblin
   rotate: false
   xy: 326, 2
@@ -1736,14 +1736,14 @@ walk_left_orc
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_left_orc
   rotate: false
   xy: 20, 20
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 idle_right_orc
   rotate: false
   xy: 20, 2
@@ -1771,14 +1771,14 @@ walk_right_orc
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_right_orc
   rotate: false
   xy: 38, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 idle_up_orc
   rotate: false
   xy: 56, 56
@@ -2106,14 +2106,14 @@ walk_left_demon
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_left_demon
   rotate: false
   xy: 74, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 idle_right_demon
   rotate: false
   xy: 92, 92
@@ -2176,14 +2176,14 @@ walk_up_demon
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 2
+  index: 4
 walk_up_demon
   rotate: false
   xy: 38, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: 4
+  index: 2
 walk_down_demon
   rotate: false
   xy: 56, 38

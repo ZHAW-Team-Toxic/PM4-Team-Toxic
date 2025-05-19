@@ -2,7 +2,6 @@ package com.zhaw.frontier.entityFactories;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
@@ -50,8 +49,8 @@ public class TowerFactory {
      */
     public static Entity createDefaultTower(Engine engine, float x, float y) { // todo add tower damage to this
         TextureAtlas atlas = AssetManagerInstance
-                .getManager()
-                .get("packed/textures.atlas", TextureAtlas.class);
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
 
@@ -69,8 +68,9 @@ public class TowerFactory {
         directionTextures.animationTextures.put(135, atlas.findRegion("Wood_Tower7"));
         directionTextures.animationTextures.put(90, atlas.findRegion("Wood_Tower8"));
         renderComponent.sprites.put(
-                new TileOffset(0, 0),
-                directionTextures.animationTextures.get(0));
+            new TileOffset(0, 0),
+            directionTextures.animationTextures.get(0)
+        );
 
         var attack = new AttackComponent(20, 8, 500);
 
@@ -81,9 +81,6 @@ public class TowerFactory {
         tower.add(renderComponent);
         tower.add(directionTextures);
         tower.add(attack);
-        var range = new RangeComponent();
-        range.rangeTexture = atlas.createSprite("Range");
-        tower.add(range);
 
         tower.add(new PositionComponent(x, y, 1, 1));
         tower.add(new OccupiesTilesComponent());
@@ -92,5 +89,14 @@ public class TowerFactory {
         tower.add(new TeamComponent(Team.PLAYER));
         tower.add(new BuildingAnimationComponent());
         return tower;
+    }
+
+    public static RangeComponent createRangeComponent() {
+        TextureAtlas atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
+        var range = new RangeComponent();
+        range.rangeTexture = atlas.createSprite("Range");
+        return range;
     }
 }
