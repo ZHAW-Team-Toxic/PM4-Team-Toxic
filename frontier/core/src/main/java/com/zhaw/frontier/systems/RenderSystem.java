@@ -252,6 +252,7 @@ public class RenderSystem extends EntitySystem {
                 rotation = rotationComponent.rotation;
             }
 
+            // draw range for tower
             var range = rangeComponentMapper.get(entity);
             if (range != null) {
                 renderTowerRange(batch, range, basePixel);
