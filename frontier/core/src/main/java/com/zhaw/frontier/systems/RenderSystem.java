@@ -152,16 +152,6 @@ public class RenderSystem extends EntitySystem {
         // Render all building entities.
         renderAllEntities((SpriteBatch) renderer.getBatch());
 
-        if (AppConfigLoader.ReadAppConfig().getEnvironment() == AppEnvironment.DEV) {
-            drawGridWithTempPixel(
-                (SpriteBatch) renderer.getBatch(),
-                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getWidth(),
-                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getHeight(),
-                16,
-                Color.WHITE
-            );
-        }
-
         // End the sprite batch.
         renderer.getBatch().end();
     }
