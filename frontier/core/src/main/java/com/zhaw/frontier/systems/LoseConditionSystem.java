@@ -8,28 +8,39 @@ import com.zhaw.frontier.components.EntityTypeComponent.EntityType;
 import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.screens.LoseScreen;
 
-public class LoseConditionSystem extends IteratingSystem {
+public class LoseConditionSystem extends EntitySystem {
 
     private final FrontierGame frontierGame;
+    private final Family hqFamily = Family.all(HealthComponent.class, EntityTypeComponent.class).get();
+
+    private Entity hq;
     private boolean hqDestroyed = false;
 
     public LoseConditionSystem(FrontierGame frontierGame) {
-        super(Family.all(HealthComponent.class, EntityTypeComponent.class).get());
         this.frontierGame = frontierGame;
     }
 
     @Override
-    protected void processEntity(Entity entity, float deltaTime) {
+    public void update(float deltaTime) {
         if (hqDestroyed) return;
 
-        EntityTypeComponent type = entity.getComponent(EntityTypeComponent.class);
-        if (type.type != EntityType.HQ) return;
+        if (hq == null) {
+            for (Entity entity : getEngine().getEntitiesFor(hqFamily)) {
+                EntityTypeComponent type = entity.getComponent(EntityTypeComponent.class);
+                if (type != null && type.type == EntityType.HQ) {
+                    hq = entity;
+                    break;
+                }
+            }
+        }
 
-        HealthComponent health = entity.getComponent(HealthComponent.class);
-        if (health.currentHealth <= 0) {
-            hqDestroyed = true;
-
-            frontierGame.setScreen(new LoseScreen(frontierGame));
+        if (hq != null) {
+            HealthComponent health = hq.getComponent(HealthComponent.class);
+            if (health != null && health.currentHealth <= 0) {
+                hqDestroyed = true;
+                frontierGame.setScreen(new LoseScreen(frontierGame));
+            }
         }
     }
 }
+
