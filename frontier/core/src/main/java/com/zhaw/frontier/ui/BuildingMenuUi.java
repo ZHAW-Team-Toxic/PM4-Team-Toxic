@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.entityFactories.BuildableFactory;
 import com.zhaw.frontier.entityFactories.ResourceBuildingFactory;
 import com.zhaw.frontier.entityFactories.TowerFactory;
@@ -167,7 +169,9 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
             atlas.findRegion("Wood_Tower1")
         );
         allButtons.add(btn1);
-        groupTable.add(toSizedContainer(btn1, 64, 128)).pad(2);
+        groupTable
+            .add(toSizedContainer(btn1, 64, 128, AppProperties.WOOD_TOWER_PRICE + " W"))
+            .pad(2);
     }
 
     private void createRessourceButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
@@ -185,9 +189,11 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         );
 
         allButtons.add(wood, stone, iron);
-        groupTable.add(toContainer(wood)).pad(2);
-        groupTable.add(toContainer(stone)).pad(2);
-        groupTable.add(toContainer(iron)).pad(2);
+        groupTable.add(toContainer(wood, AppProperties.WOOD_RESOURCE_BUILDING_PRICE + " W")).pad(2);
+        groupTable
+            .add(toContainer(stone, AppProperties.STONE_RESOURCE_BUILDING_PRICE + " S"))
+            .pad(2);
+        groupTable.add(toContainer(iron, AppProperties.IRON_RESOURCE_BUILDING_PRICE + " I")).pad(2);
     }
 
     private void createWallButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
@@ -203,10 +209,11 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
             WallFactory::createIronWall,
             atlas.findRegion("wall_iron_single")
         );
+
         allButtons.add(woodWall, stoneWall, ironWall);
-        groupTable.add(toContainer(woodWall)).pad(2);
-        groupTable.add(toContainer(stoneWall)).pad(2);
-        groupTable.add(toContainer(ironWall)).pad(2);
+        groupTable.add(toContainer(woodWall, AppProperties.WOOD_WALL_PRICE + " W")).pad(2);
+        groupTable.add(toContainer(stoneWall, AppProperties.STONE_WALL_PRICE + " S")).pad(2);
+        groupTable.add(toContainer(ironWall, AppProperties.IRON_WALL_PRICE + " I")).pad(2);
     }
 
     private ImageButton createImageButton(
@@ -221,39 +228,39 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
         return button;
     }
 
-    private ImageButton createImageButton(BuildableFactory buildableFactory) {
-        ImageButtonStyle style = new ImageButtonStyle();
-        TextureRegionDrawable init = new TextureRegionDrawable(atlas.findRegion("demo/donkey"));
-        style.up = init;
-        ImageButton button = new ImageButton(style);
-        buttonFactoryMap.putIfAbsent(button, buildableFactory);
-        return button;
+    private Container<Table> toContainer(ImageButton imageButton, String priceText) {
+        return toSizedContainer(imageButton, 64, 64, priceText);
     }
 
-    private Container<ImageButton> toContainer(ImageButton imageButton) {
-        return toSizedContainer(imageButton, 64, 64);
-    }
-
-    private Container<ImageButton> toSizedContainer(
+    private Container<Table> toSizedContainer(
         ImageButton imageButton,
         int width,
-        int height
+        int height,
+        String priceText
     ) {
-        Container<ImageButton> container = new Container<>(imageButton);
-        container.size(width, height).pad(5);
+        Table containerTable = new Table();
+        containerTable.top();
+
+        Container<ImageButton> imageContainer = new Container<>(imageButton);
+        imageContainer.size(width, height).pad(5);
+
         imageButton.addListener(
             new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     if (imageButton.isChecked()) {
-                        container.setBackground(skin.getDrawable("selected"));
+                        imageContainer.setBackground(skin.getDrawable("selected"));
                     } else {
-                        container.setBackground((Drawable) null); // remove border
+                        imageContainer.setBackground((Drawable) null); // remove border
                     }
                 }
             }
         );
-        return container;
+
+        containerTable.add(imageContainer).row();
+        containerTable.add(new Label(priceText, skin)).padTop(2).center();
+
+        return new Container<>(containerTable);
     }
 
     /**

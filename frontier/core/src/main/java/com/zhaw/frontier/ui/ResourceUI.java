@@ -34,17 +34,24 @@ public class ResourceUI {
         root.setFillParent(true);
         stage.addActor(root);
 
-        // Ressourcenanzeige oben rechts
-        woodlabel = new Label("Holz: " + wood + " + " + woodIncome, skin);
-        stoneLabel = new Label("Stein: " + stone + " + " + stoneIncome, skin);
-        ironLabel = new Label("Eisen: " + iron + " + " + ironIncome, skin);
+        Table resourceTable = new Table();
+        resourceTable.setBackground(skin.getDrawable("white_bg_32_32"));
+        resourceTable.pad(6);
 
+        // Ressourcenanzeige oben rechts
+        woodlabel = new Label("Wood: " + wood + " + " + woodIncome, skin);
+        stoneLabel = new Label("Stone: " + stone + " + " + stoneIncome, skin);
+        ironLabel = new Label("Iron: " + iron + " + " + ironIncome, skin);
+
+        resourceTable.add(woodlabel).padBottom(10).pad(5);
+        resourceTable.row();
+        resourceTable.add(stoneLabel).padBottom(10).pad(5);
+        resourceTable.row();
+        resourceTable.add(ironLabel).padBottom(10).pad(5);
+
+        // Position resource table at top-right
         root.top().right().pad(10);
-        root.add(woodlabel).padBottom(10);
-        root.row();
-        root.add(stoneLabel).padBottom(10);
-        root.row();
-        root.add(ironLabel).padBottom(10);
+        root.add(resourceTable);
     }
 
     /**
@@ -73,14 +80,11 @@ public class ResourceUI {
         this.ironIncome = ironIncome;
 
         // Update the labels with the new values
-        woodlabel.setText("Holz: " + wood + " + " + woodIncome);
-        stoneLabel.setText("Stein: " + stone + " + " + stoneIncome);
-        ironLabel.setText("Eisen: " + iron + " + " + ironIncome);
+        woodlabel.setText("Wood: " + wood + " + " + woodIncome);
+        stoneLabel.setText("Stone: " + stone + " + " + stoneIncome);
+        ironLabel.setText("Iron: " + iron + " + " + ironIncome);
     }
 
-    /**********************************************************************/
-    // Getter methods for the resource values for testing purposes
-    // Getter methods for the labels for testing purposes
     public Label getWoodLabel() {
         return woodlabel;
     }
@@ -92,5 +96,4 @@ public class ResourceUI {
     public Label getIronLabel() {
         return ironLabel;
     }
-    /**********************************************************************/
 }

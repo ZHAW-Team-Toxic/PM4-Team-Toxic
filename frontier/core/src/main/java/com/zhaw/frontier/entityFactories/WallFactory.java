@@ -5,6 +5,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
@@ -46,6 +48,10 @@ public class WallFactory {
         new HashMap<>(woodWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
         wall.add(render);
 
+        CostComponent cost = new CostComponent();
+        cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, AppProperties.WOOD_WALL_PRICE);
+        wall.add(cost);
+
         WallPieceComponent wallPiece = new WallPieceComponent();
         wallPiece.wallPieceTextures = woodWallPiecesCache;
         wallPiece.currentWallPiece = WallPieceComponent.WallPiece.SINGLE;
@@ -63,6 +69,10 @@ public class WallFactory {
         new HashMap<>(stoneWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
         wall.add(render);
 
+        CostComponent cost = new CostComponent();
+        cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, AppProperties.STONE_WALL_PRICE);
+        wall.add(cost);
+
         WallPieceComponent wallPiece = new WallPieceComponent();
         wallPiece.wallPieceTextures = stoneWallPiecesCache;
         wallPiece.currentWallPiece = WallPieceComponent.WallPiece.SINGLE;
@@ -79,6 +89,10 @@ public class WallFactory {
         render.sprites =
         new HashMap<>(ironWallPiecesCache.get(WallPieceComponent.WallPiece.SINGLE));
         wall.add(render);
+
+        CostComponent cost = new CostComponent();
+        cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, AppProperties.IRON_WALL_PRICE);
+        wall.add(cost);
 
         WallPieceComponent wallPiece = new WallPieceComponent();
         wallPiece.wallPieceTextures = ironWallPiecesCache;
