@@ -1,25 +1,29 @@
 package com.zhaw.frontier.systems;
 
-import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.systems.IntervalSystem;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.screens.WinScreen;
 
-public class WinConditionSystem extends EntitySystem {
+/**
+ * Checks if the win condition is fulfilled.
+ */
+public class WinConditionSystem extends IntervalSystem {
 
-    private final FrontierGame frontierGame;
+    private final FrontierGame game;
     private boolean triggered = false;
 
-    public WinConditionSystem(FrontierGame frontierGame) {
-        this.frontierGame = frontierGame;
+    public WinConditionSystem(FrontierGame game) {
+        super(0.5f);
+        this.game = game;
     }
 
     @Override
-    public void update(float deltaTime) {
+    protected void updateInterval() {
         if (triggered) return;
 
-        if (TurnSystem.getInstance().getTurnCounter() >= 10) {
+        if (TurnSystem.getInstance().getTurnCounter() >= 50) {
             triggered = true;
-            frontierGame.setScreen(new WinScreen(frontierGame));
+            game.setScreen(new WinScreen(game));
         }
     }
 }

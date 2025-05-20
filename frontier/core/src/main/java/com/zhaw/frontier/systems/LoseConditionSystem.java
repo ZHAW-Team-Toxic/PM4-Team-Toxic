@@ -1,46 +1,46 @@
 package com.zhaw.frontier.systems;
 
-import com.badlogic.ashley.core.*;
-import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IntervalIteratingSystem;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.EntityTypeComponent.EntityType;
 import com.zhaw.frontier.components.HealthComponent;
 import com.zhaw.frontier.screens.LoseScreen;
 
-public class LoseConditionSystem extends EntitySystem {
+/**
+ * LoseConditionSystem triggers game over when the HQ entity is destroyed.
+ */
+public class LoseConditionSystem extends IntervalIteratingSystem {
 
+    private final ComponentMapper<HealthComponent> hm = ComponentMapper.getFor(
+        HealthComponent.class
+    );
+    private final ComponentMapper<EntityTypeComponent> etm = ComponentMapper.getFor(
+        EntityTypeComponent.class
+    );
     private final FrontierGame frontierGame;
-    private final Family hqFamily = Family.all(HealthComponent.class, EntityTypeComponent.class).get();
 
-    private Entity hq;
     private boolean hqDestroyed = false;
 
     public LoseConditionSystem(FrontierGame frontierGame) {
+        super(Family.all(HealthComponent.class, EntityTypeComponent.class).get(), 0.5f);
         this.frontierGame = frontierGame;
     }
 
     @Override
-    public void update(float deltaTime) {
+    protected void processEntity(Entity entity) {
         if (hqDestroyed) return;
 
-        if (hq == null) {
-            for (Entity entity : getEngine().getEntitiesFor(hqFamily)) {
-                EntityTypeComponent type = entity.getComponent(EntityTypeComponent.class);
-                if (type != null && type.type == EntityType.HQ) {
-                    hq = entity;
-                    break;
-                }
-            }
-        }
+        var type = etm.get(entity);
+        if (type.type != EntityType.HQ) return;
 
-        if (hq != null) {
-            HealthComponent health = hq.getComponent(HealthComponent.class);
-            if (health != null && health.currentHealth <= 0) {
-                hqDestroyed = true;
-                frontierGame.setScreen(new LoseScreen(frontierGame));
-            }
+        var health = hm.get(entity);
+        if (health.currentHealth <= 0) {
+            hqDestroyed = true;
+            frontierGame.setScreen(new LoseScreen(frontierGame));
         }
     }
 }
-
