@@ -54,6 +54,9 @@ public class RenderSystem extends EntitySystem {
     private Entity mapEntity;
     private ComponentMapper<TextureRotationComponent> textureRotationComponentMapper =
         ComponentMapper.getFor(TextureRotationComponent.class);
+    private ComponentMapper<RangeComponent> rangeComponentMapper = ComponentMapper.getFor(
+        RangeComponent.class
+    );
 
     private final MapLayerMapper mapLayerMapper = new MapLayerMapper();
 
@@ -152,6 +155,16 @@ public class RenderSystem extends EntitySystem {
 
         // End the sprite batch.
         renderer.getBatch().end();
+    }
+
+    private void renderTowerRange(SpriteBatch batch, RangeComponent range, Vector2 pos) {
+        batch.draw(
+            range.rangeTexture,
+            pos.x - (range.range / 2) + 8,
+            pos.y - (range.range / 2) + 8,
+            range.range,
+            range.range
+        );
     }
 
     private void renderMapLayers(SpriteBatch renderer) {
@@ -265,6 +278,12 @@ public class RenderSystem extends EntitySystem {
             var rotationComponent = textureRotationComponentMapper.get(entity);
             if (rotationComponent != null) {
                 rotation = rotationComponent.rotation;
+            }
+
+            // draw range for tower
+            var range = rangeComponentMapper.get(entity);
+            if (range != null) {
+                renderTowerRange(batch, range, basePixel);
             }
 
             for (int i = 0; i < render.widthInTiles; i++) {
