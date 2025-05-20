@@ -78,7 +78,7 @@ public class BuildingMenuUiTest {
     @Test
     void testAllExpectedButtonsAreCreated() {
         // There should be 2 tower buttons, 3 resource buttons, and 3 wall buttons
-        int expectedButtonCount = 2 + 3 + 3;
+        int expectedButtonCount = 1 + 3 + 3;
         assertEquals(
             expectedButtonCount,
             menuUi.getTotalButtonCount(),

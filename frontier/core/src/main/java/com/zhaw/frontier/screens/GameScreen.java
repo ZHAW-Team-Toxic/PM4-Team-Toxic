@@ -15,10 +15,12 @@ import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.algorithm.SimpleAStarPathfinder;
 import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.EntityTypeComponent;
+import com.zhaw.frontier.components.HQComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.CursorFactory;
+import com.zhaw.frontier.entityFactories.HQFactory;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
@@ -143,6 +145,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
 
         engine.addSystem(cameraControlSystem);
+
+        initHq(engine, sampleLayer);
 
         Gdx.app.debug("GameScreen", "Creating stock entity.");
         Entity stock = engine.createEntity();
@@ -294,6 +298,17 @@ public class GameScreen implements Screen, ButtonClickObserver {
             Gdx.graphics.setCursor(CursorFactory.createDeleteCursor());
         } else if (gameMode == GameMode.BUILDING) {
             Gdx.graphics.setCursor(CursorFactory.createBuildingCursor());
+        }
+    }
+
+    private void initHq(Engine egine, TiledMapTileLayer tiledMapTileLayer) {
+        float centerX = (tiledMapTileLayer.getWidth() / 2f) + 0.5f;
+        float centerY = (tiledMapTileLayer.getHeight() / 2f) + 0.5f;
+
+        boolean hasHq = engine.getEntitiesFor(Family.all(HQComponent.class).get()).size() > 0;
+
+        if (!hasHq) {
+            engine.addEntity(HQFactory.createSandClockHQ(engine, centerX, centerY));
         }
     }
 }

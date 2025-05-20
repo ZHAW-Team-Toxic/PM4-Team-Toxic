@@ -23,9 +23,7 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.DecorationLayerComponent;
 import com.zhaw.frontier.components.map.ResourceLayerComponent;
-import com.zhaw.frontier.enums.AppEnvironment;
 import com.zhaw.frontier.mappers.MapLayerMapper;
-import com.zhaw.frontier.utils.AppConfigLoader;
 import com.zhaw.frontier.utils.MapLayerRenderEntry;
 import com.zhaw.frontier.utils.TileOffset;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
@@ -151,16 +149,6 @@ public class RenderSystem extends EntitySystem {
 
         // Render all building entities.
         renderAllEntities((SpriteBatch) renderer.getBatch());
-
-        if (AppConfigLoader.ReadAppConfig().getEnvironment() == AppEnvironment.DEV) {
-            drawGridWithTempPixel(
-                (SpriteBatch) renderer.getBatch(),
-                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getWidth(),
-                mapEntity.getComponent(BottomLayerComponent.class).bottomLayer.getHeight(),
-                16,
-                Color.WHITE
-            );
-        }
 
         // End the sprite batch.
         renderer.getBatch().end();
