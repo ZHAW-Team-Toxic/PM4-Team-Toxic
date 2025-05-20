@@ -30,7 +30,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * BaseUIScreen provides a basic interface for the game that allows you to switch between different game modes.
+ * BaseUIScreen provides a basic interface for the game that allows you to
+ * switch between different game modes.
  * The game modes are represented by buttons that are displayed on the screen.
  * The buttons include: demolish, build, fireplace, and pause.
  */
@@ -267,8 +268,9 @@ public class BaseUI implements ButtonClickObserver {
 
     /**
      * Creates an input adapter that switches between building and demolishing mode.
-     * @param engine    The engine instance to use for building and demolishing
-     * @return          The input adapter that switches between building and demolishing mode
+     *
+     * @param engine The engine instance to use for building and demolishing
+     * @return The input adapter that switches between building and demolishing mode
      */
     public InputAdapter createInputAdapter(Engine engine) {
         return new InputAdapter() {
@@ -284,8 +286,10 @@ public class BaseUI implements ButtonClickObserver {
     }
 
     /**
-     * Unchecks the buildButton when the BuildingMenuUi is closed using the "X" at the corner
-     * @param newMode   New mode after the BuildingMenuUi is closed
+     * Unchecks the buildButton when the BuildingMenuUi is closed using the "X" at
+     * the corner
+     *
+     * @param newMode New mode after the BuildingMenuUi is closed
      */
     public void buttonClicked(GameMode newMode) {
         if (newMode == GameMode.NORMAL && gameMode == GameMode.BUILDING) {

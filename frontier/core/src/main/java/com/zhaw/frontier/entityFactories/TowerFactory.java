@@ -72,7 +72,7 @@ public class TowerFactory {
             directionTextures.animationTextures.get(0)
         );
 
-        var attack = new AttackComponent(20, 10, 1000);
+        var attack = new AttackComponent(20, 8, 500);
 
         var cost = new CostComponent();
         cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 5);
@@ -81,6 +81,7 @@ public class TowerFactory {
         tower.add(renderComponent);
         tower.add(directionTextures);
         tower.add(attack);
+
         tower.add(new PositionComponent(x, y, 1, 1));
         tower.add(new OccupiesTilesComponent());
         tower.add(new HealthComponent());
@@ -88,5 +89,14 @@ public class TowerFactory {
         tower.add(new TeamComponent(Team.PLAYER));
         tower.add(new BuildingAnimationComponent());
         return tower;
+    }
+
+    public static RangeComponent createRangeComponent() {
+        TextureAtlas atlas = AssetManagerInstance
+            .getManager()
+            .get("packed/textures.atlas", TextureAtlas.class);
+        var range = new RangeComponent();
+        range.rangeTexture = atlas.createSprite("Range");
+        return range;
     }
 }
