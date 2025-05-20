@@ -158,7 +158,6 @@ public class RenderSystem extends EntitySystem {
     }
 
     private void renderTowerRange(SpriteBatch batch, RangeComponent range, Vector2 pos) {
-        // Gdx.app.log("[Rendering]", "drawing range");
         batch.draw(
             range.rangeTexture,
             pos.x - (range.range / 2) + 8,
