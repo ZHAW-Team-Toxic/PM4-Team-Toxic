@@ -125,6 +125,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new HealthSystem());
         engine.addSystem(new DeathSystem());
         engine.addSystem(new BlockingMovementSystem());
+        var rangeVisual = new RangeVisualSystem(sampleLayer);
+        engine.addSystem(rangeVisual);
 
         Gdx.app.debug("[DEBUG] - GameScreen", "Initializing Movement System.");
         engine.addSystem(new PathFollowerSystem());
@@ -206,6 +208,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         var mx = new InputMultiplexer();
         mx.addProcessor(stage);
         mx.addProcessor(baseUI.getStage());
+        mx.addProcessor(rangeVisual.clickListener(gameWorldView));
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
