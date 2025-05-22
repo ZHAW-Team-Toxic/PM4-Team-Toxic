@@ -41,26 +41,23 @@ public class ResourceProductionSystem extends EntitySystem {
 
     private ResourceProductionSystem(Engine engine) {
         super();
-        if (instance != null) {
-            throw new IllegalStateException("ResourceProductionSystem already initialized");
-        }
         this.engine = engine;
         instance = this;
     }
 
     /**
      * Initializes the singleton instance of {@code ResourceProductionSystem}.
-     * @param engine    the engine to be used by the system
+     *
+     * @param engine the engine to be used by the system
      */
     public static void init(Engine engine) {
-        if (instance == null) {
-            new ResourceProductionSystem(engine);
-        }
+        instance = new ResourceProductionSystem(engine);
     }
 
     /**
      * Returns the singleton instance of {@code ResourceProductionSystem}.
-     * @return  the singleton instance of ResourceProductionSystem
+     *
+     * @return the singleton instance of ResourceProductionSystem
      */
     public static ResourceProductionSystem getInstance() {
         if (instance == null) {

@@ -1,8 +1,12 @@
 package com.zhaw.frontier.screens;
 
+import static com.zhaw.frontier.systems.building.BuildingPlacer.occupyTile;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -39,6 +43,8 @@ import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.EnemySpawner;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 
@@ -125,8 +131,19 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new SteeringMovementSystem());
         engine.addSystem(new MovementSystem());
         engine.addSystem(new AnimationSystem());
+        Gdx.app.debug("[DEBUG] - GameScreen", "Animation System initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing win condition system.");
+        engine.addSystem(new WinConditionSystem(frontierGame));
+        Gdx.app.debug("[DEBUG] - GameScreen", "win condition system initialized.");
+
+        Gdx.app.debug("[DEBUG] - GameScreen", "Initializing lose condition system.");
+        engine.addSystem(new LoseConditionSystem(frontierGame));
+        Gdx.app.debug("[DEBUG] - GameScreen", "Lost condition system initialized.");
+
         engine.addSystem(new StateDirectionalTextureSystem());
         engine.addSystem(new ProjectileCollisionSystem());
+
         engine.addSystem(new SoundSystem());
         engine.addSystem(new TowerTargetingSystem());
         engine.addSystem(new CooldownSystem());
@@ -216,7 +233,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
             frontierGame.switchScreen(new StartScreen(frontierGame));
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            frontierGame.switchScreen(new PauseScreen(frontierGame, this));
+            stage.dispose();
+            baseUI.dispose();
+            frontierGame.switchScreenWithoutDispose(new PauseScreen(frontierGame, this));
         }
         // ***********************************
         // Simulate resource production -> Temporary for testing
@@ -250,10 +269,17 @@ public class GameScreen implements Screen, ButtonClickObserver {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+
+        stage.dispose();
+        baseUI.dispose();
     }
 
     @Override
     public void dispose() {
+        engine.removeAllEntities();
+
+        removeSystems();
+
         stage.dispose();
         baseUI.dispose();
     }
@@ -286,14 +312,30 @@ public class GameScreen implements Screen, ButtonClickObserver {
         }
     }
 
-    private void initHq(Engine egine, TiledMapTileLayer tiledMapTileLayer) {
+    private void initHq(Engine engine, TiledMapTileLayer tiledMapTileLayer) {
         float centerX = (tiledMapTileLayer.getWidth() / 2f) + 0.5f;
         float centerY = (tiledMapTileLayer.getHeight() / 2f) + 0.5f;
 
         boolean hasHq = engine.getEntitiesFor(Family.all(HQComponent.class).get()).size() > 0;
 
         if (!hasHq) {
-            engine.addEntity(HQFactory.createSandClockHQ(engine, centerX, centerY));
+            Entity entity = HQFactory.createSandClockHQ(engine, centerX, centerY);
+            occupyTile(entity);
+            engine.addEntity(entity);
+        }
+    }
+
+    private void removeSystems() {
+        ImmutableArray<EntitySystem> ashleySystems = engine.getSystems();
+        List<EntitySystem> systemsToRemove = new ArrayList<>();
+
+        for (EntitySystem system : ashleySystems) {
+            systemsToRemove.add(system);
+        }
+
+        // Now safely remove each one
+        for (EntitySystem system : systemsToRemove) {
+            engine.removeSystem(system);
         }
     }
 }

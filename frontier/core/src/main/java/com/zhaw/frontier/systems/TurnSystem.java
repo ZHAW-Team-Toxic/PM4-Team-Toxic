@@ -29,7 +29,8 @@ public class TurnSystem {
 
     /**
      * Singleton instance getter.
-     * @return  the single instance of TurnSystem
+     *
+     * @return the single instance of TurnSystem
      */
     public static TurnSystem getInstance() {
         if (instance == null) {
@@ -40,6 +41,7 @@ public class TurnSystem {
 
     /**
      * Executes the turn based on the current game phase.
+     *
      * @param gamePhase the current game phase
      */
     private void executeTurn(GamePhase gamePhase) {
@@ -83,7 +85,8 @@ public class TurnSystem {
 
     /**
      * Checks if it's the enemy's turn.
-     * @return  true if it's the enemy's turn, false otherwise
+     *
+     * @return true if it's the enemy's turn, false otherwise
      */
     public boolean isEnemyTurn() {
         return turnCounter % 5 == 0;
@@ -92,7 +95,7 @@ public class TurnSystem {
     /**
      * Resets the turn counter to 1.
      */
-    void resetTurnCounter() {
+    public void resetTurnCounter() {
         this.turnCounter = 1;
     }
 }

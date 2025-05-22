@@ -36,6 +36,13 @@ public class FrontierGame extends Game {
         setScreen(newScreen);
     }
 
+    public void switchScreenWithoutDispose(Screen newScreen) {
+        // Dispose of the current screen before switching
+
+        // just a test to get the coverage to analyze this
+        setScreen(newScreen);
+    }
+
     public SpriteBatchInterface getBatch() {
         return batch;
     }

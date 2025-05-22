@@ -5,6 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.BuildingAnimationComponent.BuildingAnimationType;
 import com.zhaw.frontier.components.EnemyAnimationComponent.EnemyAnimationType;
+import com.zhaw.frontier.utils.GameStats;
 import com.zhaw.frontier.utils.QueueAnimation;
 
 /**
@@ -58,6 +59,10 @@ public class DeathSystem extends IteratingSystem {
 
         death.timeUntilRemoval -= deltaTime;
         if (death.timeUntilRemoval <= 0) {
+            if (entity.getComponent(EnemyComponent.class) != null) {
+                GameStats.getInstance().addKill();
+            }
+
             getEngine().removeEntity(entity);
         }
     }

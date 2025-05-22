@@ -80,9 +80,7 @@ public class EnemySpawnSystem {
      * @return the singleton instance
      */
     public static EnemySpawnSystem create(Engine engine) {
-        if (instance == null) {
-            instance = new EnemySpawnSystem(engine);
-        }
+        instance = new EnemySpawnSystem(engine);
         return instance;
     }
 
