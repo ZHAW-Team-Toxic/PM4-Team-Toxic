@@ -1,9 +1,12 @@
 package com.zhaw.frontier.screens;
 
+import static com.zhaw.frontier.systems.building.BuildingPlacer.occupyTile;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -25,8 +28,6 @@ import com.zhaw.frontier.entityFactories.HQFactory;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.input.GameInputProcessor;
 import com.zhaw.frontier.systems.*;
-import com.zhaw.frontier.systems.StateDirectionalTextureSystem;
-import com.zhaw.frontier.systems.TowerTargetingSystem;
 import com.zhaw.frontier.systems.behaviour.IdleBehaviourSystem;
 import com.zhaw.frontier.systems.behaviour.PatrolBehaviourSystem;
 import com.zhaw.frontier.systems.building.BuildingManagerSystem;
@@ -42,13 +43,10 @@ import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.EnemySpawner;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
-
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import lombok.Getter;
-
-import static com.zhaw.frontier.systems.building.BuildingPlacer.occupyTile;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -272,11 +270,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public void hide() {
         Gdx.input.setInputProcessor(null);
 
-        ArrayList<EntitySystem> systemsCopy = new ArrayList<>((Collection) engine.getSystems());
-        for (EntitySystem system : systemsCopy) {
-            engine.removeSystem(system);
-        }
-
         stage.dispose();
         baseUI.dispose();
     }
@@ -285,10 +278,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public void dispose() {
         engine.removeAllEntities();
 
-        ArrayList<EntitySystem> systemsCopy = new ArrayList<>((Collection) engine.getSystems());
-        for (EntitySystem system : systemsCopy) {
-            engine.removeSystem(system);
-        }
+        removeSystems();
 
         stage.dispose();
         baseUI.dispose();
@@ -332,6 +322,20 @@ public class GameScreen implements Screen, ButtonClickObserver {
             Entity entity = HQFactory.createSandClockHQ(engine, centerX, centerY);
             occupyTile(entity);
             engine.addEntity(entity);
+        }
+    }
+
+    private void removeSystems() {
+        ImmutableArray<EntitySystem> ashleySystems = engine.getSystems();
+        List<EntitySystem> systemsToRemove = new ArrayList<>();
+
+        for (EntitySystem system : ashleySystems) {
+            systemsToRemove.add(system);
+        }
+
+        // Now safely remove each one
+        for (EntitySystem system : systemsToRemove) {
+            engine.removeSystem(system);
         }
     }
 }

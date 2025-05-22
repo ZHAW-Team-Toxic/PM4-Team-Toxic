@@ -18,8 +18,10 @@ import com.zhaw.frontier.GameScreenUtils;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.exceptions.MapLoadingException;
 import com.zhaw.frontier.systems.MapLoader;
+import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+import java.lang.reflect.Field;
 import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,11 +60,24 @@ public class GameScreenTest {
     }
 
     @Test
-    void pressingEsc_switchesToPauseScreen() {
+    void pressingEsc_switchesToPauseScreen()
+        throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Input mockInput = mock(Input.class);
         Gdx.input = mockInput;
         when(mockInput.isKeyJustPressed(Input.Keys.ESCAPE)).thenReturn(true);
+
+        BaseUI mockBaseUI = mock(BaseUI.class);
+        Field baseUiField = GameScreen.class.getDeclaredField("baseUI");
+        baseUiField.setAccessible(true);
+        baseUiField.set(gameScreen, mockBaseUI);
+
+        // Also inject a valid stage to avoid null issues
+        Stage mockStage = mock(Stage.class);
+        Field stageField = GameScreen.class.getDeclaredField("stage");
+        stageField.setAccessible(true);
+        stageField.set(gameScreen, mockStage);
+
         gameScreen.handleInput();
-        verify(mockGame).switchScreen(any(PauseScreen.class));
+        verify(mockGame).switchScreenWithoutDispose(any(PauseScreen.class));
     }
 }

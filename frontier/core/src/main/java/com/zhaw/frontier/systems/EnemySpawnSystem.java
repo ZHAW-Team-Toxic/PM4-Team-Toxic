@@ -10,11 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.entityFactories.EnemyFactory;
 import com.zhaw.frontier.enums.EnemyType;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import lombok.Getter;
 
 /**
@@ -60,11 +58,11 @@ public class EnemySpawnSystem {
     private EnemySpawnSystem(Engine engine) {
         this.engine = engine;
         this.bottomLayer =
-            engine
-                .getEntitiesFor(Family.all(BottomLayerComponent.class).get())
-                .first()
-                .getComponent(BottomLayerComponent.class)
-                .bottomLayer;
+        engine
+            .getEntitiesFor(Family.all(BottomLayerComponent.class).get())
+            .first()
+            .getComponent(BottomLayerComponent.class)
+            .bottomLayer;
 
         initSpawnPoints();
 
@@ -108,14 +106,14 @@ public class EnemySpawnSystem {
         Gdx.app.debug(
             "[DEBUG] - EnemySpawnManager",
             "Enemy distribution for round " +
-                round +
-                ": " +
-                "Orc: " +
-                orcCount +
-                ", Goblin: " +
-                goblinCount +
-                ", Demon: " +
-                demonCount
+            round +
+            ": " +
+            "Orc: " +
+            orcCount +
+            ", Goblin: " +
+            goblinCount +
+            ", Demon: " +
+            demonCount
         );
 
         return spawnOrc(orcCount) && spawnGoblin(goblinCount) && spawnDemon(demonCount);
@@ -132,8 +130,8 @@ public class EnemySpawnSystem {
                 TiledMapTile tile = bottomLayer.getCell(i, j).getTile();
                 if (
                     tile != null &&
-                        tile.getProperties().containsKey("isSpawnPoint") &&
-                        tile.getProperties().get("isSpawnPoint", Boolean.class)
+                    tile.getProperties().containsKey("isSpawnPoint") &&
+                    tile.getProperties().get("isSpawnPoint", Boolean.class)
                 ) {
                     spawnPoints.add(new Vector2(i, j));
                 }
@@ -208,8 +206,8 @@ public class EnemySpawnSystem {
         double x = round;
         return (
             exponentialStretcher * Math.pow(base, x * exponentialFlatOut) +
-                difficultyVarianceDuringRound * Math.sin(x + offset) +
-                enemyStartingAmount
+            difficultyVarianceDuringRound * Math.sin(x + offset) +
+            enemyStartingAmount
         );
     }
 

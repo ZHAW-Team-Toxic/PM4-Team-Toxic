@@ -9,7 +9,6 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,9 +76,9 @@ public class ResourceProductionSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
         productionBuildings =
-            engine.getEntitiesFor(
-                Family.all(ResourceProductionComponent.class).exclude(InventoryComponent.class).get()
-            );
+        engine.getEntitiesFor(
+            Family.all(ResourceProductionComponent.class).exclude(InventoryComponent.class).get()
+        );
     }
 
     /**
@@ -125,7 +124,7 @@ public class ResourceProductionSystem extends EntitySystem {
             for (Map.Entry<
                 ResourceTypeEnum,
                 Integer
-                > entry : production.productionRate.entrySet()) {
+            > entry : production.productionRate.entrySet()) {
                 ResourceTypeEnum resourceType = entry.getKey();
                 int productionRate = entry.getValue();
                 int totalProduction = productionRate * production.countOfAdjacentResources;
@@ -159,7 +158,7 @@ public class ResourceProductionSystem extends EntitySystem {
             for (Map.Entry<
                 ResourceTypeEnum,
                 Integer
-                > entry : production.productionRate.entrySet()) {
+            > entry : production.productionRate.entrySet()) {
                 int total = entry.getValue() * production.countOfAdjacentResources;
                 income.merge(entry.getKey(), total, Integer::sum);
             }
