@@ -1,5 +1,6 @@
 package com.zhaw.frontier.audio;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -26,7 +27,7 @@ public class SoundSystem extends EntitySystem {
      * Initializes audio assets and starts background music.
      */
     @Override
-    public void addedToEngine(com.badlogic.ashley.core.Engine engine) {
+    public void addedToEngine(Engine engine) {
         // Lade Sounds
         clickSound = Gdx.audio.newSound(Gdx.files.internal("audio/click.mp3"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/background.mp3"));
@@ -34,6 +35,8 @@ public class SoundSystem extends EntitySystem {
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.3f);
         backgroundMusic.play();
+
+        Gdx.app.debug("SoundSystem", "ADDED to engine: " + this);
     }
 
     /**
@@ -48,8 +51,10 @@ public class SoundSystem extends EntitySystem {
      * Disposes all loaded audio resources.
      */
     @Override
-    public void removedFromEngine(com.badlogic.ashley.core.Engine engine) {
+    public void removedFromEngine(Engine engine) {
         clickSound.dispose();
+        backgroundMusic.stop();
         backgroundMusic.dispose();
+        Gdx.app.debug("SoundSystem", "REMOVED from engine: " + this);
     }
 }

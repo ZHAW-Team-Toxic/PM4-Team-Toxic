@@ -2,6 +2,7 @@ package com.zhaw.frontier.screens;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
@@ -41,8 +42,13 @@ import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.EnemySpawner;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import lombok.Getter;
+
+import static com.zhaw.frontier.systems.building.BuildingPlacer.occupyTile;
 
 /**
  * Initializes all components, systems, ui elements, and viewports needed to
@@ -226,7 +232,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
             frontierGame.switchScreen(new StartScreen(frontierGame));
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            frontierGame.switchScreen(new PauseScreen(frontierGame, this));
+            stage.dispose();
+            baseUI.dispose();
+            frontierGame.switchScreenWithoutDispose(new PauseScreen(frontierGame, this));
         }
         // ***********************************
         // Simulate resource production -> Temporary for testing
@@ -261,14 +269,24 @@ public class GameScreen implements Screen, ButtonClickObserver {
     public void hide() {
         Gdx.input.setInputProcessor(null);
 
-        SoundSystem soundSystem = engine.getSystem(SoundSystem.class);
-        if (soundSystem != null) {
-            engine.removeSystem(engine.getSystem(SoundSystem.class));
+        ArrayList<EntitySystem> systemsCopy = new ArrayList<>((Collection) engine.getSystems());
+        for (EntitySystem system : systemsCopy) {
+            engine.removeSystem(system);
         }
+
+        stage.dispose();
+        baseUI.dispose();
     }
 
     @Override
     public void dispose() {
+        engine.removeAllEntities();
+
+        ArrayList<EntitySystem> systemsCopy = new ArrayList<>((Collection) engine.getSystems());
+        for (EntitySystem system : systemsCopy) {
+            engine.removeSystem(system);
+        }
+
         stage.dispose();
         baseUI.dispose();
     }
@@ -301,14 +319,16 @@ public class GameScreen implements Screen, ButtonClickObserver {
         }
     }
 
-    private void initHq(Engine egine, TiledMapTileLayer tiledMapTileLayer) {
+    private void initHq(Engine engine, TiledMapTileLayer tiledMapTileLayer) {
         float centerX = (tiledMapTileLayer.getWidth() / 2f) + 0.5f;
         float centerY = (tiledMapTileLayer.getHeight() / 2f) + 0.5f;
 
         boolean hasHq = engine.getEntitiesFor(Family.all(HQComponent.class).get()).size() > 0;
 
         if (!hasHq) {
-            engine.addEntity(HQFactory.createSandClockHQ(engine, centerX, centerY));
+            Entity entity = HQFactory.createSandClockHQ(engine, centerX, centerY);
+            occupyTile(entity);
+            engine.addEntity(entity);
         }
     }
 }

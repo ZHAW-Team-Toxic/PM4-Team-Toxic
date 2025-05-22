@@ -23,7 +23,7 @@ public class WinConditionSystem extends IntervalSystem {
 
         if (TurnSystem.getInstance().getTurnCounter() >= 50) {
             triggered = true;
-            game.setScreen(new WinScreen(game));
+            game.switchScreen(new WinScreen(game));
         }
     }
 }

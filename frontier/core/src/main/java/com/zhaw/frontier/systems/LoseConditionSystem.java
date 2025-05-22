@@ -40,7 +40,7 @@ public class LoseConditionSystem extends IntervalIteratingSystem {
         var health = hm.get(entity);
         if (health.currentHealth <= 0) {
             hqDestroyed = true;
-            frontierGame.setScreen(new LoseScreen(frontierGame));
+            frontierGame.switchScreen(new LoseScreen(frontierGame));
         }
     }
 }

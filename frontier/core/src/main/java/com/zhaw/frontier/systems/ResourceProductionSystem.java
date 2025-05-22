@@ -9,6 +9,7 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.ResourceProductionComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.components.map.TiledPropertiesEnum;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,26 +42,23 @@ public class ResourceProductionSystem extends EntitySystem {
 
     private ResourceProductionSystem(Engine engine) {
         super();
-        if (instance != null) {
-            throw new IllegalStateException("ResourceProductionSystem already initialized");
-        }
         this.engine = engine;
         instance = this;
     }
 
     /**
      * Initializes the singleton instance of {@code ResourceProductionSystem}.
-     * @param engine    the engine to be used by the system
+     *
+     * @param engine the engine to be used by the system
      */
     public static void init(Engine engine) {
-        if (instance == null) {
-            new ResourceProductionSystem(engine);
-        }
+        instance = new ResourceProductionSystem(engine);
     }
 
     /**
      * Returns the singleton instance of {@code ResourceProductionSystem}.
-     * @return  the singleton instance of ResourceProductionSystem
+     *
+     * @return the singleton instance of ResourceProductionSystem
      */
     public static ResourceProductionSystem getInstance() {
         if (instance == null) {
@@ -79,9 +77,9 @@ public class ResourceProductionSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
         productionBuildings =
-        engine.getEntitiesFor(
-            Family.all(ResourceProductionComponent.class).exclude(InventoryComponent.class).get()
-        );
+            engine.getEntitiesFor(
+                Family.all(ResourceProductionComponent.class).exclude(InventoryComponent.class).get()
+            );
     }
 
     /**
@@ -127,7 +125,7 @@ public class ResourceProductionSystem extends EntitySystem {
             for (Map.Entry<
                 ResourceTypeEnum,
                 Integer
-            > entry : production.productionRate.entrySet()) {
+                > entry : production.productionRate.entrySet()) {
                 ResourceTypeEnum resourceType = entry.getKey();
                 int productionRate = entry.getValue();
                 int totalProduction = productionRate * production.countOfAdjacentResources;
@@ -161,7 +159,7 @@ public class ResourceProductionSystem extends EntitySystem {
             for (Map.Entry<
                 ResourceTypeEnum,
                 Integer
-            > entry : production.productionRate.entrySet()) {
+                > entry : production.productionRate.entrySet()) {
                 int total = entry.getValue() * production.countOfAdjacentResources;
                 income.merge(entry.getKey(), total, Integer::sum);
             }

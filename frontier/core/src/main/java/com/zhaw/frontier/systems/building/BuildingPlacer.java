@@ -402,7 +402,7 @@ public class BuildingPlacer {
      *
      * @param entity the building to register
      */
-    private void occupyTile(Entity entity) {
+    public static void occupyTile(Entity entity) {
         PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
         OccupiesTilesComponent occupiesTilesComponent = entity.getComponent(
             OccupiesTilesComponent.class
