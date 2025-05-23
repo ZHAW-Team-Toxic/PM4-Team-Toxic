@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,8 @@ public class AssetManagerTest {
         assetManager = AssetManagerInstance.getManager();
 
         // Synchronously load required assets for the test
-        assetManager.load("skins/skin.json", Skin.class);
-        assetManager.load("packed/textures.atlas", TextureAtlas.class);
+        assetManager.load(AppProperties.SKIN_PATH, Skin.class);
+        assetManager.load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         assetManager.load("skins/skin.atlas", TextureAtlas.class);
         assetManager.finishLoading(); // Make sure everything is loaded
     }
@@ -30,10 +31,10 @@ public class AssetManagerTest {
     @Test
     void testBuildingMenuAssets() {
         assertTrue(
-            assetManager.isLoaded("skins/skin.json", Skin.class),
+            assetManager.isLoaded(AppProperties.SKIN_PATH, Skin.class),
             "Skin asset should be loaded"
         );
-        Skin skin = assetManager.get("skins/skin.json", Skin.class);
+        Skin skin = assetManager.get(AppProperties.SKIN_PATH, Skin.class);
         assertNotNull(
             skin.getDrawable("build_menu_96_32"),
             "Drawable 'build_menu_96_32' should exist in skin"
@@ -53,18 +54,18 @@ public class AssetManagerTest {
 
     @Test
     void testSkinContainsArchivoBlackFont() {
-        Skin skin = assetManager.get("skins/skin.json", Skin.class);
+        Skin skin = assetManager.get(AppProperties.SKIN_PATH, Skin.class);
         assertNotNull(skin.getFont("ArchivoBlack"), "Skin should contain font 'ArchivoBlack'");
     }
 
     @Test
     void testTextureAtlasIsLoaded() {
         assertTrue(
-            assetManager.isLoaded("packed/textures.atlas", TextureAtlas.class),
+            assetManager.isLoaded(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class),
             "Texture atlas should be loaded"
         );
 
-        TextureAtlas atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        TextureAtlas atlas = assetManager.get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         assertNotNull(atlas.findRegion("demo/donkey"), "Texture region 'demo/donkey' should exist");
     }
 

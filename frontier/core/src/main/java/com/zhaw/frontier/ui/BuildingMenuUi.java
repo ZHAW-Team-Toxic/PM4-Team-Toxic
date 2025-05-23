@@ -52,8 +52,8 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     public BuildingMenuUi(Engine engine, Stage stage) {
         this.engine = engine;
         this.viewport = stage.getViewport();
-        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
-        atlas = AssetManagerInstance.getManager().get("packed/textures.atlas", TextureAtlas.class);
+        skin = AssetManagerInstance.getManager().get(AppProperties.SKIN_PATH, Skin.class);
+        atlas = AssetManagerInstance.getManager().get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         rootTable = new Table();
         rootTable.clear();
         rootTable.setFillParent(true);

@@ -11,6 +11,7 @@ import com.zhaw.frontier.components.RenderComponent;
 import com.zhaw.frontier.components.RenderComponent.RenderType;
 import com.zhaw.frontier.components.TextureRotationComponent;
 import com.zhaw.frontier.components.VelocityComponent;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
 
@@ -36,7 +37,7 @@ public class ArrowFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         var render = new RenderComponent();
         render.renderType = RenderType.NORMAL;
         render.sprites.put(new TileOffset(0, 0), atlas.findRegion("Arrow"));

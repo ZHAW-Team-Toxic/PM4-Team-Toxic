@@ -91,7 +91,7 @@ public class EnemyFactory {
         if (sharedAnimations.isEmpty()) {
             TextureAtlas enemyAtlas = AssetManagerInstance
                 .getManager()
-                .get("packed/textures.atlas", TextureAtlas.class);
+                .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
 
             for (EnemyType type : EnemyType.values()) {
                 String prefix = type.getTypeName();

@@ -7,6 +7,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.zhaw.frontier.configs.AppProperties;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -21,7 +23,7 @@ public class TexturePackerTest {
      */
     @Test
     void testLoadTextureAtlas() {
-        FileHandle fileHandle = Gdx.files.internal("packed/textures.atlas");
+        FileHandle fileHandle = Gdx.files.internal(AppProperties.TEXTURE_ATLAS_PATH);
         assertTrue(fileHandle.exists());
     }
 
@@ -31,10 +33,10 @@ public class TexturePackerTest {
     @Test
     void testLoadDonkey() {
         AssetManager assetManager = new AssetManager();
-        assetManager.load("packed/textures.atlas", TextureAtlas.class);
+        assetManager.load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         assetManager.finishLoading();
 
-        TextureAtlas atlas = assetManager.get("packed/textures.atlas", TextureAtlas.class);
+        TextureAtlas atlas = assetManager.get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         Sprite donkey = new Sprite(atlas.findRegion("demo/donkey"));
         assertNotNull(donkey.getTexture());
     }

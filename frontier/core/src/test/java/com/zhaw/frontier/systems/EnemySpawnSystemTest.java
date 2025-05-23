@@ -12,6 +12,7 @@ import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.TestMapEnvironment;
 import com.zhaw.frontier.components.EnemyComponent;
 import com.zhaw.frontier.components.PositionComponent;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class EnemySpawnSystemTest {
         testMapEnvironment = new TestMapEnvironment();
         testEngine = testMapEnvironment.getTestEngine();
         gameWorldView = testMapEnvironment.getGameWorldView();
-        AssetManagerInstance.getManager().load("packed/textures.atlas", TextureAtlas.class);
+        AssetManagerInstance.getManager().load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         AssetManagerInstance.getManager().finishLoading();
 
         addSystemsUnderTestHere();

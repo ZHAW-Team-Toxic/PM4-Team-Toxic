@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.GdxExtension;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,8 +51,8 @@ public class BuildingMenuUiTest {
         when(viewport.getWorldWidth()).thenReturn(800f);
 
         // Mock AssetManagerInstance
-        AssetManagerInstance.getManager().load("packed/textures.atlas", TextureAtlas.class);
-        AssetManagerInstance.getManager().load("skins/skin.json", Skin.class);
+        AssetManagerInstance.getManager().load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
+        AssetManagerInstance.getManager().load(AppProperties.SKIN_PATH, Skin.class);
         AssetManagerInstance.getManager().finishLoading();
 
         menuUi = new BuildingMenuUi(engine, stage);

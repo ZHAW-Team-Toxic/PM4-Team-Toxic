@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GameScreenUtils;
 import com.zhaw.frontier.GdxExtension;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.exceptions.MapLoadingException;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.ui.BaseUI;
@@ -42,9 +43,9 @@ public class GameScreenTest {
         when(mockBatch.getBatch()).thenReturn(mockSpriteBatch);
         when(mockGame.getBatch()).thenReturn(mockBatch);
 
-        AssetManagerInstance.getManager().load("packed/textures.atlas", TextureAtlas.class);
+        AssetManagerInstance.getManager().load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         AssetManagerInstance.getManager().load("libgdx.png", Texture.class);
-        AssetManagerInstance.getManager().load("skins/skin.json", Skin.class);
+        AssetManagerInstance.getManager().load(AppProperties.SKIN_PATH, Skin.class);
 
         Path mapPath = Path.of("TMX/frontier_testmap.tmx");
         MapLoader.getInstance().loadMap(AssetManagerInstance.getManager(), mapPath);

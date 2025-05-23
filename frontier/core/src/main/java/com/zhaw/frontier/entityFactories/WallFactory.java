@@ -126,7 +126,7 @@ public class WallFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
 
         HashMap<TileOffset, TextureRegion> singlePiece = new HashMap<>();
         singlePiece.put(new TileOffset(0, 0), atlas.findRegion("wall_wood_single"));
@@ -253,7 +253,7 @@ public class WallFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
 
         HashMap<TileOffset, TextureRegion> singlePiece = new HashMap<>();
         singlePiece.put(new TileOffset(0, 0), atlas.findRegion("wall_stone_single"));
@@ -383,7 +383,7 @@ public class WallFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
 
         HashMap<TileOffset, TextureRegion> singlePiece = new HashMap<>();
         singlePiece.put(new TileOffset(0, 0), atlas.findRegion("wall_iron_single"));

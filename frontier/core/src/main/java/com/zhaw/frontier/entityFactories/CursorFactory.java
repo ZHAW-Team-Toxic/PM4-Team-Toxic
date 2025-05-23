@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 
 public class CursorFactory {
@@ -42,7 +43,7 @@ public class CursorFactory {
         }
         var atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor"));
         var pixmap = spriteToPixmap(texture);
         var cursor = Gdx.graphics.newCursor(pixmap, 8, 8);
@@ -58,7 +59,7 @@ public class CursorFactory {
         }
         var atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor_demolish"));
         texture.setSize(32, 32);
         var pixmap = spriteToPixmap(texture);
@@ -75,7 +76,7 @@ public class CursorFactory {
         }
         var atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         var texture = new Sprite(atlas.findRegion("cursor/medivial_cursor_building"));
         texture.setSize(32, 32);
         var pixmap = spriteToPixmap(texture);

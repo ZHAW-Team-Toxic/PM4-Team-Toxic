@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.GdxExtension;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -30,7 +31,7 @@ class BaseUITest {
         mockGameScreen = mock(GameScreen.class);
         mockBatch = mock(SpriteBatch.class);
         mockSpriteBatchWrapper = mock(SpriteBatchInterface.class);
-        AssetManagerInstance.getManager().load("skins/skin.json", Skin.class);
+        AssetManagerInstance.getManager().load(AppProperties.SKIN_PATH, Skin.class);
         AssetManagerInstance.getManager().finishLoading();
 
         when(mockGame.getBatch()).thenReturn(mockSpriteBatchWrapper);
