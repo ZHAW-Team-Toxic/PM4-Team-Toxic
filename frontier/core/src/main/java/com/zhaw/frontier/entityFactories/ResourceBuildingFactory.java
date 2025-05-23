@@ -156,7 +156,7 @@ public class ResourceBuildingFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         HashMap<TileOffset, TextureRegion> map = new HashMap<>();
 
         map.put(new TileOffset(0, 0), atlas.findRegion("wood_00_S"));
@@ -172,7 +172,7 @@ public class ResourceBuildingFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         HashMap<TileOffset, TextureRegion> map = new HashMap<>();
 
         map.put(new TileOffset(0, 0), atlas.findRegion("stone_00_S"));
@@ -188,7 +188,7 @@ public class ResourceBuildingFactory {
 
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         HashMap<TileOffset, TextureRegion> map = new HashMap<>();
 
         map.put(new TileOffset(0, 0), atlas.findRegion("iron_00_S"));

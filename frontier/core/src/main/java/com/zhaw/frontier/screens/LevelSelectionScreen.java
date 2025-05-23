@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -36,7 +37,7 @@ public class LevelSelectionScreen extends ScreenAdapter {
         stage = new Stage(menu, spriteBatchWrapper.getBatch());
         Gdx.input.setInputProcessor(stage);
 
-        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
+        skin = AssetManagerInstance.getManager().get(AppProperties.SKIN_PATH, Skin.class);
 
         Table table = new Table();
         table.setFillParent(true);

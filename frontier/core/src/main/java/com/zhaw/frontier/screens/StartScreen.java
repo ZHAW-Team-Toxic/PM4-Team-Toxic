@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.savegame.SaveGameManager;
 import com.zhaw.frontier.systems.TurnSystem;
@@ -78,7 +79,7 @@ public class StartScreen extends ScreenAdapter {
         this.menu = new ScreenViewport();
         this.stage = new Stage(menu, spriteBatchWrapper.getBatch());
 
-        this.skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
+        this.skin = AssetManagerInstance.getManager().get(AppProperties.SKIN_PATH, Skin.class);
 
         Table table = new Table();
         table.setFillParent(true);
@@ -123,7 +124,7 @@ public class StartScreen extends ScreenAdapter {
         table.add(exitButton).pad(10).row();
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
 
         this.skyeBackground = atlas.findRegion("Frontier_Sky_Background");
 

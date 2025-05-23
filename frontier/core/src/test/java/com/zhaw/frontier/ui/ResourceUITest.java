@@ -38,9 +38,9 @@ public class ResourceUITest {
 
         // AssetManager vorbereiten
         assetManager = new AssetManager();
-        assetManager.load("skins/skin.json", Skin.class);
+        assetManager.load(AppProperties.SKIN_PATH, Skin.class);
         assetManager.finishLoading();
-        skin = assetManager.get("skins/skin.json", Skin.class);
+        skin = assetManager.get(AppProperties.SKIN_PATH, Skin.class);
 
         // Stage vorbereiten
         stage = new Stage(new ScreenViewport(), mockBatch);

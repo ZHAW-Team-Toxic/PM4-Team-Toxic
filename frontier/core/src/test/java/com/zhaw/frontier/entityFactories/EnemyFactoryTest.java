@@ -10,6 +10,7 @@ import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.behaviours.IdleBehaviourComponent;
 import com.zhaw.frontier.components.behaviours.PatrolBehaviourComponent;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.EnemyType;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public class EnemyFactoryTest {
     @BeforeEach
     void setUp() {
         assetManager = AssetManagerInstance.getManager();
-        assetManager.load("packed/textures.atlas", TextureAtlas.class);
+        assetManager.load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         assetManager.finishLoading();
     }
 

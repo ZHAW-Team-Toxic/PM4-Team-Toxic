@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.ui.WinScreenUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.GameStats;
@@ -25,7 +26,7 @@ public class WinScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.stage = new Stage(new ExtendViewport(1920, 1080, new OrthographicCamera()));
-        Skin skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
+        Skin skin = AssetManagerInstance.getManager().get(AppProperties.SKIN_PATH, Skin.class);
 
         stage.clear();
 

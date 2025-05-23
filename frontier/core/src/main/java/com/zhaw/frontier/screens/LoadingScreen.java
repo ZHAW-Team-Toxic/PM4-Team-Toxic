@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.systems.MapLoader;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
@@ -37,9 +38,9 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void show() {
         // Add new assets here
-        assetManager.load("packed/textures.atlas", TextureAtlas.class);
+        assetManager.load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         assetManager.load("libgdx.png", Texture.class);
-        assetManager.load("skins/skin.json", Skin.class);
+        assetManager.load(AppProperties.SKIN_PATH, Skin.class);
         try {
             mapLoaderSystem.loadMap(assetManager, Path.of("TMX/frontier_testmap.tmx"));
         } catch (Exception e) {

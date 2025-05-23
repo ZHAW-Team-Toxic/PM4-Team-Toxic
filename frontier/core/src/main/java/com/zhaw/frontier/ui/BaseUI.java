@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.GameMode;
 import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.GameScreen;
@@ -68,7 +69,7 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
         uiViewport = new ScreenViewport(new OrthographicCamera());
         uiStage = new Stage(uiViewport, spriteBatch.getBatch());
 
-        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
+        skin = AssetManagerInstance.getManager().get(AppProperties.SKIN_PATH, Skin.class);
         atlas = new TextureAtlas(Gdx.files.internal("skins/skin.atlas"));
 
         float buttonWidth = uiViewport.getWorldWidth() * 0.03f;

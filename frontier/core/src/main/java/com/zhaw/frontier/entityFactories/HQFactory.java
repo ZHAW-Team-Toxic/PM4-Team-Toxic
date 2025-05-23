@@ -78,7 +78,7 @@ public class HQFactory {
         if (clockAnimationCache.isEmpty()) {
             TextureAtlas atlas = AssetManagerInstance
                 .getManager()
-                .get("packed/textures.atlas", TextureAtlas.class);
+                .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
 
             HashMap<TileOffset, Animation<TextureRegion>> clockAnimation = new HashMap<>();
 

@@ -62,4 +62,7 @@ public class AppProperties {
     public static final String RESOURCE_UI_WOOD_LABEL_TEXT = "Wood";
     public static final String RESOURCE_UI_STONE_LABEL_TEXT = "Stone";
     public static final String RESOURCE_UI_IRON_LABEL_TEXT = "Iron";
+
+    public static final String TEXTURE_ATLAS_PATH = "packed/textures.atlas";
+    public static final String SKIN_PATH = "skins/skin.json";
 }

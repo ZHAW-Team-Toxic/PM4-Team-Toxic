@@ -51,7 +51,7 @@ public class TowerFactory {
     public static Entity createDefaultTower(Engine engine, float x, float y) { // todo add tower damage to this
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         Entity tower = engine.createEntity();
         tower.add(new PositionComponent());
 
@@ -95,7 +95,7 @@ public class TowerFactory {
     public static RangeComponent createRangeComponent() {
         TextureAtlas atlas = AssetManagerInstance
             .getManager()
-            .get("packed/textures.atlas", TextureAtlas.class);
+            .get(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         var range = new RangeComponent();
         range.rangeTexture = atlas.createSprite("Range");
         return range;

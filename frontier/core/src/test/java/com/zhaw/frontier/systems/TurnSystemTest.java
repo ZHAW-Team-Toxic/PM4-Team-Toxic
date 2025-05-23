@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.zhaw.frontier.GdxExtension;
 import com.zhaw.frontier.TestMapEnvironment;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TurnChangeListener;
@@ -27,7 +28,7 @@ public class TurnSystemTest {
         testEngine = testMapEnvironment.getTestEngine();
 
         // === Ensure texture atlas (required by many factories) is loaded ===
-        AssetManagerInstance.getManager().load("packed/textures.atlas", TextureAtlas.class);
+        AssetManagerInstance.getManager().load(AppProperties.TEXTURE_ATLAS_PATH, TextureAtlas.class);
         AssetManagerInstance.getManager().finishLoading();
 
         // === Reset singleton TurnSystem instance via reflection ===

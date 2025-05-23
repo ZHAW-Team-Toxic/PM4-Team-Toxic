@@ -24,6 +24,7 @@ import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.NonRemovalObjectComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.entityFactories.CursorFactory;
 import com.zhaw.frontier.entityFactories.HQFactory;
 import com.zhaw.frontier.enums.GameMode;
@@ -184,7 +185,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         // setup render system
         engine.addSystem(new RenderSystem(gameWorldView, engine, renderer));
         // create resource ui
-        skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
+        skin = AssetManagerInstance.getManager().get(AppProperties.SKIN_PATH, Skin.class);
         resourceUI = new ResourceUI(skin, stage);
 
         ErrorSystem.init(stage, skin);

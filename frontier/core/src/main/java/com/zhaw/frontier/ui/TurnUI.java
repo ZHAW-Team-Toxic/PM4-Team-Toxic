@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.systems.TurnSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
@@ -20,7 +21,7 @@ public class TurnUI implements TurnChangeListener, Disposable {
     private static final String divider = "  ";
 
     public TurnUI(Stage stage) {
-        this.skin = AssetManagerInstance.getManager().get("skins/skin.json", Skin.class);
+        this.skin = AssetManagerInstance.getManager().get(AppProperties.SKIN_PATH, Skin.class);
 
         // Labels
         turnLabel = new Label("Turn: 1", skin);
