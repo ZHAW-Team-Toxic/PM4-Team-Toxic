@@ -10,5 +10,5 @@ public class ResourceGeneratorComponent implements Component {
     /**
      * The resource generation rate of the entity.
      */
-    public int ResourceGenerationRate = 0;
+    public int resourceGenerationRate = 0;
 }
