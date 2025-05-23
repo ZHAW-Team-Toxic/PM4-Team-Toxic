@@ -14,17 +14,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zhaw.frontier.FrontierGame;
 import com.zhaw.frontier.enums.GameMode;
+import com.zhaw.frontier.enums.GamePhase;
 import com.zhaw.frontier.screens.GameScreen;
 import com.zhaw.frontier.screens.PauseScreen;
 import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.TurnChangeListener;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +36,7 @@ import lombok.Setter;
  * The game modes are represented by buttons that are displayed on the screen.
  * The buttons include: demolish, build, fireplace, and pause.
  */
-public class BaseUI implements ButtonClickObserver {
+public class BaseUI implements ButtonClickObserver, TurnChangeListener {
 
     private Array<ButtonClickObserver> observers = new Array<>();
     private Stage uiStage;
@@ -48,6 +49,7 @@ public class BaseUI implements ButtonClickObserver {
     private GameMode gameMode = GameMode.NORMAL;
 
     private TextButton buildButton;
+    private TextButton demolishButton;
 
     /**
      * Constructor for BaseUIScreen.
@@ -85,7 +87,8 @@ public class BaseUI implements ButtonClickObserver {
         float pauseButtonX = fireplaceButtonX;
         float pauseButtonY = fireplaceButtonY + buttonHeight + 10;
 
-        TextButton demolishButton = createButton(
+        demolishButton =
+        createButton(
             "BrokenPickaxe",
             demolishButtonX,
             demolishButtonY,
@@ -121,18 +124,10 @@ public class BaseUI implements ButtonClickObserver {
                 demolishButton.setDisabled(true);
                 buildButton.setDisabled(true);
                 TurnSystem.getInstance().advanceTurn();
-                Timer.schedule(
-                    new Timer.Task() {
-                        @Override
-                        public void run() {
-                            buildButton.setChecked(false);
-                            demolishButton.setChecked(false);
-                            demolishButton.setDisabled(false);
-                            buildButton.setDisabled(false);
-                        }
-                    },
-                    3
-                );
+                demolishButton.setChecked(false);
+                buildButton.setChecked(false);
+                buildButton.setDisabled(true);
+                demolishButton.setDisabled(true);
                 System.out.println("Skipping time");
             },
             "campfire"
@@ -152,6 +147,8 @@ public class BaseUI implements ButtonClickObserver {
             },
             null
         );
+
+        TurnSystem.getInstance().addListener(this);
     }
 
     /**
@@ -296,5 +293,13 @@ public class BaseUI implements ButtonClickObserver {
             buildButton.setChecked(false);
         }
         gameMode = newMode;
+    }
+
+    @Override
+    public void onTurnChanged(int turn, GamePhase phase) {
+        if (phase == GamePhase.BUILD_AND_PLAN) {
+            buildButton.setDisabled(false);
+            demolishButton.setDisabled(false);
+        }
     }
 }

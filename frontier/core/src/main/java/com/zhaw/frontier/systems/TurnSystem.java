@@ -1,6 +1,9 @@
 package com.zhaw.frontier.systems;
 
 import com.zhaw.frontier.enums.GamePhase;
+import com.zhaw.frontier.utils.TurnChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +23,7 @@ public class TurnSystem {
     @Getter
     private int turnCounter;
 
+    private final List<TurnChangeListener> listeners = new ArrayList<>();
     private static TurnSystem instance;
 
     private TurnSystem() {
@@ -39,13 +43,30 @@ public class TurnSystem {
         return instance;
     }
 
+    public void addListener(TurnChangeListener listener) {
+        listeners.add(listener);
+        // Notify the initial state immediately
+        listener.onTurnChanged(turnCounter, gamePhase);
+    }
+
+    public void removeListener(TurnChangeListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void notifyListeners() {
+        for (TurnChangeListener listener : listeners) {
+            listener.onTurnChanged(turnCounter, gamePhase);
+        }
+    }
+
     /**
      * Executes the turn based on the current game phase.
      *
      * @param gamePhase the current game phase
      */
-    private void executeTurn(GamePhase gamePhase) {
+    public void executeTurn(GamePhase gamePhase) {
         setGamePhase(gamePhase);
+        notifyListeners();
 
         switch (gamePhase) {
             case BUILD_AND_PLAN:
@@ -75,11 +96,7 @@ public class TurnSystem {
     public void advanceTurn() {
         executeTurn(GamePhase.COLLECTION);
         executeTurn(GamePhase.BUILD_AND_PLAN);
-
-        if (isEnemyTurn()) {
-            executeTurn(GamePhase.ENEMY_TURN);
-        }
-
+        executeTurn(GamePhase.ENEMY_TURN);
         turnCounter++;
     }
 

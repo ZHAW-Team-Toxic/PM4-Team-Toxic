@@ -39,6 +39,7 @@ import com.zhaw.frontier.systems.movement.SteeringMovementSystem;
 import com.zhaw.frontier.ui.BaseUI;
 import com.zhaw.frontier.ui.BuildingMenuUi;
 import com.zhaw.frontier.ui.ResourceUI;
+import com.zhaw.frontier.ui.TurnUI;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
 import com.zhaw.frontier.utils.EnemySpawner;
@@ -66,6 +67,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
     private Engine engine;
 
     private BaseUI baseUI;
+    private TurnUI turnUI;
     private CameraControlSystem cameraControlSystem;
 
     private OrthogonalTiledMapRenderer renderer;
@@ -147,7 +149,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(new SoundSystem());
         engine.addSystem(new TowerTargetingSystem());
         engine.addSystem(new CooldownSystem());
-
+        engine.addSystem(new EnemyTurnMonitorSystem());
         engine.addSystem(new BuildingManagerSystem(sampleLayer, gameWorldView, engine));
 
         engine.addSystem(cameraControlSystem);
@@ -175,6 +177,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         baseUI.addObserver(buildingMenuUi);
         buildingMenuUi.addObserver(this);
         buildingMenuUi.addObserver(baseUI);
+        turnUI = new TurnUI(stage);
 
         Gdx.app.debug("GameScreen", "Initializing Render System.");
         // setup render system
