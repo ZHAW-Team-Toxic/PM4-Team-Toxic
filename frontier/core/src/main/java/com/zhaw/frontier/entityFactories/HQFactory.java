@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.zhaw.frontier.components.*;
+import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
@@ -54,6 +56,21 @@ public class HQFactory {
         hq.add(
             new RenderComponent(RenderComponent.RenderType.BUILDING, 10, HQ_TILE_SIZE, HQ_TILE_SIZE)
         );
+        ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
+        resourceProductionComponent.productionRate.put(
+            ResourceTypeEnum.RESOURCE_TYPE_IRON,
+            AppProperties.DEFAULT_PRODUCTION_RATE_HQ
+        );
+        resourceProductionComponent.productionRate.put(
+            ResourceTypeEnum.RESOURCE_TYPE_STONE,
+            AppProperties.DEFAULT_PRODUCTION_RATE_HQ
+        );
+        resourceProductionComponent.productionRate.put(
+            ResourceTypeEnum.RESOURCE_TYPE_WOOD,
+            AppProperties.DEFAULT_PRODUCTION_RATE_HQ
+        );
+        resourceProductionComponent.countOfAdjacentResources = 1;
+        hq.add(resourceProductionComponent);
         return hq;
     }
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
@@ -51,6 +52,13 @@ public class ResourceBuildingFactory {
         renderComponent.heightInTiles = 3;
         renderComponent.widthInTiles = 3;
 
+        CostComponent cost = new CostComponent();
+        cost.resouceCosts.put(
+            ResourceTypeEnum.RESOURCE_TYPE_WOOD,
+            AppProperties.WOOD_RESOURCE_BUILDING_PRICE
+        );
+        resourceBuilding.add(cost);
+
         resourceBuilding.add(renderComponent);
         return resourceBuilding;
     }
@@ -73,6 +81,13 @@ public class ResourceBuildingFactory {
         new HashMap<>(stoneResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_STONE));
         renderComponent.heightInTiles = 3;
         renderComponent.widthInTiles = 3;
+        CostComponent cost = new CostComponent();
+        cost.resouceCosts.put(
+            ResourceTypeEnum.RESOURCE_TYPE_STONE,
+            AppProperties.STONE_RESOURCE_BUILDING_PRICE
+        );
+        resourceBuilding.add(cost);
+
         resourceBuilding.add(renderComponent);
         return resourceBuilding;
     }
@@ -95,6 +110,13 @@ public class ResourceBuildingFactory {
         new HashMap<>(ironResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_IRON));
         renderComponent.heightInTiles = 3;
         renderComponent.widthInTiles = 3;
+        CostComponent cost = new CostComponent();
+        cost.resouceCosts.put(
+            ResourceTypeEnum.RESOURCE_TYPE_IRON,
+            AppProperties.IRON_RESOURCE_BUILDING_PRICE
+        );
+        resourceBuilding.add(cost);
+
         resourceBuilding.add(renderComponent);
         return resourceBuilding;
     }
@@ -110,7 +132,10 @@ public class ResourceBuildingFactory {
         resourceBuilding.add(new ResourceGeneratorComponent());
 
         ResourceProductionComponent resourceProductionComponent = new ResourceProductionComponent();
-        resourceProductionComponent.productionRate.put(resourceType, 1);
+        resourceProductionComponent.productionRate.put(
+            resourceType,
+            AppProperties.DEFAULT_PRODUCTION_RATE_RESOURCE_BUILDING
+        );
 
         resourceBuilding.add(new PositionComponent(x, y, 3, 3));
         resourceBuilding.add(resourceProductionComponent);

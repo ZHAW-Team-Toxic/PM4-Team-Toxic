@@ -44,4 +44,22 @@ public class AppProperties {
 
     public static final float WORLD_HEIGHT = 64 * 16;
     public static final float WORLD_WIDTH = 64 * 16;
+
+    public static final int WOOD_TOWER_PRICE = 10;
+
+    public static final int WOOD_RESOURCE_BUILDING_PRICE = 2;
+    public static final int STONE_RESOURCE_BUILDING_PRICE = 2;
+    public static final int IRON_RESOURCE_BUILDING_PRICE = 2;
+
+    public static final int WOOD_WALL_PRICE = 1;
+    public static final int STONE_WALL_PRICE = 1;
+    public static final int IRON_WALL_PRICE = 1;
+
+    public static final int DEFAULT_PRODUCTION_RATE_HQ = 2;
+
+    public static final int DEFAULT_PRODUCTION_RATE_RESOURCE_BUILDING = 1;
+
+    public static final String RESOURCE_UI_WOOD_LABEL_TEXT = "Wood";
+    public static final String RESOURCE_UI_STONE_LABEL_TEXT = "Stone";
+    public static final String RESOURCE_UI_IRON_LABEL_TEXT = "Iron";
 }

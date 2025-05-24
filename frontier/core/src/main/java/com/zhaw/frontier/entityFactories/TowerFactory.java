@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.enums.Team;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.TileOffset;
@@ -75,7 +76,7 @@ public class TowerFactory {
         var attack = new AttackComponent(20, 8, 500);
 
         var cost = new CostComponent();
-        cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 5);
+        cost.resouceCosts.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, AppProperties.WOOD_TOWER_PRICE);
 
         tower.add(cost);
         tower.add(renderComponent);

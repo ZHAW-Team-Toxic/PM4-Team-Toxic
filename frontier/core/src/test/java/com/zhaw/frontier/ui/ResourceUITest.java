@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.zhaw.frontier.configs.AppProperties;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,9 +63,18 @@ public class ResourceUITest {
         resourceUI.updateResources(wood, woodIncome, stone, stoneIncome, iron, ironIncome);
 
         // Assert
-        assertEquals("Holz: 10 + 2", resourceUI.getWoodLabel().getText().toString());
-        assertEquals("Stein: 20 + 3", resourceUI.getStoneLabel().getText().toString());
-        assertEquals("Eisen: 30 + 4", resourceUI.getIronLabel().getText().toString());
+        assertEquals(
+            AppProperties.RESOURCE_UI_WOOD_LABEL_TEXT + ": 10 + 2",
+            resourceUI.getWoodLabel().getText().toString()
+        );
+        assertEquals(
+            AppProperties.RESOURCE_UI_STONE_LABEL_TEXT + ": 20 + 3",
+            resourceUI.getStoneLabel().getText().toString()
+        );
+        assertEquals(
+            AppProperties.RESOURCE_UI_IRON_LABEL_TEXT + ": 30 + 4",
+            resourceUI.getIronLabel().getText().toString()
+        );
     }
 
     /**
@@ -76,8 +86,17 @@ public class ResourceUITest {
         resourceUI.updateResources(0, 0, 0, 0, 0, 0);
 
         // Assert
-        assertEquals("Holz: 0 + 0", resourceUI.getWoodLabel().getText().toString());
-        assertEquals("Stein: 0 + 0", resourceUI.getStoneLabel().getText().toString());
-        assertEquals("Eisen: 0 + 0", resourceUI.getIronLabel().getText().toString());
+        assertEquals(
+            AppProperties.RESOURCE_UI_WOOD_LABEL_TEXT + ": 0 + 0",
+            resourceUI.getWoodLabel().getText().toString()
+        );
+        assertEquals(
+            AppProperties.RESOURCE_UI_STONE_LABEL_TEXT + ": 0 + 0",
+            resourceUI.getStoneLabel().getText().toString()
+        );
+        assertEquals(
+            AppProperties.RESOURCE_UI_IRON_LABEL_TEXT + ": 0 + 0",
+            resourceUI.getIronLabel().getText().toString()
+        );
     }
 }
