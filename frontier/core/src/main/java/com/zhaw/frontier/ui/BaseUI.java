@@ -143,7 +143,7 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
             () -> {
                 buildButton.setChecked(false);
                 demolishButton.setChecked(false);
-                frontierGame.switchScreen(new PauseScreen(frontierGame, gameScreen));
+                frontierGame.switchScreenWithoutDispose(new PauseScreen(frontierGame, gameScreen));
                 System.out.println("Opening pause menu...");
             },
             null
