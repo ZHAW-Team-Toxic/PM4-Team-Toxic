@@ -209,13 +209,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         var mx = new InputMultiplexer();
         mx.addProcessor(stage);
         mx.addProcessor(baseUI.getStage());
-        mx.addProcessor(rangeVisual.clickListener(gameWorldView));
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
         mx.addProcessor(new GameInputProcessor(engine, frontierGame, gameWorldView));
         mx.addProcessor(baseUI.createInputAdapter(engine));
         mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
+        mx.addProcessor(rangeVisual.clickListener(gameWorldView));
         Gdx.input.setInputProcessor(mx);
     }
 
