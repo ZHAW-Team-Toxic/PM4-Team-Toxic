@@ -426,7 +426,7 @@ public class BuildingManagerTest {
             TestMapEnvironment.tileToScreenY(4)
         );
         assertFalse(
-            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y),
+            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y, inventory),
             "Building should not be removed."
         );
         testEngine.removeEntity(hq);
@@ -457,7 +457,7 @@ public class BuildingManagerTest {
             TestMapEnvironment.tileToScreenY(4)
         );
         assertTrue(
-            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y),
+            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y, inventory),
             "Building should be removed."
         );
         testEngine.removeEntity(hq);
@@ -489,7 +489,7 @@ public class BuildingManagerTest {
             TestMapEnvironment.tileToScreenY(4)
         );
         assertTrue(
-            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y),
+            bms.removeBuilding(screenCoordinate.x, screenCoordinate.y, inventory),
             "Building should be removed."
         );
         testEngine.removeEntity(hq);
@@ -516,7 +516,7 @@ public class BuildingManagerTest {
         bp.basePosition.y = TestMapEnvironment.tileToScreenY(5);
 
         assertTrue(
-            bms.removeBuilding(bp.basePosition.x, bp.basePosition.y),
+            bms.removeBuilding(bp.basePosition.x, bp.basePosition.y, inventory),
             "Building should be removed."
         );
 
@@ -637,7 +637,7 @@ public class BuildingManagerTest {
             TestMapEnvironment.tileToScreenX(4),
             TestMapEnvironment.tileToScreenY(4)
         );
-        boolean removed = bms.removeBuilding(screenCoordinate.x, screenCoordinate.y);
+        boolean removed = bms.removeBuilding(screenCoordinate.x, screenCoordinate.y, inventory);
 
         // Assert
         assertFalse(removed, "Building should NOT be removed if it has NonRemovableObjectComponent.");

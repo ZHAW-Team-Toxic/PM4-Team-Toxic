@@ -25,6 +25,7 @@ import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.EngineHelper;
 import com.zhaw.frontier.utils.TurnChangeListener;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import lombok.Getter;
@@ -274,7 +275,7 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 if (getGameMode() == GameMode.DEMOLISH) {
-                    engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY);
+                    engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY, EngineHelper.getInventoryComponent(engine));
                     return true;
                 }
                 return false;

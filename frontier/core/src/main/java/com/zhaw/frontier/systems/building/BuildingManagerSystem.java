@@ -80,7 +80,7 @@ public class BuildingManagerSystem extends EntitySystem {
      * @return {@code true} if a building was successfully removed; {@code false}
      *         otherwise.
      */
-    public boolean removeBuilding(float x, float y) {
-        return buildingRemover.removeBuilding(sampleLayer, x, y);
+    public boolean removeBuilding(float x, float y, InventoryComponent inventoryComponent) {
+        return buildingRemover.removeBuilding(sampleLayer, x, y, inventoryComponent);
     }
 }
