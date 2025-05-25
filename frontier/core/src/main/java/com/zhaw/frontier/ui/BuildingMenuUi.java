@@ -177,15 +177,15 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
     private void createRessourceButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
         ImageButton wood = createImageButton(
             ResourceBuildingFactory::woodResourceBuilding,
-            atlas.findRegion("wood_resource_building_ui")
+            atlas.findRegion("wood")
         );
         ImageButton stone = createImageButton(
             ResourceBuildingFactory::stoneResourceBuilding,
-            atlas.findRegion("stone_resource_building_ui")
+            atlas.findRegion("stone")
         );
         ImageButton iron = createImageButton(
             ResourceBuildingFactory::ironResourceBuilding,
-            atlas.findRegion("iron_resource_building_ui")
+            atlas.findRegion("iron")
         );
 
         allButtons.add(wood, stone, iron);
