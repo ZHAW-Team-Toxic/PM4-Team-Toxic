@@ -50,6 +50,8 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
 
     private TextButton buildButton;
     private TextButton demolishButton;
+    private TextButton fireplaceButton
+    ;
 
     /**
      * Constructor for BaseUIScreen.
@@ -114,21 +116,19 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
         modeGroup.setMinCheckCount(0);
         modeGroup.setUncheckLast(true);
 
-        TextButton fireplaceButton = createButton(
+        fireplaceButton = createButton(
             "Campfire",
             fireplaceButtonX,
             fireplaceButtonY,
             GameMode.NORMAL,
             "fireplaceButton",
             () -> {
-                demolishButton.setDisabled(true);
-                buildButton.setDisabled(true);
                 TurnSystem.getInstance().advanceTurn();
                 demolishButton.setChecked(false);
                 buildButton.setChecked(false);
                 buildButton.setDisabled(true);
                 demolishButton.setDisabled(true);
-                System.out.println("Skipping time");
+                fireplaceButton.setDisabled(true);
             },
             "campfire"
         );
@@ -300,6 +300,7 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
         if (phase == GamePhase.BUILD_AND_PLAN) {
             buildButton.setDisabled(false);
             demolishButton.setDisabled(false);
+            fireplaceButton.setDisabled(false);
         }
     }
 }
