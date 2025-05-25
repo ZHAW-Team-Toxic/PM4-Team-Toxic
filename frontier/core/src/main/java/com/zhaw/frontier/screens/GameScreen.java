@@ -21,6 +21,7 @@ import com.zhaw.frontier.audio.SoundSystem;
 import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.HQComponent;
 import com.zhaw.frontier.components.InventoryComponent;
+import com.zhaw.frontier.components.NonRemovalObjectComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.CursorFactory;
@@ -209,13 +210,13 @@ public class GameScreen implements Screen, ButtonClickObserver {
         var mx = new InputMultiplexer();
         mx.addProcessor(stage);
         mx.addProcessor(baseUI.getStage());
-        mx.addProcessor(rangeVisual.clickListener(gameWorldView));
         if (cameraControlSystem != null) {
             mx.addProcessor(cameraControlSystem.getInputAdapter());
         }
         mx.addProcessor(new GameInputProcessor(engine, frontierGame, gameWorldView));
         mx.addProcessor(baseUI.createInputAdapter(engine));
         mx.addProcessor(buildingMenuUi.createInputAdapter(engine));
+        mx.addProcessor(rangeVisual.clickListener(gameWorldView));
         Gdx.input.setInputProcessor(mx);
     }
 
@@ -324,6 +325,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         if (!hasHq) {
             Entity entity = HQFactory.createSandClockHQ(engine, centerX, centerY);
             occupyTile(entity);
+            entity.add(new NonRemovalObjectComponent());
             engine.addEntity(entity);
         }
     }

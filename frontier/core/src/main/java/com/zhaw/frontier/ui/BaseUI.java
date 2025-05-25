@@ -25,6 +25,7 @@ import com.zhaw.frontier.systems.*;
 import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.utils.AssetManagerInstance;
 import com.zhaw.frontier.utils.ButtonClickObserver;
+import com.zhaw.frontier.utils.EngineHelper;
 import com.zhaw.frontier.utils.TurnChangeListener;
 import com.zhaw.frontier.wrappers.SpriteBatchInterface;
 import lombok.Getter;
@@ -50,6 +51,7 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
 
     private TextButton buildButton;
     private TextButton demolishButton;
+    private TextButton fireplaceButton;
 
     /**
      * Constructor for BaseUIScreen.
@@ -114,21 +116,20 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
         modeGroup.setMinCheckCount(0);
         modeGroup.setUncheckLast(true);
 
-        TextButton fireplaceButton = createButton(
+        fireplaceButton =
+        createButton(
             "Campfire",
             fireplaceButtonX,
             fireplaceButtonY,
             GameMode.NORMAL,
             "fireplaceButton",
             () -> {
-                demolishButton.setDisabled(true);
-                buildButton.setDisabled(true);
                 TurnSystem.getInstance().advanceTurn();
                 demolishButton.setChecked(false);
                 buildButton.setChecked(false);
                 buildButton.setDisabled(true);
                 demolishButton.setDisabled(true);
-                System.out.println("Skipping time");
+                fireplaceButton.setDisabled(true);
             },
             "campfire"
         );
@@ -274,7 +275,13 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 if (getGameMode() == GameMode.DEMOLISH) {
-                    engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY);
+                    engine
+                        .getSystem(BuildingManagerSystem.class)
+                        .removeBuilding(
+                            screenX,
+                            screenY,
+                            EngineHelper.getInventoryComponent(engine)
+                        );
                     return true;
                 }
                 return false;
@@ -300,6 +307,7 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
         if (phase == GamePhase.BUILD_AND_PLAN) {
             buildButton.setDisabled(false);
             demolishButton.setDisabled(false);
+            fireplaceButton.setDisabled(false);
         }
     }
 }

@@ -74,7 +74,7 @@ public class RangeVisualSystem extends EntitySystem {
                         );
                         if (rec.contains(clickPos)) {
                             toggleRange(entity);
-                            return true;
+                            return false;
                         }
                     }
                 }

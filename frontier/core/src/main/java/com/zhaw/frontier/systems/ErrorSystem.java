@@ -92,4 +92,11 @@ public class ErrorSystem {
     public void showIsOccupied() {
         show("Tile is already occupied");
     }
+
+    /**
+     * Shows error message because the player is trying to destroy a building
+     */
+    public void showObjectCannotBeDestroyed() {
+        show("This object cannot be destroyed!!");
+    }
 }

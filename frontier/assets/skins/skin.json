@@ -180,6 +180,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: Campfire
 		down: Campfire_beingPressed
 		over: Campfire_hover
+		disabled: Campfire_disabled
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
