@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.zhaw.frontier.components.InventoryComponent;
+import com.zhaw.frontier.components.NonRemovalObjectComponent;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.ResourceGeneratorComponent;
@@ -612,6 +613,36 @@ public class BuildingManagerTest {
             "Placement beyond map bounds should fail."
         );
         testEngine.removeEntity(tower);
+    }
+
+    @Test
+    public void testNonRemovableBuildingCannotBeRemoved() {
+        // Arrange
+        Entity hq = createMockedHQ(1, 1);
+        PositionComponent bp = hq.getComponent(PositionComponent.class);
+        bp.basePosition.x = TestMapEnvironment.tileToScreenX(4);
+        bp.basePosition.y = TestMapEnvironment.tileToScreenY(4);
+
+        // Add NonRemovableObjectComponent
+        hq.add(new NonRemovalObjectComponent());
+
+        BuildingManagerSystem bms = testEngine.getSystem(BuildingManagerSystem.class);
+        assertTrue(
+            bms.placeBuilding(hq, inventory),
+            "Building should be placed on buildable tile."
+        );
+
+        // Act
+        Vector2 screenCoordinate = new Vector2(
+            TestMapEnvironment.tileToScreenX(4),
+            TestMapEnvironment.tileToScreenY(4)
+        );
+        boolean removed = bms.removeBuilding(screenCoordinate.x, screenCoordinate.y);
+
+        // Assert
+        assertFalse(removed, "Building should NOT be removed if it has NonRemovableObjectComponent.");
+
+        testEngine.removeEntity(hq);
     }
 
     /**

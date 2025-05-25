@@ -7,9 +7,11 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zhaw.frontier.components.NonRemovalObjectComponent;
 import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.PositionComponent;
 import com.zhaw.frontier.components.WallPieceComponent;
+import com.zhaw.frontier.systems.ErrorSystem;
 import com.zhaw.frontier.systems.WallManager;
 import com.zhaw.frontier.utils.WorldCoordinateUtils;
 
@@ -71,6 +73,10 @@ public class BuildingRemover {
             if (occupiesTilesComponent != null) {
                 for (Vector2 tile : occupiesTilesComponent.occupiedTiles) {
                     if (tile.x == worldCoordinateX && tile.y == worldCoordinateY) {
+                        if (entity.getComponent(NonRemovalObjectComponent.class) != null) {
+                            ErrorSystem.getInstance().showObjectCannotBeDestroyed();
+                            return false;
+                        }
                         engine.removeEntity(entity);
                         updateWalls(entity);
                         return true;
