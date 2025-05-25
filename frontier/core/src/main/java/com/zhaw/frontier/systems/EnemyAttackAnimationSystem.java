@@ -7,6 +7,7 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.EnemyAnimationComponent.EnemyAnimationType;
 import com.zhaw.frontier.components.behaviours.PathfindingBehaviourComponent;
 import com.zhaw.frontier.utils.QueueAnimation;
+import java.util.List;
 
 /**
  * A system that triggers and manages enemy attack animations based on combat conditions.
@@ -86,9 +87,10 @@ public class EnemyAttackAnimationSystem extends IteratingSystem {
             return;
         }
 
-        Vector2 from = pm.get(attacker).basePosition;
-        Vector2 to = pm.get(target).basePosition;
-        float distance = from.dst(to);
+        Vector2 attackerPos = pm.get(attacker).basePosition;
+        Vector2 closestTargetTile = getClosestTileToAttacker(attackerPos, target);
+
+        float distance = attackerPos.dst(closestTargetTile);
         float range = am.get(attacker).attackRange;
 
         if (distance > range) {
@@ -101,8 +103,8 @@ public class EnemyAttackAnimationSystem extends IteratingSystem {
             return;
         }
 
-        // Play directional attack animation
-        Vector2 dir = new Vector2(to).sub(from).nor();
+        // Direction to the closest tile (not top-left base tile)
+        Vector2 dir = new Vector2(closestTargetTile).sub(attackerPos).nor();
         EnemyAnimationType animType = getAttackAnimationDirection(dir);
 
         AnimationQueueComponent animQueue = aqm.get(attacker);
@@ -114,6 +116,28 @@ public class EnemyAttackAnimationSystem extends IteratingSystem {
         attackAnim.timeLeft = am.get(attacker).attackInterval;
 
         animQueue.queue.add(attackAnim);
+    }
+
+    private Vector2 getClosestTileToAttacker(Vector2 attackerPos, Entity target) {
+        if (target == null || !pm.has(target)) return attackerPos.cpy();
+
+        if (target.getComponent(OccupiesTilesComponent.class) != null) {
+            List<Vector2> tiles = target.getComponent(OccupiesTilesComponent.class).occupiedTiles;
+            float minDist = Float.MAX_VALUE;
+            Vector2 closest = null;
+
+            for (Vector2 tile : tiles) {
+                float dist = attackerPos.dst2(tile); // squared distance for performance
+                if (dist < minDist) {
+                    minDist = dist;
+                    closest = tile;
+                }
+            }
+
+            return closest != null ? closest : pm.get(target).basePosition.cpy();
+        } else {
+            return pm.get(target).basePosition.cpy();
+        }
     }
 
     /**

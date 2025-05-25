@@ -54,7 +54,12 @@ public class BuildingRemover {
      * @param y           the y-coordinate (in screen space) where removal is attempted.
      * @return {@code true} if a building entity was found and removed; {@code false} otherwise.
      */
-    public boolean removeBuilding(TiledMapTileLayer sampleLayer, float x, float y, InventoryComponent inventoryComponent) {
+    public boolean removeBuilding(
+        TiledMapTileLayer sampleLayer,
+        float x,
+        float y,
+        InventoryComponent inventoryComponent
+    ) {
         Vector2 worldCoordinate = WorldCoordinateUtils.calculateWorldCoordinate(
             viewport,
             sampleLayer,

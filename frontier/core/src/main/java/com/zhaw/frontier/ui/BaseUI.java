@@ -51,8 +51,7 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
 
     private TextButton buildButton;
     private TextButton demolishButton;
-    private TextButton fireplaceButton
-    ;
+    private TextButton fireplaceButton;
 
     /**
      * Constructor for BaseUIScreen.
@@ -117,7 +116,8 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
         modeGroup.setMinCheckCount(0);
         modeGroup.setUncheckLast(true);
 
-        fireplaceButton = createButton(
+        fireplaceButton =
+        createButton(
             "Campfire",
             fireplaceButtonX,
             fireplaceButtonY,
@@ -275,7 +275,13 @@ public class BaseUI implements ButtonClickObserver, TurnChangeListener {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 if (getGameMode() == GameMode.DEMOLISH) {
-                    engine.getSystem(BuildingManagerSystem.class).removeBuilding(screenX, screenY, EngineHelper.getInventoryComponent(engine));
+                    engine
+                        .getSystem(BuildingManagerSystem.class)
+                        .removeBuilding(
+                            screenX,
+                            screenY,
+                            EngineHelper.getInventoryComponent(engine)
+                        );
                     return true;
                 }
                 return false;

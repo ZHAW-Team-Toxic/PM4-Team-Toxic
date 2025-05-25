@@ -640,7 +640,10 @@ public class BuildingManagerTest {
         boolean removed = bms.removeBuilding(screenCoordinate.x, screenCoordinate.y, inventory);
 
         // Assert
-        assertFalse(removed, "Building should NOT be removed if it has NonRemovableObjectComponent.");
+        assertFalse(
+            removed,
+            "Building should NOT be removed if it has NonRemovableObjectComponent."
+        );
 
         testEngine.removeEntity(hq);
     }

@@ -331,7 +331,13 @@ public class GameInputProcessor extends InputAdapter {
                 "R pressed. MouseX: " + mouseX + ", MouseY: " + mouseY
             );
             try {
-                if (buildingManagerSystem.removeBuilding(mouseX, mouseY, getInventoryComponent(engine))) {
+                if (
+                    buildingManagerSystem.removeBuilding(
+                        mouseX,
+                        mouseY,
+                        getInventoryComponent(engine)
+                    )
+                ) {
                     Gdx.app.debug("GameInputProcessor", "Building removed successfully");
                 } else {
                     Gdx.app.debug("GameInputProcessor", "No building found at that location");
