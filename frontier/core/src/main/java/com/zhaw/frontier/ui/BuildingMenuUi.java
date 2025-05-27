@@ -165,7 +165,7 @@ public class BuildingMenuUi implements Disposable, ButtonClickObserver {
 
     private void createTowerButtons(ButtonGroup<ImageButton> allButtons, Table groupTable) {
         ImageButton btn1 = createImageButton(
-            TowerFactory::createDefaultTower,
+            TowerFactory::createBallistaTower,
             atlas.findRegion("Wood_Tower1")
         );
         allButtons.add(btn1);
