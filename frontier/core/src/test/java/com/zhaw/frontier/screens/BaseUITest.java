@@ -51,8 +51,8 @@ class BaseUITest {
         pauseButton.fire(event);
         event.setType(InputEvent.Type.touchUp);
 
-        verify(mockGame, never()).switchScreen(any());
+        verify(mockGame, never()).switchScreenWithoutDispose(any());
         pauseButton.fire(event);
-        verify(mockGame).switchScreen(any());
+        verify(mockGame).switchScreenWithoutDispose(any());
     }
 }
