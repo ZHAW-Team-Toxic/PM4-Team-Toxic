@@ -15,7 +15,8 @@ import java.util.*;
 /**
  * Factory class for creating resource building entities with basic setup.
  * <p>
- * Uses placeholder textures which can easily be swapped with actual sprites or atlas-based animations.
+ * Uses placeholder textures which can easily be swapped with actual sprites or
+ * atlas-based animations.
  */
 public class ResourceBuildingFactory {
 
@@ -49,8 +50,8 @@ public class ResourceBuildingFactory {
         );
         renderComponent.sprites =
         new HashMap<>(woodResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_WOOD));
-        renderComponent.heightInTiles = 3;
-        renderComponent.widthInTiles = 3;
+        renderComponent.heightInTiles = 2;
+        renderComponent.widthInTiles = 2;
 
         CostComponent cost = new CostComponent();
         cost.resouceCosts.put(
@@ -79,8 +80,8 @@ public class ResourceBuildingFactory {
         );
         renderComponent.sprites =
         new HashMap<>(stoneResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_STONE));
-        renderComponent.heightInTiles = 3;
-        renderComponent.widthInTiles = 3;
+        renderComponent.heightInTiles = 2;
+        renderComponent.widthInTiles = 2;
         CostComponent cost = new CostComponent();
         cost.resouceCosts.put(
             ResourceTypeEnum.RESOURCE_TYPE_STONE,
@@ -108,8 +109,8 @@ public class ResourceBuildingFactory {
         );
         renderComponent.sprites =
         new HashMap<>(ironResourceBuildingCache.get(ResourceTypeEnum.RESOURCE_TYPE_IRON));
-        renderComponent.heightInTiles = 3;
-        renderComponent.widthInTiles = 3;
+        renderComponent.heightInTiles = 2;
+        renderComponent.widthInTiles = 2;
         CostComponent cost = new CostComponent();
         cost.resouceCosts.put(
             ResourceTypeEnum.RESOURCE_TYPE_IRON,
@@ -137,7 +138,7 @@ public class ResourceBuildingFactory {
             AppProperties.DEFAULT_PRODUCTION_RATE_RESOURCE_BUILDING
         );
 
-        resourceBuilding.add(new PositionComponent(x, y, 3, 3));
+        resourceBuilding.add(new PositionComponent(x, y, 2, 2));
         resourceBuilding.add(resourceProductionComponent);
         resourceBuilding.add(new OccupiesTilesComponent());
         resourceBuilding.add(new HealthComponent());
@@ -160,13 +161,8 @@ public class ResourceBuildingFactory {
 
         map.put(new TileOffset(0, 0), atlas.findRegion("wood_00_S"));
         map.put(new TileOffset(1, 0), atlas.findRegion("wood_10_S"));
-        map.put(new TileOffset(2, 0), atlas.findRegion("wood_20_S"));
         map.put(new TileOffset(0, 1), atlas.findRegion("wood_01_S"));
         map.put(new TileOffset(1, 1), atlas.findRegion("wood_11_S"));
-        map.put(new TileOffset(2, 1), atlas.findRegion("wood_21_S"));
-        map.put(new TileOffset(0, 2), atlas.findRegion("wood_02_S"));
-        map.put(new TileOffset(1, 2), atlas.findRegion("wood_12_S"));
-        map.put(new TileOffset(2, 2), atlas.findRegion("wood_22_S"));
 
         woodResourceBuildingCache.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, map);
     }
@@ -181,13 +177,8 @@ public class ResourceBuildingFactory {
 
         map.put(new TileOffset(0, 0), atlas.findRegion("stone_00_S"));
         map.put(new TileOffset(1, 0), atlas.findRegion("stone_10_S"));
-        map.put(new TileOffset(2, 0), atlas.findRegion("stone_20_S"));
         map.put(new TileOffset(0, 1), atlas.findRegion("stone_01_S"));
         map.put(new TileOffset(1, 1), atlas.findRegion("stone_11_S"));
-        map.put(new TileOffset(2, 1), atlas.findRegion("stone_21_S"));
-        map.put(new TileOffset(0, 2), atlas.findRegion("stone_02_S"));
-        map.put(new TileOffset(1, 2), atlas.findRegion("stone_12_S"));
-        map.put(new TileOffset(2, 2), atlas.findRegion("stone_22_S"));
 
         stoneResourceBuildingCache.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, map);
     }
@@ -202,13 +193,8 @@ public class ResourceBuildingFactory {
 
         map.put(new TileOffset(0, 0), atlas.findRegion("iron_00_S"));
         map.put(new TileOffset(1, 0), atlas.findRegion("iron_10_S"));
-        map.put(new TileOffset(2, 0), atlas.findRegion("iron_20_S"));
         map.put(new TileOffset(0, 1), atlas.findRegion("iron_01_S"));
         map.put(new TileOffset(1, 1), atlas.findRegion("iron_11_S"));
-        map.put(new TileOffset(2, 1), atlas.findRegion("iron_21_S"));
-        map.put(new TileOffset(0, 2), atlas.findRegion("iron_02_S"));
-        map.put(new TileOffset(1, 2), atlas.findRegion("iron_12_S"));
-        map.put(new TileOffset(2, 2), atlas.findRegion("iron_22_S"));
 
         ironResourceBuildingCache.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, map);
     }
