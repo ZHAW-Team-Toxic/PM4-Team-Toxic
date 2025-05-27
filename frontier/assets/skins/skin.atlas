@@ -6,357 +6,357 @@ filter: Linear, Linear
 repeat: none
 ArchivoBlack
   rotate: false
-  xy: 1, 874
+  xy: 1, 875
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 BrokenPickaxe
   rotate: false
-  xy: 1, 165
+  xy: 515, 779
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 BrokenPickaxe_beingPressed
   rotate: false
-  xy: 515, 778
+  xy: 1029, 1299
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 BrokenPickaxe_disabled
   rotate: false
-  xy: 1029, 1298
+  xy: 1, 234
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 BrokenPickaxe_hover
   rotate: false
-  xy: 1, 233
+  xy: 515, 745
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 BrokenPickaxe_pressed
   rotate: false
-  xy: 515, 744
+  xy: 1029, 1265
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Bronze
   rotate: false
-  xy: 515, 676
+  xy: 1, 200
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Campfire
   rotate: false
-  xy: 549, 750
+  xy: 515, 513
   size: 26, 29
   orig: 26, 29
   offset: 0, 0
   index: -1
 Campfire_beingPressed
   rotate: false
-  xy: 1, 1
+  xy: 549, 751
   size: 26, 29
   orig: 26, 29
   offset: 0, 0
   index: -1
 Campfire_hover
   rotate: false
-  xy: 515, 512
+  xy: 1029, 1037
   size: 26, 29
   orig: 26, 29
   offset: 0, 0
   index: -1
 Copper
   rotate: false
-  xy: 1029, 1196
+  xy: 515, 711
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Diamond
   rotate: false
-  xy: 1, 131
+  xy: 1029, 1231
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Dirt
   rotate: false
-  xy: 1102, 1370
+  xy: 1102, 1371
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Emerald
   rotate: false
-  xy: 515, 642
+  xy: 1, 166
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Explosion
   rotate: false
-  xy: 1, 326
+  xy: 1, 327
   size: 352, 32
   orig: 352, 32
   offset: 0, 0
   index: -1
 Explosion_part1
   rotate: false
-  xy: 1029, 1360
+  xy: 1029, 1361
   size: 37, 26
   orig: 37, 26
   offset: 0, 0
   index: -1
 Explosion_part10
   rotate: false
-  xy: 515, 812
+  xy: 515, 813
   size: 33, 26
   orig: 33, 26
   offset: 0, 0
   index: -1
 Explosion_part11
   rotate: false
-  xy: 648, 846
+  xy: 648, 847
   size: 30, 26
   orig: 30, 26
   offset: 0, 0
   index: -1
 Explosion_part2
   rotate: false
-  xy: 1063, 1304
+  xy: 1063, 1305
   size: 29, 26
   orig: 29, 26
   offset: 0, 0
   index: -1
 Explosion_part3
   rotate: false
-  xy: 1064, 1332
+  xy: 1064, 1333
   size: 30, 26
   orig: 30, 26
   offset: 0, 0
   index: -1
 Explosion_part4
   rotate: false
-  xy: 37, 298
+  xy: 37, 299
   size: 31, 26
   orig: 31, 26
   offset: 0, 0
   index: -1
 Explosion_part5
   rotate: false
-  xy: 613, 846
+  xy: 613, 847
   size: 33, 26
   orig: 33, 26
   offset: 0, 0
   index: -1
 Explosion_part6
   rotate: false
-  xy: 1, 298
+  xy: 1, 299
   size: 34, 26
   orig: 34, 26
   offset: 0, 0
   index: -1
 Explosion_part7
   rotate: false
-  xy: 550, 812
+  xy: 550, 813
   size: 31, 26
   orig: 31, 26
   offset: 0, 0
   index: -1
 Explosion_part8
   rotate: false
-  xy: 1068, 1360
+  xy: 1068, 1361
   size: 32, 26
   orig: 32, 26
   offset: 0, 0
   index: -1
 Explosion_part9
   rotate: false
-  xy: 1029, 1332
+  xy: 1029, 1333
   size: 33, 26
   orig: 33, 26
   offset: 0, 0
   index: -1
 Gears
   rotate: false
-  xy: 1029, 1162
+  xy: 515, 677
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Grass1
   rotate: false
-  xy: 494, 342
+  xy: 494, 343
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Grass2
   rotate: false
-  xy: 70, 308
+  xy: 70, 309
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Iron
   rotate: false
-  xy: 1, 97
+  xy: 1029, 1197
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 KingthingsCalligraphica
   rotate: false
-  xy: 1, 360
+  xy: 1, 361
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 MedievalSharp
   rotate: false
-  xy: 515, 874
+  xy: 515, 875
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 Pickaxe
   rotate: false
-  xy: 515, 608
+  xy: 1, 132
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Pickaxe_beingPressed
   rotate: false
-  xy: 1029, 1264
+  xy: 515, 643
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Pickaxe_disabled
   rotate: false
-  xy: 1, 199
+  xy: 1029, 1163
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Pickaxe_hover
   rotate: false
-  xy: 515, 710
+  xy: 1, 98
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Pickaxe_pressed
   rotate: false
-  xy: 1029, 1230
+  xy: 515, 609
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Platinum
   rotate: false
-  xy: 1029, 1128
+  xy: 1029, 1129
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Tree
   rotate: false
-  xy: 583, 822
+  xy: 583, 823
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 ailment_bleed
   rotate: false
-  xy: 426, 329
+  xy: 426, 330
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_confusion
   rotate: false
-  xy: 1, 66
+  xy: 1, 67
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_death
   rotate: false
-  xy: 515, 577
+  xy: 515, 578
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_frost
   rotate: false
-  xy: 1, 267
+  xy: 1, 268
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 ailment_health
   rotate: false
-  xy: 391, 329
+  xy: 391, 330
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 ailment_placeholder
   rotate: false
-  xy: 1029, 1098
+  xy: 1029, 1099
   size: 32, 28
   orig: 32, 28
   offset: 0, 0
   index: -1
 ailment_poison
   rotate: false
-  xy: 36, 268
+  xy: 36, 269
   size: 31, 28
   orig: 31, 28
   offset: 0, 0
   index: -1
 ailment_sleep
   rotate: false
-  xy: 355, 329
+  xy: 355, 330
   size: 34, 29
   orig: 34, 29
   offset: 0, 0
   index: -1
 ailment_slow
   rotate: false
-  xy: 460, 329
+  xy: 460, 330
   size: 32, 29
   orig: 32, 29
   offset: 0, 0
   index: -1
 ailment_stop
   rotate: false
-  xy: 549, 781
+  xy: 549, 782
   size: 31, 29
   orig: 31, 29
   offset: 0, 0
   index: -1
 ailment_time
   rotate: false
-  xy: 1029, 1067
+  xy: 1029, 1068
   size: 31, 29
   orig: 31, 29
   offset: 0, 0
   index: -1
 build_menu_96_32
   rotate: false
-  xy: 515, 840
+  xy: 515, 841
   size: 96, 32
   split: 4, 5, 4, 5
   pad: 0, 0, 0, 0
@@ -365,7 +365,7 @@ build_menu_96_32
   index: -1
 selected
   rotate: false
-  xy: 1, 32
+  xy: 1, 33
   size: 32, 32
   split: 0, 0, 0, 0
   orig: 32, 32
@@ -373,10 +373,17 @@ selected
   index: -1
 white_bg_32_32
   rotate: false
-  xy: 515, 543
+  xy: 515, 544
   size: 32, 32
   split: 7, 7, 7, 7
   pad: 0, 0, 0, 0
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+Campfire_disabled
+  rotate: false
+  xy: 1, 1
+  size: 27, 30
+  orig: 27, 30
   offset: 0, 0
   index: -1
