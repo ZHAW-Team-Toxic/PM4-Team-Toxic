@@ -21,7 +21,7 @@ public class InventoryComponent implements Component {
      * Constructor for the InventoryComponent.
      * Initializes the inventory with zero quantities for each resource type.
      */
-    public InventoryComponent() { }
+    public InventoryComponent() {}
 
     @Override
     public String toString() {

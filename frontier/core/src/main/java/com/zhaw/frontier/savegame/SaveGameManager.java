@@ -12,9 +12,7 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.systems.TurnSystem;
-import com.zhaw.frontier.systems.building.BuildingManagerSystem;
 import com.zhaw.frontier.systems.building.BuildingPlacer;
-
 import java.util.HashMap;
 import java.util.Map;
 

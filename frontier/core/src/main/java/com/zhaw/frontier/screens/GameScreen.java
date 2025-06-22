@@ -22,7 +22,6 @@ import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.HQComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.NonRemovalObjectComponent;
-import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.CursorFactory;
@@ -94,7 +93,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         this.gameWorldView.getCamera().update();
 
         this.cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
-
     }
 
     @Override
@@ -330,7 +328,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
     }
 
     private void initInventory() {
-        boolean hasInventory = engine.getEntitiesFor(Family.all(InventoryComponent.class).get()).size() > 0;
+        boolean hasInventory =
+            engine.getEntitiesFor(Family.all(InventoryComponent.class).get()).size() > 0;
 
         if (!hasInventory) {
             Entity stock = engine.createEntity();
