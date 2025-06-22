@@ -21,11 +21,7 @@ public class InventoryComponent implements Component {
      * Constructor for the InventoryComponent.
      * Initializes the inventory with zero quantities for each resource type.
      */
-    public InventoryComponent() {
-        resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 15);
-        resources.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 15);
-        resources.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 15);
-    }
+    public InventoryComponent() { }
 
     @Override
     public String toString() {

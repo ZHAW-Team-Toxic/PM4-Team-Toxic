@@ -22,6 +22,7 @@ import com.zhaw.frontier.components.EntityTypeComponent;
 import com.zhaw.frontier.components.HQComponent;
 import com.zhaw.frontier.components.InventoryComponent;
 import com.zhaw.frontier.components.NonRemovalObjectComponent;
+import com.zhaw.frontier.components.OccupiesTilesComponent;
 import com.zhaw.frontier.components.map.BottomLayerComponent;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.CursorFactory;
@@ -93,6 +94,7 @@ public class GameScreen implements Screen, ButtonClickObserver {
         this.gameWorldView.getCamera().update();
 
         this.cameraControlSystem = new CameraControlSystem(gameWorldView, engine, renderer);
+
     }
 
     @Override
@@ -156,12 +158,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(cameraControlSystem);
 
         initHq(engine, sampleLayer);
+        initInventory();
 
         Gdx.app.debug("GameScreen", "Creating stock entity.");
-        Entity stock = engine.createEntity();
-        stock.add(new InventoryComponent());
-        stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
-        engine.addEntity(stock);
 
         Gdx.app.debug("GameScreen", "Initializing Resource Tracking System.");
 
@@ -229,6 +228,8 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.update(delta);
         updateUI();
         baseUI.render(delta);
+
+        Gdx.app.debug("[GameScreen]", "" + engine.getEntitiesFor(Family.all(OccupiesTilesComponent.class).get()).size());
     }
 
     void handleInput() {
@@ -327,6 +328,21 @@ public class GameScreen implements Screen, ButtonClickObserver {
             occupyTile(entity);
             entity.add(new NonRemovalObjectComponent());
             engine.addEntity(entity);
+        }
+    }
+
+    private void initInventory() {
+        boolean hasInventory = engine.getEntitiesFor(Family.all(InventoryComponent.class).get()).size() > 0;
+
+        if (!hasInventory) {
+            Entity stock = engine.createEntity();
+            InventoryComponent inv = new InventoryComponent();
+            inv.resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 150);
+            inv.resources.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 150);
+            inv.resources.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 150);
+            stock.add(inv);
+            stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
+            engine.addEntity(stock);
         }
     }
 

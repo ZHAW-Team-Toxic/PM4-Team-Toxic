@@ -12,6 +12,9 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.systems.TurnSystem;
+import com.zhaw.frontier.systems.building.BuildingManagerSystem;
+import com.zhaw.frontier.systems.building.BuildingPlacer;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +45,9 @@ public class SaveGameManager {
     public void saveGame(String filePath) {
         GameState gameState = new GameState();
         ImmutableArray<Entity> allEntities = engine.getEntitiesFor(Family.all().get());
+
+        int count = engine.getEntitiesFor(Family.all(InventoryComponent.class).get()).size();
+        System.out.println(count);
 
         for (Entity entity : allEntities) {
             EntityData data = new EntityData();
@@ -241,6 +247,7 @@ public class SaveGameManager {
                 if (pos != null) {
                     pos.basePosition.set(data.x, data.y);
                 }
+                BuildingPlacer.occupyTile(entity);
             }
 
             if (data.maxHealth != null) {
@@ -299,7 +306,6 @@ public class SaveGameManager {
                 renderComponent.sprites =
                 wallPieceType.wallPieceTextures.get(wallPieceType.currentWallPiece);
             }
-
             engine.addEntity(entity);
         }
 
