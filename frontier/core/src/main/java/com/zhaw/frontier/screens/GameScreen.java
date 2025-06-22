@@ -228,8 +228,6 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.update(delta);
         updateUI();
         baseUI.render(delta);
-
-        Gdx.app.debug("[GameScreen]", "" + engine.getEntitiesFor(Family.all(OccupiesTilesComponent.class).get()).size());
     }
 
     void handleInput() {
