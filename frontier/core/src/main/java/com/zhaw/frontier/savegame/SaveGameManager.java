@@ -289,6 +289,7 @@ public class SaveGameManager {
                     }
                 }
                 entity.add(inventory);
+                entity.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
             }
 
             ResourceProductionComponent prodComponent = entity.getComponent(
