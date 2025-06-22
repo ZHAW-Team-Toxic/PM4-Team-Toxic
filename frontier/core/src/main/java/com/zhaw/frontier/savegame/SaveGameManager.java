@@ -246,8 +246,8 @@ public class SaveGameManager {
                 PositionComponent pos = entity.getComponent(PositionComponent.class);
                 if (pos != null) {
                     pos.basePosition.set(data.x, data.y);
+                    BuildingPlacer.occupyTile(entity);
                 }
-                BuildingPlacer.occupyTile(entity);
             }
 
             if (data.maxHealth != null) {
