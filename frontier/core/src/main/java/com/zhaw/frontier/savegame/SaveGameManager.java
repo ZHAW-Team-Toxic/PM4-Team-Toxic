@@ -12,6 +12,7 @@ import com.zhaw.frontier.components.*;
 import com.zhaw.frontier.components.map.ResourceTypeEnum;
 import com.zhaw.frontier.entityFactories.*;
 import com.zhaw.frontier.systems.TurnSystem;
+import com.zhaw.frontier.systems.building.BuildingPlacer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -240,6 +241,7 @@ public class SaveGameManager {
                 PositionComponent pos = entity.getComponent(PositionComponent.class);
                 if (pos != null) {
                     pos.basePosition.set(data.x, data.y);
+                    BuildingPlacer.occupyTile(entity);
                 }
             }
 
@@ -282,6 +284,7 @@ public class SaveGameManager {
                     }
                 }
                 entity.add(inventory);
+                entity.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
             }
 
             ResourceProductionComponent prodComponent = entity.getComponent(
@@ -299,7 +302,6 @@ public class SaveGameManager {
                 renderComponent.sprites =
                 wallPieceType.wallPieceTextures.get(wallPieceType.currentWallPiece);
             }
-
             engine.addEntity(entity);
         }
 

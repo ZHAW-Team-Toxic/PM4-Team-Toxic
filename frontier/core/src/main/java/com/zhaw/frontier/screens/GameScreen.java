@@ -156,12 +156,9 @@ public class GameScreen implements Screen, ButtonClickObserver {
         engine.addSystem(cameraControlSystem);
 
         initHq(engine, sampleLayer);
+        initInventory();
 
         Gdx.app.debug("GameScreen", "Creating stock entity.");
-        Entity stock = engine.createEntity();
-        stock.add(new InventoryComponent());
-        stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
-        engine.addEntity(stock);
 
         Gdx.app.debug("GameScreen", "Initializing Resource Tracking System.");
 
@@ -327,6 +324,22 @@ public class GameScreen implements Screen, ButtonClickObserver {
             occupyTile(entity);
             entity.add(new NonRemovalObjectComponent());
             engine.addEntity(entity);
+        }
+    }
+
+    private void initInventory() {
+        boolean hasInventory =
+            engine.getEntitiesFor(Family.all(InventoryComponent.class).get()).size() > 0;
+
+        if (!hasInventory) {
+            Entity stock = engine.createEntity();
+            InventoryComponent inv = new InventoryComponent();
+            inv.resources.put(ResourceTypeEnum.RESOURCE_TYPE_WOOD, 150);
+            inv.resources.put(ResourceTypeEnum.RESOURCE_TYPE_STONE, 150);
+            inv.resources.put(ResourceTypeEnum.RESOURCE_TYPE_IRON, 150);
+            stock.add(inv);
+            stock.add(new EntityTypeComponent(EntityTypeComponent.EntityType.INVENTORY));
+            engine.addEntity(stock);
         }
     }
 
