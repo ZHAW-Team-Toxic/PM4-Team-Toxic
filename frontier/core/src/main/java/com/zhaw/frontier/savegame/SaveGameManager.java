@@ -44,9 +44,6 @@ public class SaveGameManager {
         GameState gameState = new GameState();
         ImmutableArray<Entity> allEntities = engine.getEntitiesFor(Family.all().get());
 
-        int count = engine.getEntitiesFor(Family.all(InventoryComponent.class).get()).size();
-        System.out.println(count);
-
         for (Entity entity : allEntities) {
             EntityData data = new EntityData();
 
