@@ -1,7 +1,26 @@
 # PM4-Team-Toxic
 
+The game is located under the `frontier` folder and the launcher is located under the `frontier-launcher`.
 
-The game is located under the `frontier` folder.
+## Project Wiki Quick Links
+
+This project includes a comprehensive [Wiki](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki) with resources on setup, design decisions, and iteration reviews:
+
+- [Developer Setup](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/Developer-setup-up)
+- [Software Guidebook (German)](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/00:-Software-Guidebook)
+- [Manuelle Test Playbook (German)](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/Manuelle-Test-Playbook)
+- Iteration Reviews:
+  - [Iteration 02](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/02:-Iteration-Review)
+  - [Iteration 03](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/03:-Iteration-Review)
+  - [Iteration 04](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/04:-Iteration-Review)
+  - [Iteration 05](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/05:-Iteration-Review)
+  - [Iteration 06](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/06:-Iteration-Review)
+- [Definition of Done & Ready](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/DoD-&-DoR)
+- Game Design & Tools:
+  - [Frontier Game Design (German)](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/Frontier-Gamedesign-Definition%E2%80%90Sheet)
+  - [LibGDX Guide](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/Libgdx-Guide)
+  - [Tiled Map Editor Guide](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/Map%E2%80%90editor-Tiled)
+  - [Tower Design](https://github.com/ZHAW-Team-Toxic/PM4-Team-Toxic/wiki/Tower-Design)
 
 ## Running Frontier
 
